@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Departement {
+  id        Int        @id @default(autoincrement())
+  nom       String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  projets   Projet[]   // Un département contient plusieurs projets
+}
+
+model Utilisateur {
+  id            Int           @id @default(autoincrement())
+  nom           String
+  email         String        @unique
+  departement   Departement?  @relation(fields: [departementId], references: [id])
+  departementId Int?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  projets       MembreProjet[]
+  taches        TacheMembre[]
+}
+
+model Document {
+  id            Int           @id @default(autoincrement())
+  titre         String
+  description   String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  partages      DocumentPartage[] // Liste des partages du document
+}
+
+model Projet {
+  id          Int        @id @default(autoincrement())
+  nom         String
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  departement Departement @relation(fields: [departementId], references: [id])
+  departementId Int      // Clé étrangère vers Departement
+  membres     MembreProjet[]
+  taches      Tache[]
+}
+
+
+model Tache {
+  id          Int            @id @default(autoincrement())
+  titre       String
+  description String?
+  projet      Projet         @relation(fields: [projetId], references: [id])
+  projetId    Int
+  deadline    DateTime?      // Date limite (optionnelle)
+  statut      TacheStatut    // Statut de la tâche
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  tacheMembres TacheMembre[]  // Référence aux utilisateurs affectés à la tâche
+}
+
+// Enum pour les statuts de la tâche
+enum TacheStatut {
+  A_FAIRE
+  EN_COURS
+  TERMINE
+}
+
+model TacheMembre {
+  tache     Tache       @relation(fields: [tacheId], references: [id])
+  tacheId   Int
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id])
+  utilisateurId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([tacheId, utilisateurId])
+}
+
+model MembreProjet {
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+  utilisateurId Int
+
+  projet        Projet      @relation(fields: [projetId], references: [id])
+  projetId      Int
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@id([utilisateurId, projetId])
+}
+
+model PartageDocument {
+  id            Int           @id @default(autoincrement())
+  document      Document      @relation(fields: [documentId], references: [id])
+  documentId    Int
+  utilisateur   Utilisateur?  @relation(fields: [utilisateurId], references: [id])
+  utilisateurId Int?
+  departement   Departement?  @relation(fields: [departementId], references: [id])
+  departementId Int?
+  projet        Projet?       @relation(fields: [projetId], references: [id])
+  projetId      Int?
+  datePartage   DateTime      @default(now())
+  partageur     Utilisateur   @relation("Partageur", fields: [partageurId], references: [id])
+  partageurId   Int
+  historique    String?       // Pour stocker les détails ou commentaires liés au partage
+
+  @@unique([documentId, utilisateurId, departementId, projetId]) // Pour éviter les doublons
+}
+
+model Notification {
+  id            Int           @id @default(autoincrement())
+  utilisateurId Int           // Utilisateur qui reçoit la notification
+  message       String        // Message de notification (par exemple, "Un document a été partagé avec vous")
+  dateNotification DateTime   @default(now()) // Date de la notification
+  documentId    Int           // Lien vers le document partagé
+  document      Document      @relation(fields: [documentId], references: [id])
+  vu            Boolean       @default(false) // Si la notification a été vue ou non
+
+  utilisateur   Utilisateur   @relation(fields: [utilisateurId], references: [id])
+}
+
+

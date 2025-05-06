@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { useState } from 'react';
 
@@ -6,7 +6,7 @@ export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // simulation login
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen"> 
       
       {/* Sidebar */}
       <aside className="w-64 bg-blue-900 text-white flex flex-col p-6">
@@ -16,6 +16,7 @@ export default function Dashboard() {
         <nav className="flex flex-col gap-4">
           <a href="#" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
           <a href="#" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
+          <a href="#" className="hover:bg-blue-700 p-2 rounded">Documents</a>
           <a href="#" className="hover:bg-blue-700 p-2 rounded">Membres</a>
           <a href="#" className="hover:bg-blue-700 p-2 rounded">Départements</a>
           <a href="#" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
