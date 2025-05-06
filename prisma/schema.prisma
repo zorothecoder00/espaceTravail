@@ -6,13 +6,15 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../src/generated/prisma" 
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+
 
 model Departement {
   id        Int        @id @default(autoincrement())
@@ -22,10 +24,16 @@ model Departement {
   projets   Projet[]   // Un département contient plusieurs projets
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model Utilisateur {
   id            Int           @id @default(autoincrement())
   nom           String
   email         String        @unique
+  role          Role          @default(USER) // <-- champ rôle
   departement   Departement?  @relation(fields: [departementId], references: [id])
   departementId Int?
   createdAt     DateTime      @default(now())
@@ -55,6 +63,12 @@ model Projet {
   taches      Tache[]
 }
 
+// Enum pour les statuts de la tâche
+enum TacheStatut {
+  A_FAIRE
+  EN_COURS
+  TERMINE
+}
 
 model Tache {
   id          Int            @id @default(autoincrement())
@@ -69,12 +83,6 @@ model Tache {
   tacheMembres TacheMembre[]  // Référence aux utilisateurs affectés à la tâche
 }
 
-// Enum pour les statuts de la tâche
-enum TacheStatut {
-  A_FAIRE
-  EN_COURS
-  TERMINE
-}
 
 model TacheMembre {
   tache     Tache       @relation(fields: [tacheId], references: [id])

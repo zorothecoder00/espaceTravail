@@ -1,9 +1,10 @@
-'use client'; 
+'use client';
 
 import { useState } from 'react';
 
 export default function Dashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // simulation login
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Supposons connecté
+  const [notificationsCount] = useState(3); // Remplace ça par un fetch réel
 
   return (
     <div className="flex h-screen"> 
@@ -14,12 +15,18 @@ export default function Dashboard() {
           LOGO
         </div>
         <nav className="flex flex-col gap-4">
-          <a href="#" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
-          <a href="#" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
-          <a href="#" className="hover:bg-blue-700 p-2 rounded">Documents</a>
-          <a href="#" className="hover:bg-blue-700 p-2 rounded">Membres</a>
-          <a href="#" className="hover:bg-blue-700 p-2 rounded">Départements</a>
-          <a href="#" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
+          <a href="/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard
+          </a>
+          <a href="/departements" className="hover:bg-blue-700 p-2 rounded">Départements
+          </a>
+          <a href="/projets" className="hover:bg-blue-700 p-2 rounded">Projets
+          </a>
+          <a href="/taches" className="hover:bg-blue-700 p-2 rounded">Tâches
+          </a>
+          <a href="/documents" className="hover:bg-blue-700 p-2 rounded">Documents
+          </a> 
+          <a href="/calendrier" className="hover:bg-blue-700 p-2 rounded">Calendrier
+          </a>
         </nav>
       </aside>
 
@@ -33,6 +40,14 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             {isAuthenticated ? (
               <>
+                <a href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">
+                  Notifications
+                  {notificationsCount > 0 && (
+                    <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {notificationsCount}
+                    </span>
+                  )}
+                </a>
                 <img src="/profile.jpg" alt="Profil" className="w-10 h-10 rounded-full" />
                 <button onClick={() => setIsAuthenticated(false)} className="bg-red-500 text-white px-4 py-2 rounded">
                   Déconnexion
@@ -93,12 +108,10 @@ export default function Dashboard() {
         {/* Graphique */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-xl font-bold mb-4">Avancement des Projets</h3>
-          {/* Ici on pourra intégrer un vrai graphique plus tard */}
           <div className="h-64 flex items-center justify-center text-gray-400">
             [ Graphique ici bientôt 📊 ]
           </div>
         </div>
-
       </main>
     </div>
   );
