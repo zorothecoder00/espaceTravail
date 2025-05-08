@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma" 
+  output   = "../src/generated/prisma"  
 }
 
 datasource db {
@@ -17,29 +17,36 @@ datasource db {
 
 
 model Departement {
-  id        Int        @id @default(autoincrement())
-  nom       String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  projets   Projet[]   // Un département contient plusieurs projets
+  id            Int        @id @default(autoincrement())
+  nom           String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  projets       Projet[]   // Un département contient plusieurs projets
+  utilisateurs  Utilisateur[] @relation("DepartementUtilisateur")
+  partages      PartageDocument[]
 }
-
+ 
 enum Role {
   ADMIN
-  USER
+  UTILISATEUR
 }
 
 model Utilisateur {
   id            Int           @id @default(autoincrement())
   nom           String
+  prenom        String
   email         String        @unique
-  role          Role          @default(USER) // <-- champ rôle
-  departement   Departement?  @relation(fields: [departementId], references: [id])
+  password      String        // nécessaire pour Credentials Provider
+  role          Role          @default(UTILISATEUR) // <-- champ rôle
+  departement   Departement?  @relation("DepartementUtilisateur", fields: [departementId], references: [id])
   departementId Int?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-  projets       MembreProjet[]
+  projets       MembreProjet[]  
   taches        TacheMembre[]
+  partages      PartageDocument[]
+  partagesEnTantQuePartageur  PartageDocument[] @relation("Partageur")
+  notifications Notification[]
 }
 
 model Document {
@@ -48,19 +55,21 @@ model Document {
   description   String
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-  partages      DocumentPartage[] // Liste des partages du document
+  partages      PartageDocument[] // Liste des partages du document
+  notifications Notification[]
 }
 
 model Projet {
-  id          Int        @id @default(autoincrement())
-  nom         String
-  description String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  departement Departement @relation(fields: [departementId], references: [id])
+  id            Int         @id @default(autoincrement())
+  nom           String
+  description   String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  departement   Departement @relation(fields: [departementId], references: [id])
   departementId Int      // Clé étrangère vers Departement
-  membres     MembreProjet[]
-  taches      Tache[]
+  membres       MembreProjet[]
+  taches        Tache[]
+  partages      PartageDocument[]
 }
 
 // Enum pour les statuts de la tâche

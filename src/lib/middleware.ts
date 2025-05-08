@@ -14,4 +14,5 @@ export async function isAdminMiddleware(req: NextRequest) {
 
   // Si le rôle est bon, on laisse passer
   return NextResponse.next()
-}
+}  
+ 
