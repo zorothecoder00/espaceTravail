@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     // Ne jamais renvoyer le mot de passe, même hashé
     const { password: _, ...userSafe } = newUser
 
-    return res.status(201).json({ message: 'Compte créé', user: userSafe })
+    return res.status(201).json({ message: 'Compte créé', utilisateur: userSafe })
   } catch (error) {
     console.error('Erreur lors de la création de compte :', error)
     return res.status(500).json({ message: 'Erreur interne' })

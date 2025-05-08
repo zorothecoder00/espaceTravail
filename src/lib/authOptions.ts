@@ -1,4 +1,4 @@
-// src/lib/authOptions.ts
+// src/lib/authOptions.ts   
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { PrismaClient } from '@/generated/prisma' 
