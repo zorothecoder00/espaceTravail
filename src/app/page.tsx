@@ -7,7 +7,7 @@ export default async function Home() {
 
   if (!session) {
     // Pas connecté → redirection vers register
-    redirect('/register')
+    redirect('/register') 
   }
 
   // Redirection en fonction du rôle
@@ -16,6 +16,6 @@ export default async function Home() {
   if (role === 'admin') {
     redirect('/admin')
   } else {
-    redirect('/home')
+    redirect('/interfaceUtilisateur')
   }
 }

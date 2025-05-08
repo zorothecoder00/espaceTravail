@@ -3,8 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod' 
+import { signIn } from 'next-auth/react' 
 
 const registerSchema = z.object({
+  prenom: z.string().min(2, 'Prénom requis'),
   nom: z.string().min(2, 'Nom requis'), 
   email: z.string().email('Email invalide'),
   password: z.string().min(6, '6 caractères minimum'),
@@ -21,6 +23,7 @@ export default function Register() {
     setServerError('')
 
     const form = {
+      prenom: e.target.prenom.value,
       nom: e.target.nom.value,
       email: e.target.email.value,
       password: e.target.password.value,
@@ -47,7 +50,7 @@ export default function Register() {
         redirect: false,
         email: form.email,
         password: form.password,
-        callbackUrl: '/admin',
+        callbackUrl: '/admin', 
       })
     } else {
       setServerError(data.message || 'Erreur inconnue')
@@ -56,7 +59,7 @@ export default function Register() {
 
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8 ">
-    <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md overflow-hidden">
+    <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
       <div className="text-center">
         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">INSCRIVEZ-VOUS</h2>
       </div>

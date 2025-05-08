@@ -1,7 +1,8 @@
-import { PrismaClient, Role } from '@prisma/client'
+import { Role } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
- 
+import { prisma } from '@/lib/prisma' // Assure-toi que ce fichier existe
+
 const prisma = new PrismaClient()
 
 const registerSchema = z.object({
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Validation échouée', errors })
     }
 
-    const { email, password, nom } = result.data
+    const { email, password, nom, prenom } = result.data
 
     const existingUser = await prisma.utilisateur.findUnique({ where: { email } })
     if (existingUser) {
@@ -48,9 +49,12 @@ export default async function handler(req, res) {
       },
     })
 
-    return res.status(201).json({ message: 'Compte créé', user: newUser })
+    // Ne jamais renvoyer le mot de passe, même hashé
+    const { password: _, ...userSafe } = newUser
+
+    return res.status(201).json({ message: 'Compte créé', user: userSafe })
   } catch (error) {
-    console.error(error)
+    console.error('Erreur lors de la création de compte :', error)
     return res.status(500).json({ message: 'Erreur interne' })
   }
 }
