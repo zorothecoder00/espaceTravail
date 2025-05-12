@@ -1,10 +1,10 @@
-'use client' 
+'use client'  
 
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function Login() {
+export default function Login() { 
   const router = useRouter()
   const [error, setError] = useState('')
 
@@ -30,7 +30,7 @@ export default function Login() {
     }
   }
 
-  return (
+  return ( 
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-gray-100 p-8 rounded-lg shadow-md">
         <div className="text-center">

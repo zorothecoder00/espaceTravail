@@ -19,10 +19,10 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Departement = $Result.DefaultSelection<Prisma.$DepartementPayload>
 /**
- * Model Utilisateur
+ * Model User
  * 
  */
-export type Utilisateur = $Result.DefaultSelection<Prisma.$UtilisateurPayload>
+export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
  * Model Document
  * 
@@ -39,10 +39,10 @@ export type Projet = $Result.DefaultSelection<Prisma.$ProjetPayload>
  */
 export type Tache = $Result.DefaultSelection<Prisma.$TachePayload>
 /**
- * Model TacheMembre
+ * Model TacheUtilisateur
  * 
  */
-export type TacheMembre = $Result.DefaultSelection<Prisma.$TacheMembrePayload>
+export type TacheUtilisateur = $Result.DefaultSelection<Prisma.$TacheUtilisateurPayload>
 /**
  * Model MembreProjet
  * 
@@ -58,6 +58,21 @@ export type PartageDocument = $Result.DefaultSelection<Prisma.$PartageDocumentPa
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model Account
+ * 
+ */
+export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
+/**
+ * Model Session
+ * 
+ */
+export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
+/**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
 
 /**
  * Enums
@@ -225,14 +240,14 @@ export class PrismaClient<
   get departement(): Prisma.DepartementDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.utilisateur`: Exposes CRUD operations for the **Utilisateur** model.
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Utilisateurs
-    * const utilisateurs = await prisma.utilisateur.findMany()
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
     * ```
     */
-  get utilisateur(): Prisma.UtilisateurDelegate<ExtArgs, ClientOptions>;
+  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.document`: Exposes CRUD operations for the **Document** model.
@@ -265,14 +280,14 @@ export class PrismaClient<
   get tache(): Prisma.TacheDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.tacheMembre`: Exposes CRUD operations for the **TacheMembre** model.
+   * `prisma.tacheUtilisateur`: Exposes CRUD operations for the **TacheUtilisateur** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more TacheMembres
-    * const tacheMembres = await prisma.tacheMembre.findMany()
+    * // Fetch zero or more TacheUtilisateurs
+    * const tacheUtilisateurs = await prisma.tacheUtilisateur.findMany()
     * ```
     */
-  get tacheMembre(): Prisma.TacheMembreDelegate<ExtArgs, ClientOptions>;
+  get tacheUtilisateur(): Prisma.TacheUtilisateurDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.membreProjet`: Exposes CRUD operations for the **MembreProjet** model.
@@ -303,6 +318,36 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.account`: Exposes CRUD operations for the **Account** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Accounts
+    * const accounts = await prisma.account.findMany()
+    * ```
+    */
+  get account(): Prisma.AccountDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.session`: Exposes CRUD operations for the **Session** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sessions
+    * const sessions = await prisma.session.findMany()
+    * ```
+    */
+  get session(): Prisma.SessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.verificationToken`: Exposes CRUD operations for the **VerificationToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VerificationTokens
+    * const verificationTokens = await prisma.verificationToken.findMany()
+    * ```
+    */
+  get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -744,14 +789,17 @@ export namespace Prisma {
 
   export const ModelName: {
     Departement: 'Departement',
-    Utilisateur: 'Utilisateur',
+    User: 'User',
     Document: 'Document',
     Projet: 'Projet',
     Tache: 'Tache',
-    TacheMembre: 'TacheMembre',
+    TacheUtilisateur: 'TacheUtilisateur',
     MembreProjet: 'MembreProjet',
     PartageDocument: 'PartageDocument',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    Account: 'Account',
+    Session: 'Session',
+    VerificationToken: 'VerificationToken'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -770,7 +818,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "departement" | "utilisateur" | "document" | "projet" | "tache" | "tacheMembre" | "membreProjet" | "partageDocument" | "notification"
+      modelProps: "departement" | "user" | "document" | "projet" | "tache" | "tacheUtilisateur" | "membreProjet" | "partageDocument" | "notification" | "account" | "session" | "verificationToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -848,77 +896,77 @@ export namespace Prisma {
           }
         }
       }
-      Utilisateur: {
-        payload: Prisma.$UtilisateurPayload<ExtArgs>
-        fields: Prisma.UtilisateurFieldRefs
+      User: {
+        payload: Prisma.$UserPayload<ExtArgs>
+        fields: Prisma.UserFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.UtilisateurFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload> | null
+            args: Prisma.UserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.UtilisateurFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>
+            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           findFirst: {
-            args: Prisma.UtilisateurFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload> | null
+            args: Prisma.UserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.UtilisateurFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>
+            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           findMany: {
-            args: Prisma.UtilisateurFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>[]
+            args: Prisma.UserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           create: {
-            args: Prisma.UtilisateurCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>
+            args: Prisma.UserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           createMany: {
-            args: Prisma.UtilisateurCreateManyArgs<ExtArgs>
+            args: Prisma.UserCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.UtilisateurCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>[]
+            args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           delete: {
-            args: Prisma.UtilisateurDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>
+            args: Prisma.UserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           update: {
-            args: Prisma.UtilisateurUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>
+            args: Prisma.UserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           deleteMany: {
-            args: Prisma.UtilisateurDeleteManyArgs<ExtArgs>
+            args: Prisma.UserDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.UtilisateurUpdateManyArgs<ExtArgs>
+            args: Prisma.UserUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.UtilisateurUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>[]
+            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           upsert: {
-            args: Prisma.UtilisateurUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UtilisateurPayload>
+            args: Prisma.UserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           aggregate: {
-            args: Prisma.UtilisateurAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUtilisateur>
+            args: Prisma.UserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser>
           }
           groupBy: {
-            args: Prisma.UtilisateurGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UtilisateurGroupByOutputType>[]
+            args: Prisma.UserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupByOutputType>[]
           }
           count: {
-            args: Prisma.UtilisateurCountArgs<ExtArgs>
-            result: $Utils.Optional<UtilisateurCountAggregateOutputType> | number
+            args: Prisma.UserCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCountAggregateOutputType> | number
           }
         }
       }
@@ -1144,77 +1192,77 @@ export namespace Prisma {
           }
         }
       }
-      TacheMembre: {
-        payload: Prisma.$TacheMembrePayload<ExtArgs>
-        fields: Prisma.TacheMembreFieldRefs
+      TacheUtilisateur: {
+        payload: Prisma.$TacheUtilisateurPayload<ExtArgs>
+        fields: Prisma.TacheUtilisateurFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.TacheMembreFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload> | null
+            args: Prisma.TacheUtilisateurFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.TacheMembreFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>
+            args: Prisma.TacheUtilisateurFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>
           }
           findFirst: {
-            args: Prisma.TacheMembreFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload> | null
+            args: Prisma.TacheUtilisateurFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.TacheMembreFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>
+            args: Prisma.TacheUtilisateurFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>
           }
           findMany: {
-            args: Prisma.TacheMembreFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>[]
+            args: Prisma.TacheUtilisateurFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>[]
           }
           create: {
-            args: Prisma.TacheMembreCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>
+            args: Prisma.TacheUtilisateurCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>
           }
           createMany: {
-            args: Prisma.TacheMembreCreateManyArgs<ExtArgs>
+            args: Prisma.TacheUtilisateurCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.TacheMembreCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>[]
+            args: Prisma.TacheUtilisateurCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>[]
           }
           delete: {
-            args: Prisma.TacheMembreDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>
+            args: Prisma.TacheUtilisateurDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>
           }
           update: {
-            args: Prisma.TacheMembreUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>
+            args: Prisma.TacheUtilisateurUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>
           }
           deleteMany: {
-            args: Prisma.TacheMembreDeleteManyArgs<ExtArgs>
+            args: Prisma.TacheUtilisateurDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.TacheMembreUpdateManyArgs<ExtArgs>
+            args: Prisma.TacheUtilisateurUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.TacheMembreUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>[]
+            args: Prisma.TacheUtilisateurUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>[]
           }
           upsert: {
-            args: Prisma.TacheMembreUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TacheMembrePayload>
+            args: Prisma.TacheUtilisateurUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TacheUtilisateurPayload>
           }
           aggregate: {
-            args: Prisma.TacheMembreAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateTacheMembre>
+            args: Prisma.TacheUtilisateurAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTacheUtilisateur>
           }
           groupBy: {
-            args: Prisma.TacheMembreGroupByArgs<ExtArgs>
-            result: $Utils.Optional<TacheMembreGroupByOutputType>[]
+            args: Prisma.TacheUtilisateurGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TacheUtilisateurGroupByOutputType>[]
           }
           count: {
-            args: Prisma.TacheMembreCountArgs<ExtArgs>
-            result: $Utils.Optional<TacheMembreCountAggregateOutputType> | number
+            args: Prisma.TacheUtilisateurCountArgs<ExtArgs>
+            result: $Utils.Optional<TacheUtilisateurCountAggregateOutputType> | number
           }
         }
       }
@@ -1440,6 +1488,228 @@ export namespace Prisma {
           }
         }
       }
+      Account: {
+        payload: Prisma.$AccountPayload<ExtArgs>
+        fields: Prisma.AccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          findFirst: {
+            args: Prisma.AccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          findMany: {
+            args: Prisma.AccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          create: {
+            args: Prisma.AccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          createMany: {
+            args: Prisma.AccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          delete: {
+            args: Prisma.AccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          update: {
+            args: Prisma.AccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.AccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.AccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          aggregate: {
+            args: Prisma.AccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAccount>
+          }
+          groupBy: {
+            args: Prisma.AccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AccountCountArgs<ExtArgs>
+            result: $Utils.Optional<AccountCountAggregateOutputType> | number
+          }
+        }
+      }
+      Session: {
+        payload: Prisma.$SessionPayload<ExtArgs>
+        fields: Prisma.SessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findFirst: {
+            args: Prisma.SessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findMany: {
+            args: Prisma.SessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          create: {
+            args: Prisma.SessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          createMany: {
+            args: Prisma.SessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          delete: {
+            args: Prisma.SessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          update: {
+            args: Prisma.SessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          aggregate: {
+            args: Prisma.SessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSession>
+          }
+          groupBy: {
+            args: Prisma.SessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      VerificationToken: {
+        payload: Prisma.$VerificationTokenPayload<ExtArgs>
+        fields: Prisma.VerificationTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VerificationTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VerificationTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.VerificationTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VerificationTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          findMany: {
+            args: Prisma.VerificationTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          create: {
+            args: Prisma.VerificationTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          createMany: {
+            args: Prisma.VerificationTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VerificationTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.VerificationTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          update: {
+            args: Prisma.VerificationTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.VerificationTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VerificationTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VerificationTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.VerificationTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.VerificationTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVerificationToken>
+          }
+          groupBy: {
+            args: Prisma.VerificationTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VerificationTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VerificationTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<VerificationTokenCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1525,14 +1795,17 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     departement?: DepartementOmit
-    utilisateur?: UtilisateurOmit
+    user?: UserOmit
     document?: DocumentOmit
     projet?: ProjetOmit
     tache?: TacheOmit
-    tacheMembre?: TacheMembreOmit
+    tacheUtilisateur?: TacheUtilisateurOmit
     membreProjet?: MembreProjetOmit
     partageDocument?: PartageDocumentOmit
     notification?: NotificationOmit
+    account?: AccountOmit
+    session?: SessionOmit
+    verificationToken?: VerificationTokenOmit
   }
 
   /* Types for Logging */
@@ -1660,7 +1933,7 @@ export namespace Prisma {
    * DepartementCountOutputType without action
    */
   export type DepartementCountOutputTypeCountUtilisateursArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
   }
 
   /**
@@ -1672,69 +1945,87 @@ export namespace Prisma {
 
 
   /**
-   * Count Type UtilisateurCountOutputType
+   * Count Type UserCountOutputType
    */
 
-  export type UtilisateurCountOutputType = {
+  export type UserCountOutputType = {
     projets: number
     taches: number
     partages: number
     partagesEnTantQuePartageur: number
     notifications: number
+    accounts: number
+    sessions: number
   }
 
-  export type UtilisateurCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    projets?: boolean | UtilisateurCountOutputTypeCountProjetsArgs
-    taches?: boolean | UtilisateurCountOutputTypeCountTachesArgs
-    partages?: boolean | UtilisateurCountOutputTypeCountPartagesArgs
-    partagesEnTantQuePartageur?: boolean | UtilisateurCountOutputTypeCountPartagesEnTantQuePartageurArgs
-    notifications?: boolean | UtilisateurCountOutputTypeCountNotificationsArgs
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    projets?: boolean | UserCountOutputTypeCountProjetsArgs
+    taches?: boolean | UserCountOutputTypeCountTachesArgs
+    partages?: boolean | UserCountOutputTypeCountPartagesArgs
+    partagesEnTantQuePartageur?: boolean | UserCountOutputTypeCountPartagesEnTantQuePartageurArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   }
 
   // Custom InputTypes
   /**
-   * UtilisateurCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type UtilisateurCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UtilisateurCountOutputType
+     * Select specific fields to fetch from the UserCountOutputType
      */
-    select?: UtilisateurCountOutputTypeSelect<ExtArgs> | null
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * UtilisateurCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type UtilisateurCountOutputTypeCountProjetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountProjetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MembreProjetWhereInput
   }
 
   /**
-   * UtilisateurCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type UtilisateurCountOutputTypeCountTachesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TacheMembreWhereInput
+  export type UserCountOutputTypeCountTachesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TacheUtilisateurWhereInput
   }
 
   /**
-   * UtilisateurCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type UtilisateurCountOutputTypeCountPartagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountPartagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PartageDocumentWhereInput
   }
 
   /**
-   * UtilisateurCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type UtilisateurCountOutputTypeCountPartagesEnTantQuePartageurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountPartagesEnTantQuePartageurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PartageDocumentWhereInput
   }
 
   /**
-   * UtilisateurCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type UtilisateurCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
 
@@ -1832,11 +2123,11 @@ export namespace Prisma {
    */
 
   export type TacheCountOutputType = {
-    tacheMembres: number
+    TacheUtilisateur: number
   }
 
   export type TacheCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tacheMembres?: boolean | TacheCountOutputTypeCountTacheMembresArgs
+    TacheUtilisateur?: boolean | TacheCountOutputTypeCountTacheUtilisateurArgs
   }
 
   // Custom InputTypes
@@ -1853,8 +2144,8 @@ export namespace Prisma {
   /**
    * TacheCountOutputType without action
    */
-  export type TacheCountOutputTypeCountTacheMembresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TacheMembreWhereInput
+  export type TacheCountOutputTypeCountTacheUtilisateurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TacheUtilisateurWhereInput
   }
 
 
@@ -2093,7 +2384,7 @@ export namespace Prisma {
     name: "Departement"
     objects: {
       projets: Prisma.$ProjetPayload<ExtArgs>[]
-      utilisateurs: Prisma.$UtilisateurPayload<ExtArgs>[]
+      utilisateurs: Prisma.$UserPayload<ExtArgs>[]
       partages: Prisma.$PartageDocumentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2496,7 +2787,7 @@ export namespace Prisma {
   export interface Prisma__DepartementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     projets<T extends Departement$projetsArgs<ExtArgs> = {}>(args?: Subset<T, Departement$projetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    utilisateurs<T extends Departement$utilisateursArgs<ExtArgs> = {}>(args?: Subset<T, Departement$utilisateursArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    utilisateurs<T extends Departement$utilisateursArgs<ExtArgs> = {}>(args?: Subset<T, Departement$utilisateursArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     partages<T extends Departement$partagesArgs<ExtArgs> = {}>(args?: Subset<T, Departement$partagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartageDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2945,23 +3236,23 @@ export namespace Prisma {
    */
   export type Departement$utilisateursArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
-    where?: UtilisateurWhereInput
-    orderBy?: UtilisateurOrderByWithRelationInput | UtilisateurOrderByWithRelationInput[]
-    cursor?: UtilisateurWhereUniqueInput
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UtilisateurScalarFieldEnum | UtilisateurScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -3008,30 +3299,31 @@ export namespace Prisma {
 
 
   /**
-   * Model Utilisateur
+   * Model User
    */
 
-  export type AggregateUtilisateur = {
-    _count: UtilisateurCountAggregateOutputType | null
-    _avg: UtilisateurAvgAggregateOutputType | null
-    _sum: UtilisateurSumAggregateOutputType | null
-    _min: UtilisateurMinAggregateOutputType | null
-    _max: UtilisateurMaxAggregateOutputType | null
+  export type AggregateUser = {
+    _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
   }
 
-  export type UtilisateurAvgAggregateOutputType = {
+  export type UserAvgAggregateOutputType = {
     id: number | null
     departementId: number | null
   }
 
-  export type UtilisateurSumAggregateOutputType = {
+  export type UserSumAggregateOutputType = {
     id: number | null
     departementId: number | null
   }
 
-  export type UtilisateurMinAggregateOutputType = {
+  export type UserMinAggregateOutputType = {
     id: number | null
     nom: string | null
+    prenom: string | null
     email: string | null
     password: string | null
     role: $Enums.Role | null
@@ -3040,9 +3332,10 @@ export namespace Prisma {
     updatedAt: Date | null
   }
 
-  export type UtilisateurMaxAggregateOutputType = {
+  export type UserMaxAggregateOutputType = {
     id: number | null
     nom: string | null
+    prenom: string | null
     email: string | null
     password: string | null
     role: $Enums.Role | null
@@ -3051,9 +3344,10 @@ export namespace Prisma {
     updatedAt: Date | null
   }
 
-  export type UtilisateurCountAggregateOutputType = {
+  export type UserCountAggregateOutputType = {
     id: number
     nom: number
+    prenom: number
     email: number
     password: number
     role: number
@@ -3064,19 +3358,20 @@ export namespace Prisma {
   }
 
 
-  export type UtilisateurAvgAggregateInputType = {
+  export type UserAvgAggregateInputType = {
     id?: true
     departementId?: true
   }
 
-  export type UtilisateurSumAggregateInputType = {
+  export type UserSumAggregateInputType = {
     id?: true
     departementId?: true
   }
 
-  export type UtilisateurMinAggregateInputType = {
+  export type UserMinAggregateInputType = {
     id?: true
     nom?: true
+    prenom?: true
     email?: true
     password?: true
     role?: true
@@ -3085,9 +3380,10 @@ export namespace Prisma {
     updatedAt?: true
   }
 
-  export type UtilisateurMaxAggregateInputType = {
+  export type UserMaxAggregateInputType = {
     id?: true
     nom?: true
+    prenom?: true
     email?: true
     password?: true
     role?: true
@@ -3096,9 +3392,10 @@ export namespace Prisma {
     updatedAt?: true
   }
 
-  export type UtilisateurCountAggregateInputType = {
+  export type UserCountAggregateInputType = {
     id?: true
     nom?: true
+    prenom?: true
     email?: true
     password?: true
     role?: true
@@ -3108,167 +3405,174 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type UtilisateurAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Utilisateur to aggregate.
+     * Filter which User to aggregate.
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Utilisateurs to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: UtilisateurOrderByWithRelationInput | UtilisateurOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: UtilisateurWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Utilisateurs from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Utilisateurs.
+     * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Utilisateurs
+     * Count returned Users
     **/
-    _count?: true | UtilisateurCountAggregateInputType
+    _count?: true | UserCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: UtilisateurAvgAggregateInputType
+    _avg?: UserAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: UtilisateurSumAggregateInputType
+    _sum?: UserSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: UtilisateurMinAggregateInputType
+    _min?: UserMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: UtilisateurMaxAggregateInputType
+    _max?: UserMaxAggregateInputType
   }
 
-  export type GetUtilisateurAggregateType<T extends UtilisateurAggregateArgs> = {
-        [P in keyof T & keyof AggregateUtilisateur]: P extends '_count' | 'count'
+  export type GetUserAggregateType<T extends UserAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateUtilisateur[P]>
-      : GetScalarType<T[P], AggregateUtilisateur[P]>
+        : GetScalarType<T[P], AggregateUser[P]>
+      : GetScalarType<T[P], AggregateUser[P]>
   }
 
 
 
 
-  export type UtilisateurGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UtilisateurWhereInput
-    orderBy?: UtilisateurOrderByWithAggregationInput | UtilisateurOrderByWithAggregationInput[]
-    by: UtilisateurScalarFieldEnum[] | UtilisateurScalarFieldEnum
-    having?: UtilisateurScalarWhereWithAggregatesInput
+  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
+    by: UserScalarFieldEnum[] | UserScalarFieldEnum
+    having?: UserScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: UtilisateurCountAggregateInputType | true
-    _avg?: UtilisateurAvgAggregateInputType
-    _sum?: UtilisateurSumAggregateInputType
-    _min?: UtilisateurMinAggregateInputType
-    _max?: UtilisateurMaxAggregateInputType
+    _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
+    _min?: UserMinAggregateInputType
+    _max?: UserMaxAggregateInputType
   }
 
-  export type UtilisateurGroupByOutputType = {
+  export type UserGroupByOutputType = {
     id: number
     nom: string
+    prenom: string
     email: string
     password: string
     role: $Enums.Role
     departementId: number | null
     createdAt: Date
     updatedAt: Date
-    _count: UtilisateurCountAggregateOutputType | null
-    _avg: UtilisateurAvgAggregateOutputType | null
-    _sum: UtilisateurSumAggregateOutputType | null
-    _min: UtilisateurMinAggregateOutputType | null
-    _max: UtilisateurMaxAggregateOutputType | null
+    _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
   }
 
-  type GetUtilisateurGroupByPayload<T extends UtilisateurGroupByArgs> = Prisma.PrismaPromise<
+  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<UtilisateurGroupByOutputType, T['by']> &
+      PickEnumerable<UserGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof UtilisateurGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], UtilisateurGroupByOutputType[P]>
-            : GetScalarType<T[P], UtilisateurGroupByOutputType[P]>
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type UtilisateurSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nom?: boolean
+    prenom?: boolean
     email?: boolean
     password?: boolean
     role?: boolean
     departementId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    departement?: boolean | Utilisateur$departementArgs<ExtArgs>
-    projets?: boolean | Utilisateur$projetsArgs<ExtArgs>
-    taches?: boolean | Utilisateur$tachesArgs<ExtArgs>
-    partages?: boolean | Utilisateur$partagesArgs<ExtArgs>
-    partagesEnTantQuePartageur?: boolean | Utilisateur$partagesEnTantQuePartageurArgs<ExtArgs>
-    notifications?: boolean | Utilisateur$notificationsArgs<ExtArgs>
-    _count?: boolean | UtilisateurCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["utilisateur"]>
+    departement?: boolean | User$departementArgs<ExtArgs>
+    projets?: boolean | User$projetsArgs<ExtArgs>
+    taches?: boolean | User$tachesArgs<ExtArgs>
+    partages?: boolean | User$partagesArgs<ExtArgs>
+    partagesEnTantQuePartageur?: boolean | User$partagesEnTantQuePartageurArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["user"]>
 
-  export type UtilisateurSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nom?: boolean
+    prenom?: boolean
     email?: boolean
     password?: boolean
     role?: boolean
     departementId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    departement?: boolean | Utilisateur$departementArgs<ExtArgs>
-  }, ExtArgs["result"]["utilisateur"]>
+    departement?: boolean | User$departementArgs<ExtArgs>
+  }, ExtArgs["result"]["user"]>
 
-  export type UtilisateurSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nom?: boolean
+    prenom?: boolean
     email?: boolean
     password?: boolean
     role?: boolean
     departementId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    departement?: boolean | Utilisateur$departementArgs<ExtArgs>
-  }, ExtArgs["result"]["utilisateur"]>
+    departement?: boolean | User$departementArgs<ExtArgs>
+  }, ExtArgs["result"]["user"]>
 
-  export type UtilisateurSelectScalar = {
+  export type UserSelectScalar = {
     id?: boolean
     nom?: boolean
+    prenom?: boolean
     email?: boolean
     password?: boolean
     role?: boolean
@@ -3277,172 +3581,177 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UtilisateurOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "email" | "password" | "role" | "departementId" | "createdAt" | "updatedAt", ExtArgs["result"]["utilisateur"]>
-  export type UtilisateurInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    departement?: boolean | Utilisateur$departementArgs<ExtArgs>
-    projets?: boolean | Utilisateur$projetsArgs<ExtArgs>
-    taches?: boolean | Utilisateur$tachesArgs<ExtArgs>
-    partages?: boolean | Utilisateur$partagesArgs<ExtArgs>
-    partagesEnTantQuePartageur?: boolean | Utilisateur$partagesEnTantQuePartageurArgs<ExtArgs>
-    notifications?: boolean | Utilisateur$notificationsArgs<ExtArgs>
-    _count?: boolean | UtilisateurCountOutputTypeDefaultArgs<ExtArgs>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "prenom" | "email" | "password" | "role" | "departementId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    departement?: boolean | User$departementArgs<ExtArgs>
+    projets?: boolean | User$projetsArgs<ExtArgs>
+    taches?: boolean | User$tachesArgs<ExtArgs>
+    partages?: boolean | User$partagesArgs<ExtArgs>
+    partagesEnTantQuePartageur?: boolean | User$partagesEnTantQuePartageurArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UtilisateurIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    departement?: boolean | Utilisateur$departementArgs<ExtArgs>
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    departement?: boolean | User$departementArgs<ExtArgs>
   }
-  export type UtilisateurIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    departement?: boolean | Utilisateur$departementArgs<ExtArgs>
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    departement?: boolean | User$departementArgs<ExtArgs>
   }
 
-  export type $UtilisateurPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Utilisateur"
+  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "User"
     objects: {
       departement: Prisma.$DepartementPayload<ExtArgs> | null
       projets: Prisma.$MembreProjetPayload<ExtArgs>[]
-      taches: Prisma.$TacheMembrePayload<ExtArgs>[]
+      taches: Prisma.$TacheUtilisateurPayload<ExtArgs>[]
       partages: Prisma.$PartageDocumentPayload<ExtArgs>[]
       partagesEnTantQuePartageur: Prisma.$PartageDocumentPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      accounts: Prisma.$AccountPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       nom: string
+      prenom: string
       email: string
       password: string
       role: $Enums.Role
       departementId: number | null
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["utilisateur"]>
+    }, ExtArgs["result"]["user"]>
     composites: {}
   }
 
-  type UtilisateurGetPayload<S extends boolean | null | undefined | UtilisateurDefaultArgs> = $Result.GetResult<Prisma.$UtilisateurPayload, S>
+  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
-  type UtilisateurCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UtilisateurFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UtilisateurCountAggregateInputType | true
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserCountAggregateInputType | true
     }
 
-  export interface UtilisateurDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Utilisateur'], meta: { name: 'Utilisateur' } }
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
     /**
-     * Find zero or one Utilisateur that matches the filter.
-     * @param {UtilisateurFindUniqueArgs} args - Arguments to find a Utilisateur
+     * Find zero or one User that matches the filter.
+     * @param {UserFindUniqueArgs} args - Arguments to find a User
      * @example
-     * // Get one Utilisateur
-     * const utilisateur = await prisma.utilisateur.findUnique({
+     * // Get one User
+     * const user = await prisma.user.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends UtilisateurFindUniqueArgs>(args: SelectSubset<T, UtilisateurFindUniqueArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Utilisateur that matches the filter or throw an error with `error.code='P2025'`
+     * Find one User that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {UtilisateurFindUniqueOrThrowArgs} args - Arguments to find a Utilisateur
+     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
      * @example
-     * // Get one Utilisateur
-     * const utilisateur = await prisma.utilisateur.findUniqueOrThrow({
+     * // Get one User
+     * const user = await prisma.user.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UtilisateurFindUniqueOrThrowArgs>(args: SelectSubset<T, UtilisateurFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Utilisateur that matches the filter.
+     * Find the first User that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurFindFirstArgs} args - Arguments to find a Utilisateur
+     * @param {UserFindFirstArgs} args - Arguments to find a User
      * @example
-     * // Get one Utilisateur
-     * const utilisateur = await prisma.utilisateur.findFirst({
+     * // Get one User
+     * const user = await prisma.user.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends UtilisateurFindFirstArgs>(args?: SelectSubset<T, UtilisateurFindFirstArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Utilisateur that matches the filter or
+     * Find the first User that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurFindFirstOrThrowArgs} args - Arguments to find a Utilisateur
+     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
      * @example
-     * // Get one Utilisateur
-     * const utilisateur = await prisma.utilisateur.findFirstOrThrow({
+     * // Get one User
+     * const user = await prisma.user.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends UtilisateurFindFirstOrThrowArgs>(args?: SelectSubset<T, UtilisateurFindFirstOrThrowArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Utilisateurs that matches the filter.
+     * Find zero or more Users that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {UserFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Utilisateurs
-     * const utilisateurs = await prisma.utilisateur.findMany()
+     * // Get all Users
+     * const users = await prisma.user.findMany()
      * 
-     * // Get first 10 Utilisateurs
-     * const utilisateurs = await prisma.utilisateur.findMany({ take: 10 })
+     * // Get first 10 Users
+     * const users = await prisma.user.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const utilisateurWithIdOnly = await prisma.utilisateur.findMany({ select: { id: true } })
+     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends UtilisateurFindManyArgs>(args?: SelectSubset<T, UtilisateurFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Utilisateur.
-     * @param {UtilisateurCreateArgs} args - Arguments to create a Utilisateur.
+     * Create a User.
+     * @param {UserCreateArgs} args - Arguments to create a User.
      * @example
-     * // Create one Utilisateur
-     * const Utilisateur = await prisma.utilisateur.create({
+     * // Create one User
+     * const User = await prisma.user.create({
      *   data: {
-     *     // ... data to create a Utilisateur
+     *     // ... data to create a User
      *   }
      * })
      * 
      */
-    create<T extends UtilisateurCreateArgs>(args: SelectSubset<T, UtilisateurCreateArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Utilisateurs.
-     * @param {UtilisateurCreateManyArgs} args - Arguments to create many Utilisateurs.
+     * Create many Users.
+     * @param {UserCreateManyArgs} args - Arguments to create many Users.
      * @example
-     * // Create many Utilisateurs
-     * const utilisateur = await prisma.utilisateur.createMany({
+     * // Create many Users
+     * const user = await prisma.user.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends UtilisateurCreateManyArgs>(args?: SelectSubset<T, UtilisateurCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Utilisateurs and returns the data saved in the database.
-     * @param {UtilisateurCreateManyAndReturnArgs} args - Arguments to create many Utilisateurs.
+     * Create many Users and returns the data saved in the database.
+     * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
      * @example
-     * // Create many Utilisateurs
-     * const utilisateur = await prisma.utilisateur.createManyAndReturn({
+     * // Create many Users
+     * const user = await prisma.user.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Utilisateurs and only return the `id`
-     * const utilisateurWithIdOnly = await prisma.utilisateur.createManyAndReturn({
+     * // Create many Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -3452,28 +3761,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends UtilisateurCreateManyAndReturnArgs>(args?: SelectSubset<T, UtilisateurCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Utilisateur.
-     * @param {UtilisateurDeleteArgs} args - Arguments to delete one Utilisateur.
+     * Delete a User.
+     * @param {UserDeleteArgs} args - Arguments to delete one User.
      * @example
-     * // Delete one Utilisateur
-     * const Utilisateur = await prisma.utilisateur.delete({
+     * // Delete one User
+     * const User = await prisma.user.delete({
      *   where: {
-     *     // ... filter to delete one Utilisateur
+     *     // ... filter to delete one User
      *   }
      * })
      * 
      */
-    delete<T extends UtilisateurDeleteArgs>(args: SelectSubset<T, UtilisateurDeleteArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Utilisateur.
-     * @param {UtilisateurUpdateArgs} args - Arguments to update one Utilisateur.
+     * Update one User.
+     * @param {UserUpdateArgs} args - Arguments to update one User.
      * @example
-     * // Update one Utilisateur
-     * const utilisateur = await prisma.utilisateur.update({
+     * // Update one User
+     * const user = await prisma.user.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3483,30 +3792,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UtilisateurUpdateArgs>(args: SelectSubset<T, UtilisateurUpdateArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Utilisateurs.
-     * @param {UtilisateurDeleteManyArgs} args - Arguments to filter Utilisateurs to delete.
+     * Delete zero or more Users.
+     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
      * @example
-     * // Delete a few Utilisateurs
-     * const { count } = await prisma.utilisateur.deleteMany({
+     * // Delete a few Users
+     * const { count } = await prisma.user.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends UtilisateurDeleteManyArgs>(args?: SelectSubset<T, UtilisateurDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Utilisateurs.
+     * Update zero or more Users.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Utilisateurs
-     * const utilisateur = await prisma.utilisateur.updateMany({
+     * // Update many Users
+     * const user = await prisma.user.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3516,14 +3825,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends UtilisateurUpdateManyArgs>(args: SelectSubset<T, UtilisateurUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Utilisateurs and returns the data updated in the database.
-     * @param {UtilisateurUpdateManyAndReturnArgs} args - Arguments to update many Utilisateurs.
+     * Update zero or more Users and returns the data updated in the database.
+     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
      * @example
-     * // Update many Utilisateurs
-     * const utilisateur = await prisma.utilisateur.updateManyAndReturn({
+     * // Update many Users
+     * const user = await prisma.user.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3532,8 +3841,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Utilisateurs and only return the `id`
-     * const utilisateurWithIdOnly = await prisma.utilisateur.updateManyAndReturn({
+     * // Update zero or more Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -3546,56 +3855,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends UtilisateurUpdateManyAndReturnArgs>(args: SelectSubset<T, UtilisateurUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Utilisateur.
-     * @param {UtilisateurUpsertArgs} args - Arguments to update or create a Utilisateur.
+     * Create or update one User.
+     * @param {UserUpsertArgs} args - Arguments to update or create a User.
      * @example
-     * // Update or create a Utilisateur
-     * const utilisateur = await prisma.utilisateur.upsert({
+     * // Update or create a User
+     * const user = await prisma.user.upsert({
      *   create: {
-     *     // ... data to create a Utilisateur
+     *     // ... data to create a User
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Utilisateur we want to update
+     *     // ... the filter for the User we want to update
      *   }
      * })
      */
-    upsert<T extends UtilisateurUpsertArgs>(args: SelectSubset<T, UtilisateurUpsertArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Utilisateurs.
+     * Count the number of Users.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurCountArgs} args - Arguments to filter Utilisateurs to count.
+     * @param {UserCountArgs} args - Arguments to filter Users to count.
      * @example
-     * // Count the number of Utilisateurs
-     * const count = await prisma.utilisateur.count({
+     * // Count the number of Users
+     * const count = await prisma.user.count({
      *   where: {
-     *     // ... the filter for the Utilisateurs we want to count
+     *     // ... the filter for the Users we want to count
      *   }
      * })
     **/
-    count<T extends UtilisateurCountArgs>(
-      args?: Subset<T, UtilisateurCountArgs>,
+    count<T extends UserCountArgs>(
+      args?: Subset<T, UserCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], UtilisateurCountAggregateOutputType>
+          : GetScalarType<T['select'], UserCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Utilisateur.
+     * Allows you to perform aggregations operations on a User.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -3615,13 +3924,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends UtilisateurAggregateArgs>(args: Subset<T, UtilisateurAggregateArgs>): Prisma.PrismaPromise<GetUtilisateurAggregateType<T>>
+    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
 
     /**
-     * Group by Utilisateur.
+     * Group by User.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UtilisateurGroupByArgs} args - Group by arguments.
+     * @param {UserGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -3636,14 +3945,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends UtilisateurGroupByArgs,
+      T extends UserGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UtilisateurGroupByArgs['orderBy'] }
-        : { orderBy?: UtilisateurGroupByArgs['orderBy'] },
+        ? { orderBy: UserGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3692,27 +4001,29 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, UtilisateurGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUtilisateurGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Utilisateur model
+   * Fields of the User model
    */
-  readonly fields: UtilisateurFieldRefs;
+  readonly fields: UserFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Utilisateur.
+   * The delegate class that acts as a "Promise-like" for User.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UtilisateurClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    departement<T extends Utilisateur$departementArgs<ExtArgs> = {}>(args?: Subset<T, Utilisateur$departementArgs<ExtArgs>>): Prisma__DepartementClient<$Result.GetResult<Prisma.$DepartementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    projets<T extends Utilisateur$projetsArgs<ExtArgs> = {}>(args?: Subset<T, Utilisateur$projetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembreProjetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    taches<T extends Utilisateur$tachesArgs<ExtArgs> = {}>(args?: Subset<T, Utilisateur$tachesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    partages<T extends Utilisateur$partagesArgs<ExtArgs> = {}>(args?: Subset<T, Utilisateur$partagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartageDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    partagesEnTantQuePartageur<T extends Utilisateur$partagesEnTantQuePartageurArgs<ExtArgs> = {}>(args?: Subset<T, Utilisateur$partagesEnTantQuePartageurArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartageDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    notifications<T extends Utilisateur$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Utilisateur$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    departement<T extends User$departementArgs<ExtArgs> = {}>(args?: Subset<T, User$departementArgs<ExtArgs>>): Prisma__DepartementClient<$Result.GetResult<Prisma.$DepartementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    projets<T extends User$projetsArgs<ExtArgs> = {}>(args?: Subset<T, User$projetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembreProjetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    taches<T extends User$tachesArgs<ExtArgs> = {}>(args?: Subset<T, User$tachesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    partages<T extends User$partagesArgs<ExtArgs> = {}>(args?: Subset<T, User$partagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartageDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    partagesEnTantQuePartageur<T extends User$partagesEnTantQuePartageurArgs<ExtArgs> = {}>(args?: Subset<T, User$partagesEnTantQuePartageurArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartageDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3739,414 +4050,415 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Utilisateur model
+   * Fields of the User model
    */
-  interface UtilisateurFieldRefs {
-    readonly id: FieldRef<"Utilisateur", 'Int'>
-    readonly nom: FieldRef<"Utilisateur", 'String'>
-    readonly email: FieldRef<"Utilisateur", 'String'>
-    readonly password: FieldRef<"Utilisateur", 'String'>
-    readonly role: FieldRef<"Utilisateur", 'Role'>
-    readonly departementId: FieldRef<"Utilisateur", 'Int'>
-    readonly createdAt: FieldRef<"Utilisateur", 'DateTime'>
-    readonly updatedAt: FieldRef<"Utilisateur", 'DateTime'>
+  interface UserFieldRefs {
+    readonly id: FieldRef<"User", 'Int'>
+    readonly nom: FieldRef<"User", 'String'>
+    readonly prenom: FieldRef<"User", 'String'>
+    readonly email: FieldRef<"User", 'String'>
+    readonly password: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
+    readonly departementId: FieldRef<"User", 'Int'>
+    readonly createdAt: FieldRef<"User", 'DateTime'>
+    readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Utilisateur findUnique
+   * User findUnique
    */
-  export type UtilisateurFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Filter, which Utilisateur to fetch.
+     * Filter, which User to fetch.
      */
-    where: UtilisateurWhereUniqueInput
+    where: UserWhereUniqueInput
   }
 
   /**
-   * Utilisateur findUniqueOrThrow
+   * User findUniqueOrThrow
    */
-  export type UtilisateurFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Filter, which Utilisateur to fetch.
+     * Filter, which User to fetch.
      */
-    where: UtilisateurWhereUniqueInput
+    where: UserWhereUniqueInput
   }
 
   /**
-   * Utilisateur findFirst
+   * User findFirst
    */
-  export type UtilisateurFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Filter, which Utilisateur to fetch.
+     * Filter, which User to fetch.
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Utilisateurs to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: UtilisateurOrderByWithRelationInput | UtilisateurOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Utilisateurs.
+     * Sets the position for searching for Users.
      */
-    cursor?: UtilisateurWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Utilisateurs from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Utilisateurs.
+     * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Utilisateurs.
+     * Filter by unique combinations of Users.
      */
-    distinct?: UtilisateurScalarFieldEnum | UtilisateurScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
-   * Utilisateur findFirstOrThrow
+   * User findFirstOrThrow
    */
-  export type UtilisateurFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Filter, which Utilisateur to fetch.
+     * Filter, which User to fetch.
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Utilisateurs to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: UtilisateurOrderByWithRelationInput | UtilisateurOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Utilisateurs.
+     * Sets the position for searching for Users.
      */
-    cursor?: UtilisateurWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Utilisateurs from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Utilisateurs.
+     * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Utilisateurs.
+     * Filter by unique combinations of Users.
      */
-    distinct?: UtilisateurScalarFieldEnum | UtilisateurScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
-   * Utilisateur findMany
+   * User findMany
    */
-  export type UtilisateurFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Filter, which Utilisateurs to fetch.
+     * Filter, which Users to fetch.
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Utilisateurs to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: UtilisateurOrderByWithRelationInput | UtilisateurOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Utilisateurs.
+     * Sets the position for listing Users.
      */
-    cursor?: UtilisateurWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Utilisateurs from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Utilisateurs.
+     * Skip the first `n` Users.
      */
     skip?: number
-    distinct?: UtilisateurScalarFieldEnum | UtilisateurScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
-   * Utilisateur create
+   * User create
    */
-  export type UtilisateurCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * The data needed to create a Utilisateur.
+     * The data needed to create a User.
      */
-    data: XOR<UtilisateurCreateInput, UtilisateurUncheckedCreateInput>
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>
   }
 
   /**
-   * Utilisateur createMany
+   * User createMany
    */
-  export type UtilisateurCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Utilisateurs.
+     * The data used to create many Users.
      */
-    data: UtilisateurCreateManyInput | UtilisateurCreateManyInput[]
+    data: UserCreateManyInput | UserCreateManyInput[]
   }
 
   /**
-   * Utilisateur createManyAndReturn
+   * User createManyAndReturn
    */
-  export type UtilisateurCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelectCreateManyAndReturn<ExtArgs> | null
+    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The data used to create many Utilisateurs.
+     * The data used to create many Users.
      */
-    data: UtilisateurCreateManyInput | UtilisateurCreateManyInput[]
+    data: UserCreateManyInput | UserCreateManyInput[]
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Utilisateur update
+   * User update
    */
-  export type UtilisateurUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * The data needed to update a Utilisateur.
+     * The data needed to update a User.
      */
-    data: XOR<UtilisateurUpdateInput, UtilisateurUncheckedUpdateInput>
+    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
     /**
-     * Choose, which Utilisateur to update.
+     * Choose, which User to update.
      */
-    where: UtilisateurWhereUniqueInput
+    where: UserWhereUniqueInput
   }
 
   /**
-   * Utilisateur updateMany
+   * User updateMany
    */
-  export type UtilisateurUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Utilisateurs.
+     * The data used to update Users.
      */
-    data: XOR<UtilisateurUpdateManyMutationInput, UtilisateurUncheckedUpdateManyInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
     /**
-     * Filter which Utilisateurs to update
+     * Filter which Users to update
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
-     * Limit how many Utilisateurs to update.
+     * Limit how many Users to update.
      */
     limit?: number
   }
 
   /**
-   * Utilisateur updateManyAndReturn
+   * User updateManyAndReturn
    */
-  export type UtilisateurUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The data used to update Utilisateurs.
+     * The data used to update Users.
      */
-    data: XOR<UtilisateurUpdateManyMutationInput, UtilisateurUncheckedUpdateManyInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
     /**
-     * Filter which Utilisateurs to update
+     * Filter which Users to update
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
-     * Limit how many Utilisateurs to update.
+     * Limit how many Users to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Utilisateur upsert
+   * User upsert
    */
-  export type UtilisateurUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * The filter to search for the Utilisateur to update in case it exists.
+     * The filter to search for the User to update in case it exists.
      */
-    where: UtilisateurWhereUniqueInput
+    where: UserWhereUniqueInput
     /**
-     * In case the Utilisateur found by the `where` argument doesn't exist, create a new Utilisateur with this data.
+     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
      */
-    create: XOR<UtilisateurCreateInput, UtilisateurUncheckedCreateInput>
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>
     /**
-     * In case the Utilisateur was found with the provided `where` argument, update it with this data.
+     * In case the User was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<UtilisateurUpdateInput, UtilisateurUncheckedUpdateInput>
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
   }
 
   /**
-   * Utilisateur delete
+   * User delete
    */
-  export type UtilisateurDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Filter which Utilisateur to delete.
+     * Filter which User to delete.
      */
-    where: UtilisateurWhereUniqueInput
+    where: UserWhereUniqueInput
   }
 
   /**
-   * Utilisateur deleteMany
+   * User deleteMany
    */
-  export type UtilisateurDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Utilisateurs to delete
+     * Filter which Users to delete
      */
-    where?: UtilisateurWhereInput
+    where?: UserWhereInput
     /**
-     * Limit how many Utilisateurs to delete.
+     * Limit how many Users to delete.
      */
     limit?: number
   }
 
   /**
-   * Utilisateur.departement
+   * User.departement
    */
-  export type Utilisateur$departementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$departementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Departement
      */
@@ -4163,9 +4475,9 @@ export namespace Prisma {
   }
 
   /**
-   * Utilisateur.projets
+   * User.projets
    */
-  export type Utilisateur$projetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$projetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MembreProjet
      */
@@ -4187,33 +4499,33 @@ export namespace Prisma {
   }
 
   /**
-   * Utilisateur.taches
+   * User.taches
    */
-  export type Utilisateur$tachesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$tachesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
-    where?: TacheMembreWhereInput
-    orderBy?: TacheMembreOrderByWithRelationInput | TacheMembreOrderByWithRelationInput[]
-    cursor?: TacheMembreWhereUniqueInput
+    include?: TacheUtilisateurInclude<ExtArgs> | null
+    where?: TacheUtilisateurWhereInput
+    orderBy?: TacheUtilisateurOrderByWithRelationInput | TacheUtilisateurOrderByWithRelationInput[]
+    cursor?: TacheUtilisateurWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TacheMembreScalarFieldEnum | TacheMembreScalarFieldEnum[]
+    distinct?: TacheUtilisateurScalarFieldEnum | TacheUtilisateurScalarFieldEnum[]
   }
 
   /**
-   * Utilisateur.partages
+   * User.partages
    */
-  export type Utilisateur$partagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$partagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the PartageDocument
      */
@@ -4235,9 +4547,9 @@ export namespace Prisma {
   }
 
   /**
-   * Utilisateur.partagesEnTantQuePartageur
+   * User.partagesEnTantQuePartageur
    */
-  export type Utilisateur$partagesEnTantQuePartageurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$partagesEnTantQuePartageurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the PartageDocument
      */
@@ -4259,9 +4571,9 @@ export namespace Prisma {
   }
 
   /**
-   * Utilisateur.notifications
+   * User.notifications
    */
-  export type Utilisateur$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Notification
      */
@@ -4283,21 +4595,69 @@ export namespace Prisma {
   }
 
   /**
-   * Utilisateur without action
+   * User.accounts
    */
-  export type UtilisateurDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the Account
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: AccountSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the Account
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: AccountOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
+    include?: AccountInclude<ExtArgs> | null
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    cursor?: AccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * User without action
+   */
+  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
   }
 
 
@@ -6851,7 +7211,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
-    tacheMembres?: boolean | Tache$tacheMembresArgs<ExtArgs>
+    TacheUtilisateur?: boolean | Tache$TacheUtilisateurArgs<ExtArgs>
     _count?: boolean | TacheCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tache"]>
 
@@ -6893,7 +7253,7 @@ export namespace Prisma {
   export type TacheOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titre" | "description" | "projetId" | "deadline" | "statut" | "createdAt" | "updatedAt", ExtArgs["result"]["tache"]>
   export type TacheInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
-    tacheMembres?: boolean | Tache$tacheMembresArgs<ExtArgs>
+    TacheUtilisateur?: boolean | Tache$TacheUtilisateurArgs<ExtArgs>
     _count?: boolean | TacheCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TacheIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6907,7 +7267,7 @@ export namespace Prisma {
     name: "Tache"
     objects: {
       projet: Prisma.$ProjetPayload<ExtArgs>
-      tacheMembres: Prisma.$TacheMembrePayload<ExtArgs>[]
+      TacheUtilisateur: Prisma.$TacheUtilisateurPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -7313,7 +7673,7 @@ export namespace Prisma {
   export interface Prisma__TacheClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     projet<T extends ProjetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjetDefaultArgs<ExtArgs>>): Prisma__ProjetClient<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    tacheMembres<T extends Tache$tacheMembresArgs<ExtArgs> = {}>(args?: Subset<T, Tache$tacheMembresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    TacheUtilisateur<T extends Tache$TacheUtilisateurArgs<ExtArgs> = {}>(args?: Subset<T, Tache$TacheUtilisateurArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7745,27 +8105,27 @@ export namespace Prisma {
   }
 
   /**
-   * Tache.tacheMembres
+   * Tache.TacheUtilisateur
    */
-  export type Tache$tacheMembresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Tache$TacheUtilisateurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
-    where?: TacheMembreWhereInput
-    orderBy?: TacheMembreOrderByWithRelationInput | TacheMembreOrderByWithRelationInput[]
-    cursor?: TacheMembreWhereUniqueInput
+    include?: TacheUtilisateurInclude<ExtArgs> | null
+    where?: TacheUtilisateurWhereInput
+    orderBy?: TacheUtilisateurOrderByWithRelationInput | TacheUtilisateurOrderByWithRelationInput[]
+    cursor?: TacheUtilisateurWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TacheMembreScalarFieldEnum | TacheMembreScalarFieldEnum[]
+    distinct?: TacheUtilisateurScalarFieldEnum | TacheUtilisateurScalarFieldEnum[]
   }
 
   /**
@@ -7788,42 +8148,42 @@ export namespace Prisma {
 
 
   /**
-   * Model TacheMembre
+   * Model TacheUtilisateur
    */
 
-  export type AggregateTacheMembre = {
-    _count: TacheMembreCountAggregateOutputType | null
-    _avg: TacheMembreAvgAggregateOutputType | null
-    _sum: TacheMembreSumAggregateOutputType | null
-    _min: TacheMembreMinAggregateOutputType | null
-    _max: TacheMembreMaxAggregateOutputType | null
+  export type AggregateTacheUtilisateur = {
+    _count: TacheUtilisateurCountAggregateOutputType | null
+    _avg: TacheUtilisateurAvgAggregateOutputType | null
+    _sum: TacheUtilisateurSumAggregateOutputType | null
+    _min: TacheUtilisateurMinAggregateOutputType | null
+    _max: TacheUtilisateurMaxAggregateOutputType | null
   }
 
-  export type TacheMembreAvgAggregateOutputType = {
+  export type TacheUtilisateurAvgAggregateOutputType = {
     tacheId: number | null
     utilisateurId: number | null
   }
 
-  export type TacheMembreSumAggregateOutputType = {
+  export type TacheUtilisateurSumAggregateOutputType = {
     tacheId: number | null
     utilisateurId: number | null
   }
 
-  export type TacheMembreMinAggregateOutputType = {
-    tacheId: number | null
-    utilisateurId: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type TacheMembreMaxAggregateOutputType = {
+  export type TacheUtilisateurMinAggregateOutputType = {
     tacheId: number | null
     utilisateurId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type TacheMembreCountAggregateOutputType = {
+  export type TacheUtilisateurMaxAggregateOutputType = {
+    tacheId: number | null
+    utilisateurId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TacheUtilisateurCountAggregateOutputType = {
     tacheId: number
     utilisateurId: number
     createdAt: number
@@ -7832,31 +8192,31 @@ export namespace Prisma {
   }
 
 
-  export type TacheMembreAvgAggregateInputType = {
+  export type TacheUtilisateurAvgAggregateInputType = {
     tacheId?: true
     utilisateurId?: true
   }
 
-  export type TacheMembreSumAggregateInputType = {
+  export type TacheUtilisateurSumAggregateInputType = {
     tacheId?: true
     utilisateurId?: true
   }
 
-  export type TacheMembreMinAggregateInputType = {
-    tacheId?: true
-    utilisateurId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type TacheMembreMaxAggregateInputType = {
+  export type TacheUtilisateurMinAggregateInputType = {
     tacheId?: true
     utilisateurId?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type TacheMembreCountAggregateInputType = {
+  export type TacheUtilisateurMaxAggregateInputType = {
+    tacheId?: true
+    utilisateurId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TacheUtilisateurCountAggregateInputType = {
     tacheId?: true
     utilisateurId?: true
     createdAt?: true
@@ -7864,307 +8224,307 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type TacheMembreAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which TacheMembre to aggregate.
+     * Filter which TacheUtilisateur to aggregate.
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TacheMembres to fetch.
+     * Determine the order of TacheUtilisateurs to fetch.
      */
-    orderBy?: TacheMembreOrderByWithRelationInput | TacheMembreOrderByWithRelationInput[]
+    orderBy?: TacheUtilisateurOrderByWithRelationInput | TacheUtilisateurOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: TacheMembreWhereUniqueInput
+    cursor?: TacheUtilisateurWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TacheMembres from the position of the cursor.
+     * Take `±n` TacheUtilisateurs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TacheMembres.
+     * Skip the first `n` TacheUtilisateurs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned TacheMembres
+     * Count returned TacheUtilisateurs
     **/
-    _count?: true | TacheMembreCountAggregateInputType
+    _count?: true | TacheUtilisateurCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: TacheMembreAvgAggregateInputType
+    _avg?: TacheUtilisateurAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: TacheMembreSumAggregateInputType
+    _sum?: TacheUtilisateurSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: TacheMembreMinAggregateInputType
+    _min?: TacheUtilisateurMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: TacheMembreMaxAggregateInputType
+    _max?: TacheUtilisateurMaxAggregateInputType
   }
 
-  export type GetTacheMembreAggregateType<T extends TacheMembreAggregateArgs> = {
-        [P in keyof T & keyof AggregateTacheMembre]: P extends '_count' | 'count'
+  export type GetTacheUtilisateurAggregateType<T extends TacheUtilisateurAggregateArgs> = {
+        [P in keyof T & keyof AggregateTacheUtilisateur]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateTacheMembre[P]>
-      : GetScalarType<T[P], AggregateTacheMembre[P]>
+        : GetScalarType<T[P], AggregateTacheUtilisateur[P]>
+      : GetScalarType<T[P], AggregateTacheUtilisateur[P]>
   }
 
 
 
 
-  export type TacheMembreGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TacheMembreWhereInput
-    orderBy?: TacheMembreOrderByWithAggregationInput | TacheMembreOrderByWithAggregationInput[]
-    by: TacheMembreScalarFieldEnum[] | TacheMembreScalarFieldEnum
-    having?: TacheMembreScalarWhereWithAggregatesInput
+  export type TacheUtilisateurGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TacheUtilisateurWhereInput
+    orderBy?: TacheUtilisateurOrderByWithAggregationInput | TacheUtilisateurOrderByWithAggregationInput[]
+    by: TacheUtilisateurScalarFieldEnum[] | TacheUtilisateurScalarFieldEnum
+    having?: TacheUtilisateurScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: TacheMembreCountAggregateInputType | true
-    _avg?: TacheMembreAvgAggregateInputType
-    _sum?: TacheMembreSumAggregateInputType
-    _min?: TacheMembreMinAggregateInputType
-    _max?: TacheMembreMaxAggregateInputType
+    _count?: TacheUtilisateurCountAggregateInputType | true
+    _avg?: TacheUtilisateurAvgAggregateInputType
+    _sum?: TacheUtilisateurSumAggregateInputType
+    _min?: TacheUtilisateurMinAggregateInputType
+    _max?: TacheUtilisateurMaxAggregateInputType
   }
 
-  export type TacheMembreGroupByOutputType = {
+  export type TacheUtilisateurGroupByOutputType = {
     tacheId: number
     utilisateurId: number
     createdAt: Date
     updatedAt: Date
-    _count: TacheMembreCountAggregateOutputType | null
-    _avg: TacheMembreAvgAggregateOutputType | null
-    _sum: TacheMembreSumAggregateOutputType | null
-    _min: TacheMembreMinAggregateOutputType | null
-    _max: TacheMembreMaxAggregateOutputType | null
+    _count: TacheUtilisateurCountAggregateOutputType | null
+    _avg: TacheUtilisateurAvgAggregateOutputType | null
+    _sum: TacheUtilisateurSumAggregateOutputType | null
+    _min: TacheUtilisateurMinAggregateOutputType | null
+    _max: TacheUtilisateurMaxAggregateOutputType | null
   }
 
-  type GetTacheMembreGroupByPayload<T extends TacheMembreGroupByArgs> = Prisma.PrismaPromise<
+  type GetTacheUtilisateurGroupByPayload<T extends TacheUtilisateurGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<TacheMembreGroupByOutputType, T['by']> &
+      PickEnumerable<TacheUtilisateurGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof TacheMembreGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof TacheUtilisateurGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], TacheMembreGroupByOutputType[P]>
-            : GetScalarType<T[P], TacheMembreGroupByOutputType[P]>
+              : GetScalarType<T[P], TacheUtilisateurGroupByOutputType[P]>
+            : GetScalarType<T[P], TacheUtilisateurGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type TacheMembreSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TacheUtilisateurSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tacheId?: boolean
     utilisateurId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["tacheMembre"]>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tacheUtilisateur"]>
 
-  export type TacheMembreSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TacheUtilisateurSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tacheId?: boolean
     utilisateurId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["tacheMembre"]>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tacheUtilisateur"]>
 
-  export type TacheMembreSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TacheUtilisateurSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tacheId?: boolean
     utilisateurId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["tacheMembre"]>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tacheUtilisateur"]>
 
-  export type TacheMembreSelectScalar = {
+  export type TacheUtilisateurSelectScalar = {
     tacheId?: boolean
     utilisateurId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TacheMembreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tacheId" | "utilisateurId" | "createdAt" | "updatedAt", ExtArgs["result"]["tacheMembre"]>
-  export type TacheMembreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tacheId" | "utilisateurId" | "createdAt" | "updatedAt", ExtArgs["result"]["tacheUtilisateur"]>
+  export type TacheUtilisateurInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type TacheMembreIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type TacheMembreIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $TacheMembrePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "TacheMembre"
+  export type $TacheUtilisateurPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TacheUtilisateur"
     objects: {
       tache: Prisma.$TachePayload<ExtArgs>
-      utilisateur: Prisma.$UtilisateurPayload<ExtArgs>
+      utilisateur: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       tacheId: number
       utilisateurId: number
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["tacheMembre"]>
+    }, ExtArgs["result"]["tacheUtilisateur"]>
     composites: {}
   }
 
-  type TacheMembreGetPayload<S extends boolean | null | undefined | TacheMembreDefaultArgs> = $Result.GetResult<Prisma.$TacheMembrePayload, S>
+  type TacheUtilisateurGetPayload<S extends boolean | null | undefined | TacheUtilisateurDefaultArgs> = $Result.GetResult<Prisma.$TacheUtilisateurPayload, S>
 
-  type TacheMembreCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<TacheMembreFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: TacheMembreCountAggregateInputType | true
+  type TacheUtilisateurCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TacheUtilisateurFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TacheUtilisateurCountAggregateInputType | true
     }
 
-  export interface TacheMembreDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TacheMembre'], meta: { name: 'TacheMembre' } }
+  export interface TacheUtilisateurDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TacheUtilisateur'], meta: { name: 'TacheUtilisateur' } }
     /**
-     * Find zero or one TacheMembre that matches the filter.
-     * @param {TacheMembreFindUniqueArgs} args - Arguments to find a TacheMembre
+     * Find zero or one TacheUtilisateur that matches the filter.
+     * @param {TacheUtilisateurFindUniqueArgs} args - Arguments to find a TacheUtilisateur
      * @example
-     * // Get one TacheMembre
-     * const tacheMembre = await prisma.tacheMembre.findUnique({
+     * // Get one TacheUtilisateur
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends TacheMembreFindUniqueArgs>(args: SelectSubset<T, TacheMembreFindUniqueArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends TacheUtilisateurFindUniqueArgs>(args: SelectSubset<T, TacheUtilisateurFindUniqueArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one TacheMembre that matches the filter or throw an error with `error.code='P2025'`
+     * Find one TacheUtilisateur that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {TacheMembreFindUniqueOrThrowArgs} args - Arguments to find a TacheMembre
+     * @param {TacheUtilisateurFindUniqueOrThrowArgs} args - Arguments to find a TacheUtilisateur
      * @example
-     * // Get one TacheMembre
-     * const tacheMembre = await prisma.tacheMembre.findUniqueOrThrow({
+     * // Get one TacheUtilisateur
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends TacheMembreFindUniqueOrThrowArgs>(args: SelectSubset<T, TacheMembreFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends TacheUtilisateurFindUniqueOrThrowArgs>(args: SelectSubset<T, TacheUtilisateurFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first TacheMembre that matches the filter.
+     * Find the first TacheUtilisateur that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreFindFirstArgs} args - Arguments to find a TacheMembre
+     * @param {TacheUtilisateurFindFirstArgs} args - Arguments to find a TacheUtilisateur
      * @example
-     * // Get one TacheMembre
-     * const tacheMembre = await prisma.tacheMembre.findFirst({
+     * // Get one TacheUtilisateur
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends TacheMembreFindFirstArgs>(args?: SelectSubset<T, TacheMembreFindFirstArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends TacheUtilisateurFindFirstArgs>(args?: SelectSubset<T, TacheUtilisateurFindFirstArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first TacheMembre that matches the filter or
+     * Find the first TacheUtilisateur that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreFindFirstOrThrowArgs} args - Arguments to find a TacheMembre
+     * @param {TacheUtilisateurFindFirstOrThrowArgs} args - Arguments to find a TacheUtilisateur
      * @example
-     * // Get one TacheMembre
-     * const tacheMembre = await prisma.tacheMembre.findFirstOrThrow({
+     * // Get one TacheUtilisateur
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends TacheMembreFindFirstOrThrowArgs>(args?: SelectSubset<T, TacheMembreFindFirstOrThrowArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends TacheUtilisateurFindFirstOrThrowArgs>(args?: SelectSubset<T, TacheUtilisateurFindFirstOrThrowArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more TacheMembres that matches the filter.
+     * Find zero or more TacheUtilisateurs that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {TacheUtilisateurFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all TacheMembres
-     * const tacheMembres = await prisma.tacheMembre.findMany()
+     * // Get all TacheUtilisateurs
+     * const tacheUtilisateurs = await prisma.tacheUtilisateur.findMany()
      * 
-     * // Get first 10 TacheMembres
-     * const tacheMembres = await prisma.tacheMembre.findMany({ take: 10 })
+     * // Get first 10 TacheUtilisateurs
+     * const tacheUtilisateurs = await prisma.tacheUtilisateur.findMany({ take: 10 })
      * 
      * // Only select the `tacheId`
-     * const tacheMembreWithTacheIdOnly = await prisma.tacheMembre.findMany({ select: { tacheId: true } })
+     * const tacheUtilisateurWithTacheIdOnly = await prisma.tacheUtilisateur.findMany({ select: { tacheId: true } })
      * 
      */
-    findMany<T extends TacheMembreFindManyArgs>(args?: SelectSubset<T, TacheMembreFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends TacheUtilisateurFindManyArgs>(args?: SelectSubset<T, TacheUtilisateurFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a TacheMembre.
-     * @param {TacheMembreCreateArgs} args - Arguments to create a TacheMembre.
+     * Create a TacheUtilisateur.
+     * @param {TacheUtilisateurCreateArgs} args - Arguments to create a TacheUtilisateur.
      * @example
-     * // Create one TacheMembre
-     * const TacheMembre = await prisma.tacheMembre.create({
+     * // Create one TacheUtilisateur
+     * const TacheUtilisateur = await prisma.tacheUtilisateur.create({
      *   data: {
-     *     // ... data to create a TacheMembre
+     *     // ... data to create a TacheUtilisateur
      *   }
      * })
      * 
      */
-    create<T extends TacheMembreCreateArgs>(args: SelectSubset<T, TacheMembreCreateArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends TacheUtilisateurCreateArgs>(args: SelectSubset<T, TacheUtilisateurCreateArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many TacheMembres.
-     * @param {TacheMembreCreateManyArgs} args - Arguments to create many TacheMembres.
+     * Create many TacheUtilisateurs.
+     * @param {TacheUtilisateurCreateManyArgs} args - Arguments to create many TacheUtilisateurs.
      * @example
-     * // Create many TacheMembres
-     * const tacheMembre = await prisma.tacheMembre.createMany({
+     * // Create many TacheUtilisateurs
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends TacheMembreCreateManyArgs>(args?: SelectSubset<T, TacheMembreCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends TacheUtilisateurCreateManyArgs>(args?: SelectSubset<T, TacheUtilisateurCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many TacheMembres and returns the data saved in the database.
-     * @param {TacheMembreCreateManyAndReturnArgs} args - Arguments to create many TacheMembres.
+     * Create many TacheUtilisateurs and returns the data saved in the database.
+     * @param {TacheUtilisateurCreateManyAndReturnArgs} args - Arguments to create many TacheUtilisateurs.
      * @example
-     * // Create many TacheMembres
-     * const tacheMembre = await prisma.tacheMembre.createManyAndReturn({
+     * // Create many TacheUtilisateurs
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many TacheMembres and only return the `tacheId`
-     * const tacheMembreWithTacheIdOnly = await prisma.tacheMembre.createManyAndReturn({
+     * // Create many TacheUtilisateurs and only return the `tacheId`
+     * const tacheUtilisateurWithTacheIdOnly = await prisma.tacheUtilisateur.createManyAndReturn({
      *   select: { tacheId: true },
      *   data: [
      *     // ... provide data here
@@ -8174,28 +8534,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends TacheMembreCreateManyAndReturnArgs>(args?: SelectSubset<T, TacheMembreCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends TacheUtilisateurCreateManyAndReturnArgs>(args?: SelectSubset<T, TacheUtilisateurCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a TacheMembre.
-     * @param {TacheMembreDeleteArgs} args - Arguments to delete one TacheMembre.
+     * Delete a TacheUtilisateur.
+     * @param {TacheUtilisateurDeleteArgs} args - Arguments to delete one TacheUtilisateur.
      * @example
-     * // Delete one TacheMembre
-     * const TacheMembre = await prisma.tacheMembre.delete({
+     * // Delete one TacheUtilisateur
+     * const TacheUtilisateur = await prisma.tacheUtilisateur.delete({
      *   where: {
-     *     // ... filter to delete one TacheMembre
+     *     // ... filter to delete one TacheUtilisateur
      *   }
      * })
      * 
      */
-    delete<T extends TacheMembreDeleteArgs>(args: SelectSubset<T, TacheMembreDeleteArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends TacheUtilisateurDeleteArgs>(args: SelectSubset<T, TacheUtilisateurDeleteArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one TacheMembre.
-     * @param {TacheMembreUpdateArgs} args - Arguments to update one TacheMembre.
+     * Update one TacheUtilisateur.
+     * @param {TacheUtilisateurUpdateArgs} args - Arguments to update one TacheUtilisateur.
      * @example
-     * // Update one TacheMembre
-     * const tacheMembre = await prisma.tacheMembre.update({
+     * // Update one TacheUtilisateur
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8205,30 +8565,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends TacheMembreUpdateArgs>(args: SelectSubset<T, TacheMembreUpdateArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends TacheUtilisateurUpdateArgs>(args: SelectSubset<T, TacheUtilisateurUpdateArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more TacheMembres.
-     * @param {TacheMembreDeleteManyArgs} args - Arguments to filter TacheMembres to delete.
+     * Delete zero or more TacheUtilisateurs.
+     * @param {TacheUtilisateurDeleteManyArgs} args - Arguments to filter TacheUtilisateurs to delete.
      * @example
-     * // Delete a few TacheMembres
-     * const { count } = await prisma.tacheMembre.deleteMany({
+     * // Delete a few TacheUtilisateurs
+     * const { count } = await prisma.tacheUtilisateur.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends TacheMembreDeleteManyArgs>(args?: SelectSubset<T, TacheMembreDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends TacheUtilisateurDeleteManyArgs>(args?: SelectSubset<T, TacheUtilisateurDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more TacheMembres.
+     * Update zero or more TacheUtilisateurs.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {TacheUtilisateurUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many TacheMembres
-     * const tacheMembre = await prisma.tacheMembre.updateMany({
+     * // Update many TacheUtilisateurs
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8238,14 +8598,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends TacheMembreUpdateManyArgs>(args: SelectSubset<T, TacheMembreUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends TacheUtilisateurUpdateManyArgs>(args: SelectSubset<T, TacheUtilisateurUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more TacheMembres and returns the data updated in the database.
-     * @param {TacheMembreUpdateManyAndReturnArgs} args - Arguments to update many TacheMembres.
+     * Update zero or more TacheUtilisateurs and returns the data updated in the database.
+     * @param {TacheUtilisateurUpdateManyAndReturnArgs} args - Arguments to update many TacheUtilisateurs.
      * @example
-     * // Update many TacheMembres
-     * const tacheMembre = await prisma.tacheMembre.updateManyAndReturn({
+     * // Update many TacheUtilisateurs
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8254,8 +8614,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more TacheMembres and only return the `tacheId`
-     * const tacheMembreWithTacheIdOnly = await prisma.tacheMembre.updateManyAndReturn({
+     * // Update zero or more TacheUtilisateurs and only return the `tacheId`
+     * const tacheUtilisateurWithTacheIdOnly = await prisma.tacheUtilisateur.updateManyAndReturn({
      *   select: { tacheId: true },
      *   where: {
      *     // ... provide filter here
@@ -8268,56 +8628,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends TacheMembreUpdateManyAndReturnArgs>(args: SelectSubset<T, TacheMembreUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends TacheUtilisateurUpdateManyAndReturnArgs>(args: SelectSubset<T, TacheUtilisateurUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one TacheMembre.
-     * @param {TacheMembreUpsertArgs} args - Arguments to update or create a TacheMembre.
+     * Create or update one TacheUtilisateur.
+     * @param {TacheUtilisateurUpsertArgs} args - Arguments to update or create a TacheUtilisateur.
      * @example
-     * // Update or create a TacheMembre
-     * const tacheMembre = await prisma.tacheMembre.upsert({
+     * // Update or create a TacheUtilisateur
+     * const tacheUtilisateur = await prisma.tacheUtilisateur.upsert({
      *   create: {
-     *     // ... data to create a TacheMembre
+     *     // ... data to create a TacheUtilisateur
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the TacheMembre we want to update
+     *     // ... the filter for the TacheUtilisateur we want to update
      *   }
      * })
      */
-    upsert<T extends TacheMembreUpsertArgs>(args: SelectSubset<T, TacheMembreUpsertArgs<ExtArgs>>): Prisma__TacheMembreClient<$Result.GetResult<Prisma.$TacheMembrePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends TacheUtilisateurUpsertArgs>(args: SelectSubset<T, TacheUtilisateurUpsertArgs<ExtArgs>>): Prisma__TacheUtilisateurClient<$Result.GetResult<Prisma.$TacheUtilisateurPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of TacheMembres.
+     * Count the number of TacheUtilisateurs.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreCountArgs} args - Arguments to filter TacheMembres to count.
+     * @param {TacheUtilisateurCountArgs} args - Arguments to filter TacheUtilisateurs to count.
      * @example
-     * // Count the number of TacheMembres
-     * const count = await prisma.tacheMembre.count({
+     * // Count the number of TacheUtilisateurs
+     * const count = await prisma.tacheUtilisateur.count({
      *   where: {
-     *     // ... the filter for the TacheMembres we want to count
+     *     // ... the filter for the TacheUtilisateurs we want to count
      *   }
      * })
     **/
-    count<T extends TacheMembreCountArgs>(
-      args?: Subset<T, TacheMembreCountArgs>,
+    count<T extends TacheUtilisateurCountArgs>(
+      args?: Subset<T, TacheUtilisateurCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], TacheMembreCountAggregateOutputType>
+          : GetScalarType<T['select'], TacheUtilisateurCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a TacheMembre.
+     * Allows you to perform aggregations operations on a TacheUtilisateur.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {TacheUtilisateurAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -8337,13 +8697,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends TacheMembreAggregateArgs>(args: Subset<T, TacheMembreAggregateArgs>): Prisma.PrismaPromise<GetTacheMembreAggregateType<T>>
+    aggregate<T extends TacheUtilisateurAggregateArgs>(args: Subset<T, TacheUtilisateurAggregateArgs>): Prisma.PrismaPromise<GetTacheUtilisateurAggregateType<T>>
 
     /**
-     * Group by TacheMembre.
+     * Group by TacheUtilisateur.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TacheMembreGroupByArgs} args - Group by arguments.
+     * @param {TacheUtilisateurGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -8358,14 +8718,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends TacheMembreGroupByArgs,
+      T extends TacheUtilisateurGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: TacheMembreGroupByArgs['orderBy'] }
-        : { orderBy?: TacheMembreGroupByArgs['orderBy'] },
+        ? { orderBy: TacheUtilisateurGroupByArgs['orderBy'] }
+        : { orderBy?: TacheUtilisateurGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -8414,23 +8774,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, TacheMembreGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTacheMembreGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, TacheUtilisateurGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTacheUtilisateurGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the TacheMembre model
+   * Fields of the TacheUtilisateur model
    */
-  readonly fields: TacheMembreFieldRefs;
+  readonly fields: TacheUtilisateurFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for TacheMembre.
+   * The delegate class that acts as a "Promise-like" for TacheUtilisateur.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TacheMembreClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TacheUtilisateurClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     tache<T extends TacheDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TacheDefaultArgs<ExtArgs>>): Prisma__TacheClient<$Result.GetResult<Prisma.$TachePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    utilisateur<T extends UtilisateurDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilisateurDefaultArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    utilisateur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8457,422 +8817,422 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the TacheMembre model
+   * Fields of the TacheUtilisateur model
    */
-  interface TacheMembreFieldRefs {
-    readonly tacheId: FieldRef<"TacheMembre", 'Int'>
-    readonly utilisateurId: FieldRef<"TacheMembre", 'Int'>
-    readonly createdAt: FieldRef<"TacheMembre", 'DateTime'>
-    readonly updatedAt: FieldRef<"TacheMembre", 'DateTime'>
+  interface TacheUtilisateurFieldRefs {
+    readonly tacheId: FieldRef<"TacheUtilisateur", 'Int'>
+    readonly utilisateurId: FieldRef<"TacheUtilisateur", 'Int'>
+    readonly createdAt: FieldRef<"TacheUtilisateur", 'DateTime'>
+    readonly updatedAt: FieldRef<"TacheUtilisateur", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * TacheMembre findUnique
+   * TacheUtilisateur findUnique
    */
-  export type TacheMembreFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * Filter, which TacheMembre to fetch.
+     * Filter, which TacheUtilisateur to fetch.
      */
-    where: TacheMembreWhereUniqueInput
+    where: TacheUtilisateurWhereUniqueInput
   }
 
   /**
-   * TacheMembre findUniqueOrThrow
+   * TacheUtilisateur findUniqueOrThrow
    */
-  export type TacheMembreFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * Filter, which TacheMembre to fetch.
+     * Filter, which TacheUtilisateur to fetch.
      */
-    where: TacheMembreWhereUniqueInput
+    where: TacheUtilisateurWhereUniqueInput
   }
 
   /**
-   * TacheMembre findFirst
+   * TacheUtilisateur findFirst
    */
-  export type TacheMembreFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * Filter, which TacheMembre to fetch.
+     * Filter, which TacheUtilisateur to fetch.
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TacheMembres to fetch.
+     * Determine the order of TacheUtilisateurs to fetch.
      */
-    orderBy?: TacheMembreOrderByWithRelationInput | TacheMembreOrderByWithRelationInput[]
+    orderBy?: TacheUtilisateurOrderByWithRelationInput | TacheUtilisateurOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for TacheMembres.
+     * Sets the position for searching for TacheUtilisateurs.
      */
-    cursor?: TacheMembreWhereUniqueInput
+    cursor?: TacheUtilisateurWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TacheMembres from the position of the cursor.
+     * Take `±n` TacheUtilisateurs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TacheMembres.
+     * Skip the first `n` TacheUtilisateurs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of TacheMembres.
+     * Filter by unique combinations of TacheUtilisateurs.
      */
-    distinct?: TacheMembreScalarFieldEnum | TacheMembreScalarFieldEnum[]
+    distinct?: TacheUtilisateurScalarFieldEnum | TacheUtilisateurScalarFieldEnum[]
   }
 
   /**
-   * TacheMembre findFirstOrThrow
+   * TacheUtilisateur findFirstOrThrow
    */
-  export type TacheMembreFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * Filter, which TacheMembre to fetch.
+     * Filter, which TacheUtilisateur to fetch.
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TacheMembres to fetch.
+     * Determine the order of TacheUtilisateurs to fetch.
      */
-    orderBy?: TacheMembreOrderByWithRelationInput | TacheMembreOrderByWithRelationInput[]
+    orderBy?: TacheUtilisateurOrderByWithRelationInput | TacheUtilisateurOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for TacheMembres.
+     * Sets the position for searching for TacheUtilisateurs.
      */
-    cursor?: TacheMembreWhereUniqueInput
+    cursor?: TacheUtilisateurWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TacheMembres from the position of the cursor.
+     * Take `±n` TacheUtilisateurs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TacheMembres.
+     * Skip the first `n` TacheUtilisateurs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of TacheMembres.
+     * Filter by unique combinations of TacheUtilisateurs.
      */
-    distinct?: TacheMembreScalarFieldEnum | TacheMembreScalarFieldEnum[]
+    distinct?: TacheUtilisateurScalarFieldEnum | TacheUtilisateurScalarFieldEnum[]
   }
 
   /**
-   * TacheMembre findMany
+   * TacheUtilisateur findMany
    */
-  export type TacheMembreFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * Filter, which TacheMembres to fetch.
+     * Filter, which TacheUtilisateurs to fetch.
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TacheMembres to fetch.
+     * Determine the order of TacheUtilisateurs to fetch.
      */
-    orderBy?: TacheMembreOrderByWithRelationInput | TacheMembreOrderByWithRelationInput[]
+    orderBy?: TacheUtilisateurOrderByWithRelationInput | TacheUtilisateurOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing TacheMembres.
+     * Sets the position for listing TacheUtilisateurs.
      */
-    cursor?: TacheMembreWhereUniqueInput
+    cursor?: TacheUtilisateurWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TacheMembres from the position of the cursor.
+     * Take `±n` TacheUtilisateurs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TacheMembres.
+     * Skip the first `n` TacheUtilisateurs.
      */
     skip?: number
-    distinct?: TacheMembreScalarFieldEnum | TacheMembreScalarFieldEnum[]
+    distinct?: TacheUtilisateurScalarFieldEnum | TacheUtilisateurScalarFieldEnum[]
   }
 
   /**
-   * TacheMembre create
+   * TacheUtilisateur create
    */
-  export type TacheMembreCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * The data needed to create a TacheMembre.
+     * The data needed to create a TacheUtilisateur.
      */
-    data: XOR<TacheMembreCreateInput, TacheMembreUncheckedCreateInput>
+    data: XOR<TacheUtilisateurCreateInput, TacheUtilisateurUncheckedCreateInput>
   }
 
   /**
-   * TacheMembre createMany
+   * TacheUtilisateur createMany
    */
-  export type TacheMembreCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many TacheMembres.
+     * The data used to create many TacheUtilisateurs.
      */
-    data: TacheMembreCreateManyInput | TacheMembreCreateManyInput[]
+    data: TacheUtilisateurCreateManyInput | TacheUtilisateurCreateManyInput[]
   }
 
   /**
-   * TacheMembre createManyAndReturn
+   * TacheUtilisateur createManyAndReturn
    */
-  export type TacheMembreCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelectCreateManyAndReturn<ExtArgs> | null
+    select?: TacheUtilisateurSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
-     * The data used to create many TacheMembres.
+     * The data used to create many TacheUtilisateurs.
      */
-    data: TacheMembreCreateManyInput | TacheMembreCreateManyInput[]
+    data: TacheUtilisateurCreateManyInput | TacheUtilisateurCreateManyInput[]
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: TacheUtilisateurIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * TacheMembre update
+   * TacheUtilisateur update
    */
-  export type TacheMembreUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * The data needed to update a TacheMembre.
+     * The data needed to update a TacheUtilisateur.
      */
-    data: XOR<TacheMembreUpdateInput, TacheMembreUncheckedUpdateInput>
+    data: XOR<TacheUtilisateurUpdateInput, TacheUtilisateurUncheckedUpdateInput>
     /**
-     * Choose, which TacheMembre to update.
+     * Choose, which TacheUtilisateur to update.
      */
-    where: TacheMembreWhereUniqueInput
+    where: TacheUtilisateurWhereUniqueInput
   }
 
   /**
-   * TacheMembre updateMany
+   * TacheUtilisateur updateMany
    */
-  export type TacheMembreUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update TacheMembres.
+     * The data used to update TacheUtilisateurs.
      */
-    data: XOR<TacheMembreUpdateManyMutationInput, TacheMembreUncheckedUpdateManyInput>
+    data: XOR<TacheUtilisateurUpdateManyMutationInput, TacheUtilisateurUncheckedUpdateManyInput>
     /**
-     * Filter which TacheMembres to update
+     * Filter which TacheUtilisateurs to update
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
-     * Limit how many TacheMembres to update.
+     * Limit how many TacheUtilisateurs to update.
      */
     limit?: number
   }
 
   /**
-   * TacheMembre updateManyAndReturn
+   * TacheUtilisateur updateManyAndReturn
    */
-  export type TacheMembreUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: TacheUtilisateurSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
-     * The data used to update TacheMembres.
+     * The data used to update TacheUtilisateurs.
      */
-    data: XOR<TacheMembreUpdateManyMutationInput, TacheMembreUncheckedUpdateManyInput>
+    data: XOR<TacheUtilisateurUpdateManyMutationInput, TacheUtilisateurUncheckedUpdateManyInput>
     /**
-     * Filter which TacheMembres to update
+     * Filter which TacheUtilisateurs to update
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
-     * Limit how many TacheMembres to update.
+     * Limit how many TacheUtilisateurs to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: TacheUtilisateurIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * TacheMembre upsert
+   * TacheUtilisateur upsert
    */
-  export type TacheMembreUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * The filter to search for the TacheMembre to update in case it exists.
+     * The filter to search for the TacheUtilisateur to update in case it exists.
      */
-    where: TacheMembreWhereUniqueInput
+    where: TacheUtilisateurWhereUniqueInput
     /**
-     * In case the TacheMembre found by the `where` argument doesn't exist, create a new TacheMembre with this data.
+     * In case the TacheUtilisateur found by the `where` argument doesn't exist, create a new TacheUtilisateur with this data.
      */
-    create: XOR<TacheMembreCreateInput, TacheMembreUncheckedCreateInput>
+    create: XOR<TacheUtilisateurCreateInput, TacheUtilisateurUncheckedCreateInput>
     /**
-     * In case the TacheMembre was found with the provided `where` argument, update it with this data.
+     * In case the TacheUtilisateur was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<TacheMembreUpdateInput, TacheMembreUncheckedUpdateInput>
+    update: XOR<TacheUtilisateurUpdateInput, TacheUtilisateurUncheckedUpdateInput>
   }
 
   /**
-   * TacheMembre delete
+   * TacheUtilisateur delete
    */
-  export type TacheMembreDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
     /**
-     * Filter which TacheMembre to delete.
+     * Filter which TacheUtilisateur to delete.
      */
-    where: TacheMembreWhereUniqueInput
+    where: TacheUtilisateurWhereUniqueInput
   }
 
   /**
-   * TacheMembre deleteMany
+   * TacheUtilisateur deleteMany
    */
-  export type TacheMembreDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which TacheMembres to delete
+     * Filter which TacheUtilisateurs to delete
      */
-    where?: TacheMembreWhereInput
+    where?: TacheUtilisateurWhereInput
     /**
-     * Limit how many TacheMembres to delete.
+     * Limit how many TacheUtilisateurs to delete.
      */
     limit?: number
   }
 
   /**
-   * TacheMembre without action
+   * TacheUtilisateur without action
    */
-  export type TacheMembreDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TacheUtilisateurDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TacheMembre
+     * Select specific fields to fetch from the TacheUtilisateur
      */
-    select?: TacheMembreSelect<ExtArgs> | null
+    select?: TacheUtilisateurSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TacheMembre
+     * Omit specific fields from the TacheUtilisateur
      */
-    omit?: TacheMembreOmit<ExtArgs> | null
+    omit?: TacheUtilisateurOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TacheMembreInclude<ExtArgs> | null
+    include?: TacheUtilisateurInclude<ExtArgs> | null
   }
 
 
@@ -9070,7 +9430,7 @@ export namespace Prisma {
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membreProjet"]>
 
@@ -9079,7 +9439,7 @@ export namespace Prisma {
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membreProjet"]>
 
@@ -9088,7 +9448,7 @@ export namespace Prisma {
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membreProjet"]>
 
@@ -9101,22 +9461,22 @@ export namespace Prisma {
 
   export type MembreProjetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"utilisateurId" | "projetId" | "createdAt" | "updatedAt", ExtArgs["result"]["membreProjet"]>
   export type MembreProjetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }
   export type MembreProjetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }
   export type MembreProjetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }
 
   export type $MembreProjetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MembreProjet"
     objects: {
-      utilisateur: Prisma.$UtilisateurPayload<ExtArgs>
+      utilisateur: Prisma.$UserPayload<ExtArgs>
       projet: Prisma.$ProjetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -9518,7 +9878,7 @@ export namespace Prisma {
    */
   export interface Prisma__MembreProjetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    utilisateur<T extends UtilisateurDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilisateurDefaultArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    utilisateur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     projet<T extends ProjetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjetDefaultArgs<ExtArgs>>): Prisma__ProjetClient<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -10211,7 +10571,7 @@ export namespace Prisma {
     utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
-    partageur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    partageur?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["partageDocument"]>
 
   export type PartageDocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10227,7 +10587,7 @@ export namespace Prisma {
     utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
-    partageur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    partageur?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["partageDocument"]>
 
   export type PartageDocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10243,7 +10603,7 @@ export namespace Prisma {
     utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
-    partageur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    partageur?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["partageDocument"]>
 
   export type PartageDocumentSelectScalar = {
@@ -10263,31 +10623,31 @@ export namespace Prisma {
     utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
-    partageur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    partageur?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type PartageDocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
     utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
-    partageur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    partageur?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type PartageDocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
     utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
-    partageur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    partageur?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $PartageDocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PartageDocument"
     objects: {
       document: Prisma.$DocumentPayload<ExtArgs>
-      utilisateur: Prisma.$UtilisateurPayload<ExtArgs> | null
+      utilisateur: Prisma.$UserPayload<ExtArgs> | null
       departement: Prisma.$DepartementPayload<ExtArgs> | null
       projet: Prisma.$ProjetPayload<ExtArgs> | null
-      partageur: Prisma.$UtilisateurPayload<ExtArgs>
+      partageur: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -10693,10 +11053,10 @@ export namespace Prisma {
   export interface Prisma__PartageDocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     document<T extends DocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocumentDefaultArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    utilisateur<T extends PartageDocument$utilisateurArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$utilisateurArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    utilisateur<T extends PartageDocument$utilisateurArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$utilisateurArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     departement<T extends PartageDocument$departementArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$departementArgs<ExtArgs>>): Prisma__DepartementClient<$Result.GetResult<Prisma.$DepartementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     projet<T extends PartageDocument$projetArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$projetArgs<ExtArgs>>): Prisma__ProjetClient<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    partageur<T extends UtilisateurDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilisateurDefaultArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    partageur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11132,18 +11492,18 @@ export namespace Prisma {
    */
   export type PartageDocument$utilisateurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Utilisateur
+     * Select specific fields to fetch from the User
      */
-    select?: UtilisateurSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Utilisateur
+     * Omit specific fields from the User
      */
-    omit?: UtilisateurOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UtilisateurInclude<ExtArgs> | null
-    where?: UtilisateurWhereInput
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -11418,7 +11778,7 @@ export namespace Prisma {
     documentId?: boolean
     vu?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11429,7 +11789,7 @@ export namespace Prisma {
     documentId?: boolean
     vu?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11440,7 +11800,7 @@ export namespace Prisma {
     documentId?: boolean
     vu?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectScalar = {
@@ -11455,22 +11815,22 @@ export namespace Prisma {
   export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilisateurId" | "message" | "dateNotification" | "documentId" | "vu", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UtilisateurDefaultArgs<ExtArgs>
+    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Notification"
     objects: {
       document: Prisma.$DocumentPayload<ExtArgs>
-      utilisateur: Prisma.$UtilisateurPayload<ExtArgs>
+      utilisateur: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -11874,7 +12234,7 @@ export namespace Prisma {
   export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     document<T extends DocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocumentDefaultArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    utilisateur<T extends UtilisateurDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilisateurDefaultArgs<ExtArgs>>): Prisma__UtilisateurClient<$Result.GetResult<Prisma.$UtilisateurPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    utilisateur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12323,6 +12683,3235 @@ export namespace Prisma {
 
 
   /**
+   * Model Account
+   */
+
+  export type AggregateAccount = {
+    _count: AccountCountAggregateOutputType | null
+    _avg: AccountAvgAggregateOutputType | null
+    _sum: AccountSumAggregateOutputType | null
+    _min: AccountMinAggregateOutputType | null
+    _max: AccountMaxAggregateOutputType | null
+  }
+
+  export type AccountAvgAggregateOutputType = {
+    userId: number | null
+    expires_at: number | null
+  }
+
+  export type AccountSumAggregateOutputType = {
+    userId: number | null
+    expires_at: number | null
+  }
+
+  export type AccountMinAggregateOutputType = {
+    id: string | null
+    userId: number | null
+    type: string | null
+    provider: string | null
+    providerAccountId: string | null
+    refresh_token: string | null
+    access_token: string | null
+    expires_at: number | null
+    token_type: string | null
+    scope: string | null
+    id_token: string | null
+    session_state: string | null
+  }
+
+  export type AccountMaxAggregateOutputType = {
+    id: string | null
+    userId: number | null
+    type: string | null
+    provider: string | null
+    providerAccountId: string | null
+    refresh_token: string | null
+    access_token: string | null
+    expires_at: number | null
+    token_type: string | null
+    scope: string | null
+    id_token: string | null
+    session_state: string | null
+  }
+
+  export type AccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    provider: number
+    providerAccountId: number
+    refresh_token: number
+    access_token: number
+    expires_at: number
+    token_type: number
+    scope: number
+    id_token: number
+    session_state: number
+    _all: number
+  }
+
+
+  export type AccountAvgAggregateInputType = {
+    userId?: true
+    expires_at?: true
+  }
+
+  export type AccountSumAggregateInputType = {
+    userId?: true
+    expires_at?: true
+  }
+
+  export type AccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    provider?: true
+    providerAccountId?: true
+    refresh_token?: true
+    access_token?: true
+    expires_at?: true
+    token_type?: true
+    scope?: true
+    id_token?: true
+    session_state?: true
+  }
+
+  export type AccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    provider?: true
+    providerAccountId?: true
+    refresh_token?: true
+    access_token?: true
+    expires_at?: true
+    token_type?: true
+    scope?: true
+    id_token?: true
+    session_state?: true
+  }
+
+  export type AccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    provider?: true
+    providerAccountId?: true
+    refresh_token?: true
+    access_token?: true
+    expires_at?: true
+    token_type?: true
+    scope?: true
+    id_token?: true
+    session_state?: true
+    _all?: true
+  }
+
+  export type AccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Account to aggregate.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Accounts
+    **/
+    _count?: true | AccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AccountMaxAggregateInputType
+  }
+
+  export type GetAccountAggregateType<T extends AccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAccount[P]>
+      : GetScalarType<T[P], AggregateAccount[P]>
+  }
+
+
+
+
+  export type AccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithAggregationInput | AccountOrderByWithAggregationInput[]
+    by: AccountScalarFieldEnum[] | AccountScalarFieldEnum
+    having?: AccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AccountCountAggregateInputType | true
+    _avg?: AccountAvgAggregateInputType
+    _sum?: AccountSumAggregateInputType
+    _min?: AccountMinAggregateInputType
+    _max?: AccountMaxAggregateInputType
+  }
+
+  export type AccountGroupByOutputType = {
+    id: string
+    userId: number
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token: string | null
+    access_token: string | null
+    expires_at: number | null
+    token_type: string | null
+    scope: string | null
+    id_token: string | null
+    session_state: string | null
+    _count: AccountCountAggregateOutputType | null
+    _avg: AccountAvgAggregateOutputType | null
+    _sum: AccountSumAggregateOutputType | null
+    _min: AccountMinAggregateOutputType | null
+    _max: AccountMaxAggregateOutputType | null
+  }
+
+  type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AccountGroupByOutputType[P]>
+            : GetScalarType<T[P], AccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    refresh_token?: boolean
+    access_token?: boolean
+    expires_at?: boolean
+    token_type?: boolean
+    scope?: boolean
+    id_token?: boolean
+    session_state?: boolean
+  }
+
+  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "provider" | "providerAccountId" | "refresh_token" | "access_token" | "expires_at" | "token_type" | "scope" | "id_token" | "session_state", ExtArgs["result"]["account"]>
+  export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Account"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: number
+      type: string
+      provider: string
+      providerAccountId: string
+      refresh_token: string | null
+      access_token: string | null
+      expires_at: number | null
+      token_type: string | null
+      scope: string | null
+      id_token: string | null
+      session_state: string | null
+    }, ExtArgs["result"]["account"]>
+    composites: {}
+  }
+
+  type AccountGetPayload<S extends boolean | null | undefined | AccountDefaultArgs> = $Result.GetResult<Prisma.$AccountPayload, S>
+
+  type AccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AccountCountAggregateInputType | true
+    }
+
+  export interface AccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Account'], meta: { name: 'Account' } }
+    /**
+     * Find zero or one Account that matches the filter.
+     * @param {AccountFindUniqueArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AccountFindUniqueArgs>(args: SelectSubset<T, AccountFindUniqueArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Account that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AccountFindUniqueOrThrowArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AccountFindUniqueOrThrowArgs>(args: SelectSubset<T, AccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Account that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindFirstArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AccountFindFirstArgs>(args?: SelectSubset<T, AccountFindFirstArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Account that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindFirstOrThrowArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AccountFindFirstOrThrowArgs>(args?: SelectSubset<T, AccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Accounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Accounts
+     * const accounts = await prisma.account.findMany()
+     * 
+     * // Get first 10 Accounts
+     * const accounts = await prisma.account.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const accountWithIdOnly = await prisma.account.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AccountFindManyArgs>(args?: SelectSubset<T, AccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Account.
+     * @param {AccountCreateArgs} args - Arguments to create a Account.
+     * @example
+     * // Create one Account
+     * const Account = await prisma.account.create({
+     *   data: {
+     *     // ... data to create a Account
+     *   }
+     * })
+     * 
+     */
+    create<T extends AccountCreateArgs>(args: SelectSubset<T, AccountCreateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Accounts.
+     * @param {AccountCreateManyArgs} args - Arguments to create many Accounts.
+     * @example
+     * // Create many Accounts
+     * const account = await prisma.account.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AccountCreateManyArgs>(args?: SelectSubset<T, AccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Accounts and returns the data saved in the database.
+     * @param {AccountCreateManyAndReturnArgs} args - Arguments to create many Accounts.
+     * @example
+     * // Create many Accounts
+     * const account = await prisma.account.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Accounts and only return the `id`
+     * const accountWithIdOnly = await prisma.account.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AccountCreateManyAndReturnArgs>(args?: SelectSubset<T, AccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Account.
+     * @param {AccountDeleteArgs} args - Arguments to delete one Account.
+     * @example
+     * // Delete one Account
+     * const Account = await prisma.account.delete({
+     *   where: {
+     *     // ... filter to delete one Account
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AccountDeleteArgs>(args: SelectSubset<T, AccountDeleteArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Account.
+     * @param {AccountUpdateArgs} args - Arguments to update one Account.
+     * @example
+     * // Update one Account
+     * const account = await prisma.account.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AccountUpdateArgs>(args: SelectSubset<T, AccountUpdateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Accounts.
+     * @param {AccountDeleteManyArgs} args - Arguments to filter Accounts to delete.
+     * @example
+     * // Delete a few Accounts
+     * const { count } = await prisma.account.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AccountDeleteManyArgs>(args?: SelectSubset<T, AccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Accounts
+     * const account = await prisma.account.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AccountUpdateManyArgs>(args: SelectSubset<T, AccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accounts and returns the data updated in the database.
+     * @param {AccountUpdateManyAndReturnArgs} args - Arguments to update many Accounts.
+     * @example
+     * // Update many Accounts
+     * const account = await prisma.account.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Accounts and only return the `id`
+     * const accountWithIdOnly = await prisma.account.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AccountUpdateManyAndReturnArgs>(args: SelectSubset<T, AccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Account.
+     * @param {AccountUpsertArgs} args - Arguments to update or create a Account.
+     * @example
+     * // Update or create a Account
+     * const account = await prisma.account.upsert({
+     *   create: {
+     *     // ... data to create a Account
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Account we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AccountUpsertArgs>(args: SelectSubset<T, AccountUpsertArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Accounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountCountArgs} args - Arguments to filter Accounts to count.
+     * @example
+     * // Count the number of Accounts
+     * const count = await prisma.account.count({
+     *   where: {
+     *     // ... the filter for the Accounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends AccountCountArgs>(
+      args?: Subset<T, AccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Account.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AccountAggregateArgs>(args: Subset<T, AccountAggregateArgs>): Prisma.PrismaPromise<GetAccountAggregateType<T>>
+
+    /**
+     * Group by Account.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AccountGroupByArgs['orderBy'] }
+        : { orderBy?: AccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Account model
+   */
+  readonly fields: AccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Account.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Account model
+   */
+  interface AccountFieldRefs {
+    readonly id: FieldRef<"Account", 'String'>
+    readonly userId: FieldRef<"Account", 'Int'>
+    readonly type: FieldRef<"Account", 'String'>
+    readonly provider: FieldRef<"Account", 'String'>
+    readonly providerAccountId: FieldRef<"Account", 'String'>
+    readonly refresh_token: FieldRef<"Account", 'String'>
+    readonly access_token: FieldRef<"Account", 'String'>
+    readonly expires_at: FieldRef<"Account", 'Int'>
+    readonly token_type: FieldRef<"Account", 'String'>
+    readonly scope: FieldRef<"Account", 'String'>
+    readonly id_token: FieldRef<"Account", 'String'>
+    readonly session_state: FieldRef<"Account", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Account findUnique
+   */
+  export type AccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account findUniqueOrThrow
+   */
+  export type AccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account findFirst
+   */
+  export type AccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account findFirstOrThrow
+   */
+  export type AccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account findMany
+   */
+  export type AccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Accounts to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account create
+   */
+  export type AccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Account.
+     */
+    data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+  }
+
+  /**
+   * Account createMany
+   */
+  export type AccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Accounts.
+     */
+    data: AccountCreateManyInput | AccountCreateManyInput[]
+  }
+
+  /**
+   * Account createManyAndReturn
+   */
+  export type AccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many Accounts.
+     */
+    data: AccountCreateManyInput | AccountCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Account update
+   */
+  export type AccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Account.
+     */
+    data: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+    /**
+     * Choose, which Account to update.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account updateMany
+   */
+  export type AccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Accounts.
+     */
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    /**
+     * Filter which Accounts to update
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Account updateManyAndReturn
+   */
+  export type AccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * The data used to update Accounts.
+     */
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    /**
+     * Filter which Accounts to update
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Account upsert
+   */
+  export type AccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Account to update in case it exists.
+     */
+    where: AccountWhereUniqueInput
+    /**
+     * In case the Account found by the `where` argument doesn't exist, create a new Account with this data.
+     */
+    create: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+    /**
+     * In case the Account was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+  }
+
+  /**
+   * Account delete
+   */
+  export type AccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter which Account to delete.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account deleteMany
+   */
+  export type AccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Accounts to delete
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Account without action
+   */
+  export type AccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Session
+   */
+
+  export type AggregateSession = {
+    _count: SessionCountAggregateOutputType | null
+    _avg: SessionAvgAggregateOutputType | null
+    _sum: SessionSumAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  export type SessionAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type SessionSumAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type SessionMinAggregateOutputType = {
+    id: string | null
+    sessionToken: string | null
+    userId: number | null
+    expires: Date | null
+  }
+
+  export type SessionMaxAggregateOutputType = {
+    id: string | null
+    sessionToken: string | null
+    userId: number | null
+    expires: Date | null
+  }
+
+  export type SessionCountAggregateOutputType = {
+    id: number
+    sessionToken: number
+    userId: number
+    expires: number
+    _all: number
+  }
+
+
+  export type SessionAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type SessionSumAggregateInputType = {
+    userId?: true
+  }
+
+  export type SessionMinAggregateInputType = {
+    id?: true
+    sessionToken?: true
+    userId?: true
+    expires?: true
+  }
+
+  export type SessionMaxAggregateInputType = {
+    id?: true
+    sessionToken?: true
+    userId?: true
+    expires?: true
+  }
+
+  export type SessionCountAggregateInputType = {
+    id?: true
+    sessionToken?: true
+    userId?: true
+    expires?: true
+    _all?: true
+  }
+
+  export type SessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Session to aggregate.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sessions
+    **/
+    _count?: true | SessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSession[P]>
+      : GetScalarType<T[P], AggregateSession[P]>
+  }
+
+
+
+
+  export type SessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithAggregationInput | SessionOrderByWithAggregationInput[]
+    by: SessionScalarFieldEnum[] | SessionScalarFieldEnum
+    having?: SessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionCountAggregateInputType | true
+    _avg?: SessionAvgAggregateInputType
+    _sum?: SessionSumAggregateInputType
+    _min?: SessionMinAggregateInputType
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type SessionGroupByOutputType = {
+    id: string
+    sessionToken: string
+    userId: number
+    expires: Date
+    _count: SessionCountAggregateOutputType | null
+    _avg: SessionAvgAggregateOutputType | null
+    _sum: SessionSumAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  type GetSessionGroupByPayload<T extends SessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectScalar = {
+    id?: boolean
+    sessionToken?: boolean
+    userId?: boolean
+    expires?: boolean
+  }
+
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionToken" | "userId" | "expires", ExtArgs["result"]["session"]>
+  export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Session"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionToken: string
+      userId: number
+      expires: Date
+    }, ExtArgs["result"]["session"]>
+    composites: {}
+  }
+
+  type SessionGetPayload<S extends boolean | null | undefined | SessionDefaultArgs> = $Result.GetResult<Prisma.$SessionPayload, S>
+
+  type SessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessionCountAggregateInputType | true
+    }
+
+  export interface SessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Session'], meta: { name: 'Session' } }
+    /**
+     * Find zero or one Session that matches the filter.
+     * @param {SessionFindUniqueArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionFindUniqueArgs>(args: SelectSubset<T, SessionFindUniqueArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Session that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessionFindUniqueOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionFindFirstArgs>(args?: SelectSubset<T, SessionFindFirstArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sessions
+     * const sessions = await prisma.session.findMany()
+     * 
+     * // Get first 10 Sessions
+     * const sessions = await prisma.session.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessionWithIdOnly = await prisma.session.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessionFindManyArgs>(args?: SelectSubset<T, SessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Session.
+     * @param {SessionCreateArgs} args - Arguments to create a Session.
+     * @example
+     * // Create one Session
+     * const Session = await prisma.session.create({
+     *   data: {
+     *     // ... data to create a Session
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionCreateArgs>(args: SelectSubset<T, SessionCreateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sessions.
+     * @param {SessionCreateManyArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionCreateManyArgs>(args?: SelectSubset<T, SessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sessions and returns the data saved in the database.
+     * @param {SessionCreateManyAndReturnArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sessions and only return the `id`
+     * const sessionWithIdOnly = await prisma.session.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Session.
+     * @param {SessionDeleteArgs} args - Arguments to delete one Session.
+     * @example
+     * // Delete one Session
+     * const Session = await prisma.session.delete({
+     *   where: {
+     *     // ... filter to delete one Session
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionDeleteArgs>(args: SelectSubset<T, SessionDeleteArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Session.
+     * @param {SessionUpdateArgs} args - Arguments to update one Session.
+     * @example
+     * // Update one Session
+     * const session = await prisma.session.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionUpdateArgs>(args: SelectSubset<T, SessionUpdateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sessions.
+     * @param {SessionDeleteManyArgs} args - Arguments to filter Sessions to delete.
+     * @example
+     * // Delete a few Sessions
+     * const { count } = await prisma.session.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionDeleteManyArgs>(args?: SelectSubset<T, SessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionUpdateManyArgs>(args: SelectSubset<T, SessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions and returns the data updated in the database.
+     * @param {SessionUpdateManyAndReturnArgs} args - Arguments to update many Sessions.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sessions and only return the `id`
+     * const sessionWithIdOnly = await prisma.session.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessionUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Session.
+     * @param {SessionUpsertArgs} args - Arguments to update or create a Session.
+     * @example
+     * // Update or create a Session
+     * const session = await prisma.session.upsert({
+     *   create: {
+     *     // ... data to create a Session
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Session we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionUpsertArgs>(args: SelectSubset<T, SessionUpsertArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionCountArgs} args - Arguments to filter Sessions to count.
+     * @example
+     * // Count the number of Sessions
+     * const count = await prisma.session.count({
+     *   where: {
+     *     // ... the filter for the Sessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionCountArgs>(
+      args?: Subset<T, SessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionAggregateArgs>(args: Subset<T, SessionAggregateArgs>): Prisma.PrismaPromise<GetSessionAggregateType<T>>
+
+    /**
+     * Group by Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionGroupByArgs['orderBy'] }
+        : { orderBy?: SessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Session model
+   */
+  readonly fields: SessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Session.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Session model
+   */
+  interface SessionFieldRefs {
+    readonly id: FieldRef<"Session", 'String'>
+    readonly sessionToken: FieldRef<"Session", 'String'>
+    readonly userId: FieldRef<"Session", 'Int'>
+    readonly expires: FieldRef<"Session", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Session findUnique
+   */
+  export type SessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findUniqueOrThrow
+   */
+  export type SessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findFirst
+   */
+  export type SessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findFirstOrThrow
+   */
+  export type SessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findMany
+   */
+  export type SessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Sessions to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session create
+   */
+  export type SessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Session.
+     */
+    data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+  }
+
+  /**
+   * Session createMany
+   */
+  export type SessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+  }
+
+  /**
+   * Session createManyAndReturn
+   */
+  export type SessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session update
+   */
+  export type SessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Session.
+     */
+    data: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+    /**
+     * Choose, which Session to update.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session updateMany
+   */
+  export type SessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session updateManyAndReturn
+   */
+  export type SessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session upsert
+   */
+  export type SessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Session to update in case it exists.
+     */
+    where: SessionWhereUniqueInput
+    /**
+     * In case the Session found by the `where` argument doesn't exist, create a new Session with this data.
+     */
+    create: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+    /**
+     * In case the Session was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+  }
+
+  /**
+   * Session delete
+   */
+  export type SessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter which Session to delete.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session deleteMany
+   */
+  export type SessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sessions to delete
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session without action
+   */
+  export type SessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VerificationToken
+   */
+
+  export type AggregateVerificationToken = {
+    _count: VerificationTokenCountAggregateOutputType | null
+    _min: VerificationTokenMinAggregateOutputType | null
+    _max: VerificationTokenMaxAggregateOutputType | null
+  }
+
+  export type VerificationTokenMinAggregateOutputType = {
+    identifier: string | null
+    token: string | null
+    expires: Date | null
+  }
+
+  export type VerificationTokenMaxAggregateOutputType = {
+    identifier: string | null
+    token: string | null
+    expires: Date | null
+  }
+
+  export type VerificationTokenCountAggregateOutputType = {
+    identifier: number
+    token: number
+    expires: number
+    _all: number
+  }
+
+
+  export type VerificationTokenMinAggregateInputType = {
+    identifier?: true
+    token?: true
+    expires?: true
+  }
+
+  export type VerificationTokenMaxAggregateInputType = {
+    identifier?: true
+    token?: true
+    expires?: true
+  }
+
+  export type VerificationTokenCountAggregateInputType = {
+    identifier?: true
+    token?: true
+    expires?: true
+    _all?: true
+  }
+
+  export type VerificationTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VerificationToken to aggregate.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VerificationTokens
+    **/
+    _count?: true | VerificationTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VerificationTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VerificationTokenMaxAggregateInputType
+  }
+
+  export type GetVerificationTokenAggregateType<T extends VerificationTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateVerificationToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVerificationToken[P]>
+      : GetScalarType<T[P], AggregateVerificationToken[P]>
+  }
+
+
+
+
+  export type VerificationTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VerificationTokenWhereInput
+    orderBy?: VerificationTokenOrderByWithAggregationInput | VerificationTokenOrderByWithAggregationInput[]
+    by: VerificationTokenScalarFieldEnum[] | VerificationTokenScalarFieldEnum
+    having?: VerificationTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VerificationTokenCountAggregateInputType | true
+    _min?: VerificationTokenMinAggregateInputType
+    _max?: VerificationTokenMaxAggregateInputType
+  }
+
+  export type VerificationTokenGroupByOutputType = {
+    identifier: string
+    token: string
+    expires: Date
+    _count: VerificationTokenCountAggregateOutputType | null
+    _min: VerificationTokenMinAggregateOutputType | null
+    _max: VerificationTokenMaxAggregateOutputType | null
+  }
+
+  type GetVerificationTokenGroupByPayload<T extends VerificationTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VerificationTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VerificationTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VerificationTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectScalar = {
+    identifier?: boolean
+    token?: boolean
+    expires?: boolean
+  }
+
+  export type VerificationTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"identifier" | "token" | "expires", ExtArgs["result"]["verificationToken"]>
+
+  export type $VerificationTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VerificationToken"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      identifier: string
+      token: string
+      expires: Date
+    }, ExtArgs["result"]["verificationToken"]>
+    composites: {}
+  }
+
+  type VerificationTokenGetPayload<S extends boolean | null | undefined | VerificationTokenDefaultArgs> = $Result.GetResult<Prisma.$VerificationTokenPayload, S>
+
+  type VerificationTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VerificationTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VerificationTokenCountAggregateInputType | true
+    }
+
+  export interface VerificationTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VerificationToken'], meta: { name: 'VerificationToken' } }
+    /**
+     * Find zero or one VerificationToken that matches the filter.
+     * @param {VerificationTokenFindUniqueArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VerificationTokenFindUniqueArgs>(args: SelectSubset<T, VerificationTokenFindUniqueArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VerificationToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VerificationTokenFindUniqueOrThrowArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VerificationTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, VerificationTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VerificationToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindFirstArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VerificationTokenFindFirstArgs>(args?: SelectSubset<T, VerificationTokenFindFirstArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VerificationToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindFirstOrThrowArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VerificationTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, VerificationTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VerificationTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VerificationTokens
+     * const verificationTokens = await prisma.verificationToken.findMany()
+     * 
+     * // Get first 10 VerificationTokens
+     * const verificationTokens = await prisma.verificationToken.findMany({ take: 10 })
+     * 
+     * // Only select the `identifier`
+     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.findMany({ select: { identifier: true } })
+     * 
+     */
+    findMany<T extends VerificationTokenFindManyArgs>(args?: SelectSubset<T, VerificationTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VerificationToken.
+     * @param {VerificationTokenCreateArgs} args - Arguments to create a VerificationToken.
+     * @example
+     * // Create one VerificationToken
+     * const VerificationToken = await prisma.verificationToken.create({
+     *   data: {
+     *     // ... data to create a VerificationToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends VerificationTokenCreateArgs>(args: SelectSubset<T, VerificationTokenCreateArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VerificationTokens.
+     * @param {VerificationTokenCreateManyArgs} args - Arguments to create many VerificationTokens.
+     * @example
+     * // Create many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VerificationTokenCreateManyArgs>(args?: SelectSubset<T, VerificationTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VerificationTokens and returns the data saved in the database.
+     * @param {VerificationTokenCreateManyAndReturnArgs} args - Arguments to create many VerificationTokens.
+     * @example
+     * // Create many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VerificationTokens and only return the `identifier`
+     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.createManyAndReturn({
+     *   select: { identifier: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VerificationTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, VerificationTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VerificationToken.
+     * @param {VerificationTokenDeleteArgs} args - Arguments to delete one VerificationToken.
+     * @example
+     * // Delete one VerificationToken
+     * const VerificationToken = await prisma.verificationToken.delete({
+     *   where: {
+     *     // ... filter to delete one VerificationToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VerificationTokenDeleteArgs>(args: SelectSubset<T, VerificationTokenDeleteArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VerificationToken.
+     * @param {VerificationTokenUpdateArgs} args - Arguments to update one VerificationToken.
+     * @example
+     * // Update one VerificationToken
+     * const verificationToken = await prisma.verificationToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VerificationTokenUpdateArgs>(args: SelectSubset<T, VerificationTokenUpdateArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VerificationTokens.
+     * @param {VerificationTokenDeleteManyArgs} args - Arguments to filter VerificationTokens to delete.
+     * @example
+     * // Delete a few VerificationTokens
+     * const { count } = await prisma.verificationToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VerificationTokenDeleteManyArgs>(args?: SelectSubset<T, VerificationTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VerificationTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VerificationTokenUpdateManyArgs>(args: SelectSubset<T, VerificationTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VerificationTokens and returns the data updated in the database.
+     * @param {VerificationTokenUpdateManyAndReturnArgs} args - Arguments to update many VerificationTokens.
+     * @example
+     * // Update many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VerificationTokens and only return the `identifier`
+     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.updateManyAndReturn({
+     *   select: { identifier: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VerificationTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, VerificationTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VerificationToken.
+     * @param {VerificationTokenUpsertArgs} args - Arguments to update or create a VerificationToken.
+     * @example
+     * // Update or create a VerificationToken
+     * const verificationToken = await prisma.verificationToken.upsert({
+     *   create: {
+     *     // ... data to create a VerificationToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VerificationToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VerificationTokenUpsertArgs>(args: SelectSubset<T, VerificationTokenUpsertArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VerificationTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenCountArgs} args - Arguments to filter VerificationTokens to count.
+     * @example
+     * // Count the number of VerificationTokens
+     * const count = await prisma.verificationToken.count({
+     *   where: {
+     *     // ... the filter for the VerificationTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends VerificationTokenCountArgs>(
+      args?: Subset<T, VerificationTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VerificationTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VerificationToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VerificationTokenAggregateArgs>(args: Subset<T, VerificationTokenAggregateArgs>): Prisma.PrismaPromise<GetVerificationTokenAggregateType<T>>
+
+    /**
+     * Group by VerificationToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VerificationTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VerificationTokenGroupByArgs['orderBy'] }
+        : { orderBy?: VerificationTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VerificationTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVerificationTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VerificationToken model
+   */
+  readonly fields: VerificationTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VerificationToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VerificationTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VerificationToken model
+   */
+  interface VerificationTokenFieldRefs {
+    readonly identifier: FieldRef<"VerificationToken", 'String'>
+    readonly token: FieldRef<"VerificationToken", 'String'>
+    readonly expires: FieldRef<"VerificationToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VerificationToken findUnique
+   */
+  export type VerificationTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken findUniqueOrThrow
+   */
+  export type VerificationTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken findFirst
+   */
+  export type VerificationTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken findFirstOrThrow
+   */
+  export type VerificationTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken findMany
+   */
+  export type VerificationTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter, which VerificationTokens to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken create
+   */
+  export type VerificationTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data needed to create a VerificationToken.
+     */
+    data: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
+  }
+
+  /**
+   * VerificationToken createMany
+   */
+  export type VerificationTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VerificationTokens.
+     */
+    data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
+  }
+
+  /**
+   * VerificationToken createManyAndReturn
+   */
+  export type VerificationTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many VerificationTokens.
+     */
+    data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
+  }
+
+  /**
+   * VerificationToken update
+   */
+  export type VerificationTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data needed to update a VerificationToken.
+     */
+    data: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
+    /**
+     * Choose, which VerificationToken to update.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken updateMany
+   */
+  export type VerificationTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VerificationTokens.
+     */
+    data: XOR<VerificationTokenUpdateManyMutationInput, VerificationTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which VerificationTokens to update
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * Limit how many VerificationTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VerificationToken updateManyAndReturn
+   */
+  export type VerificationTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update VerificationTokens.
+     */
+    data: XOR<VerificationTokenUpdateManyMutationInput, VerificationTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which VerificationTokens to update
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * Limit how many VerificationTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VerificationToken upsert
+   */
+  export type VerificationTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * The filter to search for the VerificationToken to update in case it exists.
+     */
+    where: VerificationTokenWhereUniqueInput
+    /**
+     * In case the VerificationToken found by the `where` argument doesn't exist, create a new VerificationToken with this data.
+     */
+    create: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
+    /**
+     * In case the VerificationToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * VerificationToken delete
+   */
+  export type VerificationTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+    /**
+     * Filter which VerificationToken to delete.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken deleteMany
+   */
+  export type VerificationTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VerificationTokens to delete
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * Limit how many VerificationTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VerificationToken without action
+   */
+  export type VerificationTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VerificationToken
+     */
+    omit?: VerificationTokenOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12343,9 +15932,10 @@ export namespace Prisma {
   export type DepartementScalarFieldEnum = (typeof DepartementScalarFieldEnum)[keyof typeof DepartementScalarFieldEnum]
 
 
-  export const UtilisateurScalarFieldEnum: {
+  export const UserScalarFieldEnum: {
     id: 'id',
     nom: 'nom',
+    prenom: 'prenom',
     email: 'email',
     password: 'password',
     role: 'role',
@@ -12354,7 +15944,7 @@ export namespace Prisma {
     updatedAt: 'updatedAt'
   };
 
-  export type UtilisateurScalarFieldEnum = (typeof UtilisateurScalarFieldEnum)[keyof typeof UtilisateurScalarFieldEnum]
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
   export const DocumentScalarFieldEnum: {
@@ -12394,14 +15984,14 @@ export namespace Prisma {
   export type TacheScalarFieldEnum = (typeof TacheScalarFieldEnum)[keyof typeof TacheScalarFieldEnum]
 
 
-  export const TacheMembreScalarFieldEnum: {
+  export const TacheUtilisateurScalarFieldEnum: {
     tacheId: 'tacheId',
     utilisateurId: 'utilisateurId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type TacheMembreScalarFieldEnum = (typeof TacheMembreScalarFieldEnum)[keyof typeof TacheMembreScalarFieldEnum]
+  export type TacheUtilisateurScalarFieldEnum = (typeof TacheUtilisateurScalarFieldEnum)[keyof typeof TacheUtilisateurScalarFieldEnum]
 
 
   export const MembreProjetScalarFieldEnum: {
@@ -12438,6 +16028,43 @@ export namespace Prisma {
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const AccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    provider: 'provider',
+    providerAccountId: 'providerAccountId',
+    refresh_token: 'refresh_token',
+    access_token: 'access_token',
+    expires_at: 'expires_at',
+    token_type: 'token_type',
+    scope: 'scope',
+    id_token: 'id_token',
+    session_state: 'session_state'
+  };
+
+  export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+  export const SessionScalarFieldEnum: {
+    id: 'id',
+    sessionToken: 'sessionToken',
+    userId: 'userId',
+    expires: 'expires'
+  };
+
+  export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+  export const VerificationTokenScalarFieldEnum: {
+    identifier: 'identifier',
+    token: 'token',
+    expires: 'expires'
+  };
+
+  export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12522,7 +16149,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Departement"> | Date | string
     updatedAt?: DateTimeFilter<"Departement"> | Date | string
     projets?: ProjetListRelationFilter
-    utilisateurs?: UtilisateurListRelationFilter
+    utilisateurs?: UserListRelationFilter
     partages?: PartageDocumentListRelationFilter
   }
 
@@ -12532,7 +16159,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     projets?: ProjetOrderByRelationAggregateInput
-    utilisateurs?: UtilisateurOrderByRelationAggregateInput
+    utilisateurs?: UserOrderByRelationAggregateInput
     partages?: PartageDocumentOrderByRelationAggregateInput
   }
 
@@ -12545,7 +16172,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Departement"> | Date | string
     updatedAt?: DateTimeFilter<"Departement"> | Date | string
     projets?: ProjetListRelationFilter
-    utilisateurs?: UtilisateurListRelationFilter
+    utilisateurs?: UserListRelationFilter
     partages?: PartageDocumentListRelationFilter
   }, "id">
 
@@ -12571,29 +16198,33 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Departement"> | Date | string
   }
 
-  export type UtilisateurWhereInput = {
-    AND?: UtilisateurWhereInput | UtilisateurWhereInput[]
-    OR?: UtilisateurWhereInput[]
-    NOT?: UtilisateurWhereInput | UtilisateurWhereInput[]
-    id?: IntFilter<"Utilisateur"> | number
-    nom?: StringFilter<"Utilisateur"> | string
-    email?: StringFilter<"Utilisateur"> | string
-    password?: StringFilter<"Utilisateur"> | string
-    role?: EnumRoleFilter<"Utilisateur"> | $Enums.Role
-    departementId?: IntNullableFilter<"Utilisateur"> | number | null
-    createdAt?: DateTimeFilter<"Utilisateur"> | Date | string
-    updatedAt?: DateTimeFilter<"Utilisateur"> | Date | string
+  export type UserWhereInput = {
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    id?: IntFilter<"User"> | number
+    nom?: StringFilter<"User"> | string
+    prenom?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    departementId?: IntNullableFilter<"User"> | number | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
     departement?: XOR<DepartementNullableScalarRelationFilter, DepartementWhereInput> | null
     projets?: MembreProjetListRelationFilter
-    taches?: TacheMembreListRelationFilter
+    taches?: TacheUtilisateurListRelationFilter
     partages?: PartageDocumentListRelationFilter
     partagesEnTantQuePartageur?: PartageDocumentListRelationFilter
     notifications?: NotificationListRelationFilter
+    accounts?: AccountListRelationFilter
+    sessions?: SessionListRelationFilter
   }
 
-  export type UtilisateurOrderByWithRelationInput = {
+  export type UserOrderByWithRelationInput = {
     id?: SortOrder
     nom?: SortOrder
+    prenom?: SortOrder
     email?: SortOrder
     password?: SortOrder
     role?: SortOrder
@@ -12602,60 +16233,67 @@ export namespace Prisma {
     updatedAt?: SortOrder
     departement?: DepartementOrderByWithRelationInput
     projets?: MembreProjetOrderByRelationAggregateInput
-    taches?: TacheMembreOrderByRelationAggregateInput
+    taches?: TacheUtilisateurOrderByRelationAggregateInput
     partages?: PartageDocumentOrderByRelationAggregateInput
     partagesEnTantQuePartageur?: PartageDocumentOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
+    accounts?: AccountOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
   }
 
-  export type UtilisateurWhereUniqueInput = Prisma.AtLeast<{
+  export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     email?: string
-    AND?: UtilisateurWhereInput | UtilisateurWhereInput[]
-    OR?: UtilisateurWhereInput[]
-    NOT?: UtilisateurWhereInput | UtilisateurWhereInput[]
-    nom?: StringFilter<"Utilisateur"> | string
-    password?: StringFilter<"Utilisateur"> | string
-    role?: EnumRoleFilter<"Utilisateur"> | $Enums.Role
-    departementId?: IntNullableFilter<"Utilisateur"> | number | null
-    createdAt?: DateTimeFilter<"Utilisateur"> | Date | string
-    updatedAt?: DateTimeFilter<"Utilisateur"> | Date | string
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    nom?: StringFilter<"User"> | string
+    prenom?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    departementId?: IntNullableFilter<"User"> | number | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
     departement?: XOR<DepartementNullableScalarRelationFilter, DepartementWhereInput> | null
     projets?: MembreProjetListRelationFilter
-    taches?: TacheMembreListRelationFilter
+    taches?: TacheUtilisateurListRelationFilter
     partages?: PartageDocumentListRelationFilter
     partagesEnTantQuePartageur?: PartageDocumentListRelationFilter
     notifications?: NotificationListRelationFilter
+    accounts?: AccountListRelationFilter
+    sessions?: SessionListRelationFilter
   }, "id" | "email">
 
-  export type UtilisateurOrderByWithAggregationInput = {
+  export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     nom?: SortOrder
+    prenom?: SortOrder
     email?: SortOrder
     password?: SortOrder
     role?: SortOrder
     departementId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: UtilisateurCountOrderByAggregateInput
-    _avg?: UtilisateurAvgOrderByAggregateInput
-    _max?: UtilisateurMaxOrderByAggregateInput
-    _min?: UtilisateurMinOrderByAggregateInput
-    _sum?: UtilisateurSumOrderByAggregateInput
+    _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
-  export type UtilisateurScalarWhereWithAggregatesInput = {
-    AND?: UtilisateurScalarWhereWithAggregatesInput | UtilisateurScalarWhereWithAggregatesInput[]
-    OR?: UtilisateurScalarWhereWithAggregatesInput[]
-    NOT?: UtilisateurScalarWhereWithAggregatesInput | UtilisateurScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Utilisateur"> | number
-    nom?: StringWithAggregatesFilter<"Utilisateur"> | string
-    email?: StringWithAggregatesFilter<"Utilisateur"> | string
-    password?: StringWithAggregatesFilter<"Utilisateur"> | string
-    role?: EnumRoleWithAggregatesFilter<"Utilisateur"> | $Enums.Role
-    departementId?: IntNullableWithAggregatesFilter<"Utilisateur"> | number | null
-    createdAt?: DateTimeWithAggregatesFilter<"Utilisateur"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Utilisateur"> | Date | string
+  export type UserScalarWhereWithAggregatesInput = {
+    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    OR?: UserScalarWhereWithAggregatesInput[]
+    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"User"> | number
+    nom?: StringWithAggregatesFilter<"User"> | string
+    prenom?: StringWithAggregatesFilter<"User"> | string
+    email?: StringWithAggregatesFilter<"User"> | string
+    password?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    departementId?: IntNullableWithAggregatesFilter<"User"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
   export type DocumentWhereInput = {
@@ -12802,7 +16440,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tache"> | Date | string
     updatedAt?: DateTimeFilter<"Tache"> | Date | string
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
-    tacheMembres?: TacheMembreListRelationFilter
+    TacheUtilisateur?: TacheUtilisateurListRelationFilter
   }
 
   export type TacheOrderByWithRelationInput = {
@@ -12815,7 +16453,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     projet?: ProjetOrderByWithRelationInput
-    tacheMembres?: TacheMembreOrderByRelationAggregateInput
+    TacheUtilisateur?: TacheUtilisateurOrderByRelationAggregateInput
   }
 
   export type TacheWhereUniqueInput = Prisma.AtLeast<{
@@ -12831,7 +16469,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tache"> | Date | string
     updatedAt?: DateTimeFilter<"Tache"> | Date | string
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
-    tacheMembres?: TacheMembreListRelationFilter
+    TacheUtilisateur?: TacheUtilisateurListRelationFilter
   }, "id">
 
   export type TacheOrderByWithAggregationInput = {
@@ -12864,60 +16502,60 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Tache"> | Date | string
   }
 
-  export type TacheMembreWhereInput = {
-    AND?: TacheMembreWhereInput | TacheMembreWhereInput[]
-    OR?: TacheMembreWhereInput[]
-    NOT?: TacheMembreWhereInput | TacheMembreWhereInput[]
-    tacheId?: IntFilter<"TacheMembre"> | number
-    utilisateurId?: IntFilter<"TacheMembre"> | number
-    createdAt?: DateTimeFilter<"TacheMembre"> | Date | string
-    updatedAt?: DateTimeFilter<"TacheMembre"> | Date | string
+  export type TacheUtilisateurWhereInput = {
+    AND?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
+    OR?: TacheUtilisateurWhereInput[]
+    NOT?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
+    tacheId?: IntFilter<"TacheUtilisateur"> | number
+    utilisateurId?: IntFilter<"TacheUtilisateur"> | number
+    createdAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
+    updatedAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     tache?: XOR<TacheScalarRelationFilter, TacheWhereInput>
-    utilisateur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type TacheMembreOrderByWithRelationInput = {
+  export type TacheUtilisateurOrderByWithRelationInput = {
     tacheId?: SortOrder
     utilisateurId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tache?: TacheOrderByWithRelationInput
-    utilisateur?: UtilisateurOrderByWithRelationInput
+    utilisateur?: UserOrderByWithRelationInput
   }
 
-  export type TacheMembreWhereUniqueInput = Prisma.AtLeast<{
-    tacheId_utilisateurId?: TacheMembreTacheIdUtilisateurIdCompoundUniqueInput
-    AND?: TacheMembreWhereInput | TacheMembreWhereInput[]
-    OR?: TacheMembreWhereInput[]
-    NOT?: TacheMembreWhereInput | TacheMembreWhereInput[]
-    tacheId?: IntFilter<"TacheMembre"> | number
-    utilisateurId?: IntFilter<"TacheMembre"> | number
-    createdAt?: DateTimeFilter<"TacheMembre"> | Date | string
-    updatedAt?: DateTimeFilter<"TacheMembre"> | Date | string
+  export type TacheUtilisateurWhereUniqueInput = Prisma.AtLeast<{
+    tacheId_utilisateurId?: TacheUtilisateurTacheIdUtilisateurIdCompoundUniqueInput
+    AND?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
+    OR?: TacheUtilisateurWhereInput[]
+    NOT?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
+    tacheId?: IntFilter<"TacheUtilisateur"> | number
+    utilisateurId?: IntFilter<"TacheUtilisateur"> | number
+    createdAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
+    updatedAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     tache?: XOR<TacheScalarRelationFilter, TacheWhereInput>
-    utilisateur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "tacheId_utilisateurId">
 
-  export type TacheMembreOrderByWithAggregationInput = {
+  export type TacheUtilisateurOrderByWithAggregationInput = {
     tacheId?: SortOrder
     utilisateurId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: TacheMembreCountOrderByAggregateInput
-    _avg?: TacheMembreAvgOrderByAggregateInput
-    _max?: TacheMembreMaxOrderByAggregateInput
-    _min?: TacheMembreMinOrderByAggregateInput
-    _sum?: TacheMembreSumOrderByAggregateInput
+    _count?: TacheUtilisateurCountOrderByAggregateInput
+    _avg?: TacheUtilisateurAvgOrderByAggregateInput
+    _max?: TacheUtilisateurMaxOrderByAggregateInput
+    _min?: TacheUtilisateurMinOrderByAggregateInput
+    _sum?: TacheUtilisateurSumOrderByAggregateInput
   }
 
-  export type TacheMembreScalarWhereWithAggregatesInput = {
-    AND?: TacheMembreScalarWhereWithAggregatesInput | TacheMembreScalarWhereWithAggregatesInput[]
-    OR?: TacheMembreScalarWhereWithAggregatesInput[]
-    NOT?: TacheMembreScalarWhereWithAggregatesInput | TacheMembreScalarWhereWithAggregatesInput[]
-    tacheId?: IntWithAggregatesFilter<"TacheMembre"> | number
-    utilisateurId?: IntWithAggregatesFilter<"TacheMembre"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"TacheMembre"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"TacheMembre"> | Date | string
+  export type TacheUtilisateurScalarWhereWithAggregatesInput = {
+    AND?: TacheUtilisateurScalarWhereWithAggregatesInput | TacheUtilisateurScalarWhereWithAggregatesInput[]
+    OR?: TacheUtilisateurScalarWhereWithAggregatesInput[]
+    NOT?: TacheUtilisateurScalarWhereWithAggregatesInput | TacheUtilisateurScalarWhereWithAggregatesInput[]
+    tacheId?: IntWithAggregatesFilter<"TacheUtilisateur"> | number
+    utilisateurId?: IntWithAggregatesFilter<"TacheUtilisateur"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"TacheUtilisateur"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TacheUtilisateur"> | Date | string
   }
 
   export type MembreProjetWhereInput = {
@@ -12928,7 +16566,7 @@ export namespace Prisma {
     projetId?: IntFilter<"MembreProjet"> | number
     createdAt?: DateTimeFilter<"MembreProjet"> | Date | string
     updatedAt?: DateTimeFilter<"MembreProjet"> | Date | string
-    utilisateur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
   }
 
@@ -12937,7 +16575,7 @@ export namespace Prisma {
     projetId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    utilisateur?: UtilisateurOrderByWithRelationInput
+    utilisateur?: UserOrderByWithRelationInput
     projet?: ProjetOrderByWithRelationInput
   }
 
@@ -12950,7 +16588,7 @@ export namespace Prisma {
     projetId?: IntFilter<"MembreProjet"> | number
     createdAt?: DateTimeFilter<"MembreProjet"> | Date | string
     updatedAt?: DateTimeFilter<"MembreProjet"> | Date | string
-    utilisateur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
   }, "utilisateurId_projetId">
 
@@ -12989,10 +16627,10 @@ export namespace Prisma {
     partageurId?: IntFilter<"PartageDocument"> | number
     historique?: StringNullableFilter<"PartageDocument"> | string | null
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UtilisateurNullableScalarRelationFilter, UtilisateurWhereInput> | null
+    utilisateur?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departement?: XOR<DepartementNullableScalarRelationFilter, DepartementWhereInput> | null
     projet?: XOR<ProjetNullableScalarRelationFilter, ProjetWhereInput> | null
-    partageur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    partageur?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type PartageDocumentOrderByWithRelationInput = {
@@ -13005,10 +16643,10 @@ export namespace Prisma {
     partageurId?: SortOrder
     historique?: SortOrderInput | SortOrder
     document?: DocumentOrderByWithRelationInput
-    utilisateur?: UtilisateurOrderByWithRelationInput
+    utilisateur?: UserOrderByWithRelationInput
     departement?: DepartementOrderByWithRelationInput
     projet?: ProjetOrderByWithRelationInput
-    partageur?: UtilisateurOrderByWithRelationInput
+    partageur?: UserOrderByWithRelationInput
   }
 
   export type PartageDocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -13025,10 +16663,10 @@ export namespace Prisma {
     partageurId?: IntFilter<"PartageDocument"> | number
     historique?: StringNullableFilter<"PartageDocument"> | string | null
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UtilisateurNullableScalarRelationFilter, UtilisateurWhereInput> | null
+    utilisateur?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departement?: XOR<DepartementNullableScalarRelationFilter, DepartementWhereInput> | null
     projet?: XOR<ProjetNullableScalarRelationFilter, ProjetWhereInput> | null
-    partageur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    partageur?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "documentId_utilisateurId_departementId_projetId">
 
   export type PartageDocumentOrderByWithAggregationInput = {
@@ -13072,7 +16710,7 @@ export namespace Prisma {
     documentId?: IntFilter<"Notification"> | number
     vu?: BoolFilter<"Notification"> | boolean
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type NotificationOrderByWithRelationInput = {
@@ -13083,7 +16721,7 @@ export namespace Prisma {
     documentId?: SortOrder
     vu?: SortOrder
     document?: DocumentOrderByWithRelationInput
-    utilisateur?: UtilisateurOrderByWithRelationInput
+    utilisateur?: UserOrderByWithRelationInput
   }
 
   export type NotificationWhereUniqueInput = Prisma.AtLeast<{
@@ -13097,7 +16735,7 @@ export namespace Prisma {
     documentId?: IntFilter<"Notification"> | number
     vu?: BoolFilter<"Notification"> | boolean
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UtilisateurScalarRelationFilter, UtilisateurWhereInput>
+    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type NotificationOrderByWithAggregationInput = {
@@ -13126,12 +16764,200 @@ export namespace Prisma {
     vu?: BoolWithAggregatesFilter<"Notification"> | boolean
   }
 
+  export type AccountWhereInput = {
+    AND?: AccountWhereInput | AccountWhereInput[]
+    OR?: AccountWhereInput[]
+    NOT?: AccountWhereInput | AccountWhereInput[]
+    id?: StringFilter<"Account"> | string
+    userId?: IntFilter<"Account"> | number
+    type?: StringFilter<"Account"> | string
+    provider?: StringFilter<"Account"> | string
+    providerAccountId?: StringFilter<"Account"> | string
+    refresh_token?: StringNullableFilter<"Account"> | string | null
+    access_token?: StringNullableFilter<"Account"> | string | null
+    expires_at?: IntNullableFilter<"Account"> | number | null
+    token_type?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    id_token?: StringNullableFilter<"Account"> | string | null
+    session_state?: StringNullableFilter<"Account"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrderInput | SortOrder
+    access_token?: SortOrderInput | SortOrder
+    expires_at?: SortOrderInput | SortOrder
+    token_type?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    id_token?: SortOrderInput | SortOrder
+    session_state?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    provider_providerAccountId?: AccountProviderProviderAccountIdCompoundUniqueInput
+    AND?: AccountWhereInput | AccountWhereInput[]
+    OR?: AccountWhereInput[]
+    NOT?: AccountWhereInput | AccountWhereInput[]
+    userId?: IntFilter<"Account"> | number
+    type?: StringFilter<"Account"> | string
+    provider?: StringFilter<"Account"> | string
+    providerAccountId?: StringFilter<"Account"> | string
+    refresh_token?: StringNullableFilter<"Account"> | string | null
+    access_token?: StringNullableFilter<"Account"> | string | null
+    expires_at?: IntNullableFilter<"Account"> | number | null
+    token_type?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    id_token?: StringNullableFilter<"Account"> | string | null
+    session_state?: StringNullableFilter<"Account"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "provider_providerAccountId">
+
+  export type AccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrderInput | SortOrder
+    access_token?: SortOrderInput | SortOrder
+    expires_at?: SortOrderInput | SortOrder
+    token_type?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    id_token?: SortOrderInput | SortOrder
+    session_state?: SortOrderInput | SortOrder
+    _count?: AccountCountOrderByAggregateInput
+    _avg?: AccountAvgOrderByAggregateInput
+    _max?: AccountMaxOrderByAggregateInput
+    _min?: AccountMinOrderByAggregateInput
+    _sum?: AccountSumOrderByAggregateInput
+  }
+
+  export type AccountScalarWhereWithAggregatesInput = {
+    AND?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
+    OR?: AccountScalarWhereWithAggregatesInput[]
+    NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Account"> | string
+    userId?: IntWithAggregatesFilter<"Account"> | number
+    type?: StringWithAggregatesFilter<"Account"> | string
+    provider?: StringWithAggregatesFilter<"Account"> | string
+    providerAccountId?: StringWithAggregatesFilter<"Account"> | string
+    refresh_token?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    access_token?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    expires_at?: IntNullableWithAggregatesFilter<"Account"> | number | null
+    token_type?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    scope?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    id_token?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    session_state?: StringNullableWithAggregatesFilter<"Account"> | string | null
+  }
+
+  export type SessionWhereInput = {
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
+    userId?: IntFilter<"Session"> | number
+    expires?: DateTimeFilter<"Session"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SessionOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionToken?: string
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    userId?: IntFilter<"Session"> | number
+    expires?: DateTimeFilter<"Session"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "sessionToken">
+
+  export type SessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+    _count?: SessionCountOrderByAggregateInput
+    _avg?: SessionAvgOrderByAggregateInput
+    _max?: SessionMaxOrderByAggregateInput
+    _min?: SessionMinOrderByAggregateInput
+    _sum?: SessionSumOrderByAggregateInput
+  }
+
+  export type SessionScalarWhereWithAggregatesInput = {
+    AND?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    OR?: SessionScalarWhereWithAggregatesInput[]
+    NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Session"> | string
+    sessionToken?: StringWithAggregatesFilter<"Session"> | string
+    userId?: IntWithAggregatesFilter<"Session"> | number
+    expires?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+  }
+
+  export type VerificationTokenWhereInput = {
+    AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    OR?: VerificationTokenWhereInput[]
+    NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    identifier?: StringFilter<"VerificationToken"> | string
+    token?: StringFilter<"VerificationToken"> | string
+    expires?: DateTimeFilter<"VerificationToken"> | Date | string
+  }
+
+  export type VerificationTokenOrderByWithRelationInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenWhereUniqueInput = Prisma.AtLeast<{
+    token?: string
+    identifier_token?: VerificationTokenIdentifierTokenCompoundUniqueInput
+    AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    OR?: VerificationTokenWhereInput[]
+    NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    identifier?: StringFilter<"VerificationToken"> | string
+    expires?: DateTimeFilter<"VerificationToken"> | Date | string
+  }, "token" | "identifier_token">
+
+  export type VerificationTokenOrderByWithAggregationInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+    _count?: VerificationTokenCountOrderByAggregateInput
+    _max?: VerificationTokenMaxOrderByAggregateInput
+    _min?: VerificationTokenMinOrderByAggregateInput
+  }
+
+  export type VerificationTokenScalarWhereWithAggregatesInput = {
+    AND?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    OR?: VerificationTokenScalarWhereWithAggregatesInput[]
+    NOT?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    identifier?: StringWithAggregatesFilter<"VerificationToken"> | string
+    token?: StringWithAggregatesFilter<"VerificationToken"> | string
+    expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
+  }
+
   export type DepartementCreateInput = {
     nom: string
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UtilisateurCreateNestedManyWithoutDepartementInput
+    utilisateurs?: UserCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentCreateNestedManyWithoutDepartementInput
   }
 
@@ -13141,7 +16967,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetUncheckedCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UtilisateurUncheckedCreateNestedManyWithoutDepartementInput
+    utilisateurs?: UserUncheckedCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutDepartementInput
   }
 
@@ -13150,7 +16976,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UtilisateurUpdateManyWithoutDepartementNestedInput
+    utilisateurs?: UserUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUpdateManyWithoutDepartementNestedInput
   }
 
@@ -13160,7 +16986,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUncheckedUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UtilisateurUncheckedUpdateManyWithoutDepartementNestedInput
+    utilisateurs?: UserUncheckedUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
@@ -13184,8 +17010,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UtilisateurCreateInput = {
+  export type UserCreateInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -13193,15 +17020,18 @@ export namespace Prisma {
     updatedAt?: Date | string
     departement?: DepartementCreateNestedOneWithoutUtilisateursInput
     projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
     notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateInput = {
+  export type UserUncheckedCreateInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -13209,14 +17039,17 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUpdateInput = {
+  export type UserUpdateInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -13224,15 +17057,18 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
     projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateInput = {
+  export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -13240,15 +17076,18 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurCreateManyInput = {
+  export type UserCreateManyInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -13257,8 +17096,9 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type UtilisateurUpdateManyMutationInput = {
+  export type UserUpdateManyMutationInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -13266,9 +17106,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UtilisateurUncheckedUpdateManyInput = {
+  export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -13417,7 +17258,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projet: ProjetCreateNestedOneWithoutTachesInput
-    tacheMembres?: TacheMembreCreateNestedManyWithoutTacheInput
+    TacheUtilisateur?: TacheUtilisateurCreateNestedManyWithoutTacheInput
   }
 
   export type TacheUncheckedCreateInput = {
@@ -13429,7 +17270,7 @@ export namespace Prisma {
     statut: $Enums.TacheStatut
     createdAt?: Date | string
     updatedAt?: Date | string
-    tacheMembres?: TacheMembreUncheckedCreateNestedManyWithoutTacheInput
+    TacheUtilisateur?: TacheUtilisateurUncheckedCreateNestedManyWithoutTacheInput
   }
 
   export type TacheUpdateInput = {
@@ -13440,7 +17281,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projet?: ProjetUpdateOneRequiredWithoutTachesNestedInput
-    tacheMembres?: TacheMembreUpdateManyWithoutTacheNestedInput
+    TacheUtilisateur?: TacheUtilisateurUpdateManyWithoutTacheNestedInput
   }
 
   export type TacheUncheckedUpdateInput = {
@@ -13452,7 +17293,7 @@ export namespace Prisma {
     statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tacheMembres?: TacheMembreUncheckedUpdateManyWithoutTacheNestedInput
+    TacheUtilisateur?: TacheUtilisateurUncheckedUpdateManyWithoutTacheNestedInput
   }
 
   export type TacheCreateManyInput = {
@@ -13486,47 +17327,47 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheMembreCreateInput = {
+  export type TacheUtilisateurCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    tache: TacheCreateNestedOneWithoutTacheMembresInput
-    utilisateur: UtilisateurCreateNestedOneWithoutTachesInput
+    tache: TacheCreateNestedOneWithoutTacheUtilisateurInput
+    utilisateur: UserCreateNestedOneWithoutTachesInput
   }
 
-  export type TacheMembreUncheckedCreateInput = {
+  export type TacheUtilisateurUncheckedCreateInput = {
     tacheId: number
     utilisateurId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheMembreUpdateInput = {
+  export type TacheUtilisateurUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tache?: TacheUpdateOneRequiredWithoutTacheMembresNestedInput
-    utilisateur?: UtilisateurUpdateOneRequiredWithoutTachesNestedInput
+    tache?: TacheUpdateOneRequiredWithoutTacheUtilisateurNestedInput
+    utilisateur?: UserUpdateOneRequiredWithoutTachesNestedInput
   }
 
-  export type TacheMembreUncheckedUpdateInput = {
+  export type TacheUtilisateurUncheckedUpdateInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
     utilisateurId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheMembreCreateManyInput = {
+  export type TacheUtilisateurCreateManyInput = {
     tacheId: number
     utilisateurId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheMembreUpdateManyMutationInput = {
+  export type TacheUtilisateurUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheMembreUncheckedUpdateManyInput = {
+  export type TacheUtilisateurUncheckedUpdateManyInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
     utilisateurId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13536,7 +17377,7 @@ export namespace Prisma {
   export type MembreProjetCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateur: UtilisateurCreateNestedOneWithoutProjetsInput
+    utilisateur: UserCreateNestedOneWithoutProjetsInput
     projet: ProjetCreateNestedOneWithoutMembresInput
   }
 
@@ -13550,7 +17391,7 @@ export namespace Prisma {
   export type MembreProjetUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateur?: UtilisateurUpdateOneRequiredWithoutProjetsNestedInput
+    utilisateur?: UserUpdateOneRequiredWithoutProjetsNestedInput
     projet?: ProjetUpdateOneRequiredWithoutMembresNestedInput
   }
 
@@ -13584,10 +17425,10 @@ export namespace Prisma {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UtilisateurCreateNestedOneWithoutPartagesInput
+    utilisateur?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
-    partageur: UtilisateurCreateNestedOneWithoutPartagesEnTantQuePartageurInput
+    partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
 
   export type PartageDocumentUncheckedCreateInput = {
@@ -13605,10 +17446,10 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UtilisateurUpdateOneWithoutPartagesNestedInput
+    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
-    partageur?: UtilisateurUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
+    partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
 
   export type PartageDocumentUncheckedUpdateInput = {
@@ -13654,7 +17495,7 @@ export namespace Prisma {
     dateNotification?: Date | string
     vu?: boolean
     document: DocumentCreateNestedOneWithoutNotificationsInput
-    utilisateur: UtilisateurCreateNestedOneWithoutNotificationsInput
+    utilisateur: UserCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateInput = {
@@ -13671,7 +17512,7 @@ export namespace Prisma {
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
     document?: DocumentUpdateOneRequiredWithoutNotificationsNestedInput
-    utilisateur?: UtilisateurUpdateOneRequiredWithoutNotificationsNestedInput
+    utilisateur?: UserUpdateOneRequiredWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateInput = {
@@ -13705,6 +17546,200 @@ export namespace Prisma {
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     documentId?: IntFieldUpdateOperationsInput | number
     vu?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AccountCreateInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+    user: UserCreateNestedOneWithoutAccountsInput
+  }
+
+  export type AccountUncheckedCreateInput = {
+    id?: string
+    userId: number
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
+  }
+
+  export type AccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountCreateManyInput = {
+    id?: string
+    userId: number
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionCreateInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+    user: UserCreateNestedOneWithoutSessionsInput
+  }
+
+  export type SessionUncheckedCreateInput = {
+    id?: string
+    sessionToken: string
+    userId: number
+    expires: Date | string
+  }
+
+  export type SessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSessionsNestedInput
+  }
+
+  export type SessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionCreateManyInput = {
+    id?: string
+    sessionToken: string
+    userId: number
+    expires: Date | string
+  }
+
+  export type SessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenCreateInput = {
+    identifier: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUncheckedCreateInput = {
+    identifier: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUpdateInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenUncheckedUpdateInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenCreateManyInput = {
+    identifier: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUpdateManyMutationInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenUncheckedUpdateManyInput = {
+    identifier?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -13749,10 +17784,10 @@ export namespace Prisma {
     none?: ProjetWhereInput
   }
 
-  export type UtilisateurListRelationFilter = {
-    every?: UtilisateurWhereInput
-    some?: UtilisateurWhereInput
-    none?: UtilisateurWhereInput
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
   }
 
   export type PartageDocumentListRelationFilter = {
@@ -13765,7 +17800,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UtilisateurOrderByRelationAggregateInput = {
+  export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13878,16 +17913,28 @@ export namespace Prisma {
     none?: MembreProjetWhereInput
   }
 
-  export type TacheMembreListRelationFilter = {
-    every?: TacheMembreWhereInput
-    some?: TacheMembreWhereInput
-    none?: TacheMembreWhereInput
+  export type TacheUtilisateurListRelationFilter = {
+    every?: TacheUtilisateurWhereInput
+    some?: TacheUtilisateurWhereInput
+    none?: TacheUtilisateurWhereInput
   }
 
   export type NotificationListRelationFilter = {
     every?: NotificationWhereInput
     some?: NotificationWhereInput
     none?: NotificationWhereInput
+  }
+
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
   }
 
   export type SortOrderInput = {
@@ -13899,7 +17946,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type TacheMembreOrderByRelationAggregateInput = {
+  export type TacheUtilisateurOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13907,9 +17954,18 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UtilisateurCountOrderByAggregateInput = {
+  export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     nom?: SortOrder
+    prenom?: SortOrder
     email?: SortOrder
     password?: SortOrder
     role?: SortOrder
@@ -13918,14 +17974,15 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UtilisateurAvgOrderByAggregateInput = {
+  export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
     departementId?: SortOrder
   }
 
-  export type UtilisateurMaxOrderByAggregateInput = {
+  export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     nom?: SortOrder
+    prenom?: SortOrder
     email?: SortOrder
     password?: SortOrder
     role?: SortOrder
@@ -13934,9 +17991,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UtilisateurMinOrderByAggregateInput = {
+  export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     nom?: SortOrder
+    prenom?: SortOrder
     email?: SortOrder
     password?: SortOrder
     role?: SortOrder
@@ -13945,7 +18003,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UtilisateurSumOrderByAggregateInput = {
+  export type UserSumOrderByAggregateInput = {
     id?: SortOrder
     departementId?: SortOrder
   }
@@ -14186,43 +18244,43 @@ export namespace Prisma {
     isNot?: TacheWhereInput
   }
 
-  export type UtilisateurScalarRelationFilter = {
-    is?: UtilisateurWhereInput
-    isNot?: UtilisateurWhereInput
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
-  export type TacheMembreTacheIdUtilisateurIdCompoundUniqueInput = {
+  export type TacheUtilisateurTacheIdUtilisateurIdCompoundUniqueInput = {
     tacheId: number
     utilisateurId: number
   }
 
-  export type TacheMembreCountOrderByAggregateInput = {
+  export type TacheUtilisateurCountOrderByAggregateInput = {
     tacheId?: SortOrder
     utilisateurId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type TacheMembreAvgOrderByAggregateInput = {
+  export type TacheUtilisateurAvgOrderByAggregateInput = {
     tacheId?: SortOrder
     utilisateurId?: SortOrder
   }
 
-  export type TacheMembreMaxOrderByAggregateInput = {
-    tacheId?: SortOrder
-    utilisateurId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type TacheMembreMinOrderByAggregateInput = {
+  export type TacheUtilisateurMaxOrderByAggregateInput = {
     tacheId?: SortOrder
     utilisateurId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type TacheMembreSumOrderByAggregateInput = {
+  export type TacheUtilisateurMinOrderByAggregateInput = {
+    tacheId?: SortOrder
+    utilisateurId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TacheUtilisateurSumOrderByAggregateInput = {
     tacheId?: SortOrder
     utilisateurId?: SortOrder
   }
@@ -14268,9 +18326,9 @@ export namespace Prisma {
     isNot?: DocumentWhereInput
   }
 
-  export type UtilisateurNullableScalarRelationFilter = {
-    is?: UtilisateurWhereInput | null
-    isNot?: UtilisateurWhereInput | null
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type ProjetNullableScalarRelationFilter = {
@@ -14388,6 +18446,118 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type AccountProviderProviderAccountIdCompoundUniqueInput = {
+    provider: string
+    providerAccountId: string
+  }
+
+  export type AccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrder
+    access_token?: SortOrder
+    expires_at?: SortOrder
+    token_type?: SortOrder
+    scope?: SortOrder
+    id_token?: SortOrder
+    session_state?: SortOrder
+  }
+
+  export type AccountAvgOrderByAggregateInput = {
+    userId?: SortOrder
+    expires_at?: SortOrder
+  }
+
+  export type AccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrder
+    access_token?: SortOrder
+    expires_at?: SortOrder
+    token_type?: SortOrder
+    scope?: SortOrder
+    id_token?: SortOrder
+    session_state?: SortOrder
+  }
+
+  export type AccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    refresh_token?: SortOrder
+    access_token?: SortOrder
+    expires_at?: SortOrder
+    token_type?: SortOrder
+    scope?: SortOrder
+    id_token?: SortOrder
+    session_state?: SortOrder
+  }
+
+  export type AccountSumOrderByAggregateInput = {
+    userId?: SortOrder
+    expires_at?: SortOrder
+  }
+
+  export type SessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type SessionAvgOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type SessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type SessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionToken?: SortOrder
+    userId?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type SessionSumOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
+    identifier: string
+    token: string
+  }
+
+  export type VerificationTokenCountOrderByAggregateInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenMaxOrderByAggregateInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenMinOrderByAggregateInput = {
+    identifier?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
   export type ProjetCreateNestedManyWithoutDepartementInput = {
     create?: XOR<ProjetCreateWithoutDepartementInput, ProjetUncheckedCreateWithoutDepartementInput> | ProjetCreateWithoutDepartementInput[] | ProjetUncheckedCreateWithoutDepartementInput[]
     connectOrCreate?: ProjetCreateOrConnectWithoutDepartementInput | ProjetCreateOrConnectWithoutDepartementInput[]
@@ -14395,11 +18565,11 @@ export namespace Prisma {
     connect?: ProjetWhereUniqueInput | ProjetWhereUniqueInput[]
   }
 
-  export type UtilisateurCreateNestedManyWithoutDepartementInput = {
-    create?: XOR<UtilisateurCreateWithoutDepartementInput, UtilisateurUncheckedCreateWithoutDepartementInput> | UtilisateurCreateWithoutDepartementInput[] | UtilisateurUncheckedCreateWithoutDepartementInput[]
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutDepartementInput | UtilisateurCreateOrConnectWithoutDepartementInput[]
-    createMany?: UtilisateurCreateManyDepartementInputEnvelope
-    connect?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
+  export type UserCreateNestedManyWithoutDepartementInput = {
+    create?: XOR<UserCreateWithoutDepartementInput, UserUncheckedCreateWithoutDepartementInput> | UserCreateWithoutDepartementInput[] | UserUncheckedCreateWithoutDepartementInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDepartementInput | UserCreateOrConnectWithoutDepartementInput[]
+    createMany?: UserCreateManyDepartementInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
   export type PartageDocumentCreateNestedManyWithoutDepartementInput = {
@@ -14416,11 +18586,11 @@ export namespace Prisma {
     connect?: ProjetWhereUniqueInput | ProjetWhereUniqueInput[]
   }
 
-  export type UtilisateurUncheckedCreateNestedManyWithoutDepartementInput = {
-    create?: XOR<UtilisateurCreateWithoutDepartementInput, UtilisateurUncheckedCreateWithoutDepartementInput> | UtilisateurCreateWithoutDepartementInput[] | UtilisateurUncheckedCreateWithoutDepartementInput[]
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutDepartementInput | UtilisateurCreateOrConnectWithoutDepartementInput[]
-    createMany?: UtilisateurCreateManyDepartementInputEnvelope
-    connect?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
+  export type UserUncheckedCreateNestedManyWithoutDepartementInput = {
+    create?: XOR<UserCreateWithoutDepartementInput, UserUncheckedCreateWithoutDepartementInput> | UserCreateWithoutDepartementInput[] | UserUncheckedCreateWithoutDepartementInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDepartementInput | UserCreateOrConnectWithoutDepartementInput[]
+    createMany?: UserCreateManyDepartementInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
   export type PartageDocumentUncheckedCreateNestedManyWithoutDepartementInput = {
@@ -14452,18 +18622,18 @@ export namespace Prisma {
     deleteMany?: ProjetScalarWhereInput | ProjetScalarWhereInput[]
   }
 
-  export type UtilisateurUpdateManyWithoutDepartementNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutDepartementInput, UtilisateurUncheckedCreateWithoutDepartementInput> | UtilisateurCreateWithoutDepartementInput[] | UtilisateurUncheckedCreateWithoutDepartementInput[]
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutDepartementInput | UtilisateurCreateOrConnectWithoutDepartementInput[]
-    upsert?: UtilisateurUpsertWithWhereUniqueWithoutDepartementInput | UtilisateurUpsertWithWhereUniqueWithoutDepartementInput[]
-    createMany?: UtilisateurCreateManyDepartementInputEnvelope
-    set?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    disconnect?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    delete?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    connect?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    update?: UtilisateurUpdateWithWhereUniqueWithoutDepartementInput | UtilisateurUpdateWithWhereUniqueWithoutDepartementInput[]
-    updateMany?: UtilisateurUpdateManyWithWhereWithoutDepartementInput | UtilisateurUpdateManyWithWhereWithoutDepartementInput[]
-    deleteMany?: UtilisateurScalarWhereInput | UtilisateurScalarWhereInput[]
+  export type UserUpdateManyWithoutDepartementNestedInput = {
+    create?: XOR<UserCreateWithoutDepartementInput, UserUncheckedCreateWithoutDepartementInput> | UserCreateWithoutDepartementInput[] | UserUncheckedCreateWithoutDepartementInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDepartementInput | UserCreateOrConnectWithoutDepartementInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDepartementInput | UserUpsertWithWhereUniqueWithoutDepartementInput[]
+    createMany?: UserCreateManyDepartementInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDepartementInput | UserUpdateWithWhereUniqueWithoutDepartementInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDepartementInput | UserUpdateManyWithWhereWithoutDepartementInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type PartageDocumentUpdateManyWithoutDepartementNestedInput = {
@@ -14502,18 +18672,18 @@ export namespace Prisma {
     deleteMany?: ProjetScalarWhereInput | ProjetScalarWhereInput[]
   }
 
-  export type UtilisateurUncheckedUpdateManyWithoutDepartementNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutDepartementInput, UtilisateurUncheckedCreateWithoutDepartementInput> | UtilisateurCreateWithoutDepartementInput[] | UtilisateurUncheckedCreateWithoutDepartementInput[]
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutDepartementInput | UtilisateurCreateOrConnectWithoutDepartementInput[]
-    upsert?: UtilisateurUpsertWithWhereUniqueWithoutDepartementInput | UtilisateurUpsertWithWhereUniqueWithoutDepartementInput[]
-    createMany?: UtilisateurCreateManyDepartementInputEnvelope
-    set?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    disconnect?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    delete?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    connect?: UtilisateurWhereUniqueInput | UtilisateurWhereUniqueInput[]
-    update?: UtilisateurUpdateWithWhereUniqueWithoutDepartementInput | UtilisateurUpdateWithWhereUniqueWithoutDepartementInput[]
-    updateMany?: UtilisateurUpdateManyWithWhereWithoutDepartementInput | UtilisateurUpdateManyWithWhereWithoutDepartementInput[]
-    deleteMany?: UtilisateurScalarWhereInput | UtilisateurScalarWhereInput[]
+  export type UserUncheckedUpdateManyWithoutDepartementNestedInput = {
+    create?: XOR<UserCreateWithoutDepartementInput, UserUncheckedCreateWithoutDepartementInput> | UserCreateWithoutDepartementInput[] | UserUncheckedCreateWithoutDepartementInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutDepartementInput | UserCreateOrConnectWithoutDepartementInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutDepartementInput | UserUpsertWithWhereUniqueWithoutDepartementInput[]
+    createMany?: UserCreateManyDepartementInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutDepartementInput | UserUpdateWithWhereUniqueWithoutDepartementInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutDepartementInput | UserUpdateManyWithWhereWithoutDepartementInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type PartageDocumentUncheckedUpdateManyWithoutDepartementNestedInput = {
@@ -14543,11 +18713,11 @@ export namespace Prisma {
     connect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
   }
 
-  export type TacheMembreCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<TacheMembreCreateWithoutUtilisateurInput, TacheMembreUncheckedCreateWithoutUtilisateurInput> | TacheMembreCreateWithoutUtilisateurInput[] | TacheMembreUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutUtilisateurInput | TacheMembreCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: TacheMembreCreateManyUtilisateurInputEnvelope
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
+  export type TacheUtilisateurCreateNestedManyWithoutUtilisateurInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
+    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
   }
 
   export type PartageDocumentCreateNestedManyWithoutUtilisateurInput = {
@@ -14571,6 +18741,20 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type AccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
   export type MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput = {
     create?: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput> | MembreProjetCreateWithoutUtilisateurInput[] | MembreProjetUncheckedCreateWithoutUtilisateurInput[]
     connectOrCreate?: MembreProjetCreateOrConnectWithoutUtilisateurInput | MembreProjetCreateOrConnectWithoutUtilisateurInput[]
@@ -14578,11 +18762,11 @@ export namespace Prisma {
     connect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
   }
 
-  export type TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<TacheMembreCreateWithoutUtilisateurInput, TacheMembreUncheckedCreateWithoutUtilisateurInput> | TacheMembreCreateWithoutUtilisateurInput[] | TacheMembreUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutUtilisateurInput | TacheMembreCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: TacheMembreCreateManyUtilisateurInputEnvelope
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
+  export type TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
+    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
   }
 
   export type PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput = {
@@ -14604,6 +18788,20 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutUtilisateurInput | NotificationCreateOrConnectWithoutUtilisateurInput[]
     createMany?: NotificationCreateManyUtilisateurInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -14634,18 +18832,18 @@ export namespace Prisma {
     deleteMany?: MembreProjetScalarWhereInput | MembreProjetScalarWhereInput[]
   }
 
-  export type TacheMembreUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<TacheMembreCreateWithoutUtilisateurInput, TacheMembreUncheckedCreateWithoutUtilisateurInput> | TacheMembreCreateWithoutUtilisateurInput[] | TacheMembreUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutUtilisateurInput | TacheMembreCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: TacheMembreUpsertWithWhereUniqueWithoutUtilisateurInput | TacheMembreUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: TacheMembreCreateManyUtilisateurInputEnvelope
-    set?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    disconnect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    delete?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    update?: TacheMembreUpdateWithWhereUniqueWithoutUtilisateurInput | TacheMembreUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: TacheMembreUpdateManyWithWhereWithoutUtilisateurInput | TacheMembreUpdateManyWithWhereWithoutUtilisateurInput[]
-    deleteMany?: TacheMembreScalarWhereInput | TacheMembreScalarWhereInput[]
+  export type TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
+    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput[]
+    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+    set?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    disconnect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    delete?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput[]
+    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput | TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput[]
+    deleteMany?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
   }
 
   export type PartageDocumentUpdateManyWithoutUtilisateurNestedInput = {
@@ -14690,6 +18888,34 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
+  export type AccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -14712,18 +18938,18 @@ export namespace Prisma {
     deleteMany?: MembreProjetScalarWhereInput | MembreProjetScalarWhereInput[]
   }
 
-  export type TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<TacheMembreCreateWithoutUtilisateurInput, TacheMembreUncheckedCreateWithoutUtilisateurInput> | TacheMembreCreateWithoutUtilisateurInput[] | TacheMembreUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutUtilisateurInput | TacheMembreCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: TacheMembreUpsertWithWhereUniqueWithoutUtilisateurInput | TacheMembreUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: TacheMembreCreateManyUtilisateurInputEnvelope
-    set?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    disconnect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    delete?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    update?: TacheMembreUpdateWithWhereUniqueWithoutUtilisateurInput | TacheMembreUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: TacheMembreUpdateManyWithWhereWithoutUtilisateurInput | TacheMembreUpdateManyWithWhereWithoutUtilisateurInput[]
-    deleteMany?: TacheMembreScalarWhereInput | TacheMembreScalarWhereInput[]
+  export type TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
+    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput[]
+    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+    set?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    disconnect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    delete?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput[]
+    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput | TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput[]
+    deleteMany?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
   }
 
   export type PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput = {
@@ -14766,6 +18992,34 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUtilisateurInput | NotificationUpdateWithWhereUniqueWithoutUtilisateurInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUtilisateurInput | NotificationUpdateManyWithWhereWithoutUtilisateurInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type PartageDocumentCreateNestedManyWithoutDocumentInput = {
@@ -15002,18 +19256,18 @@ export namespace Prisma {
     connect?: ProjetWhereUniqueInput
   }
 
-  export type TacheMembreCreateNestedManyWithoutTacheInput = {
-    create?: XOR<TacheMembreCreateWithoutTacheInput, TacheMembreUncheckedCreateWithoutTacheInput> | TacheMembreCreateWithoutTacheInput[] | TacheMembreUncheckedCreateWithoutTacheInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutTacheInput | TacheMembreCreateOrConnectWithoutTacheInput[]
-    createMany?: TacheMembreCreateManyTacheInputEnvelope
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
+  export type TacheUtilisateurCreateNestedManyWithoutTacheInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutTacheInput, TacheUtilisateurUncheckedCreateWithoutTacheInput> | TacheUtilisateurCreateWithoutTacheInput[] | TacheUtilisateurUncheckedCreateWithoutTacheInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutTacheInput | TacheUtilisateurCreateOrConnectWithoutTacheInput[]
+    createMany?: TacheUtilisateurCreateManyTacheInputEnvelope
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
   }
 
-  export type TacheMembreUncheckedCreateNestedManyWithoutTacheInput = {
-    create?: XOR<TacheMembreCreateWithoutTacheInput, TacheMembreUncheckedCreateWithoutTacheInput> | TacheMembreCreateWithoutTacheInput[] | TacheMembreUncheckedCreateWithoutTacheInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutTacheInput | TacheMembreCreateOrConnectWithoutTacheInput[]
-    createMany?: TacheMembreCreateManyTacheInputEnvelope
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
+  export type TacheUtilisateurUncheckedCreateNestedManyWithoutTacheInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutTacheInput, TacheUtilisateurUncheckedCreateWithoutTacheInput> | TacheUtilisateurCreateWithoutTacheInput[] | TacheUtilisateurUncheckedCreateWithoutTacheInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutTacheInput | TacheUtilisateurCreateOrConnectWithoutTacheInput[]
+    createMany?: TacheUtilisateurCreateManyTacheInputEnvelope
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -15032,66 +19286,66 @@ export namespace Prisma {
     update?: XOR<XOR<ProjetUpdateToOneWithWhereWithoutTachesInput, ProjetUpdateWithoutTachesInput>, ProjetUncheckedUpdateWithoutTachesInput>
   }
 
-  export type TacheMembreUpdateManyWithoutTacheNestedInput = {
-    create?: XOR<TacheMembreCreateWithoutTacheInput, TacheMembreUncheckedCreateWithoutTacheInput> | TacheMembreCreateWithoutTacheInput[] | TacheMembreUncheckedCreateWithoutTacheInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutTacheInput | TacheMembreCreateOrConnectWithoutTacheInput[]
-    upsert?: TacheMembreUpsertWithWhereUniqueWithoutTacheInput | TacheMembreUpsertWithWhereUniqueWithoutTacheInput[]
-    createMany?: TacheMembreCreateManyTacheInputEnvelope
-    set?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    disconnect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    delete?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    update?: TacheMembreUpdateWithWhereUniqueWithoutTacheInput | TacheMembreUpdateWithWhereUniqueWithoutTacheInput[]
-    updateMany?: TacheMembreUpdateManyWithWhereWithoutTacheInput | TacheMembreUpdateManyWithWhereWithoutTacheInput[]
-    deleteMany?: TacheMembreScalarWhereInput | TacheMembreScalarWhereInput[]
+  export type TacheUtilisateurUpdateManyWithoutTacheNestedInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutTacheInput, TacheUtilisateurUncheckedCreateWithoutTacheInput> | TacheUtilisateurCreateWithoutTacheInput[] | TacheUtilisateurUncheckedCreateWithoutTacheInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutTacheInput | TacheUtilisateurCreateOrConnectWithoutTacheInput[]
+    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutTacheInput | TacheUtilisateurUpsertWithWhereUniqueWithoutTacheInput[]
+    createMany?: TacheUtilisateurCreateManyTacheInputEnvelope
+    set?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    disconnect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    delete?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutTacheInput | TacheUtilisateurUpdateWithWhereUniqueWithoutTacheInput[]
+    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutTacheInput | TacheUtilisateurUpdateManyWithWhereWithoutTacheInput[]
+    deleteMany?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
   }
 
-  export type TacheMembreUncheckedUpdateManyWithoutTacheNestedInput = {
-    create?: XOR<TacheMembreCreateWithoutTacheInput, TacheMembreUncheckedCreateWithoutTacheInput> | TacheMembreCreateWithoutTacheInput[] | TacheMembreUncheckedCreateWithoutTacheInput[]
-    connectOrCreate?: TacheMembreCreateOrConnectWithoutTacheInput | TacheMembreCreateOrConnectWithoutTacheInput[]
-    upsert?: TacheMembreUpsertWithWhereUniqueWithoutTacheInput | TacheMembreUpsertWithWhereUniqueWithoutTacheInput[]
-    createMany?: TacheMembreCreateManyTacheInputEnvelope
-    set?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    disconnect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    delete?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    connect?: TacheMembreWhereUniqueInput | TacheMembreWhereUniqueInput[]
-    update?: TacheMembreUpdateWithWhereUniqueWithoutTacheInput | TacheMembreUpdateWithWhereUniqueWithoutTacheInput[]
-    updateMany?: TacheMembreUpdateManyWithWhereWithoutTacheInput | TacheMembreUpdateManyWithWhereWithoutTacheInput[]
-    deleteMany?: TacheMembreScalarWhereInput | TacheMembreScalarWhereInput[]
+  export type TacheUtilisateurUncheckedUpdateManyWithoutTacheNestedInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutTacheInput, TacheUtilisateurUncheckedCreateWithoutTacheInput> | TacheUtilisateurCreateWithoutTacheInput[] | TacheUtilisateurUncheckedCreateWithoutTacheInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutTacheInput | TacheUtilisateurCreateOrConnectWithoutTacheInput[]
+    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutTacheInput | TacheUtilisateurUpsertWithWhereUniqueWithoutTacheInput[]
+    createMany?: TacheUtilisateurCreateManyTacheInputEnvelope
+    set?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    disconnect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    delete?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
+    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutTacheInput | TacheUtilisateurUpdateWithWhereUniqueWithoutTacheInput[]
+    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutTacheInput | TacheUtilisateurUpdateManyWithWhereWithoutTacheInput[]
+    deleteMany?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
   }
 
-  export type TacheCreateNestedOneWithoutTacheMembresInput = {
-    create?: XOR<TacheCreateWithoutTacheMembresInput, TacheUncheckedCreateWithoutTacheMembresInput>
-    connectOrCreate?: TacheCreateOrConnectWithoutTacheMembresInput
+  export type TacheCreateNestedOneWithoutTacheUtilisateurInput = {
+    create?: XOR<TacheCreateWithoutTacheUtilisateurInput, TacheUncheckedCreateWithoutTacheUtilisateurInput>
+    connectOrCreate?: TacheCreateOrConnectWithoutTacheUtilisateurInput
     connect?: TacheWhereUniqueInput
   }
 
-  export type UtilisateurCreateNestedOneWithoutTachesInput = {
-    create?: XOR<UtilisateurCreateWithoutTachesInput, UtilisateurUncheckedCreateWithoutTachesInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutTachesInput
-    connect?: UtilisateurWhereUniqueInput
+  export type UserCreateNestedOneWithoutTachesInput = {
+    create?: XOR<UserCreateWithoutTachesInput, UserUncheckedCreateWithoutTachesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTachesInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type TacheUpdateOneRequiredWithoutTacheMembresNestedInput = {
-    create?: XOR<TacheCreateWithoutTacheMembresInput, TacheUncheckedCreateWithoutTacheMembresInput>
-    connectOrCreate?: TacheCreateOrConnectWithoutTacheMembresInput
-    upsert?: TacheUpsertWithoutTacheMembresInput
+  export type TacheUpdateOneRequiredWithoutTacheUtilisateurNestedInput = {
+    create?: XOR<TacheCreateWithoutTacheUtilisateurInput, TacheUncheckedCreateWithoutTacheUtilisateurInput>
+    connectOrCreate?: TacheCreateOrConnectWithoutTacheUtilisateurInput
+    upsert?: TacheUpsertWithoutTacheUtilisateurInput
     connect?: TacheWhereUniqueInput
-    update?: XOR<XOR<TacheUpdateToOneWithWhereWithoutTacheMembresInput, TacheUpdateWithoutTacheMembresInput>, TacheUncheckedUpdateWithoutTacheMembresInput>
+    update?: XOR<XOR<TacheUpdateToOneWithWhereWithoutTacheUtilisateurInput, TacheUpdateWithoutTacheUtilisateurInput>, TacheUncheckedUpdateWithoutTacheUtilisateurInput>
   }
 
-  export type UtilisateurUpdateOneRequiredWithoutTachesNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutTachesInput, UtilisateurUncheckedCreateWithoutTachesInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutTachesInput
-    upsert?: UtilisateurUpsertWithoutTachesInput
-    connect?: UtilisateurWhereUniqueInput
-    update?: XOR<XOR<UtilisateurUpdateToOneWithWhereWithoutTachesInput, UtilisateurUpdateWithoutTachesInput>, UtilisateurUncheckedUpdateWithoutTachesInput>
+  export type UserUpdateOneRequiredWithoutTachesNestedInput = {
+    create?: XOR<UserCreateWithoutTachesInput, UserUncheckedCreateWithoutTachesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTachesInput
+    upsert?: UserUpsertWithoutTachesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTachesInput, UserUpdateWithoutTachesInput>, UserUncheckedUpdateWithoutTachesInput>
   }
 
-  export type UtilisateurCreateNestedOneWithoutProjetsInput = {
-    create?: XOR<UtilisateurCreateWithoutProjetsInput, UtilisateurUncheckedCreateWithoutProjetsInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutProjetsInput
-    connect?: UtilisateurWhereUniqueInput
+  export type UserCreateNestedOneWithoutProjetsInput = {
+    create?: XOR<UserCreateWithoutProjetsInput, UserUncheckedCreateWithoutProjetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProjetsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type ProjetCreateNestedOneWithoutMembresInput = {
@@ -15100,12 +19354,12 @@ export namespace Prisma {
     connect?: ProjetWhereUniqueInput
   }
 
-  export type UtilisateurUpdateOneRequiredWithoutProjetsNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutProjetsInput, UtilisateurUncheckedCreateWithoutProjetsInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutProjetsInput
-    upsert?: UtilisateurUpsertWithoutProjetsInput
-    connect?: UtilisateurWhereUniqueInput
-    update?: XOR<XOR<UtilisateurUpdateToOneWithWhereWithoutProjetsInput, UtilisateurUpdateWithoutProjetsInput>, UtilisateurUncheckedUpdateWithoutProjetsInput>
+  export type UserUpdateOneRequiredWithoutProjetsNestedInput = {
+    create?: XOR<UserCreateWithoutProjetsInput, UserUncheckedCreateWithoutProjetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProjetsInput
+    upsert?: UserUpsertWithoutProjetsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjetsInput, UserUpdateWithoutProjetsInput>, UserUncheckedUpdateWithoutProjetsInput>
   }
 
   export type ProjetUpdateOneRequiredWithoutMembresNestedInput = {
@@ -15122,10 +19376,10 @@ export namespace Prisma {
     connect?: DocumentWhereUniqueInput
   }
 
-  export type UtilisateurCreateNestedOneWithoutPartagesInput = {
-    create?: XOR<UtilisateurCreateWithoutPartagesInput, UtilisateurUncheckedCreateWithoutPartagesInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutPartagesInput
-    connect?: UtilisateurWhereUniqueInput
+  export type UserCreateNestedOneWithoutPartagesInput = {
+    create?: XOR<UserCreateWithoutPartagesInput, UserUncheckedCreateWithoutPartagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPartagesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type DepartementCreateNestedOneWithoutPartagesInput = {
@@ -15140,10 +19394,10 @@ export namespace Prisma {
     connect?: ProjetWhereUniqueInput
   }
 
-  export type UtilisateurCreateNestedOneWithoutPartagesEnTantQuePartageurInput = {
-    create?: XOR<UtilisateurCreateWithoutPartagesEnTantQuePartageurInput, UtilisateurUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutPartagesEnTantQuePartageurInput
-    connect?: UtilisateurWhereUniqueInput
+  export type UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput = {
+    create?: XOR<UserCreateWithoutPartagesEnTantQuePartageurInput, UserUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPartagesEnTantQuePartageurInput
+    connect?: UserWhereUniqueInput
   }
 
   export type DocumentUpdateOneRequiredWithoutPartagesNestedInput = {
@@ -15154,14 +19408,14 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutPartagesInput, DocumentUpdateWithoutPartagesInput>, DocumentUncheckedUpdateWithoutPartagesInput>
   }
 
-  export type UtilisateurUpdateOneWithoutPartagesNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutPartagesInput, UtilisateurUncheckedCreateWithoutPartagesInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutPartagesInput
-    upsert?: UtilisateurUpsertWithoutPartagesInput
-    disconnect?: UtilisateurWhereInput | boolean
-    delete?: UtilisateurWhereInput | boolean
-    connect?: UtilisateurWhereUniqueInput
-    update?: XOR<XOR<UtilisateurUpdateToOneWithWhereWithoutPartagesInput, UtilisateurUpdateWithoutPartagesInput>, UtilisateurUncheckedUpdateWithoutPartagesInput>
+  export type UserUpdateOneWithoutPartagesNestedInput = {
+    create?: XOR<UserCreateWithoutPartagesInput, UserUncheckedCreateWithoutPartagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPartagesInput
+    upsert?: UserUpsertWithoutPartagesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPartagesInput, UserUpdateWithoutPartagesInput>, UserUncheckedUpdateWithoutPartagesInput>
   }
 
   export type DepartementUpdateOneWithoutPartagesNestedInput = {
@@ -15184,12 +19438,12 @@ export namespace Prisma {
     update?: XOR<XOR<ProjetUpdateToOneWithWhereWithoutPartagesInput, ProjetUpdateWithoutPartagesInput>, ProjetUncheckedUpdateWithoutPartagesInput>
   }
 
-  export type UtilisateurUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutPartagesEnTantQuePartageurInput, UtilisateurUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutPartagesEnTantQuePartageurInput
-    upsert?: UtilisateurUpsertWithoutPartagesEnTantQuePartageurInput
-    connect?: UtilisateurWhereUniqueInput
-    update?: XOR<XOR<UtilisateurUpdateToOneWithWhereWithoutPartagesEnTantQuePartageurInput, UtilisateurUpdateWithoutPartagesEnTantQuePartageurInput>, UtilisateurUncheckedUpdateWithoutPartagesEnTantQuePartageurInput>
+  export type UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput = {
+    create?: XOR<UserCreateWithoutPartagesEnTantQuePartageurInput, UserUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPartagesEnTantQuePartageurInput
+    upsert?: UserUpsertWithoutPartagesEnTantQuePartageurInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPartagesEnTantQuePartageurInput, UserUpdateWithoutPartagesEnTantQuePartageurInput>, UserUncheckedUpdateWithoutPartagesEnTantQuePartageurInput>
   }
 
   export type DocumentCreateNestedOneWithoutNotificationsInput = {
@@ -15198,10 +19452,10 @@ export namespace Prisma {
     connect?: DocumentWhereUniqueInput
   }
 
-  export type UtilisateurCreateNestedOneWithoutNotificationsInput = {
-    create?: XOR<UtilisateurCreateWithoutNotificationsInput, UtilisateurUncheckedCreateWithoutNotificationsInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutNotificationsInput
-    connect?: UtilisateurWhereUniqueInput
+  export type UserCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -15216,12 +19470,40 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutNotificationsInput, DocumentUpdateWithoutNotificationsInput>, DocumentUncheckedUpdateWithoutNotificationsInput>
   }
 
-  export type UtilisateurUpdateOneRequiredWithoutNotificationsNestedInput = {
-    create?: XOR<UtilisateurCreateWithoutNotificationsInput, UtilisateurUncheckedCreateWithoutNotificationsInput>
-    connectOrCreate?: UtilisateurCreateOrConnectWithoutNotificationsInput
-    upsert?: UtilisateurUpsertWithoutNotificationsInput
-    connect?: UtilisateurWhereUniqueInput
-    update?: XOR<XOR<UtilisateurUpdateToOneWithWhereWithoutNotificationsInput, UtilisateurUpdateWithoutNotificationsInput>, UtilisateurUncheckedUpdateWithoutNotificationsInput>
+  export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    upsert?: UserUpsertWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserCreateNestedOneWithoutAccountsInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    upsert?: UserUpsertWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSessionsInput = {
+    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
+    upsert?: UserUpsertWithoutSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -15489,51 +19771,57 @@ export namespace Prisma {
     data: ProjetCreateManyDepartementInput | ProjetCreateManyDepartementInput[]
   }
 
-  export type UtilisateurCreateWithoutDepartementInput = {
+  export type UserCreateWithoutDepartementInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
     notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateWithoutDepartementInput = {
+  export type UserUncheckedCreateWithoutDepartementInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurCreateOrConnectWithoutDepartementInput = {
-    where: UtilisateurWhereUniqueInput
-    create: XOR<UtilisateurCreateWithoutDepartementInput, UtilisateurUncheckedCreateWithoutDepartementInput>
+  export type UserCreateOrConnectWithoutDepartementInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDepartementInput, UserUncheckedCreateWithoutDepartementInput>
   }
 
-  export type UtilisateurCreateManyDepartementInputEnvelope = {
-    data: UtilisateurCreateManyDepartementInput | UtilisateurCreateManyDepartementInput[]
+  export type UserCreateManyDepartementInputEnvelope = {
+    data: UserCreateManyDepartementInput | UserCreateManyDepartementInput[]
   }
 
   export type PartageDocumentCreateWithoutDepartementInput = {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UtilisateurCreateNestedOneWithoutPartagesInput
+    utilisateur?: UserCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
-    partageur: UtilisateurCreateNestedOneWithoutPartagesEnTantQuePartageurInput
+    partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
 
   export type PartageDocumentUncheckedCreateWithoutDepartementInput = {
@@ -15583,34 +19871,35 @@ export namespace Prisma {
     departementId?: IntFilter<"Projet"> | number
   }
 
-  export type UtilisateurUpsertWithWhereUniqueWithoutDepartementInput = {
-    where: UtilisateurWhereUniqueInput
-    update: XOR<UtilisateurUpdateWithoutDepartementInput, UtilisateurUncheckedUpdateWithoutDepartementInput>
-    create: XOR<UtilisateurCreateWithoutDepartementInput, UtilisateurUncheckedCreateWithoutDepartementInput>
+  export type UserUpsertWithWhereUniqueWithoutDepartementInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutDepartementInput, UserUncheckedUpdateWithoutDepartementInput>
+    create: XOR<UserCreateWithoutDepartementInput, UserUncheckedCreateWithoutDepartementInput>
   }
 
-  export type UtilisateurUpdateWithWhereUniqueWithoutDepartementInput = {
-    where: UtilisateurWhereUniqueInput
-    data: XOR<UtilisateurUpdateWithoutDepartementInput, UtilisateurUncheckedUpdateWithoutDepartementInput>
+  export type UserUpdateWithWhereUniqueWithoutDepartementInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutDepartementInput, UserUncheckedUpdateWithoutDepartementInput>
   }
 
-  export type UtilisateurUpdateManyWithWhereWithoutDepartementInput = {
-    where: UtilisateurScalarWhereInput
-    data: XOR<UtilisateurUpdateManyMutationInput, UtilisateurUncheckedUpdateManyWithoutDepartementInput>
+  export type UserUpdateManyWithWhereWithoutDepartementInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutDepartementInput>
   }
 
-  export type UtilisateurScalarWhereInput = {
-    AND?: UtilisateurScalarWhereInput | UtilisateurScalarWhereInput[]
-    OR?: UtilisateurScalarWhereInput[]
-    NOT?: UtilisateurScalarWhereInput | UtilisateurScalarWhereInput[]
-    id?: IntFilter<"Utilisateur"> | number
-    nom?: StringFilter<"Utilisateur"> | string
-    email?: StringFilter<"Utilisateur"> | string
-    password?: StringFilter<"Utilisateur"> | string
-    role?: EnumRoleFilter<"Utilisateur"> | $Enums.Role
-    departementId?: IntNullableFilter<"Utilisateur"> | number | null
-    createdAt?: DateTimeFilter<"Utilisateur"> | Date | string
-    updatedAt?: DateTimeFilter<"Utilisateur"> | Date | string
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: IntFilter<"User"> | number
+    nom?: StringFilter<"User"> | string
+    prenom?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    departementId?: IntNullableFilter<"User"> | number | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
   export type PartageDocumentUpsertWithWhereUniqueWithoutDepartementInput = {
@@ -15686,25 +19975,25 @@ export namespace Prisma {
     data: MembreProjetCreateManyUtilisateurInput | MembreProjetCreateManyUtilisateurInput[]
   }
 
-  export type TacheMembreCreateWithoutUtilisateurInput = {
+  export type TacheUtilisateurCreateWithoutUtilisateurInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    tache: TacheCreateNestedOneWithoutTacheMembresInput
+    tache: TacheCreateNestedOneWithoutTacheUtilisateurInput
   }
 
-  export type TacheMembreUncheckedCreateWithoutUtilisateurInput = {
+  export type TacheUtilisateurUncheckedCreateWithoutUtilisateurInput = {
     tacheId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheMembreCreateOrConnectWithoutUtilisateurInput = {
-    where: TacheMembreWhereUniqueInput
-    create: XOR<TacheMembreCreateWithoutUtilisateurInput, TacheMembreUncheckedCreateWithoutUtilisateurInput>
+  export type TacheUtilisateurCreateOrConnectWithoutUtilisateurInput = {
+    where: TacheUtilisateurWhereUniqueInput
+    create: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput>
   }
 
-  export type TacheMembreCreateManyUtilisateurInputEnvelope = {
-    data: TacheMembreCreateManyUtilisateurInput | TacheMembreCreateManyUtilisateurInput[]
+  export type TacheUtilisateurCreateManyUtilisateurInputEnvelope = {
+    data: TacheUtilisateurCreateManyUtilisateurInput | TacheUtilisateurCreateManyUtilisateurInput[]
   }
 
   export type PartageDocumentCreateWithoutUtilisateurInput = {
@@ -15713,7 +20002,7 @@ export namespace Prisma {
     document: DocumentCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
-    partageur: UtilisateurCreateNestedOneWithoutPartagesEnTantQuePartageurInput
+    partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
 
   export type PartageDocumentUncheckedCreateWithoutUtilisateurInput = {
@@ -15739,7 +20028,7 @@ export namespace Prisma {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UtilisateurCreateNestedOneWithoutPartagesInput
+    utilisateur?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
   }
@@ -15785,6 +20074,64 @@ export namespace Prisma {
 
   export type NotificationCreateManyUtilisateurInputEnvelope = {
     data: NotificationCreateManyUtilisateurInput | NotificationCreateManyUtilisateurInput[]
+  }
+
+  export type AccountCreateWithoutUserInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type AccountCreateOrConnectWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountCreateManyUserInputEnvelope = {
+    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+  }
+
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
   }
 
   export type DepartementUpsertWithoutUtilisateursInput = {
@@ -15841,30 +20188,30 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"MembreProjet"> | Date | string
   }
 
-  export type TacheMembreUpsertWithWhereUniqueWithoutUtilisateurInput = {
-    where: TacheMembreWhereUniqueInput
-    update: XOR<TacheMembreUpdateWithoutUtilisateurInput, TacheMembreUncheckedUpdateWithoutUtilisateurInput>
-    create: XOR<TacheMembreCreateWithoutUtilisateurInput, TacheMembreUncheckedCreateWithoutUtilisateurInput>
+  export type TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput = {
+    where: TacheUtilisateurWhereUniqueInput
+    update: XOR<TacheUtilisateurUpdateWithoutUtilisateurInput, TacheUtilisateurUncheckedUpdateWithoutUtilisateurInput>
+    create: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput>
   }
 
-  export type TacheMembreUpdateWithWhereUniqueWithoutUtilisateurInput = {
-    where: TacheMembreWhereUniqueInput
-    data: XOR<TacheMembreUpdateWithoutUtilisateurInput, TacheMembreUncheckedUpdateWithoutUtilisateurInput>
+  export type TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput = {
+    where: TacheUtilisateurWhereUniqueInput
+    data: XOR<TacheUtilisateurUpdateWithoutUtilisateurInput, TacheUtilisateurUncheckedUpdateWithoutUtilisateurInput>
   }
 
-  export type TacheMembreUpdateManyWithWhereWithoutUtilisateurInput = {
-    where: TacheMembreScalarWhereInput
-    data: XOR<TacheMembreUpdateManyMutationInput, TacheMembreUncheckedUpdateManyWithoutUtilisateurInput>
+  export type TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput = {
+    where: TacheUtilisateurScalarWhereInput
+    data: XOR<TacheUtilisateurUpdateManyMutationInput, TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurInput>
   }
 
-  export type TacheMembreScalarWhereInput = {
-    AND?: TacheMembreScalarWhereInput | TacheMembreScalarWhereInput[]
-    OR?: TacheMembreScalarWhereInput[]
-    NOT?: TacheMembreScalarWhereInput | TacheMembreScalarWhereInput[]
-    tacheId?: IntFilter<"TacheMembre"> | number
-    utilisateurId?: IntFilter<"TacheMembre"> | number
-    createdAt?: DateTimeFilter<"TacheMembre"> | Date | string
-    updatedAt?: DateTimeFilter<"TacheMembre"> | Date | string
+  export type TacheUtilisateurScalarWhereInput = {
+    AND?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
+    OR?: TacheUtilisateurScalarWhereInput[]
+    NOT?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
+    tacheId?: IntFilter<"TacheUtilisateur"> | number
+    utilisateurId?: IntFilter<"TacheUtilisateur"> | number
+    createdAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
+    updatedAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
   }
 
   export type PartageDocumentUpsertWithWhereUniqueWithoutUtilisateurInput = {
@@ -15927,13 +20274,73 @@ export namespace Prisma {
     vu?: BoolFilter<"Notification"> | boolean
   }
 
+  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AccountUpdateManyWithWhereWithoutUserInput = {
+    where: AccountScalarWhereInput
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AccountScalarWhereInput = {
+    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    OR?: AccountScalarWhereInput[]
+    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    id?: StringFilter<"Account"> | string
+    userId?: IntFilter<"Account"> | number
+    type?: StringFilter<"Account"> | string
+    provider?: StringFilter<"Account"> | string
+    providerAccountId?: StringFilter<"Account"> | string
+    refresh_token?: StringNullableFilter<"Account"> | string | null
+    access_token?: StringNullableFilter<"Account"> | string | null
+    expires_at?: IntNullableFilter<"Account"> | number | null
+    token_type?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    id_token?: StringNullableFilter<"Account"> | string | null
+    session_state?: StringNullableFilter<"Account"> | string | null
+  }
+
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
+    userId?: IntFilter<"Session"> | number
+    expires?: DateTimeFilter<"Session"> | Date | string
+  }
+
   export type PartageDocumentCreateWithoutDocumentInput = {
     datePartage?: Date | string
     historique?: string | null
-    utilisateur?: UtilisateurCreateNestedOneWithoutPartagesInput
+    utilisateur?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
-    partageur: UtilisateurCreateNestedOneWithoutPartagesEnTantQuePartageurInput
+    partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
 
   export type PartageDocumentUncheckedCreateWithoutDocumentInput = {
@@ -15959,7 +20366,7 @@ export namespace Prisma {
     message: string
     dateNotification?: Date | string
     vu?: boolean
-    utilisateur: UtilisateurCreateNestedOneWithoutNotificationsInput
+    utilisateur: UserCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateWithoutDocumentInput = {
@@ -16015,7 +20422,7 @@ export namespace Prisma {
     nom: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateurs?: UtilisateurCreateNestedManyWithoutDepartementInput
+    utilisateurs?: UserCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentCreateNestedManyWithoutDepartementInput
   }
 
@@ -16024,7 +20431,7 @@ export namespace Prisma {
     nom: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateurs?: UtilisateurUncheckedCreateNestedManyWithoutDepartementInput
+    utilisateurs?: UserUncheckedCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutDepartementInput
   }
 
@@ -16036,7 +20443,7 @@ export namespace Prisma {
   export type MembreProjetCreateWithoutProjetInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateur: UtilisateurCreateNestedOneWithoutProjetsInput
+    utilisateur: UserCreateNestedOneWithoutProjetsInput
   }
 
   export type MembreProjetUncheckedCreateWithoutProjetInput = {
@@ -16061,7 +20468,7 @@ export namespace Prisma {
     statut: $Enums.TacheStatut
     createdAt?: Date | string
     updatedAt?: Date | string
-    tacheMembres?: TacheMembreCreateNestedManyWithoutTacheInput
+    TacheUtilisateur?: TacheUtilisateurCreateNestedManyWithoutTacheInput
   }
 
   export type TacheUncheckedCreateWithoutProjetInput = {
@@ -16072,7 +20479,7 @@ export namespace Prisma {
     statut: $Enums.TacheStatut
     createdAt?: Date | string
     updatedAt?: Date | string
-    tacheMembres?: TacheMembreUncheckedCreateNestedManyWithoutTacheInput
+    TacheUtilisateur?: TacheUtilisateurUncheckedCreateNestedManyWithoutTacheInput
   }
 
   export type TacheCreateOrConnectWithoutProjetInput = {
@@ -16088,9 +20495,9 @@ export namespace Prisma {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UtilisateurCreateNestedOneWithoutPartagesInput
+    utilisateur?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
-    partageur: UtilisateurCreateNestedOneWithoutPartagesEnTantQuePartageurInput
+    partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
 
   export type PartageDocumentUncheckedCreateWithoutProjetInput = {
@@ -16127,7 +20534,7 @@ export namespace Prisma {
     nom?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateurs?: UtilisateurUpdateManyWithoutDepartementNestedInput
+    utilisateurs?: UserUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUpdateManyWithoutDepartementNestedInput
   }
 
@@ -16136,7 +20543,7 @@ export namespace Prisma {
     nom?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateurs?: UtilisateurUncheckedUpdateManyWithoutDepartementNestedInput
+    utilisateurs?: UserUncheckedUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
@@ -16228,25 +20635,25 @@ export namespace Prisma {
     create: XOR<ProjetCreateWithoutTachesInput, ProjetUncheckedCreateWithoutTachesInput>
   }
 
-  export type TacheMembreCreateWithoutTacheInput = {
+  export type TacheUtilisateurCreateWithoutTacheInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateur: UtilisateurCreateNestedOneWithoutTachesInput
+    utilisateur: UserCreateNestedOneWithoutTachesInput
   }
 
-  export type TacheMembreUncheckedCreateWithoutTacheInput = {
+  export type TacheUtilisateurUncheckedCreateWithoutTacheInput = {
     utilisateurId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheMembreCreateOrConnectWithoutTacheInput = {
-    where: TacheMembreWhereUniqueInput
-    create: XOR<TacheMembreCreateWithoutTacheInput, TacheMembreUncheckedCreateWithoutTacheInput>
+  export type TacheUtilisateurCreateOrConnectWithoutTacheInput = {
+    where: TacheUtilisateurWhereUniqueInput
+    create: XOR<TacheUtilisateurCreateWithoutTacheInput, TacheUtilisateurUncheckedCreateWithoutTacheInput>
   }
 
-  export type TacheMembreCreateManyTacheInputEnvelope = {
-    data: TacheMembreCreateManyTacheInput | TacheMembreCreateManyTacheInput[]
+  export type TacheUtilisateurCreateManyTacheInputEnvelope = {
+    data: TacheUtilisateurCreateManyTacheInput | TacheUtilisateurCreateManyTacheInput[]
   }
 
   export type ProjetUpsertWithoutTachesInput = {
@@ -16281,23 +20688,23 @@ export namespace Prisma {
     partages?: PartageDocumentUncheckedUpdateManyWithoutProjetNestedInput
   }
 
-  export type TacheMembreUpsertWithWhereUniqueWithoutTacheInput = {
-    where: TacheMembreWhereUniqueInput
-    update: XOR<TacheMembreUpdateWithoutTacheInput, TacheMembreUncheckedUpdateWithoutTacheInput>
-    create: XOR<TacheMembreCreateWithoutTacheInput, TacheMembreUncheckedCreateWithoutTacheInput>
+  export type TacheUtilisateurUpsertWithWhereUniqueWithoutTacheInput = {
+    where: TacheUtilisateurWhereUniqueInput
+    update: XOR<TacheUtilisateurUpdateWithoutTacheInput, TacheUtilisateurUncheckedUpdateWithoutTacheInput>
+    create: XOR<TacheUtilisateurCreateWithoutTacheInput, TacheUtilisateurUncheckedCreateWithoutTacheInput>
   }
 
-  export type TacheMembreUpdateWithWhereUniqueWithoutTacheInput = {
-    where: TacheMembreWhereUniqueInput
-    data: XOR<TacheMembreUpdateWithoutTacheInput, TacheMembreUncheckedUpdateWithoutTacheInput>
+  export type TacheUtilisateurUpdateWithWhereUniqueWithoutTacheInput = {
+    where: TacheUtilisateurWhereUniqueInput
+    data: XOR<TacheUtilisateurUpdateWithoutTacheInput, TacheUtilisateurUncheckedUpdateWithoutTacheInput>
   }
 
-  export type TacheMembreUpdateManyWithWhereWithoutTacheInput = {
-    where: TacheMembreScalarWhereInput
-    data: XOR<TacheMembreUpdateManyMutationInput, TacheMembreUncheckedUpdateManyWithoutTacheInput>
+  export type TacheUtilisateurUpdateManyWithWhereWithoutTacheInput = {
+    where: TacheUtilisateurScalarWhereInput
+    data: XOR<TacheUtilisateurUpdateManyMutationInput, TacheUtilisateurUncheckedUpdateManyWithoutTacheInput>
   }
 
-  export type TacheCreateWithoutTacheMembresInput = {
+  export type TacheCreateWithoutTacheUtilisateurInput = {
     titre: string
     description?: string | null
     deadline?: Date | string | null
@@ -16307,7 +20714,7 @@ export namespace Prisma {
     projet: ProjetCreateNestedOneWithoutTachesInput
   }
 
-  export type TacheUncheckedCreateWithoutTacheMembresInput = {
+  export type TacheUncheckedCreateWithoutTacheUtilisateurInput = {
     id?: number
     titre: string
     description?: string | null
@@ -16318,13 +20725,14 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type TacheCreateOrConnectWithoutTacheMembresInput = {
+  export type TacheCreateOrConnectWithoutTacheUtilisateurInput = {
     where: TacheWhereUniqueInput
-    create: XOR<TacheCreateWithoutTacheMembresInput, TacheUncheckedCreateWithoutTacheMembresInput>
+    create: XOR<TacheCreateWithoutTacheUtilisateurInput, TacheUncheckedCreateWithoutTacheUtilisateurInput>
   }
 
-  export type UtilisateurCreateWithoutTachesInput = {
+  export type UserCreateWithoutTachesInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16335,11 +20743,14 @@ export namespace Prisma {
     partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
     notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateWithoutTachesInput = {
+  export type UserUncheckedCreateWithoutTachesInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16350,25 +20761,27 @@ export namespace Prisma {
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurCreateOrConnectWithoutTachesInput = {
-    where: UtilisateurWhereUniqueInput
-    create: XOR<UtilisateurCreateWithoutTachesInput, UtilisateurUncheckedCreateWithoutTachesInput>
+  export type UserCreateOrConnectWithoutTachesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTachesInput, UserUncheckedCreateWithoutTachesInput>
   }
 
-  export type TacheUpsertWithoutTacheMembresInput = {
-    update: XOR<TacheUpdateWithoutTacheMembresInput, TacheUncheckedUpdateWithoutTacheMembresInput>
-    create: XOR<TacheCreateWithoutTacheMembresInput, TacheUncheckedCreateWithoutTacheMembresInput>
+  export type TacheUpsertWithoutTacheUtilisateurInput = {
+    update: XOR<TacheUpdateWithoutTacheUtilisateurInput, TacheUncheckedUpdateWithoutTacheUtilisateurInput>
+    create: XOR<TacheCreateWithoutTacheUtilisateurInput, TacheUncheckedCreateWithoutTacheUtilisateurInput>
     where?: TacheWhereInput
   }
 
-  export type TacheUpdateToOneWithWhereWithoutTacheMembresInput = {
+  export type TacheUpdateToOneWithWhereWithoutTacheUtilisateurInput = {
     where?: TacheWhereInput
-    data: XOR<TacheUpdateWithoutTacheMembresInput, TacheUncheckedUpdateWithoutTacheMembresInput>
+    data: XOR<TacheUpdateWithoutTacheUtilisateurInput, TacheUncheckedUpdateWithoutTacheUtilisateurInput>
   }
 
-  export type TacheUpdateWithoutTacheMembresInput = {
+  export type TacheUpdateWithoutTacheUtilisateurInput = {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16378,7 +20791,7 @@ export namespace Prisma {
     projet?: ProjetUpdateOneRequiredWithoutTachesNestedInput
   }
 
-  export type TacheUncheckedUpdateWithoutTacheMembresInput = {
+  export type TacheUncheckedUpdateWithoutTacheUtilisateurInput = {
     id?: IntFieldUpdateOperationsInput | number
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16389,19 +20802,20 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UtilisateurUpsertWithoutTachesInput = {
-    update: XOR<UtilisateurUpdateWithoutTachesInput, UtilisateurUncheckedUpdateWithoutTachesInput>
-    create: XOR<UtilisateurCreateWithoutTachesInput, UtilisateurUncheckedCreateWithoutTachesInput>
-    where?: UtilisateurWhereInput
+  export type UserUpsertWithoutTachesInput = {
+    update: XOR<UserUpdateWithoutTachesInput, UserUncheckedUpdateWithoutTachesInput>
+    create: XOR<UserCreateWithoutTachesInput, UserUncheckedCreateWithoutTachesInput>
+    where?: UserWhereInput
   }
 
-  export type UtilisateurUpdateToOneWithWhereWithoutTachesInput = {
-    where?: UtilisateurWhereInput
-    data: XOR<UtilisateurUpdateWithoutTachesInput, UtilisateurUncheckedUpdateWithoutTachesInput>
+  export type UserUpdateToOneWithWhereWithoutTachesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTachesInput, UserUncheckedUpdateWithoutTachesInput>
   }
 
-  export type UtilisateurUpdateWithoutTachesInput = {
+  export type UserUpdateWithoutTachesInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16412,11 +20826,14 @@ export namespace Prisma {
     partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateWithoutTachesInput = {
+  export type UserUncheckedUpdateWithoutTachesInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16427,40 +20844,48 @@ export namespace Prisma {
     partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurCreateWithoutProjetsInput = {
+  export type UserCreateWithoutProjetsInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    taches?: TacheMembreCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
     notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateWithoutProjetsInput = {
+  export type UserUncheckedCreateWithoutProjetsInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    taches?: TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurCreateOrConnectWithoutProjetsInput = {
-    where: UtilisateurWhereUniqueInput
-    create: XOR<UtilisateurCreateWithoutProjetsInput, UtilisateurUncheckedCreateWithoutProjetsInput>
+  export type UserCreateOrConnectWithoutProjetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutProjetsInput, UserUncheckedCreateWithoutProjetsInput>
   }
 
   export type ProjetCreateWithoutMembresInput = {
@@ -16489,44 +20914,50 @@ export namespace Prisma {
     create: XOR<ProjetCreateWithoutMembresInput, ProjetUncheckedCreateWithoutMembresInput>
   }
 
-  export type UtilisateurUpsertWithoutProjetsInput = {
-    update: XOR<UtilisateurUpdateWithoutProjetsInput, UtilisateurUncheckedUpdateWithoutProjetsInput>
-    create: XOR<UtilisateurCreateWithoutProjetsInput, UtilisateurUncheckedCreateWithoutProjetsInput>
-    where?: UtilisateurWhereInput
+  export type UserUpsertWithoutProjetsInput = {
+    update: XOR<UserUpdateWithoutProjetsInput, UserUncheckedUpdateWithoutProjetsInput>
+    create: XOR<UserCreateWithoutProjetsInput, UserUncheckedCreateWithoutProjetsInput>
+    where?: UserWhereInput
   }
 
-  export type UtilisateurUpdateToOneWithWhereWithoutProjetsInput = {
-    where?: UtilisateurWhereInput
-    data: XOR<UtilisateurUpdateWithoutProjetsInput, UtilisateurUncheckedUpdateWithoutProjetsInput>
+  export type UserUpdateToOneWithWhereWithoutProjetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutProjetsInput, UserUncheckedUpdateWithoutProjetsInput>
   }
 
-  export type UtilisateurUpdateWithoutProjetsInput = {
+  export type UserUpdateWithoutProjetsInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    taches?: TacheMembreUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateWithoutProjetsInput = {
+  export type UserUncheckedUpdateWithoutProjetsInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    taches?: TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjetUpsertWithoutMembresInput = {
@@ -16583,8 +21014,9 @@ export namespace Prisma {
     create: XOR<DocumentCreateWithoutPartagesInput, DocumentUncheckedCreateWithoutPartagesInput>
   }
 
-  export type UtilisateurCreateWithoutPartagesInput = {
+  export type UserCreateWithoutPartagesInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16592,14 +21024,17 @@ export namespace Prisma {
     updatedAt?: Date | string
     departement?: DepartementCreateNestedOneWithoutUtilisateursInput
     projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
     notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateWithoutPartagesInput = {
+  export type UserUncheckedCreateWithoutPartagesInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16607,14 +21042,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurCreateOrConnectWithoutPartagesInput = {
-    where: UtilisateurWhereUniqueInput
-    create: XOR<UtilisateurCreateWithoutPartagesInput, UtilisateurUncheckedCreateWithoutPartagesInput>
+  export type UserCreateOrConnectWithoutPartagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPartagesInput, UserUncheckedCreateWithoutPartagesInput>
   }
 
   export type DepartementCreateWithoutPartagesInput = {
@@ -16622,7 +21059,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UtilisateurCreateNestedManyWithoutDepartementInput
+    utilisateurs?: UserCreateNestedManyWithoutDepartementInput
   }
 
   export type DepartementUncheckedCreateWithoutPartagesInput = {
@@ -16631,7 +21068,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetUncheckedCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UtilisateurUncheckedCreateNestedManyWithoutDepartementInput
+    utilisateurs?: UserUncheckedCreateNestedManyWithoutDepartementInput
   }
 
   export type DepartementCreateOrConnectWithoutPartagesInput = {
@@ -16665,8 +21102,9 @@ export namespace Prisma {
     create: XOR<ProjetCreateWithoutPartagesInput, ProjetUncheckedCreateWithoutPartagesInput>
   }
 
-  export type UtilisateurCreateWithoutPartagesEnTantQuePartageurInput = {
+  export type UserCreateWithoutPartagesEnTantQuePartageurInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16674,14 +21112,17 @@ export namespace Prisma {
     updatedAt?: Date | string
     departement?: DepartementCreateNestedOneWithoutUtilisateursInput
     projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
     notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateWithoutPartagesEnTantQuePartageurInput = {
+  export type UserUncheckedCreateWithoutPartagesEnTantQuePartageurInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16689,14 +21130,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurCreateOrConnectWithoutPartagesEnTantQuePartageurInput = {
-    where: UtilisateurWhereUniqueInput
-    create: XOR<UtilisateurCreateWithoutPartagesEnTantQuePartageurInput, UtilisateurUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
+  export type UserCreateOrConnectWithoutPartagesEnTantQuePartageurInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPartagesEnTantQuePartageurInput, UserUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
   }
 
   export type DocumentUpsertWithoutPartagesInput = {
@@ -16727,19 +21170,20 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDocumentNestedInput
   }
 
-  export type UtilisateurUpsertWithoutPartagesInput = {
-    update: XOR<UtilisateurUpdateWithoutPartagesInput, UtilisateurUncheckedUpdateWithoutPartagesInput>
-    create: XOR<UtilisateurCreateWithoutPartagesInput, UtilisateurUncheckedCreateWithoutPartagesInput>
-    where?: UtilisateurWhereInput
+  export type UserUpsertWithoutPartagesInput = {
+    update: XOR<UserUpdateWithoutPartagesInput, UserUncheckedUpdateWithoutPartagesInput>
+    create: XOR<UserCreateWithoutPartagesInput, UserUncheckedCreateWithoutPartagesInput>
+    where?: UserWhereInput
   }
 
-  export type UtilisateurUpdateToOneWithWhereWithoutPartagesInput = {
-    where?: UtilisateurWhereInput
-    data: XOR<UtilisateurUpdateWithoutPartagesInput, UtilisateurUncheckedUpdateWithoutPartagesInput>
+  export type UserUpdateToOneWithWhereWithoutPartagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPartagesInput, UserUncheckedUpdateWithoutPartagesInput>
   }
 
-  export type UtilisateurUpdateWithoutPartagesInput = {
+  export type UserUpdateWithoutPartagesInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16747,14 +21191,17 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
     projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateWithoutPartagesInput = {
+  export type UserUncheckedUpdateWithoutPartagesInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16762,9 +21209,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DepartementUpsertWithoutPartagesInput = {
@@ -16783,7 +21232,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UtilisateurUpdateManyWithoutDepartementNestedInput
+    utilisateurs?: UserUpdateManyWithoutDepartementNestedInput
   }
 
   export type DepartementUncheckedUpdateWithoutPartagesInput = {
@@ -16792,7 +21241,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUncheckedUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UtilisateurUncheckedUpdateManyWithoutDepartementNestedInput
+    utilisateurs?: UserUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
   export type ProjetUpsertWithoutPartagesInput = {
@@ -16827,19 +21276,20 @@ export namespace Prisma {
     taches?: TacheUncheckedUpdateManyWithoutProjetNestedInput
   }
 
-  export type UtilisateurUpsertWithoutPartagesEnTantQuePartageurInput = {
-    update: XOR<UtilisateurUpdateWithoutPartagesEnTantQuePartageurInput, UtilisateurUncheckedUpdateWithoutPartagesEnTantQuePartageurInput>
-    create: XOR<UtilisateurCreateWithoutPartagesEnTantQuePartageurInput, UtilisateurUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
-    where?: UtilisateurWhereInput
+  export type UserUpsertWithoutPartagesEnTantQuePartageurInput = {
+    update: XOR<UserUpdateWithoutPartagesEnTantQuePartageurInput, UserUncheckedUpdateWithoutPartagesEnTantQuePartageurInput>
+    create: XOR<UserCreateWithoutPartagesEnTantQuePartageurInput, UserUncheckedCreateWithoutPartagesEnTantQuePartageurInput>
+    where?: UserWhereInput
   }
 
-  export type UtilisateurUpdateToOneWithWhereWithoutPartagesEnTantQuePartageurInput = {
-    where?: UtilisateurWhereInput
-    data: XOR<UtilisateurUpdateWithoutPartagesEnTantQuePartageurInput, UtilisateurUncheckedUpdateWithoutPartagesEnTantQuePartageurInput>
+  export type UserUpdateToOneWithWhereWithoutPartagesEnTantQuePartageurInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPartagesEnTantQuePartageurInput, UserUncheckedUpdateWithoutPartagesEnTantQuePartageurInput>
   }
 
-  export type UtilisateurUpdateWithoutPartagesEnTantQuePartageurInput = {
+  export type UserUpdateWithoutPartagesEnTantQuePartageurInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16847,14 +21297,17 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
     projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
     notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateWithoutPartagesEnTantQuePartageurInput = {
+  export type UserUncheckedUpdateWithoutPartagesEnTantQuePartageurInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16862,9 +21315,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DocumentCreateWithoutNotificationsInput = {
@@ -16889,8 +21344,9 @@ export namespace Prisma {
     create: XOR<DocumentCreateWithoutNotificationsInput, DocumentUncheckedCreateWithoutNotificationsInput>
   }
 
-  export type UtilisateurCreateWithoutNotificationsInput = {
+  export type UserCreateWithoutNotificationsInput = {
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16898,14 +21354,17 @@ export namespace Prisma {
     updatedAt?: Date | string
     departement?: DepartementCreateNestedOneWithoutUtilisateursInput
     projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurUncheckedCreateWithoutNotificationsInput = {
+  export type UserUncheckedCreateWithoutNotificationsInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -16913,14 +21372,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheMembreUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UtilisateurCreateOrConnectWithoutNotificationsInput = {
-    where: UtilisateurWhereUniqueInput
-    create: XOR<UtilisateurCreateWithoutNotificationsInput, UtilisateurUncheckedCreateWithoutNotificationsInput>
+  export type UserCreateOrConnectWithoutNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
   }
 
   export type DocumentUpsertWithoutNotificationsInput = {
@@ -16951,19 +21412,20 @@ export namespace Prisma {
     partages?: PartageDocumentUncheckedUpdateManyWithoutDocumentNestedInput
   }
 
-  export type UtilisateurUpsertWithoutNotificationsInput = {
-    update: XOR<UtilisateurUpdateWithoutNotificationsInput, UtilisateurUncheckedUpdateWithoutNotificationsInput>
-    create: XOR<UtilisateurCreateWithoutNotificationsInput, UtilisateurUncheckedCreateWithoutNotificationsInput>
-    where?: UtilisateurWhereInput
+  export type UserUpsertWithoutNotificationsInput = {
+    update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    where?: UserWhereInput
   }
 
-  export type UtilisateurUpdateToOneWithWhereWithoutNotificationsInput = {
-    where?: UtilisateurWhereInput
-    data: XOR<UtilisateurUpdateWithoutNotificationsInput, UtilisateurUncheckedUpdateWithoutNotificationsInput>
+  export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
   }
 
-  export type UtilisateurUpdateWithoutNotificationsInput = {
+  export type UserUpdateWithoutNotificationsInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16971,14 +21433,17 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
     projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateWithoutNotificationsInput = {
+  export type UserUncheckedUpdateWithoutNotificationsInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -16986,9 +21451,183 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAccountsInput = {
+    nom: string
+    prenom: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
+    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
+    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
+    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAccountsInput = {
+    id?: number
+    nom: string
+    prenom: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    departementId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAccountsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+  }
+
+  export type UserUpsertWithoutAccountsInput = {
+    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserUpdateWithoutAccountsInput = {
+    nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
+    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
+    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAccountsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    departementId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutSessionsInput = {
+    nom: string
+    prenom: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
+    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
+    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
+    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSessionsInput = {
+    id?: number
+    nom: string
+    prenom: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    departementId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+  }
+
+  export type UserUpsertWithoutSessionsInput = {
+    update: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
+    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type UserUpdateWithoutSessionsInput = {
+    nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
+    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
+    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSessionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    departementId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjetCreateManyDepartementInput = {
@@ -16999,9 +21638,10 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type UtilisateurCreateManyDepartementInput = {
+  export type UserCreateManyDepartementInput = {
     id?: number
     nom: string
+    prenom: string
     email: string
     password: string
     role?: $Enums.Role
@@ -17048,38 +21688,45 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UtilisateurUpdateWithoutDepartementInput = {
+  export type UserUpdateWithoutDepartementInput = {
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateWithoutDepartementInput = {
+  export type UserUncheckedUpdateWithoutDepartementInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheMembreUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UtilisateurUncheckedUpdateManyWithoutDepartementInput = {
+  export type UserUncheckedUpdateManyWithoutDepartementInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
+    prenom?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
@@ -17091,9 +21738,9 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UtilisateurUpdateOneWithoutPartagesNestedInput
+    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
-    partageur?: UtilisateurUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
+    partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
 
   export type PartageDocumentUncheckedUpdateWithoutDepartementInput = {
@@ -17122,7 +21769,7 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type TacheMembreCreateManyUtilisateurInput = {
+  export type TacheUtilisateurCreateManyUtilisateurInput = {
     tacheId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17156,6 +21803,26 @@ export namespace Prisma {
     vu?: boolean
   }
 
+  export type AccountCreateManyUserInput = {
+    id?: string
+    type: string
+    provider: string
+    providerAccountId: string
+    refresh_token?: string | null
+    access_token?: string | null
+    expires_at?: number | null
+    token_type?: string | null
+    scope?: string | null
+    id_token?: string | null
+    session_state?: string | null
+  }
+
+  export type SessionCreateManyUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
   export type MembreProjetUpdateWithoutUtilisateurInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17174,19 +21841,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheMembreUpdateWithoutUtilisateurInput = {
+  export type TacheUtilisateurUpdateWithoutUtilisateurInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tache?: TacheUpdateOneRequiredWithoutTacheMembresNestedInput
+    tache?: TacheUpdateOneRequiredWithoutTacheUtilisateurNestedInput
   }
 
-  export type TacheMembreUncheckedUpdateWithoutUtilisateurInput = {
+  export type TacheUtilisateurUncheckedUpdateWithoutUtilisateurInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheMembreUncheckedUpdateManyWithoutUtilisateurInput = {
+  export type TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17198,7 +21865,7 @@ export namespace Prisma {
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
-    partageur?: UtilisateurUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
+    partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
 
   export type PartageDocumentUncheckedUpdateWithoutUtilisateurInput = {
@@ -17225,7 +21892,7 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UtilisateurUpdateOneWithoutPartagesNestedInput
+    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
   }
@@ -17273,6 +21940,66 @@ export namespace Prisma {
     vu?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type AccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
+    access_token?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
+    token_type?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    id_token?: NullableStringFieldUpdateOperationsInput | string | null
+    session_state?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PartageDocumentCreateManyDocumentInput = {
     id?: number
     utilisateurId?: number | null
@@ -17294,10 +22021,10 @@ export namespace Prisma {
   export type PartageDocumentUpdateWithoutDocumentInput = {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
-    utilisateur?: UtilisateurUpdateOneWithoutPartagesNestedInput
+    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
-    partageur?: UtilisateurUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
+    partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
 
   export type PartageDocumentUncheckedUpdateWithoutDocumentInput = {
@@ -17324,7 +22051,7 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
-    utilisateur?: UtilisateurUpdateOneRequiredWithoutNotificationsNestedInput
+    utilisateur?: UserUpdateOneRequiredWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateWithoutDocumentInput = {
@@ -17372,7 +22099,7 @@ export namespace Prisma {
   export type MembreProjetUpdateWithoutProjetInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateur?: UtilisateurUpdateOneRequiredWithoutProjetsNestedInput
+    utilisateur?: UserUpdateOneRequiredWithoutProjetsNestedInput
   }
 
   export type MembreProjetUncheckedUpdateWithoutProjetInput = {
@@ -17394,7 +22121,7 @@ export namespace Prisma {
     statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tacheMembres?: TacheMembreUpdateManyWithoutTacheNestedInput
+    TacheUtilisateur?: TacheUtilisateurUpdateManyWithoutTacheNestedInput
   }
 
   export type TacheUncheckedUpdateWithoutProjetInput = {
@@ -17405,7 +22132,7 @@ export namespace Prisma {
     statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tacheMembres?: TacheMembreUncheckedUpdateManyWithoutTacheNestedInput
+    TacheUtilisateur?: TacheUtilisateurUncheckedUpdateManyWithoutTacheNestedInput
   }
 
   export type TacheUncheckedUpdateManyWithoutProjetInput = {
@@ -17422,9 +22149,9 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UtilisateurUpdateOneWithoutPartagesNestedInput
+    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
-    partageur?: UtilisateurUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
+    partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
 
   export type PartageDocumentUncheckedUpdateWithoutProjetInput = {
@@ -17447,25 +22174,25 @@ export namespace Prisma {
     historique?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type TacheMembreCreateManyTacheInput = {
+  export type TacheUtilisateurCreateManyTacheInput = {
     utilisateurId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheMembreUpdateWithoutTacheInput = {
+  export type TacheUtilisateurUpdateWithoutTacheInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateur?: UtilisateurUpdateOneRequiredWithoutTachesNestedInput
+    utilisateur?: UserUpdateOneRequiredWithoutTachesNestedInput
   }
 
-  export type TacheMembreUncheckedUpdateWithoutTacheInput = {
+  export type TacheUtilisateurUncheckedUpdateWithoutTacheInput = {
     utilisateurId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheMembreUncheckedUpdateManyWithoutTacheInput = {
+  export type TacheUtilisateurUncheckedUpdateManyWithoutTacheInput = {
     utilisateurId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

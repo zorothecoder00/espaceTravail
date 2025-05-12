@@ -1,10 +1,8 @@
-// src/lib/authOptions.ts   
+// src/lib/authOptions.ts     
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { PrismaClient } from '@/generated/prisma' 
 import { NextAuthOptions } from "next-auth"
-
-const prisma = new PrismaClient()
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -15,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = await prisma.utilisateur.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: credentials?.email },
         })
 

@@ -22,7 +22,7 @@ export default async function Dashboard() {
     take: 3,
   });
 
-  const membres = await prisma.utilisateur.findMany({
+  const membres = await prisma.user.findMany({
     where: { role: "UTILISATEUR" },
     take: 3,
     orderBy: { createdAt: "desc" },

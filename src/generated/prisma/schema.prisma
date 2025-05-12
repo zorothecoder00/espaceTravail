@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file, 
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
@@ -19,8 +19,8 @@ model Departement {
   nom          String
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
-  projets      Projet[] // Un département contient plusieurs projets
-  utilisateurs Utilisateur[]     @relation("DepartementUtilisateur")
+  projets      Projet[]
+  utilisateurs User[]            @relation("DepartementUtilisateur")
   partages     PartageDocument[]
 }
 
@@ -29,21 +29,24 @@ enum Role {
   UTILISATEUR
 }
 
-model Utilisateur {
-  id                         Int               @id @default(autoincrement())
+model User {
+  id                         Int                @id @default(autoincrement())
   nom                        String
-  email                      String            @unique
-  password                   String // nécessaire pour Credentials Provider
-  role                       Role              @default(UTILISATEUR) // <-- champ rôle
-  departement                Departement?      @relation("DepartementUtilisateur", fields: [departementId], references: [id])
+  prenom                     String
+  email                      String             @unique
+  password                   String
+  role                       Role               @default(UTILISATEUR)
+  departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id])
   departementId              Int?
-  createdAt                  DateTime          @default(now())
-  updatedAt                  DateTime          @updatedAt
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
   projets                    MembreProjet[]
-  taches                     TacheMembre[]
+  taches                     TacheUtilisateur[]
   partages                   PartageDocument[]
-  partagesEnTantQuePartageur PartageDocument[] @relation("Partageur")
+  partagesEnTantQuePartageur PartageDocument[]  @relation("Partageur")
   notifications              Notification[]
+  accounts                   Account[]
+  sessions                   Session[]
 }
 
 model Document {
@@ -52,7 +55,7 @@ model Document {
   description   String
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
-  partages      PartageDocument[] // Liste des partages du document
+  partages      PartageDocument[]
   notifications Notification[]
 }
 
@@ -63,13 +66,12 @@ model Projet {
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   departement   Departement       @relation(fields: [departementId], references: [id])
-  departementId Int // Clé étrangère vers Departement
+  departementId Int
   membres       MembreProjet[]
   taches        Tache[]
   partages      PartageDocument[]
 }
 
-// Enum pour les statuts de la tâche
 enum TacheStatut {
   A_FAIRE
   EN_COURS
@@ -77,40 +79,36 @@ enum TacheStatut {
 }
 
 model Tache {
-  id           Int           @id @default(autoincrement())
-  titre        String
-  description  String?
-  projet       Projet        @relation(fields: [projetId], references: [id])
-  projetId     Int
-  deadline     DateTime? // Date limite (optionnelle)
-  statut       TacheStatut // Statut de la tâche
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  tacheMembres TacheMembre[] // Référence aux utilisateurs affectés à la tâche
+  id               Int                @id @default(autoincrement())
+  titre            String
+  description      String?
+  projet           Projet             @relation(fields: [projetId], references: [id])
+  projetId         Int
+  deadline         DateTime?
+  statut           TacheStatut
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  TacheUtilisateur TacheUtilisateur[]
 }
 
-model TacheMembre {
-  tache   Tache @relation(fields: [tacheId], references: [id])
-  tacheId Int
-
-  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+model TacheUtilisateur {
+  tache         Tache    @relation(fields: [tacheId], references: [id])
+  tacheId       Int
+  utilisateur   User     @relation(fields: [utilisateurId], references: [id])
   utilisateurId Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@id([tacheId, utilisateurId])
 }
 
 model MembreProjet {
-  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+  utilisateur   User     @relation(fields: [utilisateurId], references: [id])
   utilisateurId Int
-
-  projet   Projet @relation(fields: [projetId], references: [id])
-  projetId Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  projet        Projet   @relation(fields: [projetId], references: [id])
+  projetId      Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@id([utilisateurId, projetId])
 }
@@ -119,28 +117,62 @@ model PartageDocument {
   id            Int          @id @default(autoincrement())
   document      Document     @relation(fields: [documentId], references: [id])
   documentId    Int
-  utilisateur   Utilisateur? @relation(fields: [utilisateurId], references: [id])
+  utilisateur   User?        @relation(fields: [utilisateurId], references: [id])
   utilisateurId Int?
   departement   Departement? @relation(fields: [departementId], references: [id])
   departementId Int?
   projet        Projet?      @relation(fields: [projetId], references: [id])
   projetId      Int?
   datePartage   DateTime     @default(now())
-  partageur     Utilisateur  @relation("Partageur", fields: [partageurId], references: [id])
+  partageur     User         @relation("Partageur", fields: [partageurId], references: [id])
   partageurId   Int
-  historique    String? // Pour stocker les détails ou commentaires liés au partage
+  historique    String?
 
-  @@unique([documentId, utilisateurId, departementId, projetId]) // Pour éviter les doublons
+  @@unique([documentId, utilisateurId, departementId, projetId])
 }
 
 model Notification {
   id               Int      @id @default(autoincrement())
-  utilisateurId    Int // Utilisateur qui reçoit la notification
-  message          String // Message de notification (par exemple, "Un document a été partagé avec vous")
-  dateNotification DateTime @default(now()) // Date de la notification
-  documentId       Int // Lien vers le document partagé
-  document         Document @relation(fields: [documentId], references: [id])
-  vu               Boolean  @default(false) // Si la notification a été vue ou non
+  utilisateurId    Int
+  message          String
+  dateNotification DateTime @default(now())
+  documentId       Int
+  vu               Boolean  @default(false)
 
-  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id])
+  document    Document @relation(fields: [documentId], references: [id])
+  utilisateur User     @relation(fields: [utilisateurId], references: [id])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

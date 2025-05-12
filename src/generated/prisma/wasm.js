@@ -124,9 +124,10 @@ exports.Prisma.DepartementScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.UtilisateurScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   nom: 'nom',
+  prenom: 'prenom',
   email: 'email',
   password: 'password',
   role: 'role',
@@ -163,7 +164,7 @@ exports.Prisma.TacheScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TacheMembreScalarFieldEnum = {
+exports.Prisma.TacheUtilisateurScalarFieldEnum = {
   tacheId: 'tacheId',
   utilisateurId: 'utilisateurId',
   createdAt: 'createdAt',
@@ -197,6 +198,34 @@ exports.Prisma.NotificationScalarFieldEnum = {
   vu: 'vu'
 };
 
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -219,14 +248,17 @@ exports.TacheStatut = exports.$Enums.TacheStatut = {
 
 exports.Prisma.ModelName = {
   Departement: 'Departement',
-  Utilisateur: 'Utilisateur',
+  User: 'User',
   Document: 'Document',
   Projet: 'Projet',
   Tache: 'Tache',
-  TacheMembre: 'TacheMembre',
+  TacheUtilisateur: 'TacheUtilisateur',
   MembreProjet: 'MembreProjet',
   PartageDocument: 'PartageDocument',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken'
 };
 
 /**

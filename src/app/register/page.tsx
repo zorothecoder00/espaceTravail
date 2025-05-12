@@ -1,4 +1,4 @@
-'use client' 
+'use client'   
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -21,6 +21,17 @@ export default function Register() {
     e.preventDefault()
     setErrors({})
     setServerError('')
+
+    if (!e.target['not-robot'].checked) {
+    setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
+    return
+    }
+
+    // Vérification du mot de passe
+    if (e.target.password.value !== e.target.confirmPassword.value) {
+      setErrors({ password: ['Les mots de passe ne correspondent pas'] })
+      return
+    }
 
     const form = {
       prenom: e.target.prenom.value,
