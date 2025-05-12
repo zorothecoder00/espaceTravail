@@ -166,13 +166,13 @@ exports.Prisma.TacheScalarFieldEnum = {
 
 exports.Prisma.TacheUtilisateurScalarFieldEnum = {
   tacheId: 'tacheId',
-  utilisateurId: 'utilisateurId',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MembreProjetScalarFieldEnum = {
-  utilisateurId: 'utilisateurId',
+  userId: 'userId',
   projetId: 'projetId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -181,7 +181,7 @@ exports.Prisma.MembreProjetScalarFieldEnum = {
 exports.Prisma.PartageDocumentScalarFieldEnum = {
   id: 'id',
   documentId: 'documentId',
-  utilisateurId: 'utilisateurId',
+  userId: 'userId',
   departementId: 'departementId',
   projetId: 'projetId',
   datePartage: 'datePartage',
@@ -191,7 +191,7 @@ exports.Prisma.PartageDocumentScalarFieldEnum = {
 
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
-  utilisateurId: 'utilisateurId',
+  userId: 'userId',
   message: 'message',
   dateNotification: 'dateNotification',
   documentId: 'documentId',

@@ -1901,13 +1901,13 @@ export namespace Prisma {
 
   export type DepartementCountOutputType = {
     projets: number
-    utilisateurs: number
+    users: number
     partages: number
   }
 
   export type DepartementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     projets?: boolean | DepartementCountOutputTypeCountProjetsArgs
-    utilisateurs?: boolean | DepartementCountOutputTypeCountUtilisateursArgs
+    users?: boolean | DepartementCountOutputTypeCountUsersArgs
     partages?: boolean | DepartementCountOutputTypeCountPartagesArgs
   }
 
@@ -1932,7 +1932,7 @@ export namespace Prisma {
   /**
    * DepartementCountOutputType without action
    */
-  export type DepartementCountOutputTypeCountUtilisateursArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DepartementCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
   }
 
@@ -2344,7 +2344,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     projets?: boolean | Departement$projetsArgs<ExtArgs>
-    utilisateurs?: boolean | Departement$utilisateursArgs<ExtArgs>
+    users?: boolean | Departement$usersArgs<ExtArgs>
     partages?: boolean | Departement$partagesArgs<ExtArgs>
     _count?: boolean | DepartementCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["departement"]>
@@ -2373,7 +2373,7 @@ export namespace Prisma {
   export type DepartementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "createdAt" | "updatedAt", ExtArgs["result"]["departement"]>
   export type DepartementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     projets?: boolean | Departement$projetsArgs<ExtArgs>
-    utilisateurs?: boolean | Departement$utilisateursArgs<ExtArgs>
+    users?: boolean | Departement$usersArgs<ExtArgs>
     partages?: boolean | Departement$partagesArgs<ExtArgs>
     _count?: boolean | DepartementCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2384,7 +2384,7 @@ export namespace Prisma {
     name: "Departement"
     objects: {
       projets: Prisma.$ProjetPayload<ExtArgs>[]
-      utilisateurs: Prisma.$UserPayload<ExtArgs>[]
+      users: Prisma.$UserPayload<ExtArgs>[]
       partages: Prisma.$PartageDocumentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2787,7 +2787,7 @@ export namespace Prisma {
   export interface Prisma__DepartementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     projets<T extends Departement$projetsArgs<ExtArgs> = {}>(args?: Subset<T, Departement$projetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    utilisateurs<T extends Departement$utilisateursArgs<ExtArgs> = {}>(args?: Subset<T, Departement$utilisateursArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    users<T extends Departement$usersArgs<ExtArgs> = {}>(args?: Subset<T, Departement$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     partages<T extends Departement$partagesArgs<ExtArgs> = {}>(args?: Subset<T, Departement$partagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PartageDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3232,9 +3232,9 @@ export namespace Prisma {
   }
 
   /**
-   * Departement.utilisateurs
+   * Departement.users
    */
-  export type Departement$utilisateursArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Departement$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -8161,31 +8161,31 @@ export namespace Prisma {
 
   export type TacheUtilisateurAvgAggregateOutputType = {
     tacheId: number | null
-    utilisateurId: number | null
+    userId: number | null
   }
 
   export type TacheUtilisateurSumAggregateOutputType = {
     tacheId: number | null
-    utilisateurId: number | null
+    userId: number | null
   }
 
   export type TacheUtilisateurMinAggregateOutputType = {
     tacheId: number | null
-    utilisateurId: number | null
+    userId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type TacheUtilisateurMaxAggregateOutputType = {
     tacheId: number | null
-    utilisateurId: number | null
+    userId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type TacheUtilisateurCountAggregateOutputType = {
     tacheId: number
-    utilisateurId: number
+    userId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8194,31 +8194,31 @@ export namespace Prisma {
 
   export type TacheUtilisateurAvgAggregateInputType = {
     tacheId?: true
-    utilisateurId?: true
+    userId?: true
   }
 
   export type TacheUtilisateurSumAggregateInputType = {
     tacheId?: true
-    utilisateurId?: true
+    userId?: true
   }
 
   export type TacheUtilisateurMinAggregateInputType = {
     tacheId?: true
-    utilisateurId?: true
+    userId?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type TacheUtilisateurMaxAggregateInputType = {
     tacheId?: true
-    utilisateurId?: true
+    userId?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type TacheUtilisateurCountAggregateInputType = {
     tacheId?: true
-    utilisateurId?: true
+    userId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8312,7 +8312,7 @@ export namespace Prisma {
 
   export type TacheUtilisateurGroupByOutputType = {
     tacheId: number
-    utilisateurId: number
+    userId: number
     createdAt: Date
     updatedAt: Date
     _count: TacheUtilisateurCountAggregateOutputType | null
@@ -8338,61 +8338,61 @@ export namespace Prisma {
 
   export type TacheUtilisateurSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tacheId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tacheUtilisateur"]>
 
   export type TacheUtilisateurSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tacheId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tacheUtilisateur"]>
 
   export type TacheUtilisateurSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tacheId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tacheUtilisateur"]>
 
   export type TacheUtilisateurSelectScalar = {
     tacheId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TacheUtilisateurOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tacheId" | "utilisateurId" | "createdAt" | "updatedAt", ExtArgs["result"]["tacheUtilisateur"]>
+  export type TacheUtilisateurOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tacheId" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["tacheUtilisateur"]>
   export type TacheUtilisateurInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TacheUtilisateurIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TacheUtilisateurIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tache?: boolean | TacheDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $TacheUtilisateurPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TacheUtilisateur"
     objects: {
       tache: Prisma.$TachePayload<ExtArgs>
-      utilisateur: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       tacheId: number
-      utilisateurId: number
+      userId: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["tacheUtilisateur"]>
@@ -8790,7 +8790,7 @@ export namespace Prisma {
   export interface Prisma__TacheUtilisateurClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     tache<T extends TacheDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TacheDefaultArgs<ExtArgs>>): Prisma__TacheClient<$Result.GetResult<Prisma.$TachePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    utilisateur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8821,7 +8821,7 @@ export namespace Prisma {
    */
   interface TacheUtilisateurFieldRefs {
     readonly tacheId: FieldRef<"TacheUtilisateur", 'Int'>
-    readonly utilisateurId: FieldRef<"TacheUtilisateur", 'Int'>
+    readonly userId: FieldRef<"TacheUtilisateur", 'Int'>
     readonly createdAt: FieldRef<"TacheUtilisateur", 'DateTime'>
     readonly updatedAt: FieldRef<"TacheUtilisateur", 'DateTime'>
   }
@@ -9249,31 +9249,31 @@ export namespace Prisma {
   }
 
   export type MembreProjetAvgAggregateOutputType = {
-    utilisateurId: number | null
+    userId: number | null
     projetId: number | null
   }
 
   export type MembreProjetSumAggregateOutputType = {
-    utilisateurId: number | null
+    userId: number | null
     projetId: number | null
   }
 
   export type MembreProjetMinAggregateOutputType = {
-    utilisateurId: number | null
+    userId: number | null
     projetId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type MembreProjetMaxAggregateOutputType = {
-    utilisateurId: number | null
+    userId: number | null
     projetId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type MembreProjetCountAggregateOutputType = {
-    utilisateurId: number
+    userId: number
     projetId: number
     createdAt: number
     updatedAt: number
@@ -9282,31 +9282,31 @@ export namespace Prisma {
 
 
   export type MembreProjetAvgAggregateInputType = {
-    utilisateurId?: true
+    userId?: true
     projetId?: true
   }
 
   export type MembreProjetSumAggregateInputType = {
-    utilisateurId?: true
+    userId?: true
     projetId?: true
   }
 
   export type MembreProjetMinAggregateInputType = {
-    utilisateurId?: true
+    userId?: true
     projetId?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type MembreProjetMaxAggregateInputType = {
-    utilisateurId?: true
+    userId?: true
     projetId?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type MembreProjetCountAggregateInputType = {
-    utilisateurId?: true
+    userId?: true
     projetId?: true
     createdAt?: true
     updatedAt?: true
@@ -9400,7 +9400,7 @@ export namespace Prisma {
   }
 
   export type MembreProjetGroupByOutputType = {
-    utilisateurId: number
+    userId: number
     projetId: number
     createdAt: Date
     updatedAt: Date
@@ -9426,61 +9426,61 @@ export namespace Prisma {
 
 
   export type MembreProjetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    utilisateurId?: boolean
+    userId?: boolean
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membreProjet"]>
 
   export type MembreProjetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    utilisateurId?: boolean
+    userId?: boolean
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membreProjet"]>
 
   export type MembreProjetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    utilisateurId?: boolean
+    userId?: boolean
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membreProjet"]>
 
   export type MembreProjetSelectScalar = {
-    utilisateurId?: boolean
+    userId?: boolean
     projetId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MembreProjetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"utilisateurId" | "projetId" | "createdAt" | "updatedAt", ExtArgs["result"]["membreProjet"]>
+  export type MembreProjetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "projetId" | "createdAt" | "updatedAt", ExtArgs["result"]["membreProjet"]>
   export type MembreProjetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }
   export type MembreProjetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }
   export type MembreProjetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     projet?: boolean | ProjetDefaultArgs<ExtArgs>
   }
 
   export type $MembreProjetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MembreProjet"
     objects: {
-      utilisateur: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       projet: Prisma.$ProjetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      utilisateurId: number
+      userId: number
       projetId: number
       createdAt: Date
       updatedAt: Date
@@ -9567,8 +9567,8 @@ export namespace Prisma {
      * // Get first 10 MembreProjets
      * const membreProjets = await prisma.membreProjet.findMany({ take: 10 })
      * 
-     * // Only select the `utilisateurId`
-     * const membreProjetWithUtilisateurIdOnly = await prisma.membreProjet.findMany({ select: { utilisateurId: true } })
+     * // Only select the `userId`
+     * const membreProjetWithUserIdOnly = await prisma.membreProjet.findMany({ select: { userId: true } })
      * 
      */
     findMany<T extends MembreProjetFindManyArgs>(args?: SelectSubset<T, MembreProjetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembreProjetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -9612,9 +9612,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many MembreProjets and only return the `utilisateurId`
-     * const membreProjetWithUtilisateurIdOnly = await prisma.membreProjet.createManyAndReturn({
-     *   select: { utilisateurId: true },
+     * // Create many MembreProjets and only return the `userId`
+     * const membreProjetWithUserIdOnly = await prisma.membreProjet.createManyAndReturn({
+     *   select: { userId: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -9703,9 +9703,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more MembreProjets and only return the `utilisateurId`
-     * const membreProjetWithUtilisateurIdOnly = await prisma.membreProjet.updateManyAndReturn({
-     *   select: { utilisateurId: true },
+     * // Update zero or more MembreProjets and only return the `userId`
+     * const membreProjetWithUserIdOnly = await prisma.membreProjet.updateManyAndReturn({
+     *   select: { userId: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9878,7 +9878,7 @@ export namespace Prisma {
    */
   export interface Prisma__MembreProjetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    utilisateur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     projet<T extends ProjetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjetDefaultArgs<ExtArgs>>): Prisma__ProjetClient<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9909,7 +9909,7 @@ export namespace Prisma {
    * Fields of the MembreProjet model
    */
   interface MembreProjetFieldRefs {
-    readonly utilisateurId: FieldRef<"MembreProjet", 'Int'>
+    readonly userId: FieldRef<"MembreProjet", 'Int'>
     readonly projetId: FieldRef<"MembreProjet", 'Int'>
     readonly createdAt: FieldRef<"MembreProjet", 'DateTime'>
     readonly updatedAt: FieldRef<"MembreProjet", 'DateTime'>
@@ -10340,7 +10340,7 @@ export namespace Prisma {
   export type PartageDocumentAvgAggregateOutputType = {
     id: number | null
     documentId: number | null
-    utilisateurId: number | null
+    userId: number | null
     departementId: number | null
     projetId: number | null
     partageurId: number | null
@@ -10349,7 +10349,7 @@ export namespace Prisma {
   export type PartageDocumentSumAggregateOutputType = {
     id: number | null
     documentId: number | null
-    utilisateurId: number | null
+    userId: number | null
     departementId: number | null
     projetId: number | null
     partageurId: number | null
@@ -10358,7 +10358,7 @@ export namespace Prisma {
   export type PartageDocumentMinAggregateOutputType = {
     id: number | null
     documentId: number | null
-    utilisateurId: number | null
+    userId: number | null
     departementId: number | null
     projetId: number | null
     datePartage: Date | null
@@ -10369,7 +10369,7 @@ export namespace Prisma {
   export type PartageDocumentMaxAggregateOutputType = {
     id: number | null
     documentId: number | null
-    utilisateurId: number | null
+    userId: number | null
     departementId: number | null
     projetId: number | null
     datePartage: Date | null
@@ -10380,7 +10380,7 @@ export namespace Prisma {
   export type PartageDocumentCountAggregateOutputType = {
     id: number
     documentId: number
-    utilisateurId: number
+    userId: number
     departementId: number
     projetId: number
     datePartage: number
@@ -10393,7 +10393,7 @@ export namespace Prisma {
   export type PartageDocumentAvgAggregateInputType = {
     id?: true
     documentId?: true
-    utilisateurId?: true
+    userId?: true
     departementId?: true
     projetId?: true
     partageurId?: true
@@ -10402,7 +10402,7 @@ export namespace Prisma {
   export type PartageDocumentSumAggregateInputType = {
     id?: true
     documentId?: true
-    utilisateurId?: true
+    userId?: true
     departementId?: true
     projetId?: true
     partageurId?: true
@@ -10411,7 +10411,7 @@ export namespace Prisma {
   export type PartageDocumentMinAggregateInputType = {
     id?: true
     documentId?: true
-    utilisateurId?: true
+    userId?: true
     departementId?: true
     projetId?: true
     datePartage?: true
@@ -10422,7 +10422,7 @@ export namespace Prisma {
   export type PartageDocumentMaxAggregateInputType = {
     id?: true
     documentId?: true
-    utilisateurId?: true
+    userId?: true
     departementId?: true
     projetId?: true
     datePartage?: true
@@ -10433,7 +10433,7 @@ export namespace Prisma {
   export type PartageDocumentCountAggregateInputType = {
     id?: true
     documentId?: true
-    utilisateurId?: true
+    userId?: true
     departementId?: true
     projetId?: true
     datePartage?: true
@@ -10531,7 +10531,7 @@ export namespace Prisma {
   export type PartageDocumentGroupByOutputType = {
     id: number
     documentId: number
-    utilisateurId: number | null
+    userId: number | null
     departementId: number | null
     projetId: number | null
     datePartage: Date
@@ -10561,14 +10561,14 @@ export namespace Prisma {
   export type PartageDocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     documentId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     departementId?: boolean
     projetId?: boolean
     datePartage?: boolean
     partageurId?: boolean
     historique?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
+    user?: boolean | PartageDocument$userArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
     partageur?: boolean | UserDefaultArgs<ExtArgs>
@@ -10577,14 +10577,14 @@ export namespace Prisma {
   export type PartageDocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     documentId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     departementId?: boolean
     projetId?: boolean
     datePartage?: boolean
     partageurId?: boolean
     historique?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
+    user?: boolean | PartageDocument$userArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
     partageur?: boolean | UserDefaultArgs<ExtArgs>
@@ -10593,14 +10593,14 @@ export namespace Prisma {
   export type PartageDocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     documentId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     departementId?: boolean
     projetId?: boolean
     datePartage?: boolean
     partageurId?: boolean
     historique?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
+    user?: boolean | PartageDocument$userArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
     partageur?: boolean | UserDefaultArgs<ExtArgs>
@@ -10609,7 +10609,7 @@ export namespace Prisma {
   export type PartageDocumentSelectScalar = {
     id?: boolean
     documentId?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     departementId?: boolean
     projetId?: boolean
     datePartage?: boolean
@@ -10617,24 +10617,24 @@ export namespace Prisma {
     historique?: boolean
   }
 
-  export type PartageDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "documentId" | "utilisateurId" | "departementId" | "projetId" | "datePartage" | "partageurId" | "historique", ExtArgs["result"]["partageDocument"]>
+  export type PartageDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "documentId" | "userId" | "departementId" | "projetId" | "datePartage" | "partageurId" | "historique", ExtArgs["result"]["partageDocument"]>
   export type PartageDocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
+    user?: boolean | PartageDocument$userArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
     partageur?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type PartageDocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
+    user?: boolean | PartageDocument$userArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
     partageur?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type PartageDocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | PartageDocument$utilisateurArgs<ExtArgs>
+    user?: boolean | PartageDocument$userArgs<ExtArgs>
     departement?: boolean | PartageDocument$departementArgs<ExtArgs>
     projet?: boolean | PartageDocument$projetArgs<ExtArgs>
     partageur?: boolean | UserDefaultArgs<ExtArgs>
@@ -10644,7 +10644,7 @@ export namespace Prisma {
     name: "PartageDocument"
     objects: {
       document: Prisma.$DocumentPayload<ExtArgs>
-      utilisateur: Prisma.$UserPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
       departement: Prisma.$DepartementPayload<ExtArgs> | null
       projet: Prisma.$ProjetPayload<ExtArgs> | null
       partageur: Prisma.$UserPayload<ExtArgs>
@@ -10652,7 +10652,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       documentId: number
-      utilisateurId: number | null
+      userId: number | null
       departementId: number | null
       projetId: number | null
       datePartage: Date
@@ -11053,7 +11053,7 @@ export namespace Prisma {
   export interface Prisma__PartageDocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     document<T extends DocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocumentDefaultArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    utilisateur<T extends PartageDocument$utilisateurArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$utilisateurArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends PartageDocument$userArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     departement<T extends PartageDocument$departementArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$departementArgs<ExtArgs>>): Prisma__DepartementClient<$Result.GetResult<Prisma.$DepartementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     projet<T extends PartageDocument$projetArgs<ExtArgs> = {}>(args?: Subset<T, PartageDocument$projetArgs<ExtArgs>>): Prisma__ProjetClient<$Result.GetResult<Prisma.$ProjetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     partageur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -11088,7 +11088,7 @@ export namespace Prisma {
   interface PartageDocumentFieldRefs {
     readonly id: FieldRef<"PartageDocument", 'Int'>
     readonly documentId: FieldRef<"PartageDocument", 'Int'>
-    readonly utilisateurId: FieldRef<"PartageDocument", 'Int'>
+    readonly userId: FieldRef<"PartageDocument", 'Int'>
     readonly departementId: FieldRef<"PartageDocument", 'Int'>
     readonly projetId: FieldRef<"PartageDocument", 'Int'>
     readonly datePartage: FieldRef<"PartageDocument", 'DateTime'>
@@ -11488,9 +11488,9 @@ export namespace Prisma {
   }
 
   /**
-   * PartageDocument.utilisateur
+   * PartageDocument.user
    */
-  export type PartageDocument$utilisateurArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PartageDocument$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -11577,19 +11577,19 @@ export namespace Prisma {
 
   export type NotificationAvgAggregateOutputType = {
     id: number | null
-    utilisateurId: number | null
+    userId: number | null
     documentId: number | null
   }
 
   export type NotificationSumAggregateOutputType = {
     id: number | null
-    utilisateurId: number | null
+    userId: number | null
     documentId: number | null
   }
 
   export type NotificationMinAggregateOutputType = {
     id: number | null
-    utilisateurId: number | null
+    userId: number | null
     message: string | null
     dateNotification: Date | null
     documentId: number | null
@@ -11598,7 +11598,7 @@ export namespace Prisma {
 
   export type NotificationMaxAggregateOutputType = {
     id: number | null
-    utilisateurId: number | null
+    userId: number | null
     message: string | null
     dateNotification: Date | null
     documentId: number | null
@@ -11607,7 +11607,7 @@ export namespace Prisma {
 
   export type NotificationCountAggregateOutputType = {
     id: number
-    utilisateurId: number
+    userId: number
     message: number
     dateNotification: number
     documentId: number
@@ -11618,19 +11618,19 @@ export namespace Prisma {
 
   export type NotificationAvgAggregateInputType = {
     id?: true
-    utilisateurId?: true
+    userId?: true
     documentId?: true
   }
 
   export type NotificationSumAggregateInputType = {
     id?: true
-    utilisateurId?: true
+    userId?: true
     documentId?: true
   }
 
   export type NotificationMinAggregateInputType = {
     id?: true
-    utilisateurId?: true
+    userId?: true
     message?: true
     dateNotification?: true
     documentId?: true
@@ -11639,7 +11639,7 @@ export namespace Prisma {
 
   export type NotificationMaxAggregateInputType = {
     id?: true
-    utilisateurId?: true
+    userId?: true
     message?: true
     dateNotification?: true
     documentId?: true
@@ -11648,7 +11648,7 @@ export namespace Prisma {
 
   export type NotificationCountAggregateInputType = {
     id?: true
-    utilisateurId?: true
+    userId?: true
     message?: true
     dateNotification?: true
     documentId?: true
@@ -11744,7 +11744,7 @@ export namespace Prisma {
 
   export type NotificationGroupByOutputType = {
     id: number
-    utilisateurId: number
+    userId: number
     message: string
     dateNotification: Date
     documentId: number
@@ -11772,69 +11772,69 @@ export namespace Prisma {
 
   export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     message?: boolean
     dateNotification?: boolean
     documentId?: boolean
     vu?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     message?: boolean
     dateNotification?: boolean
     documentId?: boolean
     vu?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     message?: boolean
     dateNotification?: boolean
     documentId?: boolean
     vu?: boolean
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectScalar = {
     id?: boolean
-    utilisateurId?: boolean
+    userId?: boolean
     message?: boolean
     dateNotification?: boolean
     documentId?: boolean
     vu?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilisateurId" | "message" | "dateNotification" | "documentId" | "vu", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "message" | "dateNotification" | "documentId" | "vu", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     document?: boolean | DocumentDefaultArgs<ExtArgs>
-    utilisateur?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Notification"
     objects: {
       document: Prisma.$DocumentPayload<ExtArgs>
-      utilisateur: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      utilisateurId: number
+      userId: number
       message: string
       dateNotification: Date
       documentId: number
@@ -12234,7 +12234,7 @@ export namespace Prisma {
   export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     document<T extends DocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocumentDefaultArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    utilisateur<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12265,7 +12265,7 @@ export namespace Prisma {
    */
   interface NotificationFieldRefs {
     readonly id: FieldRef<"Notification", 'Int'>
-    readonly utilisateurId: FieldRef<"Notification", 'Int'>
+    readonly userId: FieldRef<"Notification", 'Int'>
     readonly message: FieldRef<"Notification", 'String'>
     readonly dateNotification: FieldRef<"Notification", 'DateTime'>
     readonly documentId: FieldRef<"Notification", 'Int'>
@@ -15986,7 +15986,7 @@ export namespace Prisma {
 
   export const TacheUtilisateurScalarFieldEnum: {
     tacheId: 'tacheId',
-    utilisateurId: 'utilisateurId',
+    userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -15995,7 +15995,7 @@ export namespace Prisma {
 
 
   export const MembreProjetScalarFieldEnum: {
-    utilisateurId: 'utilisateurId',
+    userId: 'userId',
     projetId: 'projetId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -16007,7 +16007,7 @@ export namespace Prisma {
   export const PartageDocumentScalarFieldEnum: {
     id: 'id',
     documentId: 'documentId',
-    utilisateurId: 'utilisateurId',
+    userId: 'userId',
     departementId: 'departementId',
     projetId: 'projetId',
     datePartage: 'datePartage',
@@ -16020,7 +16020,7 @@ export namespace Prisma {
 
   export const NotificationScalarFieldEnum: {
     id: 'id',
-    utilisateurId: 'utilisateurId',
+    userId: 'userId',
     message: 'message',
     dateNotification: 'dateNotification',
     documentId: 'documentId',
@@ -16149,7 +16149,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Departement"> | Date | string
     updatedAt?: DateTimeFilter<"Departement"> | Date | string
     projets?: ProjetListRelationFilter
-    utilisateurs?: UserListRelationFilter
+    users?: UserListRelationFilter
     partages?: PartageDocumentListRelationFilter
   }
 
@@ -16159,7 +16159,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     projets?: ProjetOrderByRelationAggregateInput
-    utilisateurs?: UserOrderByRelationAggregateInput
+    users?: UserOrderByRelationAggregateInput
     partages?: PartageDocumentOrderByRelationAggregateInput
   }
 
@@ -16172,7 +16172,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Departement"> | Date | string
     updatedAt?: DateTimeFilter<"Departement"> | Date | string
     projets?: ProjetListRelationFilter
-    utilisateurs?: UserListRelationFilter
+    users?: UserListRelationFilter
     partages?: PartageDocumentListRelationFilter
   }, "id">
 
@@ -16507,38 +16507,38 @@ export namespace Prisma {
     OR?: TacheUtilisateurWhereInput[]
     NOT?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
     tacheId?: IntFilter<"TacheUtilisateur"> | number
-    utilisateurId?: IntFilter<"TacheUtilisateur"> | number
+    userId?: IntFilter<"TacheUtilisateur"> | number
     createdAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     updatedAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     tache?: XOR<TacheScalarRelationFilter, TacheWhereInput>
-    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type TacheUtilisateurOrderByWithRelationInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tache?: TacheOrderByWithRelationInput
-    utilisateur?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type TacheUtilisateurWhereUniqueInput = Prisma.AtLeast<{
-    tacheId_utilisateurId?: TacheUtilisateurTacheIdUtilisateurIdCompoundUniqueInput
+    tacheId_userId?: TacheUtilisateurTacheIdUserIdCompoundUniqueInput
     AND?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
     OR?: TacheUtilisateurWhereInput[]
     NOT?: TacheUtilisateurWhereInput | TacheUtilisateurWhereInput[]
     tacheId?: IntFilter<"TacheUtilisateur"> | number
-    utilisateurId?: IntFilter<"TacheUtilisateur"> | number
+    userId?: IntFilter<"TacheUtilisateur"> | number
     createdAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     updatedAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     tache?: XOR<TacheScalarRelationFilter, TacheWhereInput>
-    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "tacheId_utilisateurId">
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "tacheId_userId">
 
   export type TacheUtilisateurOrderByWithAggregationInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TacheUtilisateurCountOrderByAggregateInput
@@ -16553,7 +16553,7 @@ export namespace Prisma {
     OR?: TacheUtilisateurScalarWhereWithAggregatesInput[]
     NOT?: TacheUtilisateurScalarWhereWithAggregatesInput | TacheUtilisateurScalarWhereWithAggregatesInput[]
     tacheId?: IntWithAggregatesFilter<"TacheUtilisateur"> | number
-    utilisateurId?: IntWithAggregatesFilter<"TacheUtilisateur"> | number
+    userId?: IntWithAggregatesFilter<"TacheUtilisateur"> | number
     createdAt?: DateTimeWithAggregatesFilter<"TacheUtilisateur"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TacheUtilisateur"> | Date | string
   }
@@ -16562,38 +16562,38 @@ export namespace Prisma {
     AND?: MembreProjetWhereInput | MembreProjetWhereInput[]
     OR?: MembreProjetWhereInput[]
     NOT?: MembreProjetWhereInput | MembreProjetWhereInput[]
-    utilisateurId?: IntFilter<"MembreProjet"> | number
+    userId?: IntFilter<"MembreProjet"> | number
     projetId?: IntFilter<"MembreProjet"> | number
     createdAt?: DateTimeFilter<"MembreProjet"> | Date | string
     updatedAt?: DateTimeFilter<"MembreProjet"> | Date | string
-    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
   }
 
   export type MembreProjetOrderByWithRelationInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    utilisateur?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     projet?: ProjetOrderByWithRelationInput
   }
 
   export type MembreProjetWhereUniqueInput = Prisma.AtLeast<{
-    utilisateurId_projetId?: MembreProjetUtilisateurIdProjetIdCompoundUniqueInput
+    userId_projetId?: MembreProjetUserIdProjetIdCompoundUniqueInput
     AND?: MembreProjetWhereInput | MembreProjetWhereInput[]
     OR?: MembreProjetWhereInput[]
     NOT?: MembreProjetWhereInput | MembreProjetWhereInput[]
-    utilisateurId?: IntFilter<"MembreProjet"> | number
+    userId?: IntFilter<"MembreProjet"> | number
     projetId?: IntFilter<"MembreProjet"> | number
     createdAt?: DateTimeFilter<"MembreProjet"> | Date | string
     updatedAt?: DateTimeFilter<"MembreProjet"> | Date | string
-    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
-  }, "utilisateurId_projetId">
+  }, "userId_projetId">
 
   export type MembreProjetOrderByWithAggregationInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16608,7 +16608,7 @@ export namespace Prisma {
     AND?: MembreProjetScalarWhereWithAggregatesInput | MembreProjetScalarWhereWithAggregatesInput[]
     OR?: MembreProjetScalarWhereWithAggregatesInput[]
     NOT?: MembreProjetScalarWhereWithAggregatesInput | MembreProjetScalarWhereWithAggregatesInput[]
-    utilisateurId?: IntWithAggregatesFilter<"MembreProjet"> | number
+    userId?: IntWithAggregatesFilter<"MembreProjet"> | number
     projetId?: IntWithAggregatesFilter<"MembreProjet"> | number
     createdAt?: DateTimeWithAggregatesFilter<"MembreProjet"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MembreProjet"> | Date | string
@@ -16620,14 +16620,14 @@ export namespace Prisma {
     NOT?: PartageDocumentWhereInput | PartageDocumentWhereInput[]
     id?: IntFilter<"PartageDocument"> | number
     documentId?: IntFilter<"PartageDocument"> | number
-    utilisateurId?: IntNullableFilter<"PartageDocument"> | number | null
+    userId?: IntNullableFilter<"PartageDocument"> | number | null
     departementId?: IntNullableFilter<"PartageDocument"> | number | null
     projetId?: IntNullableFilter<"PartageDocument"> | number | null
     datePartage?: DateTimeFilter<"PartageDocument"> | Date | string
     partageurId?: IntFilter<"PartageDocument"> | number
     historique?: StringNullableFilter<"PartageDocument"> | string | null
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departement?: XOR<DepartementNullableScalarRelationFilter, DepartementWhereInput> | null
     projet?: XOR<ProjetNullableScalarRelationFilter, ProjetWhereInput> | null
     partageur?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -16636,14 +16636,14 @@ export namespace Prisma {
   export type PartageDocumentOrderByWithRelationInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
     departementId?: SortOrderInput | SortOrder
     projetId?: SortOrderInput | SortOrder
     datePartage?: SortOrder
     partageurId?: SortOrder
     historique?: SortOrderInput | SortOrder
     document?: DocumentOrderByWithRelationInput
-    utilisateur?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     departement?: DepartementOrderByWithRelationInput
     projet?: ProjetOrderByWithRelationInput
     partageur?: UserOrderByWithRelationInput
@@ -16651,28 +16651,28 @@ export namespace Prisma {
 
   export type PartageDocumentWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    documentId_utilisateurId_departementId_projetId?: PartageDocumentDocumentIdUtilisateurIdDepartementIdProjetIdCompoundUniqueInput
+    documentId_userId_departementId_projetId?: PartageDocumentDocumentIdUserIdDepartementIdProjetIdCompoundUniqueInput
     AND?: PartageDocumentWhereInput | PartageDocumentWhereInput[]
     OR?: PartageDocumentWhereInput[]
     NOT?: PartageDocumentWhereInput | PartageDocumentWhereInput[]
     documentId?: IntFilter<"PartageDocument"> | number
-    utilisateurId?: IntNullableFilter<"PartageDocument"> | number | null
+    userId?: IntNullableFilter<"PartageDocument"> | number | null
     departementId?: IntNullableFilter<"PartageDocument"> | number | null
     projetId?: IntNullableFilter<"PartageDocument"> | number | null
     datePartage?: DateTimeFilter<"PartageDocument"> | Date | string
     partageurId?: IntFilter<"PartageDocument"> | number
     historique?: StringNullableFilter<"PartageDocument"> | string | null
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departement?: XOR<DepartementNullableScalarRelationFilter, DepartementWhereInput> | null
     projet?: XOR<ProjetNullableScalarRelationFilter, ProjetWhereInput> | null
     partageur?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "documentId_utilisateurId_departementId_projetId">
+  }, "id" | "documentId_userId_departementId_projetId">
 
   export type PartageDocumentOrderByWithAggregationInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrderInput | SortOrder
+    userId?: SortOrderInput | SortOrder
     departementId?: SortOrderInput | SortOrder
     projetId?: SortOrderInput | SortOrder
     datePartage?: SortOrder
@@ -16691,7 +16691,7 @@ export namespace Prisma {
     NOT?: PartageDocumentScalarWhereWithAggregatesInput | PartageDocumentScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"PartageDocument"> | number
     documentId?: IntWithAggregatesFilter<"PartageDocument"> | number
-    utilisateurId?: IntNullableWithAggregatesFilter<"PartageDocument"> | number | null
+    userId?: IntNullableWithAggregatesFilter<"PartageDocument"> | number | null
     departementId?: IntNullableWithAggregatesFilter<"PartageDocument"> | number | null
     projetId?: IntNullableWithAggregatesFilter<"PartageDocument"> | number | null
     datePartage?: DateTimeWithAggregatesFilter<"PartageDocument"> | Date | string
@@ -16704,24 +16704,24 @@ export namespace Prisma {
     OR?: NotificationWhereInput[]
     NOT?: NotificationWhereInput | NotificationWhereInput[]
     id?: IntFilter<"Notification"> | number
-    utilisateurId?: IntFilter<"Notification"> | number
+    userId?: IntFilter<"Notification"> | number
     message?: StringFilter<"Notification"> | string
     dateNotification?: DateTimeFilter<"Notification"> | Date | string
     documentId?: IntFilter<"Notification"> | number
     vu?: BoolFilter<"Notification"> | boolean
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type NotificationOrderByWithRelationInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     message?: SortOrder
     dateNotification?: SortOrder
     documentId?: SortOrder
     vu?: SortOrder
     document?: DocumentOrderByWithRelationInput
-    utilisateur?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type NotificationWhereUniqueInput = Prisma.AtLeast<{
@@ -16729,18 +16729,18 @@ export namespace Prisma {
     AND?: NotificationWhereInput | NotificationWhereInput[]
     OR?: NotificationWhereInput[]
     NOT?: NotificationWhereInput | NotificationWhereInput[]
-    utilisateurId?: IntFilter<"Notification"> | number
+    userId?: IntFilter<"Notification"> | number
     message?: StringFilter<"Notification"> | string
     dateNotification?: DateTimeFilter<"Notification"> | Date | string
     documentId?: IntFilter<"Notification"> | number
     vu?: BoolFilter<"Notification"> | boolean
     document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
-    utilisateur?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type NotificationOrderByWithAggregationInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     message?: SortOrder
     dateNotification?: SortOrder
     documentId?: SortOrder
@@ -16757,7 +16757,7 @@ export namespace Prisma {
     OR?: NotificationScalarWhereWithAggregatesInput[]
     NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Notification"> | number
-    utilisateurId?: IntWithAggregatesFilter<"Notification"> | number
+    userId?: IntWithAggregatesFilter<"Notification"> | number
     message?: StringWithAggregatesFilter<"Notification"> | string
     dateNotification?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
     documentId?: IntWithAggregatesFilter<"Notification"> | number
@@ -16957,7 +16957,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UserCreateNestedManyWithoutDepartementInput
+    users?: UserCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentCreateNestedManyWithoutDepartementInput
   }
 
@@ -16967,7 +16967,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetUncheckedCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UserUncheckedCreateNestedManyWithoutDepartementInput
+    users?: UserUncheckedCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutDepartementInput
   }
 
@@ -16976,7 +16976,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UserUpdateManyWithoutDepartementNestedInput
+    users?: UserUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUpdateManyWithoutDepartementNestedInput
   }
 
@@ -16986,7 +16986,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUncheckedUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UserUncheckedUpdateManyWithoutDepartementNestedInput
+    users?: UserUncheckedUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
@@ -17018,12 +17018,12 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -17038,11 +17038,11 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -17055,12 +17055,12 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -17075,11 +17075,11 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -17331,12 +17331,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     tache: TacheCreateNestedOneWithoutTacheUtilisateurInput
-    utilisateur: UserCreateNestedOneWithoutTachesInput
+    user: UserCreateNestedOneWithoutTachesInput
   }
 
   export type TacheUtilisateurUncheckedCreateInput = {
     tacheId: number
-    utilisateurId: number
+    userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17345,19 +17345,19 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tache?: TacheUpdateOneRequiredWithoutTacheUtilisateurNestedInput
-    utilisateur?: UserUpdateOneRequiredWithoutTachesNestedInput
+    user?: UserUpdateOneRequiredWithoutTachesNestedInput
   }
 
   export type TacheUtilisateurUncheckedUpdateInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TacheUtilisateurCreateManyInput = {
     tacheId: number
-    utilisateurId: number
+    userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17369,7 +17369,7 @@ export namespace Prisma {
 
   export type TacheUtilisateurUncheckedUpdateManyInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17377,12 +17377,12 @@ export namespace Prisma {
   export type MembreProjetCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateur: UserCreateNestedOneWithoutProjetsInput
+    user: UserCreateNestedOneWithoutProjetsInput
     projet: ProjetCreateNestedOneWithoutMembresInput
   }
 
   export type MembreProjetUncheckedCreateInput = {
-    utilisateurId: number
+    userId: number
     projetId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17391,19 +17391,19 @@ export namespace Prisma {
   export type MembreProjetUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateur?: UserUpdateOneRequiredWithoutProjetsNestedInput
+    user?: UserUpdateOneRequiredWithoutProjetsNestedInput
     projet?: ProjetUpdateOneRequiredWithoutMembresNestedInput
   }
 
   export type MembreProjetUncheckedUpdateInput = {
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     projetId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MembreProjetCreateManyInput = {
-    utilisateurId: number
+    userId: number
     projetId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17415,7 +17415,7 @@ export namespace Prisma {
   }
 
   export type MembreProjetUncheckedUpdateManyInput = {
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     projetId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17425,7 +17425,7 @@ export namespace Prisma {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UserCreateNestedOneWithoutPartagesInput
+    user?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
     partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
@@ -17434,7 +17434,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedCreateInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     projetId?: number | null
     datePartage?: Date | string
@@ -17446,7 +17446,7 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
+    user?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
     partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
@@ -17455,7 +17455,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17466,7 +17466,7 @@ export namespace Prisma {
   export type PartageDocumentCreateManyInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     projetId?: number | null
     datePartage?: Date | string
@@ -17482,7 +17482,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17495,12 +17495,12 @@ export namespace Prisma {
     dateNotification?: Date | string
     vu?: boolean
     document: DocumentCreateNestedOneWithoutNotificationsInput
-    utilisateur: UserCreateNestedOneWithoutNotificationsInput
+    user: UserCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateInput = {
     id?: number
-    utilisateurId: number
+    userId: number
     message: string
     dateNotification?: Date | string
     documentId: number
@@ -17512,12 +17512,12 @@ export namespace Prisma {
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
     document?: DocumentUpdateOneRequiredWithoutNotificationsNestedInput
-    utilisateur?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     documentId?: IntFieldUpdateOperationsInput | number
@@ -17526,7 +17526,7 @@ export namespace Prisma {
 
   export type NotificationCreateManyInput = {
     id?: number
-    utilisateurId: number
+    userId: number
     message: string
     dateNotification?: Date | string
     documentId: number
@@ -17541,7 +17541,7 @@ export namespace Prisma {
 
   export type NotificationUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     documentId?: IntFieldUpdateOperationsInput | number
@@ -18249,75 +18249,75 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
-  export type TacheUtilisateurTacheIdUtilisateurIdCompoundUniqueInput = {
+  export type TacheUtilisateurTacheIdUserIdCompoundUniqueInput = {
     tacheId: number
-    utilisateurId: number
+    userId: number
   }
 
   export type TacheUtilisateurCountOrderByAggregateInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TacheUtilisateurAvgOrderByAggregateInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
   }
 
   export type TacheUtilisateurMaxOrderByAggregateInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TacheUtilisateurMinOrderByAggregateInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TacheUtilisateurSumOrderByAggregateInput = {
     tacheId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
   }
 
-  export type MembreProjetUtilisateurIdProjetIdCompoundUniqueInput = {
-    utilisateurId: number
+  export type MembreProjetUserIdProjetIdCompoundUniqueInput = {
+    userId: number
     projetId: number
   }
 
   export type MembreProjetCountOrderByAggregateInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type MembreProjetAvgOrderByAggregateInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
   }
 
   export type MembreProjetMaxOrderByAggregateInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type MembreProjetMinOrderByAggregateInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type MembreProjetSumOrderByAggregateInput = {
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     projetId?: SortOrder
   }
 
@@ -18336,9 +18336,9 @@ export namespace Prisma {
     isNot?: ProjetWhereInput | null
   }
 
-  export type PartageDocumentDocumentIdUtilisateurIdDepartementIdProjetIdCompoundUniqueInput = {
+  export type PartageDocumentDocumentIdUserIdDepartementIdProjetIdCompoundUniqueInput = {
     documentId: number
-    utilisateurId: number
+    userId: number
     departementId: number
     projetId: number
   }
@@ -18346,7 +18346,7 @@ export namespace Prisma {
   export type PartageDocumentCountOrderByAggregateInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     departementId?: SortOrder
     projetId?: SortOrder
     datePartage?: SortOrder
@@ -18357,7 +18357,7 @@ export namespace Prisma {
   export type PartageDocumentAvgOrderByAggregateInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     departementId?: SortOrder
     projetId?: SortOrder
     partageurId?: SortOrder
@@ -18366,7 +18366,7 @@ export namespace Prisma {
   export type PartageDocumentMaxOrderByAggregateInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     departementId?: SortOrder
     projetId?: SortOrder
     datePartage?: SortOrder
@@ -18377,7 +18377,7 @@ export namespace Prisma {
   export type PartageDocumentMinOrderByAggregateInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     departementId?: SortOrder
     projetId?: SortOrder
     datePartage?: SortOrder
@@ -18388,7 +18388,7 @@ export namespace Prisma {
   export type PartageDocumentSumOrderByAggregateInput = {
     id?: SortOrder
     documentId?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     departementId?: SortOrder
     projetId?: SortOrder
     partageurId?: SortOrder
@@ -18401,7 +18401,7 @@ export namespace Prisma {
 
   export type NotificationCountOrderByAggregateInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     message?: SortOrder
     dateNotification?: SortOrder
     documentId?: SortOrder
@@ -18410,13 +18410,13 @@ export namespace Prisma {
 
   export type NotificationAvgOrderByAggregateInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     documentId?: SortOrder
   }
 
   export type NotificationMaxOrderByAggregateInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     message?: SortOrder
     dateNotification?: SortOrder
     documentId?: SortOrder
@@ -18425,7 +18425,7 @@ export namespace Prisma {
 
   export type NotificationMinOrderByAggregateInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     message?: SortOrder
     dateNotification?: SortOrder
     documentId?: SortOrder
@@ -18434,7 +18434,7 @@ export namespace Prisma {
 
   export type NotificationSumOrderByAggregateInput = {
     id?: SortOrder
-    utilisateurId?: SortOrder
+    userId?: SortOrder
     documentId?: SortOrder
   }
 
@@ -18700,30 +18700,30 @@ export namespace Prisma {
     deleteMany?: PartageDocumentScalarWhereInput | PartageDocumentScalarWhereInput[]
   }
 
-  export type DepartementCreateNestedOneWithoutUtilisateursInput = {
-    create?: XOR<DepartementCreateWithoutUtilisateursInput, DepartementUncheckedCreateWithoutUtilisateursInput>
-    connectOrCreate?: DepartementCreateOrConnectWithoutUtilisateursInput
+  export type DepartementCreateNestedOneWithoutUsersInput = {
+    create?: XOR<DepartementCreateWithoutUsersInput, DepartementUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: DepartementCreateOrConnectWithoutUsersInput
     connect?: DepartementWhereUniqueInput
   }
 
-  export type MembreProjetCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput> | MembreProjetCreateWithoutUtilisateurInput[] | MembreProjetUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: MembreProjetCreateOrConnectWithoutUtilisateurInput | MembreProjetCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: MembreProjetCreateManyUtilisateurInputEnvelope
+  export type MembreProjetCreateNestedManyWithoutUserInput = {
+    create?: XOR<MembreProjetCreateWithoutUserInput, MembreProjetUncheckedCreateWithoutUserInput> | MembreProjetCreateWithoutUserInput[] | MembreProjetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MembreProjetCreateOrConnectWithoutUserInput | MembreProjetCreateOrConnectWithoutUserInput[]
+    createMany?: MembreProjetCreateManyUserInputEnvelope
     connect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
   }
 
-  export type TacheUtilisateurCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+  export type TacheUtilisateurCreateNestedManyWithoutUserInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUserInput, TacheUtilisateurUncheckedCreateWithoutUserInput> | TacheUtilisateurCreateWithoutUserInput[] | TacheUtilisateurUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUserInput | TacheUtilisateurCreateOrConnectWithoutUserInput[]
+    createMany?: TacheUtilisateurCreateManyUserInputEnvelope
     connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
   }
 
-  export type PartageDocumentCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<PartageDocumentCreateWithoutUtilisateurInput, PartageDocumentUncheckedCreateWithoutUtilisateurInput> | PartageDocumentCreateWithoutUtilisateurInput[] | PartageDocumentUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUtilisateurInput | PartageDocumentCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: PartageDocumentCreateManyUtilisateurInputEnvelope
+  export type PartageDocumentCreateNestedManyWithoutUserInput = {
+    create?: XOR<PartageDocumentCreateWithoutUserInput, PartageDocumentUncheckedCreateWithoutUserInput> | PartageDocumentCreateWithoutUserInput[] | PartageDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUserInput | PartageDocumentCreateOrConnectWithoutUserInput[]
+    createMany?: PartageDocumentCreateManyUserInputEnvelope
     connect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
   }
 
@@ -18734,10 +18734,10 @@ export namespace Prisma {
     connect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
   }
 
-  export type NotificationCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<NotificationCreateWithoutUtilisateurInput, NotificationUncheckedCreateWithoutUtilisateurInput> | NotificationCreateWithoutUtilisateurInput[] | NotificationUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUtilisateurInput | NotificationCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: NotificationCreateManyUtilisateurInputEnvelope
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
@@ -18755,24 +18755,24 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput> | MembreProjetCreateWithoutUtilisateurInput[] | MembreProjetUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: MembreProjetCreateOrConnectWithoutUtilisateurInput | MembreProjetCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: MembreProjetCreateManyUtilisateurInputEnvelope
+  export type MembreProjetUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MembreProjetCreateWithoutUserInput, MembreProjetUncheckedCreateWithoutUserInput> | MembreProjetCreateWithoutUserInput[] | MembreProjetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MembreProjetCreateOrConnectWithoutUserInput | MembreProjetCreateOrConnectWithoutUserInput[]
+    createMany?: MembreProjetCreateManyUserInputEnvelope
     connect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
   }
 
-  export type TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+  export type TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUserInput, TacheUtilisateurUncheckedCreateWithoutUserInput> | TacheUtilisateurCreateWithoutUserInput[] | TacheUtilisateurUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUserInput | TacheUtilisateurCreateOrConnectWithoutUserInput[]
+    createMany?: TacheUtilisateurCreateManyUserInputEnvelope
     connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
   }
 
-  export type PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<PartageDocumentCreateWithoutUtilisateurInput, PartageDocumentUncheckedCreateWithoutUtilisateurInput> | PartageDocumentCreateWithoutUtilisateurInput[] | PartageDocumentUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUtilisateurInput | PartageDocumentCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: PartageDocumentCreateManyUtilisateurInputEnvelope
+  export type PartageDocumentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PartageDocumentCreateWithoutUserInput, PartageDocumentUncheckedCreateWithoutUserInput> | PartageDocumentCreateWithoutUserInput[] | PartageDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUserInput | PartageDocumentCreateOrConnectWithoutUserInput[]
+    createMany?: PartageDocumentCreateManyUserInputEnvelope
     connect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
   }
 
@@ -18783,10 +18783,10 @@ export namespace Prisma {
     connect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
   }
 
-  export type NotificationUncheckedCreateNestedManyWithoutUtilisateurInput = {
-    create?: XOR<NotificationCreateWithoutUtilisateurInput, NotificationUncheckedCreateWithoutUtilisateurInput> | NotificationCreateWithoutUtilisateurInput[] | NotificationUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUtilisateurInput | NotificationCreateOrConnectWithoutUtilisateurInput[]
-    createMany?: NotificationCreateManyUtilisateurInputEnvelope
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
@@ -18808,55 +18808,55 @@ export namespace Prisma {
     set?: $Enums.Role
   }
 
-  export type DepartementUpdateOneWithoutUtilisateursNestedInput = {
-    create?: XOR<DepartementCreateWithoutUtilisateursInput, DepartementUncheckedCreateWithoutUtilisateursInput>
-    connectOrCreate?: DepartementCreateOrConnectWithoutUtilisateursInput
-    upsert?: DepartementUpsertWithoutUtilisateursInput
+  export type DepartementUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<DepartementCreateWithoutUsersInput, DepartementUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: DepartementCreateOrConnectWithoutUsersInput
+    upsert?: DepartementUpsertWithoutUsersInput
     disconnect?: DepartementWhereInput | boolean
     delete?: DepartementWhereInput | boolean
     connect?: DepartementWhereUniqueInput
-    update?: XOR<XOR<DepartementUpdateToOneWithWhereWithoutUtilisateursInput, DepartementUpdateWithoutUtilisateursInput>, DepartementUncheckedUpdateWithoutUtilisateursInput>
+    update?: XOR<XOR<DepartementUpdateToOneWithWhereWithoutUsersInput, DepartementUpdateWithoutUsersInput>, DepartementUncheckedUpdateWithoutUsersInput>
   }
 
-  export type MembreProjetUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput> | MembreProjetCreateWithoutUtilisateurInput[] | MembreProjetUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: MembreProjetCreateOrConnectWithoutUtilisateurInput | MembreProjetCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: MembreProjetUpsertWithWhereUniqueWithoutUtilisateurInput | MembreProjetUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: MembreProjetCreateManyUtilisateurInputEnvelope
+  export type MembreProjetUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MembreProjetCreateWithoutUserInput, MembreProjetUncheckedCreateWithoutUserInput> | MembreProjetCreateWithoutUserInput[] | MembreProjetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MembreProjetCreateOrConnectWithoutUserInput | MembreProjetCreateOrConnectWithoutUserInput[]
+    upsert?: MembreProjetUpsertWithWhereUniqueWithoutUserInput | MembreProjetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MembreProjetCreateManyUserInputEnvelope
     set?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
     disconnect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
     delete?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
     connect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
-    update?: MembreProjetUpdateWithWhereUniqueWithoutUtilisateurInput | MembreProjetUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: MembreProjetUpdateManyWithWhereWithoutUtilisateurInput | MembreProjetUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: MembreProjetUpdateWithWhereUniqueWithoutUserInput | MembreProjetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MembreProjetUpdateManyWithWhereWithoutUserInput | MembreProjetUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MembreProjetScalarWhereInput | MembreProjetScalarWhereInput[]
   }
 
-  export type TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+  export type TacheUtilisateurUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUserInput, TacheUtilisateurUncheckedCreateWithoutUserInput> | TacheUtilisateurCreateWithoutUserInput[] | TacheUtilisateurUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUserInput | TacheUtilisateurCreateOrConnectWithoutUserInput[]
+    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutUserInput | TacheUtilisateurUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TacheUtilisateurCreateManyUserInputEnvelope
     set?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
     disconnect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
     delete?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
     connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
-    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput | TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutUserInput | TacheUtilisateurUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutUserInput | TacheUtilisateurUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
   }
 
-  export type PartageDocumentUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<PartageDocumentCreateWithoutUtilisateurInput, PartageDocumentUncheckedCreateWithoutUtilisateurInput> | PartageDocumentCreateWithoutUtilisateurInput[] | PartageDocumentUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUtilisateurInput | PartageDocumentCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: PartageDocumentUpsertWithWhereUniqueWithoutUtilisateurInput | PartageDocumentUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: PartageDocumentCreateManyUtilisateurInputEnvelope
+  export type PartageDocumentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PartageDocumentCreateWithoutUserInput, PartageDocumentUncheckedCreateWithoutUserInput> | PartageDocumentCreateWithoutUserInput[] | PartageDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUserInput | PartageDocumentCreateOrConnectWithoutUserInput[]
+    upsert?: PartageDocumentUpsertWithWhereUniqueWithoutUserInput | PartageDocumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PartageDocumentCreateManyUserInputEnvelope
     set?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
     disconnect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
     delete?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
     connect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
-    update?: PartageDocumentUpdateWithWhereUniqueWithoutUtilisateurInput | PartageDocumentUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: PartageDocumentUpdateManyWithWhereWithoutUtilisateurInput | PartageDocumentUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: PartageDocumentUpdateWithWhereUniqueWithoutUserInput | PartageDocumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PartageDocumentUpdateManyWithWhereWithoutUserInput | PartageDocumentUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PartageDocumentScalarWhereInput | PartageDocumentScalarWhereInput[]
   }
 
@@ -18874,17 +18874,17 @@ export namespace Prisma {
     deleteMany?: PartageDocumentScalarWhereInput | PartageDocumentScalarWhereInput[]
   }
 
-  export type NotificationUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<NotificationCreateWithoutUtilisateurInput, NotificationUncheckedCreateWithoutUtilisateurInput> | NotificationCreateWithoutUtilisateurInput[] | NotificationUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUtilisateurInput | NotificationCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUtilisateurInput | NotificationUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: NotificationCreateManyUtilisateurInputEnvelope
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
     set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
     disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
     delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUtilisateurInput | NotificationUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUtilisateurInput | NotificationUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
@@ -18924,45 +18924,45 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput> | MembreProjetCreateWithoutUtilisateurInput[] | MembreProjetUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: MembreProjetCreateOrConnectWithoutUtilisateurInput | MembreProjetCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: MembreProjetUpsertWithWhereUniqueWithoutUtilisateurInput | MembreProjetUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: MembreProjetCreateManyUtilisateurInputEnvelope
+  export type MembreProjetUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MembreProjetCreateWithoutUserInput, MembreProjetUncheckedCreateWithoutUserInput> | MembreProjetCreateWithoutUserInput[] | MembreProjetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MembreProjetCreateOrConnectWithoutUserInput | MembreProjetCreateOrConnectWithoutUserInput[]
+    upsert?: MembreProjetUpsertWithWhereUniqueWithoutUserInput | MembreProjetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MembreProjetCreateManyUserInputEnvelope
     set?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
     disconnect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
     delete?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
     connect?: MembreProjetWhereUniqueInput | MembreProjetWhereUniqueInput[]
-    update?: MembreProjetUpdateWithWhereUniqueWithoutUtilisateurInput | MembreProjetUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: MembreProjetUpdateManyWithWhereWithoutUtilisateurInput | MembreProjetUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: MembreProjetUpdateWithWhereUniqueWithoutUserInput | MembreProjetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MembreProjetUpdateManyWithWhereWithoutUserInput | MembreProjetUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MembreProjetScalarWhereInput | MembreProjetScalarWhereInput[]
   }
 
-  export type TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput> | TacheUtilisateurCreateWithoutUtilisateurInput[] | TacheUtilisateurUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUtilisateurInput | TacheUtilisateurCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: TacheUtilisateurCreateManyUtilisateurInputEnvelope
+  export type TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TacheUtilisateurCreateWithoutUserInput, TacheUtilisateurUncheckedCreateWithoutUserInput> | TacheUtilisateurCreateWithoutUserInput[] | TacheUtilisateurUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutUserInput | TacheUtilisateurCreateOrConnectWithoutUserInput[]
+    upsert?: TacheUtilisateurUpsertWithWhereUniqueWithoutUserInput | TacheUtilisateurUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TacheUtilisateurCreateManyUserInputEnvelope
     set?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
     disconnect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
     delete?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
     connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
-    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput | TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput | TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: TacheUtilisateurUpdateWithWhereUniqueWithoutUserInput | TacheUtilisateurUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TacheUtilisateurUpdateManyWithWhereWithoutUserInput | TacheUtilisateurUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
   }
 
-  export type PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<PartageDocumentCreateWithoutUtilisateurInput, PartageDocumentUncheckedCreateWithoutUtilisateurInput> | PartageDocumentCreateWithoutUtilisateurInput[] | PartageDocumentUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUtilisateurInput | PartageDocumentCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: PartageDocumentUpsertWithWhereUniqueWithoutUtilisateurInput | PartageDocumentUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: PartageDocumentCreateManyUtilisateurInputEnvelope
+  export type PartageDocumentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PartageDocumentCreateWithoutUserInput, PartageDocumentUncheckedCreateWithoutUserInput> | PartageDocumentCreateWithoutUserInput[] | PartageDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PartageDocumentCreateOrConnectWithoutUserInput | PartageDocumentCreateOrConnectWithoutUserInput[]
+    upsert?: PartageDocumentUpsertWithWhereUniqueWithoutUserInput | PartageDocumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PartageDocumentCreateManyUserInputEnvelope
     set?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
     disconnect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
     delete?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
     connect?: PartageDocumentWhereUniqueInput | PartageDocumentWhereUniqueInput[]
-    update?: PartageDocumentUpdateWithWhereUniqueWithoutUtilisateurInput | PartageDocumentUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: PartageDocumentUpdateManyWithWhereWithoutUtilisateurInput | PartageDocumentUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: PartageDocumentUpdateWithWhereUniqueWithoutUserInput | PartageDocumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PartageDocumentUpdateManyWithWhereWithoutUserInput | PartageDocumentUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PartageDocumentScalarWhereInput | PartageDocumentScalarWhereInput[]
   }
 
@@ -18980,17 +18980,17 @@ export namespace Prisma {
     deleteMany?: PartageDocumentScalarWhereInput | PartageDocumentScalarWhereInput[]
   }
 
-  export type NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput = {
-    create?: XOR<NotificationCreateWithoutUtilisateurInput, NotificationUncheckedCreateWithoutUtilisateurInput> | NotificationCreateWithoutUtilisateurInput[] | NotificationUncheckedCreateWithoutUtilisateurInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUtilisateurInput | NotificationCreateOrConnectWithoutUtilisateurInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUtilisateurInput | NotificationUpsertWithWhereUniqueWithoutUtilisateurInput[]
-    createMany?: NotificationCreateManyUtilisateurInputEnvelope
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
     set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
     disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
     delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUtilisateurInput | NotificationUpdateWithWhereUniqueWithoutUtilisateurInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUtilisateurInput | NotificationUpdateManyWithWhereWithoutUtilisateurInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
@@ -19779,11 +19779,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -19797,11 +19797,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -19819,7 +19819,7 @@ export namespace Prisma {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UserCreateNestedOneWithoutPartagesInput
+    user?: UserCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
     partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
@@ -19827,7 +19827,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedCreateWithoutDepartementInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     projetId?: number | null
     datePartage?: Date | string
     partageurId: number
@@ -19924,7 +19924,7 @@ export namespace Prisma {
     NOT?: PartageDocumentScalarWhereInput | PartageDocumentScalarWhereInput[]
     id?: IntFilter<"PartageDocument"> | number
     documentId?: IntFilter<"PartageDocument"> | number
-    utilisateurId?: IntNullableFilter<"PartageDocument"> | number | null
+    userId?: IntNullableFilter<"PartageDocument"> | number | null
     departementId?: IntNullableFilter<"PartageDocument"> | number | null
     projetId?: IntNullableFilter<"PartageDocument"> | number | null
     datePartage?: DateTimeFilter<"PartageDocument"> | Date | string
@@ -19932,7 +19932,7 @@ export namespace Prisma {
     historique?: StringNullableFilter<"PartageDocument"> | string | null
   }
 
-  export type DepartementCreateWithoutUtilisateursInput = {
+  export type DepartementCreateWithoutUsersInput = {
     nom: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19940,7 +19940,7 @@ export namespace Prisma {
     partages?: PartageDocumentCreateNestedManyWithoutDepartementInput
   }
 
-  export type DepartementUncheckedCreateWithoutUtilisateursInput = {
+  export type DepartementUncheckedCreateWithoutUsersInput = {
     id?: number
     nom: string
     createdAt?: Date | string
@@ -19949,54 +19949,54 @@ export namespace Prisma {
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutDepartementInput
   }
 
-  export type DepartementCreateOrConnectWithoutUtilisateursInput = {
+  export type DepartementCreateOrConnectWithoutUsersInput = {
     where: DepartementWhereUniqueInput
-    create: XOR<DepartementCreateWithoutUtilisateursInput, DepartementUncheckedCreateWithoutUtilisateursInput>
+    create: XOR<DepartementCreateWithoutUsersInput, DepartementUncheckedCreateWithoutUsersInput>
   }
 
-  export type MembreProjetCreateWithoutUtilisateurInput = {
+  export type MembreProjetCreateWithoutUserInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     projet: ProjetCreateNestedOneWithoutMembresInput
   }
 
-  export type MembreProjetUncheckedCreateWithoutUtilisateurInput = {
+  export type MembreProjetUncheckedCreateWithoutUserInput = {
     projetId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type MembreProjetCreateOrConnectWithoutUtilisateurInput = {
+  export type MembreProjetCreateOrConnectWithoutUserInput = {
     where: MembreProjetWhereUniqueInput
-    create: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput>
+    create: XOR<MembreProjetCreateWithoutUserInput, MembreProjetUncheckedCreateWithoutUserInput>
   }
 
-  export type MembreProjetCreateManyUtilisateurInputEnvelope = {
-    data: MembreProjetCreateManyUtilisateurInput | MembreProjetCreateManyUtilisateurInput[]
+  export type MembreProjetCreateManyUserInputEnvelope = {
+    data: MembreProjetCreateManyUserInput | MembreProjetCreateManyUserInput[]
   }
 
-  export type TacheUtilisateurCreateWithoutUtilisateurInput = {
+  export type TacheUtilisateurCreateWithoutUserInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     tache: TacheCreateNestedOneWithoutTacheUtilisateurInput
   }
 
-  export type TacheUtilisateurUncheckedCreateWithoutUtilisateurInput = {
+  export type TacheUtilisateurUncheckedCreateWithoutUserInput = {
     tacheId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheUtilisateurCreateOrConnectWithoutUtilisateurInput = {
+  export type TacheUtilisateurCreateOrConnectWithoutUserInput = {
     where: TacheUtilisateurWhereUniqueInput
-    create: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput>
+    create: XOR<TacheUtilisateurCreateWithoutUserInput, TacheUtilisateurUncheckedCreateWithoutUserInput>
   }
 
-  export type TacheUtilisateurCreateManyUtilisateurInputEnvelope = {
-    data: TacheUtilisateurCreateManyUtilisateurInput | TacheUtilisateurCreateManyUtilisateurInput[]
+  export type TacheUtilisateurCreateManyUserInputEnvelope = {
+    data: TacheUtilisateurCreateManyUserInput | TacheUtilisateurCreateManyUserInput[]
   }
 
-  export type PartageDocumentCreateWithoutUtilisateurInput = {
+  export type PartageDocumentCreateWithoutUserInput = {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
@@ -20005,7 +20005,7 @@ export namespace Prisma {
     partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
 
-  export type PartageDocumentUncheckedCreateWithoutUtilisateurInput = {
+  export type PartageDocumentUncheckedCreateWithoutUserInput = {
     id?: number
     documentId: number
     departementId?: number | null
@@ -20015,20 +20015,20 @@ export namespace Prisma {
     historique?: string | null
   }
 
-  export type PartageDocumentCreateOrConnectWithoutUtilisateurInput = {
+  export type PartageDocumentCreateOrConnectWithoutUserInput = {
     where: PartageDocumentWhereUniqueInput
-    create: XOR<PartageDocumentCreateWithoutUtilisateurInput, PartageDocumentUncheckedCreateWithoutUtilisateurInput>
+    create: XOR<PartageDocumentCreateWithoutUserInput, PartageDocumentUncheckedCreateWithoutUserInput>
   }
 
-  export type PartageDocumentCreateManyUtilisateurInputEnvelope = {
-    data: PartageDocumentCreateManyUtilisateurInput | PartageDocumentCreateManyUtilisateurInput[]
+  export type PartageDocumentCreateManyUserInputEnvelope = {
+    data: PartageDocumentCreateManyUserInput | PartageDocumentCreateManyUserInput[]
   }
 
   export type PartageDocumentCreateWithoutPartageurInput = {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UserCreateNestedOneWithoutPartagesInput
+    user?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
   }
@@ -20036,7 +20036,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedCreateWithoutPartageurInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     projetId?: number | null
     datePartage?: Date | string
@@ -20052,14 +20052,14 @@ export namespace Prisma {
     data: PartageDocumentCreateManyPartageurInput | PartageDocumentCreateManyPartageurInput[]
   }
 
-  export type NotificationCreateWithoutUtilisateurInput = {
+  export type NotificationCreateWithoutUserInput = {
     message: string
     dateNotification?: Date | string
     vu?: boolean
     document: DocumentCreateNestedOneWithoutNotificationsInput
   }
 
-  export type NotificationUncheckedCreateWithoutUtilisateurInput = {
+  export type NotificationUncheckedCreateWithoutUserInput = {
     id?: number
     message: string
     dateNotification?: Date | string
@@ -20067,13 +20067,13 @@ export namespace Prisma {
     vu?: boolean
   }
 
-  export type NotificationCreateOrConnectWithoutUtilisateurInput = {
+  export type NotificationCreateOrConnectWithoutUserInput = {
     where: NotificationWhereUniqueInput
-    create: XOR<NotificationCreateWithoutUtilisateurInput, NotificationUncheckedCreateWithoutUtilisateurInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
   }
 
-  export type NotificationCreateManyUtilisateurInputEnvelope = {
-    data: NotificationCreateManyUtilisateurInput | NotificationCreateManyUtilisateurInput[]
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -20134,18 +20134,18 @@ export namespace Prisma {
     data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
   }
 
-  export type DepartementUpsertWithoutUtilisateursInput = {
-    update: XOR<DepartementUpdateWithoutUtilisateursInput, DepartementUncheckedUpdateWithoutUtilisateursInput>
-    create: XOR<DepartementCreateWithoutUtilisateursInput, DepartementUncheckedCreateWithoutUtilisateursInput>
+  export type DepartementUpsertWithoutUsersInput = {
+    update: XOR<DepartementUpdateWithoutUsersInput, DepartementUncheckedUpdateWithoutUsersInput>
+    create: XOR<DepartementCreateWithoutUsersInput, DepartementUncheckedCreateWithoutUsersInput>
     where?: DepartementWhereInput
   }
 
-  export type DepartementUpdateToOneWithWhereWithoutUtilisateursInput = {
+  export type DepartementUpdateToOneWithWhereWithoutUsersInput = {
     where?: DepartementWhereInput
-    data: XOR<DepartementUpdateWithoutUtilisateursInput, DepartementUncheckedUpdateWithoutUtilisateursInput>
+    data: XOR<DepartementUpdateWithoutUsersInput, DepartementUncheckedUpdateWithoutUsersInput>
   }
 
-  export type DepartementUpdateWithoutUtilisateursInput = {
+  export type DepartementUpdateWithoutUsersInput = {
     nom?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20153,7 +20153,7 @@ export namespace Prisma {
     partages?: PartageDocumentUpdateManyWithoutDepartementNestedInput
   }
 
-  export type DepartementUncheckedUpdateWithoutUtilisateursInput = {
+  export type DepartementUncheckedUpdateWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20162,46 +20162,46 @@ export namespace Prisma {
     partages?: PartageDocumentUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
-  export type MembreProjetUpsertWithWhereUniqueWithoutUtilisateurInput = {
+  export type MembreProjetUpsertWithWhereUniqueWithoutUserInput = {
     where: MembreProjetWhereUniqueInput
-    update: XOR<MembreProjetUpdateWithoutUtilisateurInput, MembreProjetUncheckedUpdateWithoutUtilisateurInput>
-    create: XOR<MembreProjetCreateWithoutUtilisateurInput, MembreProjetUncheckedCreateWithoutUtilisateurInput>
+    update: XOR<MembreProjetUpdateWithoutUserInput, MembreProjetUncheckedUpdateWithoutUserInput>
+    create: XOR<MembreProjetCreateWithoutUserInput, MembreProjetUncheckedCreateWithoutUserInput>
   }
 
-  export type MembreProjetUpdateWithWhereUniqueWithoutUtilisateurInput = {
+  export type MembreProjetUpdateWithWhereUniqueWithoutUserInput = {
     where: MembreProjetWhereUniqueInput
-    data: XOR<MembreProjetUpdateWithoutUtilisateurInput, MembreProjetUncheckedUpdateWithoutUtilisateurInput>
+    data: XOR<MembreProjetUpdateWithoutUserInput, MembreProjetUncheckedUpdateWithoutUserInput>
   }
 
-  export type MembreProjetUpdateManyWithWhereWithoutUtilisateurInput = {
+  export type MembreProjetUpdateManyWithWhereWithoutUserInput = {
     where: MembreProjetScalarWhereInput
-    data: XOR<MembreProjetUpdateManyMutationInput, MembreProjetUncheckedUpdateManyWithoutUtilisateurInput>
+    data: XOR<MembreProjetUpdateManyMutationInput, MembreProjetUncheckedUpdateManyWithoutUserInput>
   }
 
   export type MembreProjetScalarWhereInput = {
     AND?: MembreProjetScalarWhereInput | MembreProjetScalarWhereInput[]
     OR?: MembreProjetScalarWhereInput[]
     NOT?: MembreProjetScalarWhereInput | MembreProjetScalarWhereInput[]
-    utilisateurId?: IntFilter<"MembreProjet"> | number
+    userId?: IntFilter<"MembreProjet"> | number
     projetId?: IntFilter<"MembreProjet"> | number
     createdAt?: DateTimeFilter<"MembreProjet"> | Date | string
     updatedAt?: DateTimeFilter<"MembreProjet"> | Date | string
   }
 
-  export type TacheUtilisateurUpsertWithWhereUniqueWithoutUtilisateurInput = {
+  export type TacheUtilisateurUpsertWithWhereUniqueWithoutUserInput = {
     where: TacheUtilisateurWhereUniqueInput
-    update: XOR<TacheUtilisateurUpdateWithoutUtilisateurInput, TacheUtilisateurUncheckedUpdateWithoutUtilisateurInput>
-    create: XOR<TacheUtilisateurCreateWithoutUtilisateurInput, TacheUtilisateurUncheckedCreateWithoutUtilisateurInput>
+    update: XOR<TacheUtilisateurUpdateWithoutUserInput, TacheUtilisateurUncheckedUpdateWithoutUserInput>
+    create: XOR<TacheUtilisateurCreateWithoutUserInput, TacheUtilisateurUncheckedCreateWithoutUserInput>
   }
 
-  export type TacheUtilisateurUpdateWithWhereUniqueWithoutUtilisateurInput = {
+  export type TacheUtilisateurUpdateWithWhereUniqueWithoutUserInput = {
     where: TacheUtilisateurWhereUniqueInput
-    data: XOR<TacheUtilisateurUpdateWithoutUtilisateurInput, TacheUtilisateurUncheckedUpdateWithoutUtilisateurInput>
+    data: XOR<TacheUtilisateurUpdateWithoutUserInput, TacheUtilisateurUncheckedUpdateWithoutUserInput>
   }
 
-  export type TacheUtilisateurUpdateManyWithWhereWithoutUtilisateurInput = {
+  export type TacheUtilisateurUpdateManyWithWhereWithoutUserInput = {
     where: TacheUtilisateurScalarWhereInput
-    data: XOR<TacheUtilisateurUpdateManyMutationInput, TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurInput>
+    data: XOR<TacheUtilisateurUpdateManyMutationInput, TacheUtilisateurUncheckedUpdateManyWithoutUserInput>
   }
 
   export type TacheUtilisateurScalarWhereInput = {
@@ -20209,25 +20209,25 @@ export namespace Prisma {
     OR?: TacheUtilisateurScalarWhereInput[]
     NOT?: TacheUtilisateurScalarWhereInput | TacheUtilisateurScalarWhereInput[]
     tacheId?: IntFilter<"TacheUtilisateur"> | number
-    utilisateurId?: IntFilter<"TacheUtilisateur"> | number
+    userId?: IntFilter<"TacheUtilisateur"> | number
     createdAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
     updatedAt?: DateTimeFilter<"TacheUtilisateur"> | Date | string
   }
 
-  export type PartageDocumentUpsertWithWhereUniqueWithoutUtilisateurInput = {
+  export type PartageDocumentUpsertWithWhereUniqueWithoutUserInput = {
     where: PartageDocumentWhereUniqueInput
-    update: XOR<PartageDocumentUpdateWithoutUtilisateurInput, PartageDocumentUncheckedUpdateWithoutUtilisateurInput>
-    create: XOR<PartageDocumentCreateWithoutUtilisateurInput, PartageDocumentUncheckedCreateWithoutUtilisateurInput>
+    update: XOR<PartageDocumentUpdateWithoutUserInput, PartageDocumentUncheckedUpdateWithoutUserInput>
+    create: XOR<PartageDocumentCreateWithoutUserInput, PartageDocumentUncheckedCreateWithoutUserInput>
   }
 
-  export type PartageDocumentUpdateWithWhereUniqueWithoutUtilisateurInput = {
+  export type PartageDocumentUpdateWithWhereUniqueWithoutUserInput = {
     where: PartageDocumentWhereUniqueInput
-    data: XOR<PartageDocumentUpdateWithoutUtilisateurInput, PartageDocumentUncheckedUpdateWithoutUtilisateurInput>
+    data: XOR<PartageDocumentUpdateWithoutUserInput, PartageDocumentUncheckedUpdateWithoutUserInput>
   }
 
-  export type PartageDocumentUpdateManyWithWhereWithoutUtilisateurInput = {
+  export type PartageDocumentUpdateManyWithWhereWithoutUserInput = {
     where: PartageDocumentScalarWhereInput
-    data: XOR<PartageDocumentUpdateManyMutationInput, PartageDocumentUncheckedUpdateManyWithoutUtilisateurInput>
+    data: XOR<PartageDocumentUpdateManyMutationInput, PartageDocumentUncheckedUpdateManyWithoutUserInput>
   }
 
   export type PartageDocumentUpsertWithWhereUniqueWithoutPartageurInput = {
@@ -20246,20 +20246,20 @@ export namespace Prisma {
     data: XOR<PartageDocumentUpdateManyMutationInput, PartageDocumentUncheckedUpdateManyWithoutPartageurInput>
   }
 
-  export type NotificationUpsertWithWhereUniqueWithoutUtilisateurInput = {
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
     where: NotificationWhereUniqueInput
-    update: XOR<NotificationUpdateWithoutUtilisateurInput, NotificationUncheckedUpdateWithoutUtilisateurInput>
-    create: XOR<NotificationCreateWithoutUtilisateurInput, NotificationUncheckedCreateWithoutUtilisateurInput>
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
   }
 
-  export type NotificationUpdateWithWhereUniqueWithoutUtilisateurInput = {
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
     where: NotificationWhereUniqueInput
-    data: XOR<NotificationUpdateWithoutUtilisateurInput, NotificationUncheckedUpdateWithoutUtilisateurInput>
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
   }
 
-  export type NotificationUpdateManyWithWhereWithoutUtilisateurInput = {
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
     where: NotificationScalarWhereInput
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUtilisateurInput>
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
   }
 
   export type NotificationScalarWhereInput = {
@@ -20267,7 +20267,7 @@ export namespace Prisma {
     OR?: NotificationScalarWhereInput[]
     NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
     id?: IntFilter<"Notification"> | number
-    utilisateurId?: IntFilter<"Notification"> | number
+    userId?: IntFilter<"Notification"> | number
     message?: StringFilter<"Notification"> | string
     dateNotification?: DateTimeFilter<"Notification"> | Date | string
     documentId?: IntFilter<"Notification"> | number
@@ -20337,7 +20337,7 @@ export namespace Prisma {
   export type PartageDocumentCreateWithoutDocumentInput = {
     datePartage?: Date | string
     historique?: string | null
-    utilisateur?: UserCreateNestedOneWithoutPartagesInput
+    user?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     projet?: ProjetCreateNestedOneWithoutPartagesInput
     partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
@@ -20345,7 +20345,7 @@ export namespace Prisma {
 
   export type PartageDocumentUncheckedCreateWithoutDocumentInput = {
     id?: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     projetId?: number | null
     datePartage?: Date | string
@@ -20366,12 +20366,12 @@ export namespace Prisma {
     message: string
     dateNotification?: Date | string
     vu?: boolean
-    utilisateur: UserCreateNestedOneWithoutNotificationsInput
+    user: UserCreateNestedOneWithoutNotificationsInput
   }
 
   export type NotificationUncheckedCreateWithoutDocumentInput = {
     id?: number
-    utilisateurId: number
+    userId: number
     message: string
     dateNotification?: Date | string
     vu?: boolean
@@ -20422,7 +20422,7 @@ export namespace Prisma {
     nom: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateurs?: UserCreateNestedManyWithoutDepartementInput
+    users?: UserCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentCreateNestedManyWithoutDepartementInput
   }
 
@@ -20431,7 +20431,7 @@ export namespace Prisma {
     nom: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateurs?: UserUncheckedCreateNestedManyWithoutDepartementInput
+    users?: UserUncheckedCreateNestedManyWithoutDepartementInput
     partages?: PartageDocumentUncheckedCreateNestedManyWithoutDepartementInput
   }
 
@@ -20443,11 +20443,11 @@ export namespace Prisma {
   export type MembreProjetCreateWithoutProjetInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateur: UserCreateNestedOneWithoutProjetsInput
+    user: UserCreateNestedOneWithoutProjetsInput
   }
 
   export type MembreProjetUncheckedCreateWithoutProjetInput = {
-    utilisateurId: number
+    userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20495,7 +20495,7 @@ export namespace Prisma {
     datePartage?: Date | string
     historique?: string | null
     document: DocumentCreateNestedOneWithoutPartagesInput
-    utilisateur?: UserCreateNestedOneWithoutPartagesInput
+    user?: UserCreateNestedOneWithoutPartagesInput
     departement?: DepartementCreateNestedOneWithoutPartagesInput
     partageur: UserCreateNestedOneWithoutPartagesEnTantQuePartageurInput
   }
@@ -20503,7 +20503,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedCreateWithoutProjetInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     datePartage?: Date | string
     partageurId: number
@@ -20534,7 +20534,7 @@ export namespace Prisma {
     nom?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateurs?: UserUpdateManyWithoutDepartementNestedInput
+    users?: UserUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUpdateManyWithoutDepartementNestedInput
   }
 
@@ -20543,7 +20543,7 @@ export namespace Prisma {
     nom?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateurs?: UserUncheckedUpdateManyWithoutDepartementNestedInput
+    users?: UserUncheckedUpdateManyWithoutDepartementNestedInput
     partages?: PartageDocumentUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
@@ -20638,11 +20638,11 @@ export namespace Prisma {
   export type TacheUtilisateurCreateWithoutTacheInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    utilisateur: UserCreateNestedOneWithoutTachesInput
+    user: UserCreateNestedOneWithoutTachesInput
   }
 
   export type TacheUtilisateurUncheckedCreateWithoutTacheInput = {
-    utilisateurId: number
+    userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20738,11 +20738,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -20757,10 +20757,10 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -20821,11 +20821,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -20840,10 +20840,10 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -20856,11 +20856,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -20875,10 +20875,10 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -20933,11 +20933,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -20952,10 +20952,10 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -21022,11 +21022,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -21041,10 +21041,10 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -21059,7 +21059,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UserCreateNestedManyWithoutDepartementInput
+    users?: UserCreateNestedManyWithoutDepartementInput
   }
 
   export type DepartementUncheckedCreateWithoutPartagesInput = {
@@ -21068,7 +21068,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     projets?: ProjetUncheckedCreateNestedManyWithoutDepartementInput
-    utilisateurs?: UserUncheckedCreateNestedManyWithoutDepartementInput
+    users?: UserUncheckedCreateNestedManyWithoutDepartementInput
   }
 
   export type DepartementCreateOrConnectWithoutPartagesInput = {
@@ -21110,11 +21110,11 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -21129,10 +21129,10 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -21189,11 +21189,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -21208,10 +21208,10 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -21232,7 +21232,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UserUpdateManyWithoutDepartementNestedInput
+    users?: UserUpdateManyWithoutDepartementNestedInput
   }
 
   export type DepartementUncheckedUpdateWithoutPartagesInput = {
@@ -21241,7 +21241,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projets?: ProjetUncheckedUpdateManyWithoutDepartementNestedInput
-    utilisateurs?: UserUncheckedUpdateManyWithoutDepartementNestedInput
+    users?: UserUncheckedUpdateManyWithoutDepartementNestedInput
   }
 
   export type ProjetUpsertWithoutPartagesInput = {
@@ -21295,11 +21295,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -21314,10 +21314,10 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -21352,10 +21352,10 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -21371,9 +21371,9 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -21431,10 +21431,10 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -21450,9 +21450,9 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -21466,12 +21466,12 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
@@ -21485,11 +21485,11 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -21517,12 +21517,12 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
@@ -21536,11 +21536,11 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -21552,12 +21552,12 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    departement?: DepartementCreateNestedOneWithoutUtilisateursInput
-    projets?: MembreProjetCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentCreateNestedManyWithoutUtilisateurInput
+    departement?: DepartementCreateNestedOneWithoutUsersInput
+    projets?: MembreProjetCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
@@ -21571,11 +21571,11 @@ export namespace Prisma {
     departementId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    projets?: MembreProjetUncheckedCreateNestedManyWithoutUtilisateurInput
-    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUtilisateurInput
-    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUtilisateurInput
+    projets?: MembreProjetUncheckedCreateNestedManyWithoutUserInput
+    taches?: TacheUtilisateurUncheckedCreateNestedManyWithoutUserInput
+    partages?: PartageDocumentUncheckedCreateNestedManyWithoutUserInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedCreateNestedManyWithoutPartageurInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUtilisateurInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -21603,12 +21603,12 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departement?: DepartementUpdateOneWithoutUtilisateursNestedInput
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    departement?: DepartementUpdateOneWithoutUsersNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
@@ -21622,11 +21622,11 @@ export namespace Prisma {
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -21652,7 +21652,7 @@ export namespace Prisma {
   export type PartageDocumentCreateManyDepartementInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     projetId?: number | null
     datePartage?: Date | string
     partageurId: number
@@ -21696,11 +21696,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -21714,11 +21714,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    projets?: MembreProjetUncheckedUpdateManyWithoutUtilisateurNestedInput
-    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurNestedInput
-    partages?: PartageDocumentUncheckedUpdateManyWithoutUtilisateurNestedInput
+    projets?: MembreProjetUncheckedUpdateManyWithoutUserNestedInput
+    taches?: TacheUtilisateurUncheckedUpdateManyWithoutUserNestedInput
+    partages?: PartageDocumentUncheckedUpdateManyWithoutUserNestedInput
     partagesEnTantQuePartageur?: PartageDocumentUncheckedUpdateManyWithoutPartageurNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUtilisateurNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -21738,7 +21738,7 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
+    user?: UserUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
     partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
@@ -21746,7 +21746,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateWithoutDepartementInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     partageurId?: IntFieldUpdateOperationsInput | number
@@ -21756,26 +21756,26 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateManyWithoutDepartementInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     partageurId?: IntFieldUpdateOperationsInput | number
     historique?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type MembreProjetCreateManyUtilisateurInput = {
+  export type MembreProjetCreateManyUserInput = {
     projetId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type TacheUtilisateurCreateManyUtilisateurInput = {
+  export type TacheUtilisateurCreateManyUserInput = {
     tacheId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type PartageDocumentCreateManyUtilisateurInput = {
+  export type PartageDocumentCreateManyUserInput = {
     id?: number
     documentId: number
     departementId?: number | null
@@ -21788,14 +21788,14 @@ export namespace Prisma {
   export type PartageDocumentCreateManyPartageurInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     projetId?: number | null
     datePartage?: Date | string
     historique?: string | null
   }
 
-  export type NotificationCreateManyUtilisateurInput = {
+  export type NotificationCreateManyUserInput = {
     id?: number
     message: string
     dateNotification?: Date | string
@@ -21823,43 +21823,43 @@ export namespace Prisma {
     expires: Date | string
   }
 
-  export type MembreProjetUpdateWithoutUtilisateurInput = {
+  export type MembreProjetUpdateWithoutUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projet?: ProjetUpdateOneRequiredWithoutMembresNestedInput
   }
 
-  export type MembreProjetUncheckedUpdateWithoutUtilisateurInput = {
+  export type MembreProjetUncheckedUpdateWithoutUserInput = {
     projetId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MembreProjetUncheckedUpdateManyWithoutUtilisateurInput = {
+  export type MembreProjetUncheckedUpdateManyWithoutUserInput = {
     projetId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheUtilisateurUpdateWithoutUtilisateurInput = {
+  export type TacheUtilisateurUpdateWithoutUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tache?: TacheUpdateOneRequiredWithoutTacheUtilisateurNestedInput
   }
 
-  export type TacheUtilisateurUncheckedUpdateWithoutUtilisateurInput = {
+  export type TacheUtilisateurUncheckedUpdateWithoutUserInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TacheUtilisateurUncheckedUpdateManyWithoutUtilisateurInput = {
+  export type TacheUtilisateurUncheckedUpdateManyWithoutUserInput = {
     tacheId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PartageDocumentUpdateWithoutUtilisateurInput = {
+  export type PartageDocumentUpdateWithoutUserInput = {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
@@ -21868,7 +21868,7 @@ export namespace Prisma {
     partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
 
-  export type PartageDocumentUncheckedUpdateWithoutUtilisateurInput = {
+  export type PartageDocumentUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21878,7 +21878,7 @@ export namespace Prisma {
     historique?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type PartageDocumentUncheckedUpdateManyWithoutUtilisateurInput = {
+  export type PartageDocumentUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21892,7 +21892,7 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
+    user?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
   }
@@ -21900,7 +21900,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateWithoutPartageurInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21910,21 +21910,21 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateManyWithoutPartageurInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type NotificationUpdateWithoutUtilisateurInput = {
+  export type NotificationUpdateWithoutUserInput = {
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
     document?: DocumentUpdateOneRequiredWithoutNotificationsNestedInput
   }
 
-  export type NotificationUncheckedUpdateWithoutUtilisateurInput = {
+  export type NotificationUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21932,7 +21932,7 @@ export namespace Prisma {
     vu?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type NotificationUncheckedUpdateManyWithoutUtilisateurInput = {
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22002,7 +22002,7 @@ export namespace Prisma {
 
   export type PartageDocumentCreateManyDocumentInput = {
     id?: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     projetId?: number | null
     datePartage?: Date | string
@@ -22012,7 +22012,7 @@ export namespace Prisma {
 
   export type NotificationCreateManyDocumentInput = {
     id?: number
-    utilisateurId: number
+    userId: number
     message: string
     dateNotification?: Date | string
     vu?: boolean
@@ -22021,7 +22021,7 @@ export namespace Prisma {
   export type PartageDocumentUpdateWithoutDocumentInput = {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
-    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
+    user?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     projet?: ProjetUpdateOneWithoutPartagesNestedInput
     partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
@@ -22029,7 +22029,7 @@ export namespace Prisma {
 
   export type PartageDocumentUncheckedUpdateWithoutDocumentInput = {
     id?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22039,7 +22039,7 @@ export namespace Prisma {
 
   export type PartageDocumentUncheckedUpdateManyWithoutDocumentInput = {
     id?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     projetId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22051,12 +22051,12 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
-    utilisateur?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateWithoutDocumentInput = {
     id?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
@@ -22064,14 +22064,14 @@ export namespace Prisma {
 
   export type NotificationUncheckedUpdateManyWithoutDocumentInput = {
     id?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     message?: StringFieldUpdateOperationsInput | string
     dateNotification?: DateTimeFieldUpdateOperationsInput | Date | string
     vu?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type MembreProjetCreateManyProjetInput = {
-    utilisateurId: number
+    userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22089,7 +22089,7 @@ export namespace Prisma {
   export type PartageDocumentCreateManyProjetInput = {
     id?: number
     documentId: number
-    utilisateurId?: number | null
+    userId?: number | null
     departementId?: number | null
     datePartage?: Date | string
     partageurId: number
@@ -22099,17 +22099,17 @@ export namespace Prisma {
   export type MembreProjetUpdateWithoutProjetInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateur?: UserUpdateOneRequiredWithoutProjetsNestedInput
+    user?: UserUpdateOneRequiredWithoutProjetsNestedInput
   }
 
   export type MembreProjetUncheckedUpdateWithoutProjetInput = {
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MembreProjetUncheckedUpdateManyWithoutProjetInput = {
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22149,7 +22149,7 @@ export namespace Prisma {
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     historique?: NullableStringFieldUpdateOperationsInput | string | null
     document?: DocumentUpdateOneRequiredWithoutPartagesNestedInput
-    utilisateur?: UserUpdateOneWithoutPartagesNestedInput
+    user?: UserUpdateOneWithoutPartagesNestedInput
     departement?: DepartementUpdateOneWithoutPartagesNestedInput
     partageur?: UserUpdateOneRequiredWithoutPartagesEnTantQuePartageurNestedInput
   }
@@ -22157,7 +22157,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateWithoutProjetInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     partageurId?: IntFieldUpdateOperationsInput | number
@@ -22167,7 +22167,7 @@ export namespace Prisma {
   export type PartageDocumentUncheckedUpdateManyWithoutProjetInput = {
     id?: IntFieldUpdateOperationsInput | number
     documentId?: IntFieldUpdateOperationsInput | number
-    utilisateurId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     departementId?: NullableIntFieldUpdateOperationsInput | number | null
     datePartage?: DateTimeFieldUpdateOperationsInput | Date | string
     partageurId?: IntFieldUpdateOperationsInput | number
@@ -22175,7 +22175,7 @@ export namespace Prisma {
   }
 
   export type TacheUtilisateurCreateManyTacheInput = {
-    utilisateurId: number
+    userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22183,17 +22183,17 @@ export namespace Prisma {
   export type TacheUtilisateurUpdateWithoutTacheInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    utilisateur?: UserUpdateOneRequiredWithoutTachesNestedInput
+    user?: UserUpdateOneRequiredWithoutTachesNestedInput
   }
 
   export type TacheUtilisateurUncheckedUpdateWithoutTacheInput = {
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TacheUtilisateurUncheckedUpdateManyWithoutTacheInput = {
-    utilisateurId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

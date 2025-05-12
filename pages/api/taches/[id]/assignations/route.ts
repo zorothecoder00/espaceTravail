@@ -27,15 +27,15 @@ export async function GET(req: Request, { params }: Params) {
 export async function DELETE(req: Request, { params }: Params) {
   const tacheId = parseInt(params.id)
   const { searchParams } = new URL(req.url)
-  const utilisateurId = parseInt(searchParams.get('utilisateurId') || '')
+  const userId = parseInt(searchParams.get('userId') || '')
 
-  if (isNaN(tacheId) || isNaN(utilisateurId)) {
+  if (isNaN(tacheId) || isNaN(userId)) {
     return NextResponse.json({ message: 'ID(s) invalide(s)' }, { status: 400 })
   }
 
   try {
     await prisma.TacheUtilisateur.deleteMany({
-      where: { tacheId, utilisateurId },
+      where: { tacheId, userId },
     })
 
     return NextResponse.json({ message: 'Utilisateur retiré de la tâche' })

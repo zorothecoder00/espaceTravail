@@ -3,16 +3,16 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { utilisateurId, tacheId } = body
+  const { userId, tacheId } = body
 
-  if (!utilisateurId || !tacheId) {
-    return NextResponse.json({ message: 'utilisateurId et tacheId sont requis' }, { status: 400 })
+  if (!userId || !tacheId) {
+    return NextResponse.json({ message: 'userId et tacheId sont requis' }, { status: 400 })
   }
 
   try {
     await prisma.TacheUtilisateur.create({
       data: {
-        utilisateurId,
+        userId,
         tacheId,
       },
     })

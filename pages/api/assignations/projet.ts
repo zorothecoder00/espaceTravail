@@ -3,16 +3,16 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { utilisateurId, projetId } = body
+  const { userId, projetId } = body
 
-  if (!utilisateurId || !projetId) {
-    return NextResponse.json({ message: 'utilisateurId et projetId sont requis' }, { status: 400 })
+  if (!userId || !projetId) {
+    return NextResponse.json({ message: 'userId et projetId sont requis' }, { status: 400 })
   }
 
   try {
     await prisma.MembreProjet.create({
       data: {
-        utilisateurId,
+        userId,
         projetId,
       },
     })

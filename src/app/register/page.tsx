@@ -1,6 +1,6 @@
 'use client'    
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'  
 import { useState } from 'react'
 import { z } from 'zod' 
 import { signIn } from 'next-auth/react' 
@@ -227,6 +227,7 @@ export default function Register() {
           </a>
         </p>
       </div>
+
     </div>
   </div>
 )
