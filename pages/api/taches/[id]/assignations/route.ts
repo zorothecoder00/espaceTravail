@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 type Params = {
-  params: { id: string }
+  params: { id: string } 
 } 
 
 export async function GET(req: Request, { params }: Params) {
@@ -13,9 +13,9 @@ export async function GET(req: Request, { params }: Params) {
   }
 
   try {
-    const assignations = await prisma.utilisateurTache.findMany({
+    const assignations = await prisma.TacheUtilisateur.findMany({
       where: { tacheId },
-      include: { utilisateur: true },
+      include: { user: true },
     })
 
     return NextResponse.json(assignations)
@@ -34,7 +34,7 @@ export async function DELETE(req: Request, { params }: Params) {
   }
 
   try {
-    await prisma.utilisateurTache.deleteMany({
+    await prisma.TacheUtilisateur.deleteMany({
       where: { tacheId, utilisateurId },
     })
 

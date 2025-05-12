@@ -21,9 +21,9 @@ export default function Login() {
       const session = await getSession()
 
       if (session?.user.role === 'admin') {
-        router.push('/admin')
+        router.push('/admin/dashboard')
       } else {
-        router.push('/utilisateur')
+        router.push('/interfaceUtilisateur/dashboard')
       }
     } else {
       setError("Identifiants incorrects")

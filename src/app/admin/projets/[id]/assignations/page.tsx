@@ -11,12 +11,12 @@ export default function AssignationProjetPage() {
   const [selectedUser, setSelectedUser] = useState<number | null>(null)
 
   useEffect(() => {
-    axios.get('/api/users').then(res => setUsers(res.data))
+    axios.get('/api/utilisateurs').then(res => setUsers(res.data))
   }, [])
 
   const assigner = async () => {
     if (!selectedUser) return alert('Sélectionnez un utilisateur.')
-    await axios.post('/api/assign/projet', {
+    await axios.post('/api/assignations/projet', {
       utilisateurId: selectedUser,
       projetId: Number(id),
     })

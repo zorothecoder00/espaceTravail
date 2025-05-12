@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server' 
 import { prisma } from '@/lib/prisma'
 
 export async function POST(req: Request) {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    await prisma.utilisateurProjet.create({
+    await prisma.MembreProjet.create({
       data: {
         utilisateurId,
         projetId,

@@ -13,9 +13,9 @@ export async function GET(req: Request, { params }: Params) {
   }
 
   try {
-    const assignations = await prisma.utilisateurProjet.findMany({
+    const assignations = await prisma.MembreProjet.findMany({
       where: { projetId },
-      include: { utilisateur: true },
+      include: { user: true },
     })
 
     return NextResponse.json(assignations)
@@ -34,9 +34,9 @@ export async function DELETE(req: Request, { params }: Params) {
   }  
 
   try {
-    await prisma.utilisateurProjet.deleteMany({
+    await prisma.MembreProjet.deleteMany({
       where: { projetId, utilisateurId },
-    })
+    }) 
 
     return NextResponse.json({ message: 'Utilisateur retiré du projet' })
   } catch (error) {

@@ -1,4 +1,4 @@
-'use client'   
+'use client'    
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -10,12 +10,33 @@ const registerSchema = z.object({
   nom: z.string().min(2, 'Nom requis'), 
   email: z.string().email('Email invalide'),
   password: z.string().min(6, '6 caractères minimum'),
+  departementId: z.string().optional(),
 })
 
 export default function Register() {
   const router = useRouter()
   const [errors, setErrors] = useState<any>({})
   const [serverError, setServerError] = useState('')
+  const [departements, setDepartements] = useState<any[]>([])
+  const [loadingDeps, setLoadingDeps] = useState(true)
+
+  useEffect(() => {
+    const fetchDepartements = async () => {
+      try {
+        const res = await fetch('/api/departements')
+        if (res.ok) {
+          const data = await res.json()
+          setDepartements(data)
+        }
+      } catch (err) {
+        console.error('Erreur chargement départements')
+      } finally {
+        setLoadingDeps(false)
+      }
+    }
+
+    fetchDepartements()
+  }, [])
 
   const handleRegister = async (e: any) => {
     e.preventDefault()
@@ -38,6 +59,7 @@ export default function Register() {
       nom: e.target.nom.value,
       email: e.target.email.value,
       password: e.target.password.value,
+      departementId: e.target.departement?.value || null,
     }
 
     const validation = registerSchema.safeParse(form)
@@ -45,9 +67,9 @@ export default function Register() {
     if (!validation.success) {
       setErrors(validation.error.flatten().fieldErrors)
       return
-    }
+    } 
 
-    const res = await fetch('/api/register', {
+    const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
@@ -56,16 +78,27 @@ export default function Register() {
     const data = await res.json()
 
     if (res.ok) {
-      // Connexion automatique avec next-auth
-      await signIn('credentials', {
-        redirect: false,
-        email: form.email,
-        password: form.password,
-        callbackUrl: '/admin', 
-      })
+    // Connexion automatique avec next-auth
+    const resLogin = await signIn('credentials', {
+      redirect: false,
+      email: form.email,
+      password: form.password,    
+    })
+
+    if (resLogin?.ok) {
+      const sessionRes = await fetch('/api/auth/session')
+      const sessionData = await sessionRes.json()
+
+      if (sessionData?.user?.role === 'ADMIN') {
+        router.push('/admin/dashboard')
+      } else {
+        router.push('/interfaceUtilisateur/dashboard')
+      }
     } else {
-      setServerError(data.message || 'Erreur inconnue')
-    } 
+      setServerError('Connexion échouée après inscription')
+    }
+  }
+
   }
 
   return (
@@ -126,7 +159,7 @@ export default function Register() {
               placeholder="Password"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password[0]}</p>}
-          </div>
+            </div>
 
           <div>
             <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
@@ -139,6 +172,28 @@ export default function Register() {
               placeholder="Confirm Password"
             />
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="departement" className="block text-sm font-medium text-gray-700">
+            Département (optionnel)
+          </label>
+          {loadingDeps ? (
+            <p className="text-gray-500 text-sm">Chargement des départements...</p>
+          ) : departements.length > 0 ? (
+            <select
+              name="departement"
+              id="departement"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            >
+              <option value="">-- Choisir un département --</option>
+              {departements.map(dep => (
+                <option key={dep.id} value={dep.id}>{dep.nom}</option>
+              ))}
+            </select>
+          ) : (
+            <p className="text-sm text-gray-500">Aucun département disponible pour le moment.</p>
+          )}
         </div>
 
         <div className="flex items-center">

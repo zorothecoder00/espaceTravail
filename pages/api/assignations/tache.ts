@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    await prisma.utilisateurTache.create({
+    await prisma.TacheUtilisateur.create({
       data: {
         utilisateurId,
         tacheId,

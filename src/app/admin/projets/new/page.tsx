@@ -38,7 +38,7 @@ export default function CreateProjetPage() {
     })
 
     if (res.ok) {
-      router.push('/admin/projets')
+      router.push('/admin/projets/liste')
     } else {
       const data = await res.json()
       setError(data.message || 'Une erreur est survenue')

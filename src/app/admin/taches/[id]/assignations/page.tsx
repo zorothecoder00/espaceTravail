@@ -10,12 +10,12 @@ export default function AssignationTachePage() {
   const [selectedUser, setSelectedUser] = useState<number | null>(null)
 
   useEffect(() => {
-    axios.get('/api/users').then(res => setUsers(res.data))
+    axios.get('/api/utilisateurs').then(res => setUsers(res.data))
   }, [])
 
   const assigner = async () => {
     if (!selectedUser) return alert('Sélectionnez un utilisateur.')
-    await axios.post('/api/assign/tache', {
+    await axios.post('/api/assignations/tache', {
       utilisateurId: selectedUser,
       tacheId: Number(id),
     })
