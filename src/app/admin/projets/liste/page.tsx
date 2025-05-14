@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 interface Projet {
   id: number
   nom: string
+  deadline: datetime
+  statut: Statut
   description?: string
   departement: { nom: string }
 }

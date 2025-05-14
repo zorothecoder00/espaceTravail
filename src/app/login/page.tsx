@@ -2,7 +2,8 @@
 
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState } from 'react'  
+import { Role } from "@prisma/client"; 
 
 export default function Login() { 
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function Login() {
     if (res?.ok) {
       const session = await getSession()
 
-      if (session?.user.role === 'admin') {
+      if (session?.user.role === Role.ADMIN) {
         router.push('/admin/dashboard')
       } else {
         router.push('/interfaceUtilisateur/dashboard')

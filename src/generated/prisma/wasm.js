@@ -148,6 +148,8 @@ exports.Prisma.ProjetScalarFieldEnum = {
   id: 'id',
   nom: 'nom',
   description: 'description',
+  deadline: 'deadline',
+  statut: 'statut',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   departementId: 'departementId'
@@ -240,8 +242,8 @@ exports.Role = exports.$Enums.Role = {
   UTILISATEUR: 'UTILISATEUR'
 };
 
-exports.TacheStatut = exports.$Enums.TacheStatut = {
-  A_FAIRE: 'A_FAIRE',
+exports.Statut = exports.$Enums.Statut = {
+  ATTENTE: 'ATTENTE',
   EN_COURS: 'EN_COURS',
   TERMINE: 'TERMINE'
 };

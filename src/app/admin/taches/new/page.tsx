@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Statut, Role } from "@prisma/client"; 
 
 export default function NouvelleTache() {
   const router = useRouter()
@@ -10,7 +11,7 @@ export default function NouvelleTache() {
     description: '',
     projetId: '',
     deadline: '',
-    statut: 'EN_ATTENTE',
+    statut: Statut.ATTENTE,
   })
   const [projets, setProjets] = useState([])
 
@@ -75,9 +76,9 @@ export default function NouvelleTache() {
           onChange={(e) => setForm({ ...form, statut: e.target.value })}
           className="w-full border px-3 py-2 rounded"
         >
-          <option value="EN_ATTENTE">En attente</option>
+          <option value="ATTENTE">En attente</option>
           <option value="EN_COURS">En cours</option>
-          <option value="TERMINEE">Terminée</option>
+          <option value="TERMINE">Terminée</option>
         </select>
 
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">

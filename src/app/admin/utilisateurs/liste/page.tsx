@@ -6,7 +6,7 @@ type Utilisateur = {
   id: number
   nom: string
   prenom: string
-  email: string
+  email: string  
   role: string
   departement?: { nom: string }
 }

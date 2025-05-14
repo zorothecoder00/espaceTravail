@@ -1,16 +1,17 @@
-'use client'    
-
+'use client'  
+   
 import { useRouter } from 'next/navigation'  
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { z } from 'zod' 
 import { signIn } from 'next-auth/react' 
+import { Role } from "@prisma/client";  
 
 const registerSchema = z.object({
   prenom: z.string().min(2, 'Prénom requis'),
   nom: z.string().min(2, 'Nom requis'), 
   email: z.string().email('Email invalide'),
   password: z.string().min(6, '6 caractères minimum'),
-  departementId: z.string().optional(),
+  departementId: z.string().nullable().optional(),
 })
 
 export default function Register() {
@@ -44,11 +45,10 @@ export default function Register() {
     setServerError('')
 
     if (!e.target['not-robot'].checked) {
-    setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
-    return
+      setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
+      return
     }
 
-    // Vérification du mot de passe
     if (e.target.password.value !== e.target.confirmPassword.value) {
       setErrors({ password: ['Les mots de passe ne correspondent pas'] })
       return
@@ -77,8 +77,13 @@ export default function Register() {
 
     const data = await res.json()
 
-    if (res.ok) {
-    // Connexion automatique avec next-auth
+    // ✅ Gérer les erreurs de l'inscription ici
+    if (!res.ok) {
+      setServerError(data.message || 'Erreur lors de l’inscription.')
+      return
+    }
+
+    // ✅ Si inscription réussie, tenter la connexion
     const resLogin = await signIn('credentials', {
       redirect: false,
       email: form.email,
@@ -89,16 +94,14 @@ export default function Register() {
       const sessionRes = await fetch('/api/auth/session')
       const sessionData = await sessionRes.json()
 
-      if (sessionData?.user?.role === 'ADMIN') {
+      if (sessionData?.user?.role === Role.ADMIN) {
         router.push('/admin/dashboard')
       } else {
         router.push('/interfaceUtilisateur/dashboard')
       }
     } else {
-      setServerError('Connexion échouée après inscription')
+      setServerError('Connexion échouée après inscription.')
     }
-  }
-
   }
 
   return (
@@ -159,7 +162,7 @@ export default function Register() {
               placeholder="Password"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password[0]}</p>}
-            </div>
+          </div>
 
           <div>
             <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
@@ -223,12 +226,11 @@ export default function Register() {
         <p className="text-sm text-gray-600">
           Avez vous déjà un compte ?{' '}
           <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Connectez vous
+            Connectez vous 
           </a>
         </p>
       </div>
-
     </div>
   </div>
-)
+  )
 }

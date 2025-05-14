@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 export default function CreateProjetPage() {
   const [nom, setNom] = useState('')
   const [description, setDescription] = useState('')
+  const [deadline, setDeadline] = useState('')
+  const [statut, setStatut] = useState('')
   const [departementId, setDepartementId] = useState('')
   const [departements, setDepartements] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -34,7 +36,7 @@ export default function CreateProjetPage() {
     const res = await fetch('/api/projets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nom, description, departementId: Number(departementId) }),
+      body: JSON.stringify({ nom, description, deadline, statut, departementId: Number(departementId) }),
     })
 
     if (res.ok) {
@@ -74,7 +76,24 @@ export default function CreateProjetPage() {
           />
         </div>
 
-        <div>
+        <input
+          type="datetime-local"
+          value={form.deadline}
+          onChange={(e) => setForm({ ...form, deadline: e.target.value })}
+          className="w-full border px-3 py-2 rounded"
+        /> 
+
+        <select
+          value={form.statut}
+          onChange={(e) => setForm({ ...form, statut: e.target.value })}
+          className="w-full border px-3 py-2 rounded"
+        >
+          <option value="ATTENTE">En attente</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="TERMINE">Terminée</option>
+        </select>
+
+        <div>  
           <label className="block text-sm font-medium">Département *</label>
           <select
             value={departementId}

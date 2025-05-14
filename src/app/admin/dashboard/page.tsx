@@ -1,20 +1,21 @@
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth"; // helper
 import prisma from "@/lib/prisma";
+import { Statut, Role } from "@prisma/client";     
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer
 
-export default async function Dashboard() {
-  const session = await getAuthSession();
+export default async function Dashboard() {   
+  const session = await getAuthSession();  
 
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || session.user.role !== Role.ADMIN) {
     redirect("/login");
   }
 
-  const [totalTaches, projetsFinis, projetsAttente, projetsEnCours] = await Promise.all([
+  const [totalTaches, projetsTermines, projetsAttente, projetsEnCours] = await Promise.all([
     prisma.tache.count(),
-    prisma.projet.count({ where: { statut: "FINI" } }),
-    prisma.projet.count({ where: { statut: "ATTENTE" } }),
-    prisma.projet.count({ where: { statut: "EN_COURS" } }),
+    prisma.projet.count({ where: { statut: Statut.TERMINE } }),
+    prisma.projet.count({ where: { statut: Statut.ATTENTE } }),
+    prisma.projet.count({ where: { statut: Statut.EN_COURS } }),
   ]);
 
   const tachesRecentes = await prisma.tache.findMany({
@@ -23,7 +24,7 @@ export default async function Dashboard() {
   });
 
   const membres = await prisma.user.findMany({
-    where: { role: "UTILISATEUR" },
+    where: { role: Role.UTILISATEUR },
     take: 3,
     orderBy: { createdAt: "desc" },
   });
@@ -62,7 +63,7 @@ export default async function Dashboard() {
         {/* Statistiques */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Stat title="Total Tâches" value={totalTaches} />
-          <Stat title="Projets Finis" value={projetsFinis} />
+          <Stat title="Projets Terminés" value={projetsTermines} />
           <Stat title="Projets en attente" value={projetsAttente} />
           <Stat title="Projets en cours" value={projetsEnCours} />
         </div>

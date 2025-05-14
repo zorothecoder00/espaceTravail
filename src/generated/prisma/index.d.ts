@@ -86,13 +86,13 @@ export namespace $Enums {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
-export const TacheStatut: {
-  A_FAIRE: 'A_FAIRE',
+export const Statut: {
+  ATTENTE: 'ATTENTE',
   EN_COURS: 'EN_COURS',
   TERMINE: 'TERMINE'
 };
 
-export type TacheStatut = (typeof TacheStatut)[keyof typeof TacheStatut]
+export type Statut = (typeof Statut)[keyof typeof Statut]
 
 }
 
@@ -100,9 +100,9 @@ export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
 
-export type TacheStatut = $Enums.TacheStatut
+export type Statut = $Enums.Statut
 
-export const TacheStatut: typeof $Enums.TacheStatut
+export const Statut: typeof $Enums.Statut
 
 /**
  * ##  Prisma Client ʲˢ
@@ -5817,6 +5817,8 @@ export namespace Prisma {
     id: number | null
     nom: string | null
     description: string | null
+    deadline: Date | null
+    statut: $Enums.Statut | null
     createdAt: Date | null
     updatedAt: Date | null
     departementId: number | null
@@ -5826,6 +5828,8 @@ export namespace Prisma {
     id: number | null
     nom: string | null
     description: string | null
+    deadline: Date | null
+    statut: $Enums.Statut | null
     createdAt: Date | null
     updatedAt: Date | null
     departementId: number | null
@@ -5835,6 +5839,8 @@ export namespace Prisma {
     id: number
     nom: number
     description: number
+    deadline: number
+    statut: number
     createdAt: number
     updatedAt: number
     departementId: number
@@ -5856,6 +5862,8 @@ export namespace Prisma {
     id?: true
     nom?: true
     description?: true
+    deadline?: true
+    statut?: true
     createdAt?: true
     updatedAt?: true
     departementId?: true
@@ -5865,6 +5873,8 @@ export namespace Prisma {
     id?: true
     nom?: true
     description?: true
+    deadline?: true
+    statut?: true
     createdAt?: true
     updatedAt?: true
     departementId?: true
@@ -5874,6 +5884,8 @@ export namespace Prisma {
     id?: true
     nom?: true
     description?: true
+    deadline?: true
+    statut?: true
     createdAt?: true
     updatedAt?: true
     departementId?: true
@@ -5970,6 +5982,8 @@ export namespace Prisma {
     id: number
     nom: string
     description: string | null
+    deadline: Date | null
+    statut: $Enums.Statut
     createdAt: Date
     updatedAt: Date
     departementId: number
@@ -5998,6 +6012,8 @@ export namespace Prisma {
     id?: boolean
     nom?: boolean
     description?: boolean
+    deadline?: boolean
+    statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     departementId?: boolean
@@ -6012,6 +6028,8 @@ export namespace Prisma {
     id?: boolean
     nom?: boolean
     description?: boolean
+    deadline?: boolean
+    statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     departementId?: boolean
@@ -6022,6 +6040,8 @@ export namespace Prisma {
     id?: boolean
     nom?: boolean
     description?: boolean
+    deadline?: boolean
+    statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     departementId?: boolean
@@ -6032,12 +6052,14 @@ export namespace Prisma {
     id?: boolean
     nom?: boolean
     description?: boolean
+    deadline?: boolean
+    statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     departementId?: boolean
   }
 
-  export type ProjetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "description" | "createdAt" | "updatedAt" | "departementId", ExtArgs["result"]["projet"]>
+  export type ProjetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "description" | "deadline" | "statut" | "createdAt" | "updatedAt" | "departementId", ExtArgs["result"]["projet"]>
   export type ProjetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     departement?: boolean | DepartementDefaultArgs<ExtArgs>
     membres?: boolean | Projet$membresArgs<ExtArgs>
@@ -6064,6 +6086,8 @@ export namespace Prisma {
       id: number
       nom: string
       description: string | null
+      deadline: Date | null
+      statut: $Enums.Statut
       createdAt: Date
       updatedAt: Date
       departementId: number
@@ -6497,6 +6521,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Projet", 'Int'>
     readonly nom: FieldRef<"Projet", 'String'>
     readonly description: FieldRef<"Projet", 'String'>
+    readonly deadline: FieldRef<"Projet", 'DateTime'>
+    readonly statut: FieldRef<"Projet", 'Statut'>
     readonly createdAt: FieldRef<"Projet", 'DateTime'>
     readonly updatedAt: FieldRef<"Projet", 'DateTime'>
     readonly departementId: FieldRef<"Projet", 'Int'>
@@ -7012,7 +7038,7 @@ export namespace Prisma {
     description: string | null
     projetId: number | null
     deadline: Date | null
-    statut: $Enums.TacheStatut | null
+    statut: $Enums.Statut | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7023,7 +7049,7 @@ export namespace Prisma {
     description: string | null
     projetId: number | null
     deadline: Date | null
-    statut: $Enums.TacheStatut | null
+    statut: $Enums.Statut | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7177,7 +7203,7 @@ export namespace Prisma {
     description: string | null
     projetId: number
     deadline: Date | null
-    statut: $Enums.TacheStatut
+    statut: $Enums.Statut
     createdAt: Date
     updatedAt: Date
     _count: TacheCountAggregateOutputType | null
@@ -7275,7 +7301,7 @@ export namespace Prisma {
       description: string | null
       projetId: number
       deadline: Date | null
-      statut: $Enums.TacheStatut
+      statut: $Enums.Statut
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["tache"]>
@@ -7708,7 +7734,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Tache", 'String'>
     readonly projetId: FieldRef<"Tache", 'Int'>
     readonly deadline: FieldRef<"Tache", 'DateTime'>
-    readonly statut: FieldRef<"Tache", 'TacheStatut'>
+    readonly statut: FieldRef<"Tache", 'Statut'>
     readonly createdAt: FieldRef<"Tache", 'DateTime'>
     readonly updatedAt: FieldRef<"Tache", 'DateTime'>
   }
@@ -15962,6 +15988,8 @@ export namespace Prisma {
     id: 'id',
     nom: 'nom',
     description: 'description',
+    deadline: 'deadline',
+    statut: 'statut',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     departementId: 'departementId'
@@ -16117,9 +16145,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'TacheStatut'
+   * Reference to a field of type 'Statut'
    */
-  export type EnumTacheStatutFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TacheStatut'>
+  export type EnumStatutFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Statut'>
     
 
 
@@ -16363,6 +16391,8 @@ export namespace Prisma {
     id?: IntFilter<"Projet"> | number
     nom?: StringFilter<"Projet"> | string
     description?: StringNullableFilter<"Projet"> | string | null
+    deadline?: DateTimeNullableFilter<"Projet"> | Date | string | null
+    statut?: EnumStatutFilter<"Projet"> | $Enums.Statut
     createdAt?: DateTimeFilter<"Projet"> | Date | string
     updatedAt?: DateTimeFilter<"Projet"> | Date | string
     departementId?: IntFilter<"Projet"> | number
@@ -16376,6 +16406,8 @@ export namespace Prisma {
     id?: SortOrder
     nom?: SortOrder
     description?: SortOrderInput | SortOrder
+    deadline?: SortOrderInput | SortOrder
+    statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     departementId?: SortOrder
@@ -16392,6 +16424,8 @@ export namespace Prisma {
     NOT?: ProjetWhereInput | ProjetWhereInput[]
     nom?: StringFilter<"Projet"> | string
     description?: StringNullableFilter<"Projet"> | string | null
+    deadline?: DateTimeNullableFilter<"Projet"> | Date | string | null
+    statut?: EnumStatutFilter<"Projet"> | $Enums.Statut
     createdAt?: DateTimeFilter<"Projet"> | Date | string
     updatedAt?: DateTimeFilter<"Projet"> | Date | string
     departementId?: IntFilter<"Projet"> | number
@@ -16405,6 +16439,8 @@ export namespace Prisma {
     id?: SortOrder
     nom?: SortOrder
     description?: SortOrderInput | SortOrder
+    deadline?: SortOrderInput | SortOrder
+    statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     departementId?: SortOrder
@@ -16422,6 +16458,8 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Projet"> | number
     nom?: StringWithAggregatesFilter<"Projet"> | string
     description?: StringNullableWithAggregatesFilter<"Projet"> | string | null
+    deadline?: DateTimeNullableWithAggregatesFilter<"Projet"> | Date | string | null
+    statut?: EnumStatutWithAggregatesFilter<"Projet"> | $Enums.Statut
     createdAt?: DateTimeWithAggregatesFilter<"Projet"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Projet"> | Date | string
     departementId?: IntWithAggregatesFilter<"Projet"> | number
@@ -16436,7 +16474,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Tache"> | string | null
     projetId?: IntFilter<"Tache"> | number
     deadline?: DateTimeNullableFilter<"Tache"> | Date | string | null
-    statut?: EnumTacheStatutFilter<"Tache"> | $Enums.TacheStatut
+    statut?: EnumStatutFilter<"Tache"> | $Enums.Statut
     createdAt?: DateTimeFilter<"Tache"> | Date | string
     updatedAt?: DateTimeFilter<"Tache"> | Date | string
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
@@ -16465,7 +16503,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Tache"> | string | null
     projetId?: IntFilter<"Tache"> | number
     deadline?: DateTimeNullableFilter<"Tache"> | Date | string | null
-    statut?: EnumTacheStatutFilter<"Tache"> | $Enums.TacheStatut
+    statut?: EnumStatutFilter<"Tache"> | $Enums.Statut
     createdAt?: DateTimeFilter<"Tache"> | Date | string
     updatedAt?: DateTimeFilter<"Tache"> | Date | string
     projet?: XOR<ProjetScalarRelationFilter, ProjetWhereInput>
@@ -16497,7 +16535,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Tache"> | string | null
     projetId?: IntWithAggregatesFilter<"Tache"> | number
     deadline?: DateTimeNullableWithAggregatesFilter<"Tache"> | Date | string | null
-    statut?: EnumTacheStatutWithAggregatesFilter<"Tache"> | $Enums.TacheStatut
+    statut?: EnumStatutWithAggregatesFilter<"Tache"> | $Enums.Statut
     createdAt?: DateTimeWithAggregatesFilter<"Tache"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Tache"> | Date | string
   }
@@ -17182,6 +17220,8 @@ export namespace Prisma {
   export type ProjetCreateInput = {
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departement: DepartementCreateNestedOneWithoutProjetsInput
@@ -17194,6 +17234,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departementId: number
@@ -17205,6 +17247,8 @@ export namespace Prisma {
   export type ProjetUpdateInput = {
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneRequiredWithoutProjetsNestedInput
@@ -17217,6 +17261,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departementId?: IntFieldUpdateOperationsInput | number
@@ -17229,6 +17275,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departementId: number
@@ -17237,6 +17285,8 @@ export namespace Prisma {
   export type ProjetUpdateManyMutationInput = {
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17245,6 +17295,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departementId?: IntFieldUpdateOperationsInput | number
@@ -17254,7 +17306,7 @@ export namespace Prisma {
     titre: string
     description?: string | null
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     projet: ProjetCreateNestedOneWithoutTachesInput
@@ -17267,7 +17319,7 @@ export namespace Prisma {
     description?: string | null
     projetId: number
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     TacheUtilisateur?: TacheUtilisateurUncheckedCreateNestedManyWithoutTacheInput
@@ -17277,7 +17329,7 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projet?: ProjetUpdateOneRequiredWithoutTachesNestedInput
@@ -17290,7 +17342,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     projetId?: IntFieldUpdateOperationsInput | number
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     TacheUtilisateur?: TacheUtilisateurUncheckedUpdateManyWithoutTacheNestedInput
@@ -17302,7 +17354,7 @@ export namespace Prisma {
     description?: string | null
     projetId: number
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17311,7 +17363,7 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17322,7 +17374,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     projetId?: IntFieldUpdateOperationsInput | number
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18080,6 +18132,24 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type EnumStatutFilter<$PrismaModel = never> = {
+    equals?: $Enums.Statut | EnumStatutFieldRefInput<$PrismaModel>
+    in?: $Enums.Statut[]
+    notIn?: $Enums.Statut[]
+    not?: NestedEnumStatutFilter<$PrismaModel> | $Enums.Statut
+  }
+
   export type DepartementScalarRelationFilter = {
     is?: DepartementWhereInput
     isNot?: DepartementWhereInput
@@ -18099,6 +18169,8 @@ export namespace Prisma {
     id?: SortOrder
     nom?: SortOrder
     description?: SortOrder
+    deadline?: SortOrder
+    statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     departementId?: SortOrder
@@ -18113,6 +18185,8 @@ export namespace Prisma {
     id?: SortOrder
     nom?: SortOrder
     description?: SortOrder
+    deadline?: SortOrder
+    statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     departementId?: SortOrder
@@ -18122,6 +18196,8 @@ export namespace Prisma {
     id?: SortOrder
     nom?: SortOrder
     description?: SortOrder
+    deadline?: SortOrder
+    statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     departementId?: SortOrder
@@ -18149,7 +18225,7 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
     notIn?: Date[] | string[] | null
@@ -18157,14 +18233,20 @@ export namespace Prisma {
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type EnumTacheStatutFilter<$PrismaModel = never> = {
-    equals?: $Enums.TacheStatut | EnumTacheStatutFieldRefInput<$PrismaModel>
-    in?: $Enums.TacheStatut[]
-    notIn?: $Enums.TacheStatut[]
-    not?: NestedEnumTacheStatutFilter<$PrismaModel> | $Enums.TacheStatut
+  export type EnumStatutWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Statut | EnumStatutFieldRefInput<$PrismaModel>
+    in?: $Enums.Statut[]
+    notIn?: $Enums.Statut[]
+    not?: NestedEnumStatutWithAggregatesFilter<$PrismaModel> | $Enums.Statut
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatutFilter<$PrismaModel>
+    _max?: NestedEnumStatutFilter<$PrismaModel>
   }
 
   export type ProjetScalarRelationFilter = {
@@ -18213,30 +18295,6 @@ export namespace Prisma {
   export type TacheSumOrderByAggregateInput = {
     id?: SortOrder
     projetId?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type EnumTacheStatutWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TacheStatut | EnumTacheStatutFieldRefInput<$PrismaModel>
-    in?: $Enums.TacheStatut[]
-    notIn?: $Enums.TacheStatut[]
-    not?: NestedEnumTacheStatutWithAggregatesFilter<$PrismaModel> | $Enums.TacheStatut
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTacheStatutFilter<$PrismaModel>
-    _max?: NestedEnumTacheStatutFilter<$PrismaModel>
   }
 
   export type TacheScalarRelationFilter = {
@@ -19158,6 +19216,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type EnumStatutFieldUpdateOperationsInput = {
+    set?: $Enums.Statut
+  }
+
   export type DepartementUpdateOneRequiredWithoutProjetsNestedInput = {
     create?: XOR<DepartementCreateWithoutProjetsInput, DepartementUncheckedCreateWithoutProjetsInput>
     connectOrCreate?: DepartementCreateOrConnectWithoutProjetsInput
@@ -19268,14 +19334,6 @@ export namespace Prisma {
     connectOrCreate?: TacheUtilisateurCreateOrConnectWithoutTacheInput | TacheUtilisateurCreateOrConnectWithoutTacheInput[]
     createMany?: TacheUtilisateurCreateManyTacheInputEnvelope
     connect?: TacheUtilisateurWhereUniqueInput | TacheUtilisateurWhereUniqueInput[]
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type EnumTacheStatutFieldUpdateOperationsInput = {
-    set?: $Enums.TacheStatut
   }
 
   export type ProjetUpdateOneRequiredWithoutTachesNestedInput = {
@@ -19669,6 +19727,24 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumStatutFilter<$PrismaModel = never> = {
+    equals?: $Enums.Statut | EnumStatutFieldRefInput<$PrismaModel>
+    in?: $Enums.Statut[]
+    notIn?: $Enums.Statut[]
+    not?: NestedEnumStatutFilter<$PrismaModel> | $Enums.Statut
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -19686,24 +19762,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedEnumTacheStatutFilter<$PrismaModel = never> = {
-    equals?: $Enums.TacheStatut | EnumTacheStatutFieldRefInput<$PrismaModel>
-    in?: $Enums.TacheStatut[]
-    notIn?: $Enums.TacheStatut[]
-    not?: NestedEnumTacheStatutFilter<$PrismaModel> | $Enums.TacheStatut
-  }
-
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
@@ -19718,14 +19776,14 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumTacheStatutWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TacheStatut | EnumTacheStatutFieldRefInput<$PrismaModel>
-    in?: $Enums.TacheStatut[]
-    notIn?: $Enums.TacheStatut[]
-    not?: NestedEnumTacheStatutWithAggregatesFilter<$PrismaModel> | $Enums.TacheStatut
+  export type NestedEnumStatutWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Statut | EnumStatutFieldRefInput<$PrismaModel>
+    in?: $Enums.Statut[]
+    notIn?: $Enums.Statut[]
+    not?: NestedEnumStatutWithAggregatesFilter<$PrismaModel> | $Enums.Statut
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTacheStatutFilter<$PrismaModel>
-    _max?: NestedEnumTacheStatutFilter<$PrismaModel>
+    _min?: NestedEnumStatutFilter<$PrismaModel>
+    _max?: NestedEnumStatutFilter<$PrismaModel>
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -19744,6 +19802,8 @@ export namespace Prisma {
   export type ProjetCreateWithoutDepartementInput = {
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     membres?: MembreProjetCreateNestedManyWithoutProjetInput
@@ -19755,6 +19815,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     membres?: MembreProjetUncheckedCreateNestedManyWithoutProjetInput
@@ -19866,6 +19928,8 @@ export namespace Prisma {
     id?: IntFilter<"Projet"> | number
     nom?: StringFilter<"Projet"> | string
     description?: StringNullableFilter<"Projet"> | string | null
+    deadline?: DateTimeNullableFilter<"Projet"> | Date | string | null
+    statut?: EnumStatutFilter<"Projet"> | $Enums.Statut
     createdAt?: DateTimeFilter<"Projet"> | Date | string
     updatedAt?: DateTimeFilter<"Projet"> | Date | string
     departementId?: IntFilter<"Projet"> | number
@@ -20465,7 +20529,7 @@ export namespace Prisma {
     titre: string
     description?: string | null
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     TacheUtilisateur?: TacheUtilisateurCreateNestedManyWithoutTacheInput
@@ -20476,7 +20540,7 @@ export namespace Prisma {
     titre: string
     description?: string | null
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     TacheUtilisateur?: TacheUtilisateurUncheckedCreateNestedManyWithoutTacheInput
@@ -20588,7 +20652,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Tache"> | string | null
     projetId?: IntFilter<"Tache"> | number
     deadline?: DateTimeNullableFilter<"Tache"> | Date | string | null
-    statut?: EnumTacheStatutFilter<"Tache"> | $Enums.TacheStatut
+    statut?: EnumStatutFilter<"Tache"> | $Enums.Statut
     createdAt?: DateTimeFilter<"Tache"> | Date | string
     updatedAt?: DateTimeFilter<"Tache"> | Date | string
   }
@@ -20612,6 +20676,8 @@ export namespace Prisma {
   export type ProjetCreateWithoutTachesInput = {
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departement: DepartementCreateNestedOneWithoutProjetsInput
@@ -20623,6 +20689,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departementId: number
@@ -20670,6 +20738,8 @@ export namespace Prisma {
   export type ProjetUpdateWithoutTachesInput = {
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneRequiredWithoutProjetsNestedInput
@@ -20681,6 +20751,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departementId?: IntFieldUpdateOperationsInput | number
@@ -20708,7 +20780,7 @@ export namespace Prisma {
     titre: string
     description?: string | null
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     projet: ProjetCreateNestedOneWithoutTachesInput
@@ -20720,7 +20792,7 @@ export namespace Prisma {
     description?: string | null
     projetId: number
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20785,7 +20857,7 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projet?: ProjetUpdateOneRequiredWithoutTachesNestedInput
@@ -20797,7 +20869,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     projetId?: IntFieldUpdateOperationsInput | number
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20891,6 +20963,8 @@ export namespace Prisma {
   export type ProjetCreateWithoutMembresInput = {
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departement: DepartementCreateNestedOneWithoutProjetsInput
@@ -20902,6 +20976,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departementId: number
@@ -20974,6 +21050,8 @@ export namespace Prisma {
   export type ProjetUpdateWithoutMembresInput = {
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneRequiredWithoutProjetsNestedInput
@@ -20985,6 +21063,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departementId?: IntFieldUpdateOperationsInput | number
@@ -21079,6 +21159,8 @@ export namespace Prisma {
   export type ProjetCreateWithoutPartagesInput = {
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departement: DepartementCreateNestedOneWithoutProjetsInput
@@ -21090,6 +21172,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
     departementId: number
@@ -21258,6 +21342,8 @@ export namespace Prisma {
   export type ProjetUpdateWithoutPartagesInput = {
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departement?: DepartementUpdateOneRequiredWithoutProjetsNestedInput
@@ -21269,6 +21355,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departementId?: IntFieldUpdateOperationsInput | number
@@ -21634,6 +21722,8 @@ export namespace Prisma {
     id?: number
     nom: string
     description?: string | null
+    deadline?: Date | string | null
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21662,6 +21752,8 @@ export namespace Prisma {
   export type ProjetUpdateWithoutDepartementInput = {
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membres?: MembreProjetUpdateManyWithoutProjetNestedInput
@@ -21673,6 +21765,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     membres?: MembreProjetUncheckedUpdateManyWithoutProjetNestedInput
@@ -21684,6 +21778,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nom?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22081,7 +22177,7 @@ export namespace Prisma {
     titre: string
     description?: string | null
     deadline?: Date | string | null
-    statut: $Enums.TacheStatut
+    statut?: $Enums.Statut
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22118,7 +22214,7 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     TacheUtilisateur?: TacheUtilisateurUpdateManyWithoutTacheNestedInput
@@ -22129,7 +22225,7 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     TacheUtilisateur?: TacheUtilisateurUncheckedUpdateManyWithoutTacheNestedInput
@@ -22140,7 +22236,7 @@ export namespace Prisma {
     titre?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statut?: EnumTacheStatutFieldUpdateOperationsInput | $Enums.TacheStatut
+    statut?: EnumStatutFieldUpdateOperationsInput | $Enums.Statut
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -1,8 +1,8 @@
 // src/lib/authOptions.ts     
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
-import { PrismaClient } from '@/generated/prisma' 
-import { NextAuthOptions } from "next-auth"  
+import { prisma } from '@/lib/prisma' 
+import { NextAuthOptions } from "next-auth"    
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -23,7 +23,13 @@ export const authOptions: NextAuthOptions = {
 
         if (!passwordValid) return null
 
-        return user
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        }
+
       },
     }),
 

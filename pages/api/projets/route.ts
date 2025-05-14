@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma' 
+import { prisma } from '@/lib/prisma'
+import { Statut } from "@prisma/client"; 
 
 // GET — liste avec option de recherche et pagination
 export async function GET(req: Request) {
@@ -48,6 +49,8 @@ export async function POST(req: Request) {
       data: {
         nom: body.nom,
         description: body.description || null,
+        deadline: body.deadline ? new Date(body.deadline) : null,
+        status: body.statut || STATUT.ATTENTE,   
         departementId: body.departementId,
       },
     })

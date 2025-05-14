@@ -1,4 +1,4 @@
-// This is your Prisma schema file, 
+// This is your Prisma schema file,  
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
@@ -59,10 +59,18 @@ model Document {
   notifications Notification[]
 }
 
+enum Statut {
+  ATTENTE
+  EN_COURS
+  TERMINE
+}
+
 model Projet {
   id            Int               @id @default(autoincrement())
   nom           String
   description   String?
+  deadline      DateTime?
+  statut        Statut            @default(ATTENTE)
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   departement   Departement       @relation(fields: [departementId], references: [id])
@@ -72,12 +80,6 @@ model Projet {
   partages      PartageDocument[]
 }
 
-enum TacheStatut {
-  A_FAIRE
-  EN_COURS
-  TERMINE
-}
-
 model Tache {
   id               Int                @id @default(autoincrement())
   titre            String
@@ -85,7 +87,7 @@ model Tache {
   projet           Projet             @relation(fields: [projetId], references: [id])
   projetId         Int
   deadline         DateTime?
-  statut           TacheStatut
+  statut           Statut             @default(ATTENTE)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   TacheUtilisateur TacheUtilisateur[]

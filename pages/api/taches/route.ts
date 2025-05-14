@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { Statut } from "@prisma/client";
 
 // GET – Liste des tâches
 export async function GET() {
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
         description: body.description || null,
         deadline: body.deadline ? new Date(body.deadline) : null,
         projetId: parseInt(body.projetId),
-        statut: body.statut || 'EN_ATTENTE',
+        statut: body.statut || STATUT.ATTENTE,
       },
     })
 
