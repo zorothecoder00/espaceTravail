@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client' 
+import { Role } from '@prisma/client'    
 import bcrypt from 'bcryptjs'    
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma' // Assure-toi que ce fichier existe

@@ -94,7 +94,7 @@ export default function Register() {
       const sessionRes = await fetch('/api/auth/session')
       const sessionData = await sessionRes.json()
 
-      if (sessionData?.user?.role === Role.ADMIN) {
+      if (sessionData?.user?.role === 'ADMIN') {
         router.push('/admin/dashboard')
       } else {
         router.push('/interfaceUtilisateur/dashboard')
