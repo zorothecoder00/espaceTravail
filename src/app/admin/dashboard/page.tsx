@@ -52,7 +52,7 @@ export default async function Dashboard() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
+      <main className="flex-1 bg-gradient-to-br from-green-400 to-violet-400 p-8 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
           <div className="flex items-center gap-4">
@@ -73,14 +73,18 @@ export default async function Dashboard() {
           <Stat title="Utilisateurs en ligne" value={usersOnline.length} />
           <Stat title="Projets en attente" value={projetsAttente} />
           <Stat title="Projets en cours" value={projetsEnCours} />
-        </div>
+        </div> 
 
         {/* Listes */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card title="Tâches Récentes" items={tachesRecentes.map(t => t.titre)} />
-          <Card title="Utilisateurs connectés récemment" items={usersOnline.map(user => `${user.prenom} ${user.nom}`)} />
-        </div>
-
+          <Card title="Tâches Récentes" 
+           items={tachesRecentes.map(t => t.titre)} 
+          />
+          <Card title="Utilisateurs connectés récemment"
+           items={usersOnline.map(user => `${user.prenom} ${user.nom}`)} 
+          />
+        </div>  
+  
         {/* Graphique */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-xl font-bold mb-4">Avancement des Projets</h3>
