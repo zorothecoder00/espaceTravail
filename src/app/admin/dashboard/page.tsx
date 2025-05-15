@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { getAuthSession } from "@/lib/auth"; // helper
-import prisma from "@/lib/prisma";
+import { getAuthSession } from "@/lib/auth"; // helper  
+import prisma from "@/lib/prisma";  
 import { Statut, Role } from "@prisma/client";     
-import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer
+import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer  
 
 export default async function Dashboard() {   
   const session = await getAuthSession();  
@@ -23,11 +23,18 @@ export default async function Dashboard() {
     take: 3,
   });
 
-  const membres = await prisma.user.findMany({
-    where: { role: Role.UTILISATEUR },
-    take: 3,
-    orderBy: { createdAt: "desc" },
+  const usersOnline = await prisma.user.findMany({
+    where: {
+      lastActiveAt: {
+        gte: new Date(Date.now() - 5 * 60 * 1000), // connectés récemment
+      },
+    },
+    select: {
+      prenom: true,
+      nom: true,
+    },
   });
+
 
   return (
     <div className="flex h-screen">
@@ -63,7 +70,7 @@ export default async function Dashboard() {
         {/* Statistiques */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Stat title="Total Tâches" value={totalTaches} />
-          <Stat title="Projets Terminés" value={projetsTermines} />
+          <Stat title="Utilisateurs en ligne" value={usersOnline.length} />
           <Stat title="Projets en attente" value={projetsAttente} />
           <Stat title="Projets en cours" value={projetsEnCours} />
         </div>
@@ -71,7 +78,7 @@ export default async function Dashboard() {
         {/* Listes */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card title="Tâches Récentes" items={tachesRecentes.map(t => t.titre)} />
-          <Card title="Membres de l'équipe" items={membres.map(m => `${m.prenom} ${m.nom}`)} />
+          <Card title="Utilisateurs connectés récemment" items={usersOnline.map(user => `${user.prenom} ${user.nom}`)} />
         </div>
 
         {/* Graphique */}

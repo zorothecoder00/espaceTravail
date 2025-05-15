@@ -6,7 +6,7 @@ import { getToken } from 'next-auth/jwt'
 const secret = process.env.NEXTAUTH_SECRET 
 
 export async function isAdminMiddleware(req: NextRequest) {
-  const token = await getToken({ req, secret })
+  const token = await getToken({ req, secret })  
 
   if (!token) {
     // Pas connecté => vers /login  

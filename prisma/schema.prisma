@@ -28,7 +28,7 @@ enum Role {
   ADMIN
   UTILISATEUR
 }
-
+  
 model User {   
   id            Int           @id @default(autoincrement())
   nom           String
@@ -38,6 +38,7 @@ model User {
   role          Role          @default(UTILISATEUR)
   departement   Departement?  @relation("DepartementUtilisateur", fields: [departementId], references: [id])
   departementId Int?
+  lastActiveAt DateTime?      @default(now()) //<--- Ce champ pour suivre l'activité
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   projets       MembreProjet[]
