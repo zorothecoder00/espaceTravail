@@ -52,7 +52,7 @@ export default async function Dashboard() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 bg-gradient-to-br from-green-400 to-violet-400 p-8 overflow-y-auto">
+      <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
           <div className="flex items-center gap-4">
