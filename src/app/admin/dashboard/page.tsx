@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth"; // helper  
-import prisma from "@/lib/prisma";  
+import prisma from "@/lib/prisma";     
 import { Statut, Role } from "@prisma/client";     
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer  
 
@@ -37,9 +37,9 @@ export default async function Dashboard() {
 
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen">  
       {/* Sidebar */}
-      <aside className="w-64 bg-blue-900 text-white flex flex-col p-6">
+      <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div>
         <nav className="flex flex-col gap-4">
           <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>

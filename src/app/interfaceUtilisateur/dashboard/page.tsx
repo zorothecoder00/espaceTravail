@@ -15,6 +15,17 @@ export default async function UtilisateurDashboard() {
   return (
     <div className="flex h-screen">
       {/* Sidebar facultative si besoin plus tard */}
+            <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
+        <div className="text-2xl font-bold mb-10">LOGO</div>
+        <nav className="flex flex-col gap-4">
+          <a href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
+          <a href="/interfaceUtilisateur/departements" className="hover:bg-blue-700 p-2 rounded">Départements</a>
+          <a href="/interfaceUtilisateur/projets" className="hover:bg-blue-700 p-2 rounded">Projets</a>
+          <a href="/interfaceUtilisateur/taches" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
+          <a href="/interfaceUtilisateur/documents" className="hover:bg-blue-700 p-2 rounded">Documents</a>
+          <a href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
+        </nav>
+      </aside>
 
       {/* Contenu principal */}
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
