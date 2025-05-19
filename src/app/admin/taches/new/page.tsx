@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Statut, Role } from "@prisma/client"; 
+import { Statut } from "@prisma/client"; 
+
+type Projet = {
+  id: number
+  nom: string
+}
 
 export default function NouvelleTache() {
   const router = useRouter()
@@ -13,7 +18,7 @@ export default function NouvelleTache() {
     deadline: '',
     statut: Statut.ATTENTE,
   })
-  const [projets, setProjets] = useState([])
+  const [projets, setProjets] = useState<Projet[]>([])
 
   useEffect(() => {
     fetch('/api/projets')
@@ -21,7 +26,7 @@ export default function NouvelleTache() {
       .then(setProjets)
   }, [])
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const res = await fetch('/api/taches', {
       method: 'POST',
@@ -59,7 +64,7 @@ export default function NouvelleTache() {
           required
         >
           <option value="">-- Choisir un projet --</option>
-          {projets.map((p: any) => (
+          {projets.map((p) => (
             <option key={p.id} value={p.id}>{p.nom}</option>
           ))}
         </select>

@@ -13,6 +13,7 @@ export async function GET() {
     })
     return NextResponse.json(taches)
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ message: 'Erreur lors de la récupération des tâches' }, { status: 500 })
   }
 }
@@ -32,12 +33,13 @@ export async function POST(req: Request) {
         description: body.description || null,
         deadline: body.deadline ? new Date(body.deadline) : null,
         projetId: parseInt(body.projetId),
-        statut: body.statut || STATUT.ATTENTE,
+        statut: body.statut || Statut.ATTENTE,
       },
     })
 
     return NextResponse.json(tache, { status: 201 })
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ message: 'Erreur lors de la création de la tâche' }, { status: 500 })
   }
 }

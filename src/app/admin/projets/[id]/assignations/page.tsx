@@ -5,9 +5,16 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
 
+type Utilisateur = {
+  id: number
+  nom: string
+  prenom: string
+}
+
+
 export default function AssignationProjetPage() {
   const { id } = useParams()
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<Utilisateur[]>([])
   const [selectedUser, setSelectedUser] = useState<number | null>(null)
 
   useEffect(() => {
@@ -32,7 +39,7 @@ export default function AssignationProjetPage() {
         value={selectedUser ?? ''}
       >
         <option value="">Sélectionnez un utilisateur</option>
-        {users.map((u: any) => (
+        {users.map((u) => (
           <option key={u.id} value={u.id}>{u.nom} {u.prenom}</option>
         ))}
       </select>

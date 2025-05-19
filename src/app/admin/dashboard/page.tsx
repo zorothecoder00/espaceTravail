@@ -1,19 +1,19 @@
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";     
-import { Statut, Role } from "@prisma/client";     
+import { Statut, Role } from "@prisma/client";  
+import Image from 'next/image'   
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer  
 
 export default async function Dashboard() {   
-  const session = await getAuthSession();  
+  const session = await getAuthSession();    
 
   if (!session || session.user.role !== Role.ADMIN) {
     redirect("/login");
   }
 
-  const [totalTaches, projetsTermines, projetsAttente, projetsEnCours] = await Promise.all([
+  const [totalTaches, projetsAttente, projetsEnCours] = await Promise.all([
     prisma.tache.count(),
-    prisma.projet.count({ where: { statut: Statut.TERMINE } }),
     prisma.projet.count({ where: { statut: Statut.ATTENTE } }),
     prisma.projet.count({ where: { statut: Statut.EN_COURS } }),
   ]);
@@ -61,7 +61,7 @@ export default async function Dashboard() {
                 3
               </span>
             </a>
-            <img src="/profile.jpg" alt="Profil" className="w-10 h-10 rounded-full" />
+            <Image src="/profile.jpg" alt="Profil" width={40} height={40} className="rounded-full" />
             <SignOutButton /> {/* 👈 le bouton Déconnexion dynamique */}
           </div>
         </div>

@@ -3,8 +3,7 @@
 import { useRouter } from 'next/navigation'  
 import { useState, useEffect } from 'react'
 import { z } from 'zod' 
-import { signIn } from 'next-auth/react' 
-import { Role } from "@prisma/client";  
+import { signIn } from 'next-auth/react'  
 
 const registerSchema = z.object({
   prenom: z.string().min(2, 'Prénom requis'),
@@ -16,9 +15,9 @@ const registerSchema = z.object({
 
 export default function Register() {
   const router = useRouter()
-  const [errors, setErrors] = useState<any>({})
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [serverError, setServerError] = useState('')
-  const [departements, setDepartements] = useState<any[]>([])
+  const [departements, setDepartements] = useState<{ id: string; nom: string }[]>([])
   const [loadingDeps, setLoadingDeps] = useState(true)
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export default function Register() {
           setDepartements(data)
         }
       } catch (err) {
-        console.error('Erreur chargement départements')
+        console.error('Erreur chargement départements', err)
       } finally {
         setLoadingDeps(false)
       }
@@ -39,10 +38,20 @@ export default function Register() {
     fetchDepartements()
   }, [])
 
-  const handleRegister = async (e: any) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrors({})
     setServerError('')
+
+    const formTarget = e.target as typeof e.target & {
+      prenom: { value: string };
+      nom: { value: string };
+      email: { value: string };
+      password: { value: string };
+      confirmPassword: { value: string };
+      departement?: { value: string };
+      ['not-robot']: { checked: boolean };
+    }
 
     if (!e.target['not-robot'].checked) {
       setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
@@ -55,11 +64,11 @@ export default function Register() {
     }
 
     const form = {
-      prenom: e.target.prenom.value,
-      nom: e.target.nom.value,
-      email: e.target.email.value,
-      password: e.target.password.value,
-      departementId: e.target.departement?.value || null,
+      prenom: formTarget.prenom.value,
+      nom: formTarget.nom.value,
+      email: formTarget.email.value,
+      password: formTarget.password.value,
+      departementId: formTarget.departement?.value || null,
     }
 
     const validation = registerSchema.safeParse(form)

@@ -3,7 +3,7 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { useEffect, useState } from 'react'
-import { formatDate } from '@fullcalendar/core'
+//import { formatDate } from '@fullcalendar/core'
 
 type TacheEvent = {
   id: number
@@ -13,7 +13,7 @@ type TacheEvent = {
 }
 
 export default function CalendrierPage() {
-  const [events, setEvents] = useState<any[]>([])
+  const [events, setEvents] = useState<{ title: string; date: string }[]>([])
 
   useEffect(() => {
     const fetchTaches = async () => {

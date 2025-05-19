@@ -29,7 +29,7 @@ export default function UnauthorizedPage() {
           Accès refusé
         </h1>
         <p className="text-gray-600 mb-6">
-          Vous n'avez pas la permission d'accéder à cette page.
+          Vous n&apos;avez pas la permission d&apos;accéder à cette page.
         </p>
         <Button onClick={handleReturn}>
           Retour

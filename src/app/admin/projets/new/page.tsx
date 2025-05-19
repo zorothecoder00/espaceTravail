@@ -3,13 +3,19 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
+interface Departement {
+  id: number
+  nom: string
+}
+ 
+
 export default function CreateProjetPage() {
   const [nom, setNom] = useState('')
   const [description, setDescription] = useState('')
   const [deadline, setDeadline] = useState('')
-  const [statut, setStatut] = useState('')
+  const [statut, setStatut] = useState('ATTENTE')
   const [departementId, setDepartementId] = useState('')
-  const [departements, setDepartements] = useState<any[]>([])
+  const [departements, setDepartements] = useState<Departement[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -78,14 +84,14 @@ export default function CreateProjetPage() {
 
         <input
           type="datetime-local"
-          value={form.deadline}
-          onChange={(e) => setForm({ ...form, deadline: e.target.value })}
+          value={deadline}
+          onChange={e => setDeadline(e.target.value)}
           className="w-full border px-3 py-2 rounded"
         /> 
 
         <select
-          value={form.statut}
-          onChange={(e) => setForm({ ...form, statut: e.target.value })}
+          value={statut}
+          onChange={e => setStatut(e.target.value)}
           className="w-full border px-3 py-2 rounded"
         >
           <option value="ATTENTE">En attente</option>

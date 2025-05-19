@@ -23,6 +23,7 @@ export async function GET() {
 
     return NextResponse.json(taches)
   } catch (error) {
+    console.error('Erreur lors de la récupération des tâches du calendrier :', error)
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 })
   }
 }

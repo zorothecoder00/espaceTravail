@@ -19,6 +19,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'Assignation réussie' })
   } catch (error) {
+    console.error('Erreur lors de l’assignation au projet :', error);
     return NextResponse.json({ message: 'Erreur lors de l’assignation au projet' }, { status: 500 })
   }
 }

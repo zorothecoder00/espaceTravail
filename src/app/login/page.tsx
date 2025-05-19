@@ -3,19 +3,19 @@
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'  
-import { Role } from "@prisma/client"; 
 
 export default function Login() { 
   const router = useRouter()
   const [error, setError] = useState('')
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const form = e.target as HTMLFormElement
 
     const res = await signIn('credentials', {
       redirect: false,
-      email: e.target.email.value,
-      password: e.target.password.value,
+      email: form.email.value,
+      password: form.password.value,
     })
 
     if (res?.ok) {

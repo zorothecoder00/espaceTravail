@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     const adminExists = await prisma.user.findFirst({
       where: { role: Role.ADMIN },
     })
-
+ 
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const newUser = await prisma.user.create({
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     })
 
     // Ne jamais renvoyer le mot de passe, même hashé
-    const { password: _, ...userSafe } = newUser
+    const { password: _password, ...userSafe } = newUser
 
     return res.status(201).json({ message: 'Compte créé', user: userSafe })
   } catch (error) {

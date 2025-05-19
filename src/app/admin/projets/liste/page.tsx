@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 interface Projet {     
   id: number
   nom: string
-  deadline: datetime
-  statut: Statut
+  deadline: string // datetime -> string en TS pour simplifier
+  statut: string
   description?: string
   departement: { nom: string }
 }
@@ -19,7 +19,7 @@ export default function ListeProjetsPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const fetchProjets = async () => {
+  const fetchProjets = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/projets?search=${search}&page=${page}`)
@@ -30,11 +30,11 @@ export default function ListeProjetsPage() {
       setError('Erreur lors du chargement des projets.')
     }
     setLoading(false)
-  }
+  }, [search, page])
 
   useEffect(() => {
     fetchProjets()
-  }, [search, page])
+  }, [fetchProjets])
 
   const handleDelete = async (id: number) => {
     const confirmed = confirm('Voulez-vous vraiment supprimer ce projet ?')

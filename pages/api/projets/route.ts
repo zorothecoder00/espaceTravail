@@ -50,12 +50,13 @@ export async function POST(req: Request) {
         nom: body.nom,
         description: body.description || null,
         deadline: body.deadline ? new Date(body.deadline) : null,
-        status: body.statut || STATUT.ATTENTE,   
+        status: body.statut || Statut.ATTENTE,   
         departementId: body.departementId,
       },
     })
     return NextResponse.json(projet, { status: 201 })
   } catch (error) {
+    console.error('Erreur création projet:', error)  // <-- on log l’erreur pour debug
     return NextResponse.json({ message: 'Erreur lors de la création' }, { status: 500 })
   }
 }

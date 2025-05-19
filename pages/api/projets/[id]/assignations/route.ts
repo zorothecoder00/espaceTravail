@@ -20,6 +20,7 @@ export async function GET(req: Request, { params }: Params) {
 
     return NextResponse.json(assignations)
   } catch (error) {
+    console.error('Erreur GET assignations:', error)  // <-- logger l’erreur
     return NextResponse.json({ message: 'Erreur lors de la récupération' }, { status: 500 })
   }
 }
@@ -40,6 +41,7 @@ export async function DELETE(req: Request, { params }: Params) {
 
     return NextResponse.json({ message: 'Utilisateur retiré du projet' })
   } catch (error) {
+    console.error('Erreur DELETE assignation:', error)  // <-- logger l’erreur
     return NextResponse.json({ message: 'Erreur lors de la suppression' }, { status: 500 })
   }
 }
