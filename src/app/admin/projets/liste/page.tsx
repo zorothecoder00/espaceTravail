@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-interface Projet {
+interface Projet {     
   id: number
   nom: string
   deadline: datetime

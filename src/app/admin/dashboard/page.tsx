@@ -36,20 +36,20 @@ export default async function Dashboard() {
   });
 
 
-  return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-blue-900 text-white flex flex-col p-6">
+  return (   
+    <div className="flex h-screen">   
+      {/* Sidebar*/}
+      <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div>
         <nav className="flex flex-col gap-4">
           <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
-          <a href="/admin/departements" className="hover:bg-blue-700 p-2 rounded">Départements</a>
-          <a href="/admin/projets" className="hover:bg-blue-700 p-2 rounded">Projets</a>
-          <a href="/admin/taches" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
+          <a href="/admin/departements/liste" className="hover:bg-blue-700 p-2 rounded">Départements</a>
+          <a href="/admin/projets/liste" className="hover:bg-blue-700 p-2 rounded">Projets</a>
+          <a href="/admin/taches/liste" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
           <a href="/admin/documents" className="hover:bg-blue-700 p-2 rounded">Documents</a>
           <a href="/admin/calendrier" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
         </nav>
-      </aside>
+      </aside>  
 
       {/* Main content */}
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
@@ -106,7 +106,7 @@ function Stat({ title, value }: { title: string, value: number }) {
 
 function Card({ title, items }: { title: string, items: string[] }) {
   return (
-    <div className="bg-white p-6 rounded shadow">
+    <div className="bg-green p-6 rounded shadow">
       <h3 className="text-xl font-bold mb-4">{title}</h3>
       <ul className="space-y-2">
         {items.map((item, i) => (

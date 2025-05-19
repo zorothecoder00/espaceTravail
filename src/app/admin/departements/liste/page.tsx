@@ -2,7 +2,7 @@ import { Departement } from '@prisma/client'
 
 async function getDepartements(): Promise<Departement[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/departements`, {
-    cache: 'no-store',
+    cache: 'no-store',         
   })
 
   if (!res.ok) throw new Error('Erreur lors du chargement des départements')
