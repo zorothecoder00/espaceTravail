@@ -11,12 +11,12 @@ type Utilisateur = {
 }
 
 export default function AssignationTachePage() {
-  const { id } = useParams()
+  const { id } = useParams() as { id: string }
   const [users, setUsers] = useState<Utilisateur[]>([])
   const [selectedUser, setSelectedUser] = useState<number | null>(null)
 
   useEffect(() => {
-    axios.get('/api/utilisateurs').then(res => setUsers(res.data))
+    axios.get<Utilisateur[]>('/api/utilisateurs').then((res) => setUsers(res.data))
   }, [])
 
   const assigner = async () => {

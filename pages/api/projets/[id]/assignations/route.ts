@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 
 type Params = {
   params: { id: string }
-}
+}   
 
 export async function GET(req: Request, { params }: Params) {
   const projetId = parseInt(params.id)
@@ -13,7 +13,7 @@ export async function GET(req: Request, { params }: Params) {
   }
 
   try {
-    const assignations = await prisma.MembreProjet.findMany({
+    const assignations = await prisma.membreProjet.findMany({
       where: { projetId },
       include: { user: true },
     })
@@ -35,7 +35,7 @@ export async function DELETE(req: Request, { params }: Params) {
   }  
 
   try {
-    await prisma.MembreProjet.deleteMany({
+    await prisma.membreProjet.deleteMany({
       where: { projetId, userId },
     }) 
 

@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         nom,
         prenom,
         role: adminExists ? Role.UTILISATEUR : Role.ADMIN, // 👈 le premier inscrit devient admin
-        departementId: departementId || null, // 👈 ici
+        departementId: departementId ? Number(departementId) : null,
       },
     })   
 

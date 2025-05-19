@@ -8,7 +8,7 @@ import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à cr�
 export default async function Dashboard() {   
   const session = await getAuthSession();    
 
-  if (!session || session.user.role !== Role.ADMIN) {
+  if (!session || !session.user || session.user.role !== Role.ADMIN) {
     redirect("/login");
   }
 
@@ -49,8 +49,8 @@ export default async function Dashboard() {
           <a href="/admin/calendrier" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
         </nav>
       </aside>  
-
-      {/* Main content */}
+ 
+      {/* Main content */}          
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />

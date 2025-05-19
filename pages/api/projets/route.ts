@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     where: {
       nom: {
         contains: search,
-        mode: 'insensitive',
+        //mode: 'insensitive',
       },
     },
     include: {
@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     where: {
       nom: {
         contains: search,
-        mode: 'insensitive',
+        //mode: 'insensitive',
       },
     },
   })
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         nom: body.nom,
         description: body.description || null,
         deadline: body.deadline ? new Date(body.deadline) : null,
-        status: body.statut || Statut.ATTENTE,   
+        statut: body.statut || Statut.ATTENTE,   
         departementId: body.departementId,
       },
     })

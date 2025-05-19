@@ -43,35 +43,35 @@ export default function Register() {
     setErrors({})
     setServerError('')
 
-    const formTarget = e.target as typeof e.target & {
-      prenom: { value: string };
-      nom: { value: string };
-      email: { value: string };
-      password: { value: string };
-      confirmPassword: { value: string };
-      departement?: { value: string };
-      ['not-robot']: { checked: boolean };
-    }
+    const form = e.currentTarget // ✅ Plus précis que e.target
 
-    if (!e.target['not-robot'].checked) {
+    const notRobot = (form.elements.namedItem('not-robot') as HTMLInputElement)
+    const password = (form.elements.namedItem('password') as HTMLInputElement)
+    const confirmPassword = (form.elements.namedItem('confirmPassword') as HTMLInputElement)
+    const departement = form.elements.namedItem('departement') as HTMLSelectElement | null
+    const prenom = (form.elements.namedItem('prenom') as HTMLInputElement)
+    const nom = (form.elements.namedItem('nom') as HTMLInputElement)
+    const email = (form.elements.namedItem('email') as HTMLInputElement)
+
+    if (!notRobot?.checked) {
       setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
       return
     }
 
-    if (e.target.password.value !== e.target.confirmPassword.value) {
-      setErrors({ password: ['Les mots de passe ne correspondent pas'] })
-      return
+    if (password.value !== confirmPassword.value) {
+    setErrors({ password: ['Les mots de passe ne correspondent pas'] })
+    return
+  }
+
+    const formData = {
+      prenom: prenom.value,
+      nom: nom.value,
+      email: email.value,
+      password: password.value,
+      departementId: departement?.value || null,
     }
 
-    const form = {
-      prenom: formTarget.prenom.value,
-      nom: formTarget.nom.value,
-      email: formTarget.email.value,
-      password: formTarget.password.value,
-      departementId: formTarget.departement?.value || null,
-    }
-
-    const validation = registerSchema.safeParse(form)
+    const validation = registerSchema.safeParse(formData)
 
     if (!validation.success) {
       setErrors(validation.error.flatten().fieldErrors)
@@ -81,7 +81,7 @@ export default function Register() {
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(formData),
     })
 
     const data = await res.json()

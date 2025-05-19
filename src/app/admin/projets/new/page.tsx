@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Statut } from "@prisma/client";
 
 interface Departement {
   id: number
@@ -13,7 +14,7 @@ export default function CreateProjetPage() {
   const [nom, setNom] = useState('')
   const [description, setDescription] = useState('')
   const [deadline, setDeadline] = useState('')
-  const [statut, setStatut] = useState('ATTENTE')
+  const [statut, setStatut] = useState<Statut>(Statut.ATTENTE)
   const [departementId, setDepartementId] = useState('')
   const [departements, setDepartements] = useState<Departement[]>([])
   const [loading, setLoading] = useState(false)
@@ -91,7 +92,7 @@ export default function CreateProjetPage() {
 
         <select
           value={statut}
-          onChange={e => setStatut(e.target.value)}
+          onChange={e => setStatut(e.target.value as Statut)}
           className="w-full border px-3 py-2 rounded"
         >
           <option value="ATTENTE">En attente</option>

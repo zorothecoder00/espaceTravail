@@ -13,7 +13,7 @@ export async function GET(req: Request, { params }: Params) {
   }
 
   try {
-    const assignations = await prisma.TacheUtilisateur.findMany({
+    const assignations = await prisma.tacheUtilisateur.findMany({
       where: { tacheId },
       include: { user: true },
     })
@@ -35,7 +35,7 @@ export async function DELETE(req: Request, { params }: Params) {
   }
 
   try {
-    await prisma.TacheUtilisateur.deleteMany({
+    await prisma.tacheUtilisateur.deleteMany({
       where: { tacheId, userId },
     })
 

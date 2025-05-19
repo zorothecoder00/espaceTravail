@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Statut } from "@prisma/client"; 
 
@@ -9,15 +9,27 @@ type Projet = {
   nom: string
 }
 
+// Type explicite du formulaire
+type FormState = {
+  titre: string
+  description: string
+  projetId: string
+  deadline: string
+  statut: Statut
+}
+
 export default function NouvelleTache() {
   const router = useRouter()
-  const [form, setForm] = useState({
+
+  // useState avec type explicite et valeur initiale correcte
+  const [form, setForm] = useState<FormState>({
     titre: '',
     description: '',
     projetId: '',
     deadline: '',
-    statut: Statut.ATTENTE,
+    statut: Statut.ATTENTE,   // Valeur initiale correcte ici
   })
+
   const [projets, setProjets] = useState<Projet[]>([])
 
   useEffect(() => {
@@ -65,7 +77,7 @@ export default function NouvelleTache() {
         >
           <option value="">-- Choisir un projet --</option>
           {projets.map((p) => (
-            <option key={p.id} value={p.id}>{p.nom}</option>
+            <option key={p.id} value={p.id.toString()}>{p.nom}</option> // bien mettre string
           ))}
         </select>
 
@@ -78,12 +90,12 @@ export default function NouvelleTache() {
 
         <select
           value={form.statut}
-          onChange={(e) => setForm({ ...form, statut: e.target.value })}
+          onChange={(e) => setForm({ ...form, statut: e.target.value as Statut })} // cast explicite ici
           className="w-full border px-3 py-2 rounded"
         >
-          <option value="ATTENTE">En attente</option>
-          <option value="EN_COURS">En cours</option>
-          <option value="TERMINE">Terminée</option>
+          <option value={Statut.ATTENTE}>En attente</option>
+          <option value={Statut.EN_COURS}>En cours</option>
+          <option value={Statut.TERMINE}>Terminée</option>
         </select>
 
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">

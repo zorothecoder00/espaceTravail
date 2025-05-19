@@ -9,11 +9,11 @@ export default async function UtilisateurDashboard() {
   const session = await getServerSession(authOptions)
 
   // Redirection si l'utilisateur n'est pas connecté ou n'est pas de rôle "UTILISATEUR"
-  if (!session) redirect("/login")
+  if (!session?.user) redirect("/login")
   if (session.user.role !== "UTILISATEUR") redirect("/")
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen">           
       {/* Sidebar facultative si besoin plus tard */}
       <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div>
@@ -24,7 +24,7 @@ export default async function UtilisateurDashboard() {
             <a href="/interfaceUtilisateur/taches" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
             <a href="/interfaceUtilisateur/documents" className="hover:bg-blue-700 p-2 rounded">Documents</a>
             <a href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
-          </nav>
+          </nav>   
       </aside>
 
       {/* Contenu principal */}
@@ -58,7 +58,7 @@ export default async function UtilisateurDashboard() {
         </div>
 
         {/* Bienvenue + contenus utilisateur */}
-        <h1 className="text-2xl font-bold">Bienvenue, {session.user.prenom} !</h1>
+        <h1 className="text-2xl font-bold">Bienvenue, {session?.user?.prenom} !</h1>
         <p className="mt-2 text-gray-600">Ceci est votre interface utilisateur.</p>
 
         {/* Tu peux ajouter ici les documents ou tâches reçus dynamiquement */}

@@ -1,8 +1,9 @@
 // src/lib/authOptions.ts     
 import CredentialsProvider from "next-auth/providers/credentials"
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs"  
 import { prisma } from '@/lib/prisma' 
-import { NextAuthOptions } from "next-auth"    
+import { NextAuthOptions } from "next-auth"  
+import { Role } from "@prisma/client";  // <-- import manquant    
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -24,8 +25,10 @@ export const authOptions: NextAuthOptions = {
         if (!passwordValid) return null
 
         return {
-          id: user.id,
-          name: user.name,
+          id: user.id.toString(), // convertir en string
+          nom: user.nom,
+          prenom: user.prenom,
+          name: `${user.prenom} ${user.nom}`, // construire le champ 'name'       
           email: user.email,  
           role: user.role,
         }
@@ -40,14 +43,19 @@ export const authOptions: NextAuthOptions = {
       if (user) { 
         token.role = user.role
         token.id = user.id
+        token.prenom = user.prenom;
       }
       return token
     },
     async session({ session, token }) {
-      session.user.role = token.role
-      session.user.id = token.id
-      return session
+      if (session.user) {
+        session.user.role = token.role as Role;
+        session.user.id = token.id as string;
+        session.user.prenom = token.prenom as string;
+      }
+      return session;
     },
+
   },
   session: {
     strategy: "jwt",
