@@ -51,6 +51,7 @@ export default async function handler(req, res) {
     })
 
     // Ne jamais renvoyer le mot de passe, même hashé
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userSafe } = newUser
 
     return res.status(201).json({ message: 'Compte créé', user: userSafe })
