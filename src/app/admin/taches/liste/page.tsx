@@ -1,9 +1,19 @@
 'use client'
   
-import { useEffect, useState } from 'react'  
+import { useEffect, useState } from 'react' 
+
+type Tache = {
+  id: string
+  titre: string
+  projet?: {
+    nom: string
+  } | null
+  statut: string
+  deadline?: string | null
+} 
 
 export default function ListeTaches() {
-  const [taches, setTaches] = useState([])
+  const [taches, setTaches] = useState<Tache[]>([])
 
   useEffect(() => {
     fetch('/api/taches')
@@ -24,7 +34,7 @@ export default function ListeTaches() {
           </tr>
         </thead>
         <tbody>
-          {taches.map((t: any) => (
+          {taches.map((t) => (
             <tr key={t.id} className="border-t">
               <td className="p-2">{t.titre}</td>
               <td className="p-2">{t.projet?.nom || '—'}</td>

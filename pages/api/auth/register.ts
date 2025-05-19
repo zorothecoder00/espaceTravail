@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     })
 
     // Ne jamais renvoyer le mot de passe, même hashé
-    const { password: _password, ...userSafe } = newUser
+    const { password: _, ...userSafe } = newUser
 
     return res.status(201).json({ message: 'Compte créé', user: userSafe })
   } catch (error) {
