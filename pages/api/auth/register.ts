@@ -48,7 +48,7 @@ export default async function handler(req, res) {
         role: adminExists ? Role.UTILISATEUR : Role.ADMIN, // 👈 le premier inscrit devient admin
         departementId: departementId || null, // 👈 ici
       },
-    })
+    })   
 
     // Ne jamais renvoyer le mot de passe, même hashé
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

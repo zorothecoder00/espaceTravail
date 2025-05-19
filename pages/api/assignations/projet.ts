@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    await prisma.MembreProjet.create({
+    await prisma.membreProjet.create({
       data: {
         userId,
         projetId,
