@@ -1,80 +1,80 @@
 // This is your Prisma schema file,  
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-  
+
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init  
 
-generator client {       
-  provider = "prisma-client-js"  
+generator client {
+  provider = "prisma-client-js"
   //output   = "./node_modules/@prisma/client"    
-}        
+}
 
-datasource db { 
+datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Departement {
-  id            Int      @id @default(autoincrement())
-  nom           String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  projets       Projet[]
-  users  User[]   @relation("DepartementUtilisateur")
-  partages      PartageDocument[]
+  id        Int               @id @default(autoincrement())
+  nom       String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  projets   Projet[]
+  users     User[]            @relation("DepartementUtilisateur")
+  partages  PartageDocument[]
 }
 
 enum Role {
   ADMIN
   UTILISATEUR
 }
-  
-model User {   
-  id            Int           @id @default(autoincrement())
-  nom           String
-  prenom        String
-  email         String        @unique
-  password      String
-  role          Role          @default(UTILISATEUR)
-  departement   Departement?  @relation("DepartementUtilisateur", fields: [departementId], references: [id])
-  departementId Int?
-  lastActiveAt DateTime?      @default(now()) //<--- Ce champ pour suivre l'activité
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  projets       MembreProjet[]
-  taches        TacheUtilisateur[]
-  partages      PartageDocument[]
-  partagesEnTantQuePartageur  PartageDocument[] @relation("Partageur")
-  notifications Notification[]
-  accounts      Account[]
-  sessions      Session[]
+
+model User {
+  id                         Int                @id @default(autoincrement())
+  nom                        String
+  prenom                     String
+  email                      String             @unique
+  password                   String
+  role                       Role               @default(UTILISATEUR)
+  departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id])
+  departementId              Int?
+  lastActiveAt               DateTime?          @default(now()) //<--- Ce champ pour suivre l'activité
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+  projets                    MembreProjet[]
+  taches                     TacheUtilisateur[]
+  partages                   PartageDocument[]
+  partagesEnTantQuePartageur PartageDocument[]  @relation("Partageur")
+  notifications              Notification[]
+  accounts                   Account[]
+  sessions                   Session[]
 }
 
 model Document {
-  id            Int           @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   titre         String
   description   String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
   partages      PartageDocument[]
-  notifications Notification[] 
-} 
+  notifications Notification[]
+}
 
-enum Statut {  
-  ATTENTE   
-  EN_COURS 
+enum Statut {
+  ATTENTE
+  EN_COURS
   TERMINE
 }
 
 model Projet {
-  id            Int         @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   nom           String
   description   String?
-  deadline     DateTime?  
-  statut       Statut       @default(ATTENTE)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  departement   Departement @relation(fields: [departementId], references: [id])
+  deadline      DateTime?
+  statut        Statut            @default(ATTENTE)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  departement   Departement       @relation(fields: [departementId], references: [id])
   departementId Int
   membres       MembreProjet[]
   taches        Tache[]
@@ -82,52 +82,52 @@ model Projet {
 }
 
 model Tache {
-  id           Int           @id @default(autoincrement())
-  titre        String
-  description  String?
-  projet       Projet        @relation(fields: [projetId], references: [id])
-  projetId     Int
-  deadline     DateTime?
-  statut       Statut        @default(ATTENTE)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  TacheUtilisateur TacheUtilisateur[]   
-}  
+  id               Int                @id @default(autoincrement())
+  titre            String
+  description      String?
+  projet           Projet             @relation(fields: [projetId], references: [id])
+  projetId         Int
+  deadline         DateTime?
+  statut           Statut             @default(ATTENTE)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  TacheUtilisateur TacheUtilisateur[]
+}
 
 model TacheUtilisateur {
-  tache        Tache @relation(fields: [tacheId], references: [id])
-  tacheId      Int
-  user  User  @relation(fields: [userId], references: [id])
-  userId Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  tache     Tache    @relation(fields: [tacheId], references: [id])
+  tacheId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([tacheId, userId])
 }
 
 model MembreProjet {
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
-  projet        Projet @relation(fields: [projetId], references: [id])
-  projetId      Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  projet    Projet   @relation(fields: [projetId], references: [id])
+  projetId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([userId, projetId])
 }
 
 model PartageDocument {
-  id            Int           @id @default(autoincrement())
-  document      Document      @relation(fields: [documentId], references: [id])
+  id            Int          @id @default(autoincrement())
+  document      Document     @relation(fields: [documentId], references: [id])
   documentId    Int
-  user   User?         @relation(fields: [userId], references: [id])
-  userId Int?
-  departement   Departement?  @relation(fields: [departementId], references: [id])
+  user          User?        @relation(fields: [userId], references: [id])
+  userId        Int?
+  departement   Departement? @relation(fields: [departementId], references: [id])
   departementId Int?
-  projet        Projet?       @relation(fields: [projetId], references: [id])
+  projet        Projet?      @relation(fields: [projetId], references: [id])
   projetId      Int?
-  datePartage   DateTime      @default(now())
-  partageur     User          @relation("Partageur", fields: [partageurId], references: [id])
+  datePartage   DateTime     @default(now())
+  partageur     User         @relation("Partageur", fields: [partageurId], references: [id])
   partageurId   Int
   historique    String?
 
@@ -136,36 +136,36 @@ model PartageDocument {
 
 model Notification {
   id               Int      @id @default(autoincrement())
-  userId    Int
+  userId           Int
   message          String
   dateNotification DateTime @default(now())
   documentId       Int
   vu               Boolean  @default(false)
 
-  document         Document @relation(fields: [documentId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  document Document @relation(fields: [documentId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             Int
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?   
-  user               User    @relation(fields: [userId], references: [id])
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }
 
-model Session {  
-  id           String   @id @default(cuid())  
+model Session {
+  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       Int
   expires      DateTime
@@ -179,6 +179,3 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-
-
