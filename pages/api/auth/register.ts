@@ -2,9 +2,10 @@ import { Role } from '@prisma/client'
 import bcrypt from 'bcryptjs'    
 import { z } from 'zod'  
 import { prisma } from '@/lib/prisma' // Assure-toi que ce fichier existe
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 
-const registerSchema = z.object({
+const registerSchema = z.object({  
   email: z.string().email(),
   password: z.string().min(6, 'Le mot de passe doit faire au moins 6 caractères'),
   nom: z.string().min(2, 'Le nom est requis'),
@@ -12,7 +13,7 @@ const registerSchema = z.object({
   departementId: z.string().optional().nullable(), // 👈 ajoute cette ligne
 })
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Méthode non autorisée' })
   }
