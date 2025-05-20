@@ -47,7 +47,7 @@ export default async function UtilisateurDashboard() {
               </span>
             </a>
             <Image
-              src="/profile.jpg"
+              src="/profile.png"
               alt="Profil"
               width={40}
               height={40}
