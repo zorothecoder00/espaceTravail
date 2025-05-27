@@ -39,7 +39,7 @@ export default async function Dashboard() {
     <div className="flex h-screen">  
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
-        <div className="text-2xl font-bold mb-10">LOGO</div>
+        <div className="text-2xl font-bold mb-10">LOGO</div> 
         <nav className="flex flex-col gap-4">
           <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
           <a href="/admin/departements/liste" className="hover:bg-blue-700 p-2 rounded">Départements</a>
@@ -61,12 +61,12 @@ export default async function Dashboard() {
                 3
               </span>
             </a>
-            <Image src="/profile.jpg" alt="Profil" width={40} height={40} className="rounded-full" />
+            <Image src="/profile.png" alt="Profil" width={40} height={40} className="rounded-full" />
             <SignOutButton /> {/* 👈 le bouton Déconnexion dynamique */}
           </div>
         </div>
 
-        {/* Statistiques */}
+        {/* Statistiques */}  
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Stat title="Total Tâches" value={totalTaches} />
           <Stat title="Utilisateurs en ligne" value={usersOnline.length} />
