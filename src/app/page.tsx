@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth'
-import { authOptions } from "@/lib/authOptions"
-import { Role } from "@prisma/client";    
+import { getAuthSession } from "@/lib/auth"; // helper
+import { prisma } from "@/lib/prisma" // ⬅️ adapte ce chemin si besoin
+import { Role } from "@prisma/client";          
 
-export default async function Home() {
-  const session = await getServerSession(authOptions)
+export default async function Home() {  
+  const session = await getAuthSession()       
 
   if (!session) {
     // Pas connecté → redirection vers register
@@ -15,8 +15,8 @@ export default async function Home() {
   const role = session.user.role
 
   if (role === Role.ADMIN) {
-    redirect('/admin')
+    redirect('/admin/dashboard')
   } else {
-    redirect('/interfaceUtilisateur')
+    redirect('/interfaceUtilisateur/dashboard')
   }
 }

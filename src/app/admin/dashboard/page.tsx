@@ -1,14 +1,14 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";     
-import { Statut, Role } from "@prisma/client";  
-import Image from 'next/image'   
-import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer  
-
-export default async function Dashboard() {   
+import { Statut, Role } from "@prisma/client";      
+import Image from 'next/image'     
+import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
+   
+export default async function Dashboard() {       
   const session = await getAuthSession();    
 
-  if (!session || !session.user || session.user.role !== Role.ADMIN) {
+  if (!session?.user?.role || session.user.role !== Role.ADMIN) {
     redirect("/login");
   }
 
@@ -32,7 +32,7 @@ export default async function Dashboard() {
     select: {
       prenom: true,
       nom: true,  
-    },
+    },      
   });
 
   return (
@@ -55,7 +55,7 @@ export default async function Dashboard() {
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
           <div className="flex items-center gap-4">
-            <a href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">
+            <a href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">   
               Notifications
               <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 3

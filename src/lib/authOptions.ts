@@ -22,13 +22,13 @@ export const authOptions: NextAuthOptions = {
 
         const passwordValid = await bcrypt.compare(credentials.password, user.password)
 
-        if (!passwordValid) return null
+        if (!passwordValid) return null  
 
         return {
           id: user.id.toString(), // convertir en string
           nom: user.nom,
           prenom: user.prenom,
-          name: `${user.prenom} ${user.nom}`, // construire le champ 'name'       
+          name: `${user.prenom} ${user.nom}`, // construire le champ 'name' souvent obligatoire avec CredentialsProvider      
           email: user.email,  
           role: user.role,
         }
@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
       if (user) { 
         token.role = user.role
         token.id = user.id
-        token.prenom = user.prenom;
+        token.prenom = user.prenom;   
       }
       return token
     },
@@ -59,7 +59,13 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60, // 1 heure (en secondes)
   },
+
+  jwt: {
+  maxAge: 60 * 60, // 1 heure aussi
+  },
+  
   pages: {
     signIn: "/login",
   },

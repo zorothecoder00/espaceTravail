@@ -1,12 +1,11 @@
 // src/app/interfaceUtilisateur/dashboard/page.tsx
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
-import { redirect } from "next/navigation"
+import { getAuthSession } from "@/lib/auth"; // helper 
+import { redirect } from "next/navigation"  
 import Image from "next/image"
 import SignOutButton from "@/components/SignOutButton" // Assure-toi que ce composant existe
 
 export default async function UtilisateurDashboard() {
-  const session = await getServerSession(authOptions)
+  const session = await getAuthSession()
 
   // Redirection si l'utilisateur n'est pas connecté ou n'est pas de rôle "UTILISATEUR"
   if (!session?.user) redirect("/login")

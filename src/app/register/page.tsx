@@ -1,7 +1,7 @@
 'use client'  
    
 import { useRouter } from 'next/navigation'  
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'  
 import { z } from 'zod' 
 import { signIn } from 'next-auth/react'  
 
@@ -64,7 +64,7 @@ export default function Register() {
   }
 
     const formData = {
-      prenom: prenom.value,
+      prenom: prenom.value,   
       nom: nom.value,
       email: email.value,
       password: password.value,

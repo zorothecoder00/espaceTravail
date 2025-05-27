@@ -14,5 +14,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'], // Protège toutes les pages dans /admin
+  matcher: ['/admin', '/admin/:path*'], // Protège toutes les pages dans /admin
 }

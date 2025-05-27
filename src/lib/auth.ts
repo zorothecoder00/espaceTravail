@@ -1,15 +1,15 @@
 // src/lib/auth.ts
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";  
 import { authOptions } from "./authOptions";
 import { DefaultSession, DefaultUser } from "next-auth";
 import { Role } from "@prisma/client";  
-import prisma from "./prisma"; // oublie pas d'importer prisma si ce n'est pas fait
+import prisma from "./prisma"; // oublie pas d'importer prisma si ce n'est pas fait  
 
 // Étendre le type Session de next-auth pour ajouter role dans user
 declare module "next-auth" {
   interface Session {
     user: { 
-      id: string;   
+      id: string;     
       role: Role;
       prenom: string;
     } & DefaultSession["user"]
@@ -32,13 +32,21 @@ export const getAuthSession = async () => {
   const session = await getServerSession(authOptions);
 
   if (session?.user?.email) {
-    await prisma.user.update({
+    const existingUser = await prisma.user.findUnique({
       where: { email: session.user.email },
-      data: { lastActiveAt: new Date() },
-    });
+    });  
+
+    if (existingUser) {
+      await prisma.user.update({
+        where: { email: session.user.email },
+        data: { lastActiveAt: new Date() },
+      });
+    } else {
+      // Optionnel : créer l'utilisateur automatiquement
+    }
   }
 
   return session;
-};
+}
 
 export { authOptions };
