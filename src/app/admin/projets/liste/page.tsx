@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import Link from 'next/link'
 
-interface Projet {     
+interface Projet {
   id: number
   nom: string
-  deadline: string // datetime -> string en TS pour simplifier
+  deadline: string
   statut: string
   description?: string
   departement: { nom: string }
@@ -50,7 +51,15 @@ export default function ListeProjetsPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Liste des projets</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">Liste des projets</h1>
+        <Link
+          href="/admin/projets/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+        >
+          + Nouveau projet
+        </Link>
+      </div>
 
       <input
         type="text"
@@ -73,7 +82,7 @@ export default function ListeProjetsPage() {
           <thead>
             <tr className="bg-gray-100">
               <th className="border p-2 text-left">Nom</th>
-              <th className="border p-2 text-left">Description</th>
+              <th className="border p-2 text-left">Statut</th>
               <th className="border p-2 text-left">Département</th>
               <th className="border p-2 text-left">Actions</th>
             </tr>
@@ -82,15 +91,15 @@ export default function ListeProjetsPage() {
             {projets.map(projet => (
               <tr key={projet.id}>
                 <td className="border p-2">{projet.nom}</td>
-                <td className="border p-2">{projet.description || '—'}</td>
+                <td className="border p-2">{projet.statut}</td>
                 <td className="border p-2">{projet.departement.nom}</td>
                 <td className="border p-2 space-x-2">
-                  <button
+                  <Link
+                    href={`/admin/projets/${projet.id}/edit`}
                     className="text-sm text-blue-600 hover:underline"
-                    onClick={() => alert("Modification à venir")}
                   >
                     Modifier
-                  </button>
+                  </Link>
                   <button
                     className="text-sm text-red-600 hover:underline"
                     onClick={() => handleDelete(projet.id)}

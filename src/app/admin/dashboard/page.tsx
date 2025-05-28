@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
-import prisma from "@/lib/prisma";     
-import { Statut, Role } from "@prisma/client";      
+import prisma from "@/lib/prisma";              
+import { Statut, Role } from "@prisma/client";         
 import Image from 'next/image'     
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
    
@@ -37,11 +37,12 @@ export default async function Dashboard() {
 
   return (
     <div className="flex h-screen">  
-      {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
+      {/* Sidebar bg-gradient-to-b from-sky-500 to-violet-500*/}
+      <aside className="w-64 bg-black text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div> 
         <nav className="flex flex-col gap-4">
           <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
+          <a href="/admin/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded">Utilisateurs</a>
           <a href="/admin/departements/liste" className="hover:bg-blue-700 p-2 rounded">Départements</a>
           <a href="/admin/projets/liste" className="hover:bg-blue-700 p-2 rounded">Projets</a>
           <a href="/admin/taches/liste" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
@@ -96,7 +97,7 @@ export default async function Dashboard() {
 
 function Stat({ title, value }: { title: string, value: number }) {
   return (
-    <div className="bg-white p-6 rounded shadow">
+    <div className="bg-sky-400 p-6 rounded shadow">
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="text-2xl">{value}</p>
     </div>
@@ -105,7 +106,7 @@ function Stat({ title, value }: { title: string, value: number }) {
 
 function Card({ title, items }: { title: string, items: string[] }) {
   return (
-    <div className="bg-green p-6 rounded shadow">
+    <div className="bg-green-300 p-6 rounded shadow">
       <h3 className="text-xl font-bold mb-4">{title}</h3>
       <ul className="space-y-2">
         {items.map((item, i) => (

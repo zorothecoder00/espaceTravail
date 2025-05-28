@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 type Utilisateur = {
   id: number
   nom: string
   prenom: string
-  email: string  
+  email: string
   role: string
   departement?: { nom: string }
 }
@@ -40,8 +41,18 @@ export default function ListeUtilisateurs() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Liste des utilisateurs</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Liste des utilisateurs</h1>
+        <Link
+          href="/admin/utilisateurs/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          ➕ Nouvel utilisateur
+        </Link>
+      </div>
+
       {message && <p className="text-sm text-red-500">{message}</p>}
+
       <table className="w-full table-auto border border-gray-300 mt-4">
         <thead className="bg-gray-100">
           <tr>
@@ -61,7 +72,19 @@ export default function ListeUtilisateurs() {
               <td className="p-2 border">{u.email}</td>
               <td className="p-2 border">{u.role}</td>
               <td className="p-2 border">{u.departement?.nom || '-'}</td>
-              <td className="p-2 border">
+              <td className="p-2 border space-x-2">
+                <Link
+                  href={`/admin/utilisateurs/edit/${u.id}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  Modifier
+                </Link>
+                <Link
+                  href={`/admin/utilisateurs/assignations?id=${u.id}`}
+                  className="text-green-600 hover:underline"
+                >
+                  Assignations
+                </Link>
                 <button
                   onClick={() => supprimerUtilisateur(u.id)}
                   className="text-red-600 hover:underline"
