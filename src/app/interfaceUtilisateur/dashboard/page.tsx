@@ -1,6 +1,15 @@
 // src/app/interfaceUtilisateur/dashboard/page.tsx
 import { getAuthSession } from "@/lib/auth"; // helper 
-import { redirect } from "next/navigation"  
+import { redirect } from "next/navigation"
+import {
+  LayoutDashboard,
+  Users,
+  Building2,
+  FolderKanban,
+  CheckSquare,
+  FileText,
+  Calendar
+} from "lucide-react";  
 import Image from "next/image"
 import SignOutButton from "@/components/SignOutButton" // Assure-toi que ce composant existe
 
@@ -14,15 +23,37 @@ export default async function UtilisateurDashboard() {
   return (
     <div className="flex h-screen">           
       {/* Sidebar facultative si besoin plus tard */}
-      <aside className="w-64 bg-gradient-to-b from-sky-500 to-violet-500 text-white flex flex-col p-6">
+      <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div>
           <nav className="flex flex-col gap-4">
-            <a href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded">Dashboard</a>
-            <a href="/interfaceUtilisateur/departements" className="hover:bg-blue-700 p-2 rounded">Départements</a>
-            <a href="/interfaceUtilisateur/projets" className="hover:bg-blue-700 p-2 rounded">Projets</a>
-            <a href="/interfaceUtilisateur/taches" className="hover:bg-blue-700 p-2 rounded">Tâches</a>
-            <a href="/interfaceUtilisateur/documents" className="hover:bg-blue-700 p-2 rounded">Documents</a>
-            <a href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded">Calendrier</a>
+            <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <LayoutDashboard className="w-5 h-5" />
+          Dashboard
+          </a>
+          <a href="/interfaceUtilisateur/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Users className="w-5 h-5" />
+          Utilisateurs
+          </a>
+          <a href="/interfaceUtilisateur/departements/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Building2 className="w-5 h-5" />
+          Départements
+          </a>
+          <a href="/interfaceUtilisateur/projets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <FolderKanban className="w-5 h-5" />
+          Projets
+          </a>
+          <a href="/interfaceUtilisateur/taches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <CheckSquare className="w-5 h-5" />
+          Tâches
+          </a>
+          <a href="/interfaceUtilisateur/documents" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <FileText className="w-5 h-5" />
+          Documents
+          </a>
+          <a href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Calendar className="w-5 h-5" />
+          Calendrier
+          </a>
           </nav>   
       </aside>
 
