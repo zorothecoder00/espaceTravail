@@ -9,9 +9,11 @@ import {
   FolderKanban,
   CheckSquare,
   FileText,
-  Calendar
+  Calendar  
 } from "lucide-react";         
-import Image from 'next/image'     
+import Image from 'next/image'  
+import ProjectActivityChart from '@/components/ProjectActivityChart'
+import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'   
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
    
 export default async function Dashboard() {       
@@ -116,9 +118,13 @@ export default async function Dashboard() {
         </div>  
   
         {/* Graphique */}
-        <div className="bg-white p-6 rounded shadow">
+        {/*<div className="bg-white p-6 rounded shadow">
           <h3 className="text-xl font-bold mb-4">Avancement des Projets</h3>
           <div className="h-64 flex items-center justify-center text-gray-400">[ Graphique ici bientôt 📊 ]</div>
+        </div>*/}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+          <ProjectActivityChart />
+          <ProjectDoughnutChart />
         </div>
       </main>
     </div>
