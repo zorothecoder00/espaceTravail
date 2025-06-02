@@ -54,6 +54,12 @@ export default function ListeDepartements() {
   return (
     <div className="max-w-4xl mx-auto mt-10">
       <div className="flex justify-between items-center mb-6">
+
+        {/* 🔙 Lien vers le dashboard */}
+        <Link href="admin/dashboard" className="text-blue-600 hover:underline">
+          ⬅ Retour au Dashboard
+        </Link>
+        
         <h1 className="text-2xl font-bold">Liste des Départements</h1>
         <Link
           href="/admin/departements/new"

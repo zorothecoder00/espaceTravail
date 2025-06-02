@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";              
-import { Statut, Role } from "@prisma/client";
+import { Statut, Role } from "@prisma/client";  
 import {
   LayoutDashboard,
   Users,
@@ -17,7 +17,8 @@ import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
    
 export default async function Dashboard() {       
-  const session = await getAuthSession();    
+  const session = await getAuthSession(); 
+  console.log("Session admin dashboard:", session);   
 
   if (!session?.user?.role || session.user.role !== Role.ADMIN) {
     redirect("/login");

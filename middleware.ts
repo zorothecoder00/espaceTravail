@@ -1,18 +1,27 @@
 // middleware.ts
-import { isAdminMiddleware } from './src/lib/middleware'
-import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from "next-auth/jwt"
+import { NextRequest, NextResponse } from "next/server"
+
+const secret = process.env.NEXTAUTH_SECRET // Assure-toi que cette variable est bien définie
 
 export async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request, secret })
+
   const { pathname } = request.nextUrl
 
-  if (pathname.startsWith('/admin')) {
-    return await isAdminMiddleware(request)
+  if (pathname.startsWith("/admin")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", request.url))
+    }
+
+    if (token.role !== "ADMIN") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url))
+    }
   }
- 
-   // Important : retourner NextResponse.next() pour les routes non concernées
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin', '/admin/:path*'], // Protège toutes les pages dans /admin
+  matcher: ["/admin/:path*"],
 }

@@ -39,9 +39,16 @@ export default function ListeUtilisateurs() {
     }
   }
 
-  return (
-    <div className="p-6">
+  return (  
+    <div className="p-6">  
       <div className="flex justify-between items-center mb-4">
+
+        <div className="mb-2">
+          <Link href="/admin/dashboard" className="text-blue-600 hover:underline">
+            ← Retour au Dashboard
+          </Link>
+        </div>
+
         <h1 className="text-2xl font-bold">Liste des utilisateurs</h1>
         <Link
           href="/admin/utilisateurs/new"
