@@ -7,7 +7,7 @@ import {
   Users,
   Building2,
   FolderKanban,
-  CheckSquare,
+  CheckSquare,    
   FileText,
   Calendar  
 } from "lucide-react";         
@@ -24,28 +24,33 @@ export default async function Dashboard() {
     redirect("/login");
   }
 
-  const [totalTaches, projetsAttente, projetsEnCours] = await Promise.all([
-    prisma.tache.count(),
-    prisma.projet.count({ where: { statut: Statut.ATTENTE } }),
-    prisma.projet.count({ where: { statut: Statut.EN_COURS } }),
+  const [
+    { totalTaches },
+    { projetsAttente },
+    { projetsEnCours },
+    tachesRecentes,
+    usersOnline
+  ] = await Promise.all([
+    prisma.tache.count().then(count => ({ totalTaches: count })),
+    prisma.projet.count({ where: { statut: Statut.ATTENTE } }).then(count => ({ projetsAttente: count })),
+    prisma.projet.count({ where: { statut: Statut.EN_COURS } }).then(count => ({ projetsEnCours: count })),
+    prisma.tache.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 3,
+    }),
+    prisma.user.findMany({
+      where: {
+        lastActiveAt: {
+          gte: new Date(Date.now() - 5 * 60 * 1000),
+        },
+      },
+      select: {
+        prenom: true,
+        nom: true,
+      },
+    }),
   ]);
 
-  const tachesRecentes = await prisma.tache.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 3,
-  });
-
-  const usersOnline = await prisma.user.findMany({
-    where: {
-      lastActiveAt: {
-        gte: new Date(Date.now() - 5 * 60 * 1000), // connectés récemment
-      },
-    },
-    select: {
-      prenom: true,
-      nom: true,  
-    },      
-  });
 
   return (
     <div className="flex h-screen">  
