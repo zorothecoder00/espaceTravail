@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 type Tache = {
   id: string
@@ -19,7 +18,6 @@ export default function ListeTaches() {
   const [taches, setTaches] = useState<Tache[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const router = useRouter()
 
   const fetchTaches = async () => {
     setLoading(true)
@@ -29,6 +27,7 @@ export default function ListeTaches() {
       const data = await res.json()
       setTaches(data)
     } catch (err) {
+      console.error(err)
       setError('Erreur lors du chargement des tâches.')
     }
     setLoading(false)
@@ -42,13 +41,19 @@ export default function ListeTaches() {
     const confirmed = confirm('Voulez-vous vraiment supprimer cette tâche ?')
     if (!confirmed) return
 
-    const res = await fetch(`/api/taches/${id}`, { method: 'DELETE' })
-    if (res.ok) {
-      fetchTaches()
-    } else {
-      alert('Échec de la suppression.')
+    try {
+      const res = await fetch(`/api/taches/${id}`, { method: 'DELETE' })
+      if (res.ok) {
+        fetchTaches()
+      } else {
+        setError('Échec de la suppression.')
+      }
+    }catch (err) {
+      console.error(err)
+      setError('Une erreur est survenue lors de la suppression.')
     }
   }
+
 
   return (
     <div className="p-6 max-w-5xl mx-auto">

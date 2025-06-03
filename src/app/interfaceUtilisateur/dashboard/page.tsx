@@ -4,8 +4,8 @@ import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {
   LayoutDashboard,
-  Users,
-  Building2,
+  //Users,
+  //Building2,
   FolderKanban,
   CheckSquare,
   FileText,
@@ -30,8 +30,8 @@ export default async function UtilisateurDashboard() {
         <div className="text-2xl font-bold mb-10">LOGO</div>
           <nav className="flex flex-col gap-4">
             <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
-          <LayoutDashboard className="w-5 h-5" />
-          Dashboard
+          <LayoutDashboard className="w-5 h-5" />     
+          Dashboard  
           </a>
           <a href="/interfaceUtilisateur/projets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FolderKanban className="w-5 h-5" />

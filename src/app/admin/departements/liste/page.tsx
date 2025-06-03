@@ -1,21 +1,18 @@
 'use client'
-
+  
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 interface Departement {
   id: number
   nom: string
 }
-
+  
 export default function ListeDepartements() {
   const [departements, setDepartements] = useState<Departement[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [refreshing, setRefreshing] = useState(false)
-
-  const router = useRouter()
+  const [refreshing, setRefreshing] = useState(false) 
 
   const fetchDepartements = async () => {
     try {
@@ -24,6 +21,7 @@ export default function ListeDepartements() {
       const data = await res.json()
       setDepartements(data)
     } catch (err) {
+      console.error(err)
       setError('Impossible de récupérer les départements.')
     } finally {
       setLoading(false)
@@ -47,6 +45,7 @@ export default function ListeDepartements() {
       setRefreshing(true)
       await fetchDepartements()
     } catch (err) {
+      console.error(err)
       alert('Erreur lors de la suppression.')
     }
   }
@@ -76,6 +75,10 @@ export default function ListeDepartements() {
       ) : departements.length === 0 ? (
         <p>Aucun département trouvé.</p>
       ) : (
+        <>
+        {/* 🔁 Message pendant le rafraîchissement */}
+        {refreshing && <p className="text-gray-500 text-sm italic mt-2">🔄 Rafraîchissement en cours...</p>}  
+
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
@@ -107,6 +110,7 @@ export default function ListeDepartements() {
             ))}
           </tbody>
         </table>
+        </>
       )}
     </div>
   )

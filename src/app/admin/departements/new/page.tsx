@@ -1,4 +1,4 @@
-'use client'      
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 export default function CreerDepartement() {
   const [nom, setNom] = useState('')
   const [message, setMessage] = useState('')
+  const [success, setSuccess] = useState<boolean | null>(null)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,16 +19,18 @@ export default function CreerDepartement() {
     })
 
     const data = await res.json()
+
     if (res.ok) {
       setMessage('Département créé avec succès !')
+      setSuccess(true)
       setNom('')
 
-      // ⏳ Attendre 1 seconde avant de rediriger
       setTimeout(() => {
         router.push('/admin/departements/liste')
       }, 1000)
     } else {
       setMessage(data.message || 'Erreur lors de la création')
+      setSuccess(false)
     }
   }
 
@@ -47,7 +50,7 @@ export default function CreerDepartement() {
           Créer
         </button>
         {message && (
-          <p className={`mt-2 text-sm ${res?.ok ? 'text-green-600' : 'text-red-600'}`}>
+          <p className={`mt-2 text-sm ${success ? 'text-green-600' : 'text-red-600'}`}>
             {message}
           </p>
         )}

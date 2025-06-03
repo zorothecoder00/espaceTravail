@@ -27,13 +27,13 @@ export async function GET(req: Request, { params }: Params) {
 
 export async function DELETE(req: Request, { params }: Params) {
   const projetId = parseInt(params.id)
-  const { searchParams } = new URL(req.url)
+  const { searchParams } = new URL(req.url)    
   const userId = parseInt(searchParams.get('userId') || '')
 
   if (isNaN(projetId) || isNaN(userId)) {
     return NextResponse.json({ message: 'ID(s) invalide(s)' }, { status: 400 })
   }  
-
+  
   try {
     await prisma.membreProjet.deleteMany({
       where: { projetId, userId },
@@ -45,4 +45,3 @@ export async function DELETE(req: Request, { params }: Params) {
     return NextResponse.json({ message: 'Erreur lors de la suppression' }, { status: 500 })
   }
 }
-

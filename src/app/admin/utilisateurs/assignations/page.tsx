@@ -27,7 +27,7 @@ interface Utilisateur {
 }
 
 export default function AssignationsUtilisateursPage() {
-  const [utilisateurs, setutilisateurss] = useState<Utilisateur[]>([])
+  const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
