@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
-
+  
 export default function ProjectActivityChart() {
   const [data, setData] = useState([])
   const [year, setYear] = useState(new Date().getFullYear())

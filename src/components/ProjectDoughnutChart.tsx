@@ -1,6 +1,6 @@
 'use client'
 
-import { Doughnut } from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'  
 import { useEffect, useState } from 'react'
 import {
   Chart as ChartJS, ArcElement, Tooltip, Legend

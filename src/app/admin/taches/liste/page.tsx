@@ -53,6 +53,13 @@ export default function ListeTaches() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-4">
+        <Link
+          href="/admin/dashboard"
+          className="text-sm text-gray-600 underline"
+        >
+          ← Retour au Dashboard
+        </Link>
+
         <h2 className="text-2xl font-bold">Liste des tâches</h2>
         <Link
           href="/admin/taches/new"

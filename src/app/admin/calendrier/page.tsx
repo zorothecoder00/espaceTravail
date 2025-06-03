@@ -3,6 +3,8 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+
 //import { formatDate } from '@fullcalendar/core'
 
 type TacheEvent = {
@@ -33,6 +35,13 @@ export default function CalendrierPage() {
 
   return (
     <div className="p-6">
+      <Link
+        href="/admin/dashboard"
+        className="text-sm text-gray-600 underline"
+      >
+        ← Retour au Dashboard
+      </Link>
+
       <h1 className="text-2xl font-bold mb-4">Calendrier des Tâches</h1>
       <FullCalendar
         plugins={[dayGridPlugin]}

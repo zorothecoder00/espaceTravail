@@ -14,7 +14,7 @@ export default function Login() {
     setIsLoading(true)
     const form = e.target as HTMLFormElement
     
-    console.log("Tentative de connexion...")
+    console.log("Tentative de connexion...")  
 
     const res = await signIn('credentials', {
       redirect: false,

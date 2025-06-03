@@ -20,13 +20,14 @@ export default function ListeProjetsPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const fetchProjets = useCallback(async () => {
+  const fetchProjets = useCallback(async () => {  
     setLoading(true)
     try {
       const res = await fetch(`/api/projets?search=${search}&page=${page}`)
       const data = await res.json()
-      setProjets(data.projets)
-      setTotalPages(data.totalPages || 1)
+      setProjets(Array.isArray(data.data) ? data.data : [])
+      setTotalPages(Math.ceil((data.total || 0) / 10)) // ← 10 = valeur de limit
+
     } catch {
       setError('Erreur lors du chargement des projets.')
     }
@@ -45,13 +46,20 @@ export default function ListeProjetsPage() {
     if (res.ok) {
       fetchProjets()
     } else {
-      alert('Échec de la suppression.')
+      alert('Échec de la suppression.')    
     }
   }
 
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="flex items-center justify-between mb-4">
+        <Link
+          href="/admin/dashboard"
+          className="text-sm text-gray-600 underline"
+        >
+          ← Retour au Dashboard
+        </Link>
+
         <h1 className="text-2xl font-bold">Liste des projets</h1>
         <Link
           href="/admin/projets/new"
