@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth"; // helper
 import prisma from "@/lib/prisma";              
 import { Statut, Role } from "@prisma/client";  
 import {
-  LayoutDashboard,
+  LayoutDashboard,    
   Users,
   Building2,
   FolderKanban,  
@@ -60,7 +60,7 @@ export default async function Dashboard() {
         <nav className="flex flex-col gap-4">  
           <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <LayoutDashboard className="w-5 h-5" />
-          Dashboard
+          Dashboard  
           </a>
           <a href="/admin/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Users className="w-5 h-5" />

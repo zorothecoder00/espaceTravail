@@ -1,6 +1,7 @@
 // src/app/interfaceUtilisateur/dashboard/page.tsx
 import { getAuthSession } from "@/lib/auth"; // helper 
 import { redirect } from "next/navigation"
+import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {
   LayoutDashboard,
   Users,
@@ -20,6 +21,8 @@ export default async function UtilisateurDashboard() {
   if (!session?.user) redirect("/login")
   if (session.user.role !== "UTILISATEUR") redirect("/")
 
+  const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)
+
   return (
     <div className="flex h-screen">           
       {/* Sidebar facultative si besoin plus tard */}
@@ -30,25 +33,17 @@ export default async function UtilisateurDashboard() {
           <LayoutDashboard className="w-5 h-5" />
           Dashboard
           </a>
-          <a href="/interfaceUtilisateur/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
-          <Users className="w-5 h-5" />
-          Utilisateurs
-          </a>
-          <a href="/interfaceUtilisateur/departements/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
-          <Building2 className="w-5 h-5" />
-          Départements
-          </a>
           <a href="/interfaceUtilisateur/projets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FolderKanban className="w-5 h-5" />
-          Projets
+          Mes Projets
           </a>
           <a href="/interfaceUtilisateur/taches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <CheckSquare className="w-5 h-5" />
-          Tâches
+          Mes Tâches
           </a>
           <a href="/interfaceUtilisateur/documents" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FileText className="w-5 h-5" />
-          Documents
+          Mes Documents
           </a>
           <a href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Calendar className="w-5 h-5" />
@@ -89,7 +84,25 @@ export default async function UtilisateurDashboard() {
 
         {/* Bienvenue + contenus utilisateur */}
         <h1 className="text-2xl font-bold">Bienvenue, {session?.user?.prenom} !</h1>
-        <p className="mt-2 text-gray-600">Ceci est votre interface utilisateur.</p>
+        <p className="mt-2 text-gray-600 mb-6">Voici un aperçu de vos activités récentes.</p>
+
+        {/* 💡 Cards de statistiques */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h2 className="text-lg font-semibold text-gray-700">Projets en cours</h2>
+            <p className="text-3xl font-bold text-blue-600">{projetsRestants}</p>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h2 className="text-lg font-semibold text-gray-700">Tâches en attente</h2>
+            <p className="text-3xl font-bold text-orange-600">{tachesRestantes}</p>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h2 className="text-lg font-semibold text-gray-700">Documents reçus</h2>
+            <p className="text-3xl font-bold text-green-600">{documents}</p>
+          </div>
+        </div>
+
+        {/* ... ici tu pourras mettre les listes plus tard si tu veux */}
 
         {/* Tu peux ajouter ici les documents ou tâches reçus dynamiquement */}
       </main>
