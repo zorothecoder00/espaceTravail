@@ -6,7 +6,7 @@ import {
   LayoutDashboard,
   Users,
   Building2,
-  FolderKanban,
+  FolderKanban,  
   CheckSquare,    
   FileText,
   Calendar  
@@ -107,19 +107,29 @@ export default async function Dashboard() {
 
         {/* Statistiques */}  
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Stat title="Total Tâches" value={totalTaches} />
-          <Stat title="Utilisateurs en ligne" value={usersOnline.length} />
-          <Stat title="Projets en attente" value={projetsAttente} />
-          <Stat title="Projets en cours" value={projetsEnCours} />
+          <Stat title="Total Tâches" 
+          value={totalTaches} 
+          icon={CheckSquare}/>
+          <Stat title="Utilisateurs en ligne" 
+          value={usersOnline.length} 
+          icon={Users} />
+          <Stat title="Projets en attente" 
+          value={projetsAttente} 
+          icon={FolderKanban}/>
+          <Stat title="Projets en cours" 
+          value={projetsEnCours} 
+          icon={FolderKanban}/>
         </div> 
 
         {/* Listes */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card title="Tâches Récentes" 
            items={tachesRecentes.map(t => t.titre)} 
+           icon={CheckSquare}
           />
           <Card title="Utilisateurs connectés récemment"
            items={usersOnline.map(user => `${user.prenom} ${user.nom}`)} 
+           icon={Users} 
           />
         </div>  
   
@@ -137,19 +147,41 @@ export default async function Dashboard() {
   );
 }
 
-function Stat({ title, value }: { title: string, value: number }) {
+function Stat({
+  title,
+  value,
+  icon: Icon, // 👈 icône dynamique
+}: {
+  title: string;
+  value: number;
+  icon: React.ElementType;
+}) {
   return (
-    <div className="bg-green-700 border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 hover:bg-green-700/70">
-      <h3 className="text-xl font-bold">{title}</h3>
-      <p className="text-2xl">{value}</p>
+    <div className="bg-green-700 border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 hover:bg-green-700/70 flex items-center gap-4">
+      <Icon className="w-8 h-8 text-white" />
+      <div>
+        <h3 className="text-xl font-bold">{title}</h3>
+        <p className="text-2xl">{value}</p>
+      </div>
     </div>
   );
 }
 
-function Card({ title, items }: { title: string, items: string[] }) {
+function Card({
+  title,
+  items,
+  icon: Icon,
+}: {
+  title: string;
+  items: string[];
+  icon: React.ElementType;
+}) {
   return (
     <div className="bg-sky-500 backdrop-blur-md border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 hover:bg-sky-500/70">
-      <h3 className="text-xl font-bold mb-4">{title}</h3>
+      <div className="flex items-center gap-3 mb-4">
+        <Icon className="w-6 h-6 text-white" />
+        <h3 className="text-xl font-bold">{title}</h3>
+      </div>
       <ul className="space-y-2">
         {items.map((item, i) => (
           <li key={i} className="border-b pb-2">{item}</li>
@@ -158,3 +190,4 @@ function Card({ title, items }: { title: string, items: string[] }) {
     </div>
   );
 }
+
