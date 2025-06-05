@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth"; // helper
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {
-  LayoutDashboard,    
+  LayoutDashboard,           
   //Users,         
   //Building2,  
   FolderKanban,
@@ -17,8 +17,9 @@ import SignOutButton from "@/components/SignOutButton" // Assure-toi que ce comp
 export default async function UtilisateurDashboard() {
   const session = await getAuthSession()
 
-  // Redirection si l'utilisateur n'est pas connecté ou n'est pas de rôle "UTILISATEUR"
+  // Redirection si l'utilisateur n'est pas connecté 
   if (!session?.user) redirect("/login")
+  // Redirection si l'utilisateur n'est pas de rôle "UTILISATEUR"
   if (session.user.role !== "UTILISATEUR") redirect("/")
 
   const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)

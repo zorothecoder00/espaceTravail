@@ -3,10 +3,14 @@
 import { signIn } from 'next-auth/react'  
 import { useRouter } from 'next/navigation'   
 import { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react' // au début du fichier si tu utilises une icône
+// ou utilise un simple texte "Afficher/Masquer" sinon
    
 export default function Login() {
   const router = useRouter()
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,16 +69,24 @@ export default function Login() {
               {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
             </div>
 
-            <div>
+            <div className="relative">   
               <label htmlFor="password" className="sr-only">Mot de passe</label>
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Mot de passe"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2 text-gray-600"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 

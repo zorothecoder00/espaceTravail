@@ -1,16 +1,22 @@
 'use client'  
    
 import { useRouter } from 'next/navigation'  
-import { useState, useEffect } from 'react'  
+import { useState, useEffect } from 'react'     
 import { z } from 'zod' 
-import { signIn } from 'next-auth/react'  
+import { signIn } from 'next-auth/react' 
+import { Eye, EyeOff } from 'lucide-react' // au début du fichier si tu utilises une icône       
 
-const registerSchema = z.object({
+const registerSchema = z.object({ 
   prenom: z.string().min(2, 'Prénom requis'),
   nom: z.string().min(2, 'Nom requis'), 
   email: z.string().email('Email invalide'),
   password: z.string().min(6, '6 caractères minimum'),
+  confirmPassword: z.string().min(6, 'Confirmation requise'),
   departementId: z.string().nullable().optional(),
+}).refine((data) => data.password === data.confirmPassword,
+{
+  message: "Les mots de passe ne correspondent pas",
+  path: ["confirmPassword"],
 })
 
 export default function Register() {
@@ -18,7 +24,10 @@ export default function Register() {
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [serverError, setServerError] = useState('')
   const [departements, setDepartements] = useState<{ id: string; nom: string }[]>([])
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [loadingDeps, setLoadingDeps] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     const fetchDepartements = async () => {
@@ -28,9 +37,9 @@ export default function Register() {
           const data = await res.json()
           setDepartements(data)
         }
-      } catch (err) {
+      }catch (err) {
         console.error('Erreur chargement départements', err)
-      } finally {
+      }finally {
         setLoadingDeps(false)
       }
     }
@@ -42,6 +51,7 @@ export default function Register() {
     e.preventDefault()
     setErrors({})
     setServerError('')
+    setIsSubmitting(true)
 
     const form = e.currentTarget // ✅ Plus précis que e.target
 
@@ -55,61 +65,71 @@ export default function Register() {
 
     if (!notRobot?.checked) {
       setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
+      setIsSubmitting(false)
       return
     }
 
     if (password.value !== confirmPassword.value) {
     setErrors({ password: ['Les mots de passe ne correspondent pas'] })
+    setIsSubmitting(false)
     return
   }
 
     const formData = {
-      prenom: prenom.value,   
-      nom: nom.value,
-      email: email.value,
-      password: password.value,
-      departementId: departement?.value || null,
+      prenom: prenom?.value || '',
+      nom: nom?.value || '',
+      email: email?.value || '',
+      password: password?.value || '',
+      confirmPassword: confirmPassword?.value || '',
+      departementId: departement?.value || undefined,
     }
 
     const validation = registerSchema.safeParse(formData)
-
     if (!validation.success) {
       setErrors(validation.error.flatten().fieldErrors)
+      setIsSubmitting(false)
       return
     } 
 
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    })
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    // ✅ Gérer les erreurs de l'inscription ici
-    if (!res.ok) {
-      setServerError(data.message || 'Erreur lors de l’inscription.')
-      return
-    }
-
-    // ✅ Si inscription réussie, tenter la connexion
-    const resLogin = await signIn('credentials', {
-      redirect: false,
-      email: form.email,
-      password: form.password,    
-    })
-
-    if (resLogin?.ok) {
-      const sessionRes = await fetch('/api/auth/session')
-      const sessionData = await sessionRes.json()
-
-      if (sessionData?.user?.role === 'ADMIN') {
-        router.push('/admin/dashboard')
-      } else {
-        router.push('/interfaceUtilisateur/dashboard')
+      // ✅ Gérer les erreurs de l'inscription ici
+      if (!res.ok) {
+        setServerError(data.message || 'Erreur lors de l’inscription.')
+        return
       }
-    } else {
-      setServerError('Connexion échouée après inscription.')
+
+      // ✅ Si inscription réussie, tenter la connexion
+      const resLogin = await signIn('credentials', {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,    
+      })
+
+      if (resLogin?.ok) {
+        const sessionRes = await fetch('/api/auth/session')
+        const sessionData = await sessionRes.json()
+
+        if (sessionData?.user?.role === 'ADMIN') {
+          router.push('/admin/dashboard')
+        } else {
+          router.push('/interfaceUtilisateur/dashboard')
+        }
+      }else {
+        setServerError('Connexion échouée après inscription.')
+      }
+    }catch (error) {
+    console.error(error);
+    setServerError("Une erreur inattendue s’est produite.");
+    }finally {
+    setIsSubmitting(false)
     }
   }
 
@@ -160,29 +180,46 @@ export default function Register() {
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email[0]}</p>}
           </div>
 
-          <div>
+          <div className="relative">
             <label htmlFor="password" className="sr-only">Password</label>
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2 text-gray-600"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password[0]}</p>}
           </div>
 
-          <div>
-            <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+          <div className="relative">
+            <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label> 
             <input
               id="confirmPassword"
               name="confirmPassword"
-              type="password"
+              type={showConfirm ? "text" : "password"}
               required
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Confirm Password"
             />
+            <button
+              type="button"
+              onClick={() => setShowConfirm(!showConfirm)}
+              className="absolute right-3 top-2 text-gray-600"
+              tabIndex={-1}
+            >
+              {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword[0]}</p>}
           </div>
         </div>
 
@@ -223,9 +260,10 @@ export default function Register() {
         <div>
           <button
             type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            disabled={isSubmitting}
+            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
           >
-            SOUMETTRE 
+            {isSubmitting ? 'Traitement...' : 'SOUMETTRE'} 
           </button>
           {serverError && <p className="text-red-600 text-sm mt-2 text-center">{serverError}</p>}
         </div>

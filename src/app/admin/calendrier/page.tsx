@@ -1,7 +1,7 @@
 'use client'
 
 import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/daygrid'   
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
