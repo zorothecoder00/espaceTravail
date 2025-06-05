@@ -13,9 +13,6 @@
     "prisma:studio": "prisma studio",
     "postinstall": "prisma generate"
   },
-    "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.17",
     "@fullcalendar/react": "^6.1.17",
