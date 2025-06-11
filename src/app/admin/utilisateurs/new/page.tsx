@@ -1,16 +1,27 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation' 
+import { Role } from '@prisma/client'    
+import Link from 'next/link' 
+
+type FormState = {
+  nom: string
+  prenom: string
+  email: string
+  password: string
+  role: Role
+  departementId: string
+}
 
 export default function AjouterUtilisateur() {
   const router = useRouter()
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     nom: '',
     prenom: '',
     email: '',
     password: '',
-    role: 'UTILISATEUR',
+    role: Role.UTILISATEUR,
     departementId: '',
   })
   const [message, setMessage] = useState('')
@@ -30,7 +41,7 @@ export default function AjouterUtilisateur() {
 
     if (res.ok) {
       setMessage('Utilisateur ajouté avec succès')
-      router.refresh()
+      router.push('/admin/utilisateurs/liste')
     } else {
       const data = await res.json()
       setMessage(data.message || 'Erreur')
@@ -39,19 +50,90 @@ export default function AjouterUtilisateur() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
+      {/* Lien de retour vers la liste des utilisateurs */}
+      <div className="mb-4">
+        <Link href="/admin/utilisateurs/liste" className="text-blue-600 hover:underline">
+          ← Retour à la liste des utilisateurs
+        </Link>
+      </div>
       <h1 className="text-2xl font-bold mb-4">Ajouter un utilisateur</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="nom" onChange={handleChange} placeholder="Nom" className="w-full p-2 border rounded" required />
-        <input name="prenom" onChange={handleChange} placeholder="Prénom" className="w-full p-2 border rounded" required />
-        <input name="email" type="email" onChange={handleChange} placeholder="Email" className="w-full p-2 border rounded" required />
-        <input name="password" type="password" onChange={handleChange} placeholder="Mot de passe" className="w-full p-2 border rounded" required />
+        <div>
+          <label htmlFor="nom" className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+          <input
+            id="nom"
+            name="nom"
+            onChange={handleChange}
+            placeholder="Nom"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
 
-        <select name="role" value={form.role} onChange={handleChange} className="w-full p-2 border rounded">
-          <option value="UTILISATEUR">UTILISATEUR</option>
-          <option value="ADMIN">ADMIN</option>
-        </select>
+        <div>
+          <label htmlFor="prenom" className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+          <input
+            id="prenom"
+            name="prenom"
+            onChange={handleChange}
+            placeholder="Prénom"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
 
-        <input name="departementId" type="number" onChange={handleChange} placeholder="ID du département (optionnel)" className="w-full p-2 border rounded" />
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            onChange={handleChange}
+            placeholder="Email"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            onChange={handleChange}   
+            placeholder="Mot de passe"
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+  
+        <div>
+          <label className="block mb-1 font-medium">Rôle de l&apos;utilisateur</label>
+          <select
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value as Role })}
+            className="w-full border px-3 py-2 rounded"
+          >
+            {Object.values(Role).map((role) => (
+            <option key={role} value={role}>
+              {role === Role.ADMIN ? '🛠️ Administrateur' : '👤 Utilisateur'}
+            </option>
+          ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="departementId" className="block text-sm font-medium text-gray-700 mb-1">Département associé(optionnel)</label>
+          <input
+            id="departementId"
+            name="departementId"
+            type="number"
+            onChange={handleChange}
+            placeholder="ID du département (optionnel)"
+            className="w-full p-2 border rounded"
+          />
+        </div>
 
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
           Ajouter

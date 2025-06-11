@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";              
 import { Statut, Role } from "@prisma/client";  
-import {
+import {   
   LayoutDashboard,      
-  Users,
+  Users,   
   Building2,
   FolderKanban,  
   CheckSquare,    
@@ -162,7 +162,7 @@ function Stat({
       <div>
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="text-2xl">{value}</p>
-      </div>
+      </div>   
     </div>
   );
 }

@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Statut } from "@prisma/client";
+import Link from 'next/link' 
 
-interface Departement {
+interface Departement {    
   id: number
   nom: string
 }
@@ -53,10 +54,16 @@ export default function CreateProjetPage() {
       setError(data.message || 'Une erreur est survenue')
       setLoading(false)
     }
-  }
+  }    
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow rounded-lg">
+      {/* Lien de retour vers la liste des projets */}
+      <div className="mb-4">
+        <Link href="/admin/projets/liste" className="text-blue-600 hover:underline">
+          ← Retour à la liste des projets
+        </Link>
+      </div>
       <h1 className="text-2xl font-bold mb-4">Créer un nouveau projet</h1>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -83,25 +90,31 @@ export default function CreateProjetPage() {
           />
         </div>
 
-        <input
-          type="datetime-local"
-          value={deadline}
-          onChange={e => setDeadline(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
-        /> 
+        <div>
+          <label className="block mb-1 font-medium">Date limite (deadline)</label>
+          <input
+            type="datetime-local"
+            value={deadline}
+            onChange={e => setDeadline(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          /> 
+        </div>
 
-        <select
-          value={statut}
-          onChange={e => setStatut(e.target.value as Statut)}
-          className="w-full border px-3 py-2 rounded"
-        >
-          <option value="ATTENTE">En attente</option>
-          <option value="EN_COURS">En cours</option>
-          <option value="TERMINE">Terminée</option>
-        </select>
+        <div>
+          <label className="block mb-1 font-medium">Statut du projet</label>
+          <select
+            value={statut}
+            onChange={e => setStatut(e.target.value as Statut)}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value={Statut.ATTENTE}>🕓 En attente</option>
+            <option value={Statut.EN_COURS}>🔄 En cours</option>
+            <option value={Statut.TERMINE}>✅ Terminée</option>
+          </select>
+        </div>
 
         <div>  
-          <label className="block text-sm font-medium">Département *</label>
+          <label className="block text-sm font-medium">Département associé*</label>
           <select
             value={departementId}
             onChange={e => setDepartementId(e.target.value)}

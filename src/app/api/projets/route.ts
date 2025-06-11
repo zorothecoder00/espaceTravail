@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Nom et département requis' }, { status: 400 })
   }
 
-  try {
+  try {    
     const projet = await prisma.projet.create({
       data: {
         nom: body.nom,

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'   
+import Link from 'next/link'
 
 export default function CreerDepartement() {
   const [nom, setNom] = useState('')
@@ -36,8 +37,16 @@ export default function CreerDepartement() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
+      {/* Lien de retour vers la liste des départements */}
+      <div className="mb-4">
+        <Link href="/admin/departements/liste" className="text-blue-600 hover:underline">
+          ← Retour à la liste des départements
+        </Link>
+      </div>
       <h1 className="text-xl font-bold mb-4">Créer un département</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+        <label htmlFor="nom" className="block text-sm font-medium text-gray-700 mb-1">Nom du Département</label>
         <input
           type="text"
           placeholder="Nom du département"
@@ -46,6 +55,8 @@ export default function CreerDepartement() {
           required
           className="w-full px-3 py-2 border rounded"
         />
+        </div>
+
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
           Créer
         </button>
