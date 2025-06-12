@@ -2,7 +2,7 @@
    
 import { useRouter } from 'next/navigation'  
 import { useState, useEffect } from 'react'     
-import { z } from 'zod' 
+import { z } from 'zod'    
 import { signIn } from 'next-auth/react' 
 import { Eye, EyeOff } from 'lucide-react' // au début du fichier si tu utilises une icône       
 
@@ -261,7 +261,7 @@ export default function Register() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 hover:cursor-pointer'}focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
           >
             {isSubmitting ? 'Traitement...' : 'SOUMETTRE'} 
           </button>
