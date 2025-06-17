@@ -1,11 +1,9 @@
 'use client'
 
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'   
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
-//import { formatDate } from '@fullcalendar/core'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
 type TacheEvent = {
   id: number
@@ -19,15 +17,19 @@ export default function CalendrierPage() {
 
   useEffect(() => {
     const fetchTaches = async () => {
-      const res = await fetch('/api/calendrier')
-      const data: TacheEvent[] = await res.json()
+      try {
+        const res = await fetch('/api/calendrier')
+        const data: TacheEvent[] = await res.json()
 
-      const formattedEvents = data.map(t => ({
-        title: `${t.titre} (${t.projet.nom})`,
-        date: t.deadline
-      }))
+        const formattedEvents = data.map(t => ({
+          title: `${t.titre} (${t.projet.nom})`,
+          date: t.deadline
+        }))
 
-      setEvents(formattedEvents)
+        setEvents(formattedEvents)
+      } catch (error) {
+        console.error("Erreur lors du chargement des tâches admin :", error)
+      }
     }
 
     fetchTaches()
@@ -49,6 +51,11 @@ export default function CalendrierPage() {
         events={events}
         height="auto"
         locale="fr"
+        headerToolbar={{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth',
+        }}
       />
     </div>
   )

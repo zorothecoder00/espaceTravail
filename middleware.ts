@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 const secret = process.env.NEXTAUTH_SECRET // Assure-toi que cette variable est bien définie
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {    
   const token = await getToken({ req: request, secret })
 
   const { pathname } = request.nextUrl

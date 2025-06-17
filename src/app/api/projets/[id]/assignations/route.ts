@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 type Params = {
-  params: { id: string }
+  params: { id: string }    
 }   
 
 export async function GET(req: Request, { params }: Params) {

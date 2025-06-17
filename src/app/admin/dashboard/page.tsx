@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";              
-import { Statut, Role } from "@prisma/client";  
-import {   
+import { Statut, Role } from "@prisma/client";     
+import {       
   LayoutDashboard,      
-  Users,   
+  Users,         
   Building2,
   FolderKanban,  
-  CheckSquare,    
+  CheckSquare,        
   FileText,
   Calendar  
 } from "lucide-react";         
@@ -53,7 +53,7 @@ export default async function Dashboard() {
 
 
   return (
-    <div className="flex h-screen">  
+    <div className="flex h-screen">    
       {/* Sidebar*/}
       <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div> 

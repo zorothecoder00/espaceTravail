@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button' 
+import { Button } from '@/components/ui/button'    
 import { AlertTriangle } from 'lucide-react'
 
 export default function UnauthorizedPage() {

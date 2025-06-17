@@ -5,8 +5,8 @@ import { Role } from "@prisma/client" // ou adapte à ta définition de rôle
 // Étendre le type Session de next-auth pour ajouter role dans user
 declare module "next-auth" {
   interface Session {
-    user: { 
-      id: string;     
+    user: {   
+      id: string;      
       role: Role;
       prenom: string;
     } & DefaultSession["user"]

@@ -6,7 +6,7 @@ import { Role } from "@prisma/client";
 export default async function Home() {   
   const session = await getAuthSession()       
 
-  if (!session) {
+  if (!session) {  
     // Pas connecté → redirection vers register
     redirect('/register') 
   }

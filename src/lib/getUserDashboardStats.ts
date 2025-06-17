@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { Statut } from "@prisma/client"
 
-export async function getUserDashboardStats(userId: string) {
+export async function getUserDashboardStats(userId: string) {   
   const parsedUserId = parseInt(userId)
 
   const [projetsRestants, tachesRestantes, documents] = await Promise.all([
