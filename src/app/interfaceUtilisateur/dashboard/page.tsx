@@ -12,7 +12,8 @@ import {
   Calendar
 } from "lucide-react";  
 import Image from "next/image"
-import SignOutButton from "@/components/SignOutButton" // Assure-toi que ce composant existe   
+import SignOutButton from "@/components/SignOutButton" // Assure-toi que ce composant existe
+import Link from "next/link"   
 
 export default async function UtilisateurDashboard() {
   const session = await getAuthSession()  
@@ -31,26 +32,26 @@ export default async function UtilisateurDashboard() {
         <div className="text-2xl font-bold mb-10">LOGO 
         </div>
         <nav className="flex flex-col gap-4">
-          <a href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Link href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <LayoutDashboard className="w-5 h-5" />     
           Dashboard     
-          </a>
-          <a href="/interfaceUtilisateur/mesProjets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
-          <FolderKanban className="w-5 h-5" />     
+          </Link>
+          <Link href="/interfaceUtilisateur/mesProjets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <FolderKanban className="w-5 h-5" />       
           Mes Projets
-          </a>
-          <a href="/interfaceUtilisateur/mesTaches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/interfaceUtilisateur/mesTaches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <CheckSquare className="w-5 h-5" />
           Mes Tâches
-          </a>
-          <a href="/interfaceUtilisateur/mesDocuments" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/interfaceUtilisateur/mesDocuments" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FileText className="w-5 h-5" />
           Mes Documents
-          </a>
-          <a href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Calendar className="w-5 h-5" />
           Calendrier
-          </a>
+          </Link>
         </nav>   
       </aside>
 
@@ -64,7 +65,7 @@ export default async function UtilisateurDashboard() {
             className="p-2 border rounded w-1/2"
           />
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="/notifications"
               className="relative text-sm text-blue-800 font-semibold hover:underline"
             >
@@ -72,7 +73,7 @@ export default async function UtilisateurDashboard() {
               <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 3
               </span>
-            </a>
+            </Link>
             <Image
               src="/profile.png"
               alt="Profil"

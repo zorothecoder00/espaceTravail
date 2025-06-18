@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
-import prisma from "@/lib/prisma";              
+import prisma from "@/lib/prisma";               
 import { Statut, Role } from "@prisma/client";     
 import {       
   LayoutDashboard,      
@@ -15,6 +15,7 @@ import Image from 'next/image'
 import ProjectActivityChart from '@/components/ProjectActivityChart'
 import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'   
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
+import Link from "next/link"
    
 export default async function Dashboard() {       
   const session = await getAuthSession(); 
@@ -58,34 +59,34 @@ export default async function Dashboard() {
       <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">
         <div className="text-2xl font-bold mb-10">LOGO</div> 
         <nav className="flex flex-col gap-4">  
-          <a href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Link href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <LayoutDashboard className="w-5 h-5" />
           Dashboard  
-          </a>
-          <a href="/admin/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/admin/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Users className="w-5 h-5" />
           Utilisateurs
-          </a>
-          <a href="/admin/departements/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/admin/departements/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Building2 className="w-5 h-5" />
           Départements
-          </a>
-          <a href="/admin/projets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/admin/projets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FolderKanban className="w-5 h-5" />
           Projets
-          </a>
-          <a href="/admin/taches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/admin/taches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <CheckSquare className="w-5 h-5" />
           Tâches
-          </a>
-          <a href="/admin/documents" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/admin/documents/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">   
           <FileText className="w-5 h-5" />
           Documents
-          </a>
-          <a href="/admin/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>
+          <Link href="/admin/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Calendar className="w-5 h-5" />
           Calendrier
-          </a>
+          </Link>
         </nav>
       </aside>  
  
@@ -94,12 +95,12 @@ export default async function Dashboard() {
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
           <div className="flex items-center gap-4">
-            <a href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">   
+            <Link href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">   
               Notifications
               <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 3
               </span>
-            </a>
+            </Link>
             <Image src="/profile.png" alt="Profil" width={40} height={40} className="rounded-full" />
             <SignOutButton /> {/* 👈 le bouton Déconnexion dynamique */}
           </div>
