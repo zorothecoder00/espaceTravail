@@ -4,7 +4,7 @@ import { getAuthSession } from "@/lib/auth"
 import type { Tache, Projet, TacheUtilisateur } from "@prisma/client"
 
 type TacheAvecProjet = Tache & {
-  projet: Projet
+  projet: Projet      
 }
 
 type TacheUtilisateurAvecTache = TacheUtilisateur & {
