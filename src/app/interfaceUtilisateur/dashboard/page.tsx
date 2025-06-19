@@ -44,7 +44,7 @@ export default async function UtilisateurDashboard() {
           <CheckSquare className="w-5 h-5" />
           Mes Tâches
           </Link>
-          <Link href="/interfaceUtilisateur/mesDocuments" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Link href="/interfaceUtilisateur/mesDocuments/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FileText className="w-5 h-5" />
           Mes Documents
           </Link>

@@ -2,8 +2,7 @@
    
 import { useRouter } from 'next/navigation'  
 import { useState, useEffect } from 'react'     
-import { z } from 'zod'    
-import { signIn } from 'next-auth/react' 
+import { z } from 'zod'      
 import { Eye, EyeOff } from 'lucide-react' // au début du fichier si tu utilises une icône       
 
 const registerSchema = z.object({ 
@@ -107,24 +106,28 @@ export default function Register() {
       }
 
       // ✅ Si inscription réussie, tenter la connexion
-      const resLogin = await signIn('credentials', {
-        redirect: false,
-        email: formData.email,
-        password: formData.password,    
-      })
+      //const resLogin = await signIn('credentials', {
+        //redirect: false,
+        //email: formData.email,
+        //password: formData.password,    
+      //})
 
-      if (resLogin?.ok) {
-        const sessionRes = await fetch('/api/auth/session')
-        const sessionData = await sessionRes.json()
+      //Tentative de connexion au dashboard après connexion réussie
+      //if (resLogin?.ok) {
+        //const sessionRes = await fetch('/api/auth/session')
+        //const sessionData = await sessionRes.json()
 
-        if (sessionData?.user?.role === 'ADMIN') {
-          router.push('/admin/dashboard')
-        } else {
-          router.push('/interfaceUtilisateur/dashboard')
-        }
-      }else {
-        setServerError('Connexion échouée après inscription.')
-      }
+        //if (sessionData?.user?.role === 'ADMIN') {
+          //router.push('/admin/dashboard')
+        //} else {
+          //router.push('/interfaceUtilisateur/dashboard')
+        //}
+      //}else {
+        //setServerError('Connexion échouée après inscription.')
+      //}
+
+      // ✅ Redirection vers la page de login avec message
+      router.push('/login?registered=success')
     }catch (error) {
     console.error(error);
     setServerError("Une erreur inattendue s’est produite.");
