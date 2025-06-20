@@ -27,9 +27,8 @@ export default function ListeUtilisateurs() {
   }, [])
 
   const supprimerUtilisateur = async (id: number) => {
-    const res = await fetch('/api/utilisateurs', {
+    const res = await fetch(`/api/utilisateurs/${id}`, {
       method: 'DELETE',
-      body: JSON.stringify({ id }),
     })
     if (res.ok) {
       setMessage('Utilisateur supprimé')

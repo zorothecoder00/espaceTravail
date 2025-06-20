@@ -2,8 +2,8 @@ import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";               
 import { Statut, Role } from "@prisma/client";     
-import {       
-  LayoutDashboard,      
+import {          
+  LayoutDashboard,        
   Users,         
   Building2,
   FolderKanban,  
@@ -26,7 +26,7 @@ export default async function Dashboard() {
   }
 
   const [
-    { totalTaches },
+    { totalTaches },   
     { projetsAttente },
     { projetsEnCours },
     tachesRecentes,
@@ -44,7 +44,7 @@ export default async function Dashboard() {
         lastActiveAt: {
           gte: new Date(Date.now() - 5 * 60 * 1000),
         },
-      },
+      },   
       select: {
         prenom: true,
         nom: true,
@@ -191,4 +191,5 @@ function Card({
     </div>
   );
 }
+
 

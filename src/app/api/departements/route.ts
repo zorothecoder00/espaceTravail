@@ -28,4 +28,7 @@ export async function POST(req: Request) {
   })
 
   return NextResponse.json(departement, { status: 201 })
-}
+}  
+
+
+
