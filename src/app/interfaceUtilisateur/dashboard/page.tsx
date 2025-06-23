@@ -3,8 +3,8 @@ import { getAuthSession } from "@/lib/auth"; // helper
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {             
-  LayoutDashboard,                   
-  //Users,                         
+  LayoutDashboard,                           
+  //Users,                                  
   //Building2,  
   FolderKanban,
   CheckSquare,  
@@ -21,9 +21,9 @@ export default async function UtilisateurDashboard() {
   // Redirection si l'utilisateur n'est pas connecté 
   if (!session?.user) redirect("/login")
   // Redirection si l'utilisateur n'est pas de rôle "UTILISATEUR"
-  if (session.user.role !== "UTILISATEUR") redirect("/")
+  if (session.user.role !== "UTILISATEUR") redirect("/")          
 
-  const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)  
+  const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)      
 
   return (
     <div className="flex h-screen">              

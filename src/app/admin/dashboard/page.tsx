@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth"; // helper
 import prisma from "@/lib/prisma";               
 import { Statut, Role } from "@prisma/client";     
 import {          
-  LayoutDashboard,        
+  LayoutDashboard,             
   Users,         
   Building2,
   FolderKanban,  
@@ -91,7 +91,7 @@ export default async function Dashboard() {
       </aside>  
  
       {/* Main content */}          
-      <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
+      <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">   
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
           <div className="flex items-center gap-4">
