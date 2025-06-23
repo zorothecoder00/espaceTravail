@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
-import { Statut } from "@prisma/client"  
+import { Statut, RoleProjet } from "@prisma/client" 
 
 export async function DELETE(req: Request, { params }: { params: { id: string } })
 {
@@ -16,49 +16,72 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 	}
 
 
-	try{
-		await prisma.projet.delete({ where: { id } })
-		return NextResponse.json({ message : "Projet supprimé avec succès"}, { status : 200})
-	}catch(error){
-		console.error("Erreur lors de la suppression", error)
-		return NextResponse.json({ message : "Erreur interne"}, { status : 500})
+	try {
+    // Supprimer les entrées liées dans MembreProjet
+	    await prisma.membreProjet.delete({ where: { projetId: id } })
+
+	    // Supprimer le projet
+	    await prisma.projet.delete({ where: { id } })
+
+	    return NextResponse.json({ message: "Projet supprimé avec succès" }, { status: 200 })
+	}catch (error) {
+	    console.error("Erreur lors de la suppression", error)
+	    return NextResponse.json({ message: "Erreur interne" }, { status: 500})
+	  
 	}
 }
 
-export async function PUT(req: Request, { params }: { params :{ id: string } })
-{    
-	const id = parseInt(params.id)
+// PUT — Mise à jour d’un projet + MAJ du chef dans MembreProjet
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  const id = parseInt(params.id)
+  if (!params.id || isNaN(id)) {
+    return NextResponse.json({ message: "ID invalide" }, { status: 400 })
+  }
 
-	if(!params.id || isNaN(id)){
-		return NextResponse.json({ message : "ID invalide" }, { status : 400})
-	}
+  const body = await req.json()
+  const { nom, description, deadline, statut, departement, chefProjet } = body
 
-	const body = await req.json()
-	const { nom, description, deadline, statut, departement } = body
+  if (!nom || nom.trim() === "" || !statut || isNaN(parseInt(departement)) || isNaN(parseInt(chefProjet))) {
+    return NextResponse.json({ message: "Champs requis manquants ou invalides" }, { status: 400 })
+  }
 
-	if (!nom || nom.trim() === "" || !statut || isNaN(parseInt(departement))) {
-	  return NextResponse.json({ message: "Veuillez saisir les champs manquants" }, { status: 400 })
-	}	
+  try {
+    const projet = await prisma.projet.findUnique({ where: { id } })
+    if (!projet) {
+      return NextResponse.json({ message: "Projet introuvable" }, { status: 404 })
+    }
 
-	try{
-		const projet = await prisma.projet.findUnique({ where: { id } })
-		if(!projet){
-			return NextResponse.json({ message : "Projet introuvable"}, { status : 404 })
-		}
+    const updated = await prisma.projet.update({
+      where: { id },
+      data: {
+        nom: nom.trim(),
+        description: description?.trim() || null,
+        deadline: deadline ? new Date(deadline) : null,
+        statut: statut as Statut,
+        departementId: parseInt(departement),
+        chefProjetId: parseInt(chefProjet),
+      },
+    })
 
-		const updated = await prisma.projet.update({
-		 where: { id },
-		 data: {
-		 	nom: nom.trim(),
-		 	description: description?.trim(),
-		 	deadline: deadline? new Date(deadline) : null,
-		 	statut: statut as Statut,
-		 	departementId: parseInt(departement),
-		 } 
-		})
-		return NextResponse.json(updated, { status : 200 })
-	} catch (error) {
+    // Met à jour ou insère le chef dans MembreProjet avec le rôle CHEF_EQUIPE
+    await prisma.membreProjet.upsert({
+      where: {
+        userId_projetId: {
+          userId: parseInt(chefProjet),
+          projetId: id,
+        },
+      },
+      update: { role: RoleProjet.CHEF_EQUIPE },
+      create: {
+        userId: parseInt(chefProjet),
+        projetId: id,
+        role: RoleProjet.CHEF_EQUIPE,
+      },
+    })
+
+    return NextResponse.json(updated, { status: 200 })
+  } catch (error) {
     console.error("Erreur lors de la mise à jour du projet", error)
     return NextResponse.json({ message: "Erreur interne" }, { status: 500 })
-  	}
+  }
 }

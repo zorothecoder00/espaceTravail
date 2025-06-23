@@ -25,6 +25,20 @@ export default function AjouterUtilisateur() {
     departementId: '',
   })
   const [message, setMessage] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>(null)
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 1_048_576) { // 1 Mo
+      setMessage('❌ L’image est trop grande. Maximum 1 Mo.')
+      setImageFile(null)
+    } else {
+      setMessage('')
+      setImageFile(file)
+    }
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -33,18 +47,33 @@ export default function AjouterUtilisateur() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!imageFile) {
+      setMessage('Veuillez choisir une image de profil valide.')
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('nom', form.nom)
+    formData.append('prenom', form.prenom)
+    formData.append('email', form.email)
+    formData.append('password', form.password)
+    formData.append('role', form.role)
+    formData.append('departementId', form.departementId || '')
+    formData.append('image', imageFile)
+
     const res = await fetch('/api/utilisateurs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, departementId: form.departementId ? Number(form.departementId) : null }),
+      body: formData,
     })
 
     if (res.ok) {
-      setMessage('Utilisateur ajouté avec succès')
-      router.push('/admin/utilisateurs/liste')
+      setMessage('✅ Utilisateur ajouté avec succès')
+      setTimeout(() => {
+        router.push('/admin/utilisateurs/liste')
+      }, 1000)
     } else {
       const data = await res.json()
-      setMessage(data.message || 'Erreur')
+      setMessage(data.message || '❌ Une erreur est survenue')
     }
   }
 
@@ -107,6 +136,18 @@ export default function AjouterUtilisateur() {
             required
           />
         </div>
+
+        <div>
+          <label htmlFor="image" className="block text-sm font-medium mb-1">Photo de profil (max 1 Mo)</label>
+          <input
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
   
         <div>
           <label className="block mb-1 font-medium">Rôle de l&apos;utilisateur</label>
@@ -115,11 +156,9 @@ export default function AjouterUtilisateur() {
             onChange={(e) => setForm({ ...form, role: e.target.value as Role })}
             className="w-full border px-3 py-2 rounded"
           >
-            {Object.values(Role).map((role) => (
-            <option key={role} value={role}>
-              {role === Role.ADMIN ? '🛠️ Administrateur' : '👤 Utilisateur'}
-            </option>
-          ))}
+            <option value={Role.UTILISATEUR}>👤 Utilisateur</option>
+            <option value={Role.ADMIN}>🛠️ Admin</option>
+            <option value={Role.SUPER_ADMIN}>👑 Super Admin</option>
           </select>
         </div>
 

@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma"
 import type { Projet, Departement, MembreProjet } from "@prisma/client"
 
 type ProjetAvecDepartement = Projet & {
-  departement: Departement
+  departement: Departement   
 }
 
 type MembreProjetAvecProjet = MembreProjet & {
