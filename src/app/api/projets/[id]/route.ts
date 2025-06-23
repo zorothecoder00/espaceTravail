@@ -17,11 +17,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
 
 	try {
-    // Supprimer les entrées liées dans MembreProjet
-	    await prisma.membreProjet.delete({ where: { projetId: id } })
+    // Supprimer les entrées liées dans MembreProjet (toutes les assignations liées au projet)
+    await prisma.membreProjet.deleteMany({ where: { projetId: id } })
 
-	    // Supprimer le projet
-	    await prisma.projet.delete({ where: { id } })
+    // Supprimer le projet
+    await prisma.projet.delete({ where: { id } })
 
 	    return NextResponse.json({ message: "Projet supprimé avec succès" }, { status: 200 })
 	}catch (error) {

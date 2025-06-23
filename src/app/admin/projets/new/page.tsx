@@ -87,7 +87,7 @@ export default function CreateProjetPage() {
       <h1 className="text-2xl font-bold mb-4">Créer un nouveau projet</h1>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      {messageSuccess && <p className="text-green-600 mb-4 transition-opacity duration-500 ease-in-out"">{messageSuccess}</p>}
+      {messageSuccess && <p className="text-green-600 mb-4 transition-opacity duration-500 ease-in-out">{messageSuccess}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

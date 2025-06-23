@@ -4,18 +4,18 @@ import { Role } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import path from 'path'
 import fs from 'fs'
-import { IncomingForm, Files, Fields } from 'formidable'
-import { promisify } from 'util'
+import { IncomingForm, Files, Fields, File } from 'formidable'
+import type { IncomingMessage } from 'http'
 
-// Désactiver bodyParser pour utiliser formidable
+// Désactiver bodyParser pour pouvoir parser les fichiers
 export const config = {
   api: {
     bodyParser: false,
   },
 }
 
-// Fonction de parsing du formulaire avec formidable
-const parseForm = async (req: Request): Promise<{ fields: Fields; files: Files }> => {
+// Fonction de parsing du formulaire avec formidable (typée)
+const parseForm = (req: IncomingMessage): Promise<{ fields: Fields; files: Files }> => {
   const form = new IncomingForm({
     uploadDir: path.join(process.cwd(), 'public/uploads'),
     keepExtensions: true,
@@ -23,10 +23,15 @@ const parseForm = async (req: Request): Promise<{ fields: Fields; files: Files }
     multiples: false,
   })
 
-  const parse = promisify(form.parse.bind(form))
-  return await parse(req as any) // 'any' ici uniquement pour le cast du req dans parse
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err)
+      else resolve({ fields, files })
+    })
+  })
 }
 
+// PUT — mise à jour d'un utilisateur (avec image)
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const id = parseInt(params.id)
   if (!params.id || isNaN(id)) {
@@ -34,7 +39,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 
   try {
-    const { fields, files } = await parseForm(req)
+    // On caste la Request en IncomingMessage pour formidable
+    const { fields, files } = await parseForm(req as unknown as IncomingMessage)
+
     const { nom, prenom, email, password, role, departementId } = fields
     const image = files.image
 
@@ -47,19 +54,21 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ message: 'Utilisateur introuvable' }, { status: 404 })
     }
 
-    let imagePath = user.image // Par défaut, on garde l’image actuelle
+    let imagePath = user.image // garder l’image actuelle par défaut
 
     if (image) {
       if (Array.isArray(image)) {
         return NextResponse.json({ message: 'Une seule image autorisée' }, { status: 400 })
       }
 
-      if (image.size > 1_048_576) {
-        fs.unlinkSync(image.filepath)
+      // image est de type File
+      const file = image as File
+
+      if (file.size > 1_048_576) {
+        fs.unlinkSync(file.filepath)
         return NextResponse.json({ message: 'Image trop volumineuse (> 1 Mo)' }, { status: 400 })
       }
 
-      // Supprimer l’ancienne image si elle existe
       if (user.image) {
         const oldImagePath = path.join(process.cwd(), 'public', user.image)
         if (fs.existsSync(oldImagePath)) {
@@ -67,7 +76,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         }
       }
 
-      const filename = path.basename(image.filepath)
+      const filename = path.basename(file.filepath)
       imagePath = `/uploads/${filename}`
     }
 
@@ -91,6 +100,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
+// DELETE — suppression d’un utilisateur
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   const id = parseInt(params.id)
   if (!params.id || isNaN(id)) {
@@ -103,7 +113,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 
   try {
-    // Supprimer l'image associée si elle existe
+    // Supprimer l'image si elle existe
     if (user.image) {
       const imagePath = path.join(process.cwd(), 'public', user.image)
       if (fs.existsSync(imagePath)) {

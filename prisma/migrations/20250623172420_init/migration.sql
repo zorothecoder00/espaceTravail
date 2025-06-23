@@ -4,6 +4,9 @@ CREATE TYPE "Role" AS ENUM ('SUPER_ADMIN', 'ADMIN', 'UTILISATEUR');
 -- CreateEnum
 CREATE TYPE "Statut" AS ENUM ('ATTENTE', 'EN_COURS', 'TERMINE');
 
+-- CreateEnum
+CREATE TYPE "RoleProjet" AS ENUM ('MEMBRE', 'CHEF_EQUIPE', 'DEVELOPPEUR', 'DESIGNER', 'COMMUNICANT', 'QA');
+
 -- CreateTable
 CREATE TABLE "Departement" (
     "id" SERIAL NOT NULL,
@@ -85,6 +88,7 @@ CREATE TABLE "TacheUtilisateur" (
 CREATE TABLE "MembreProjet" (
     "userId" INTEGER NOT NULL,
     "projetId" INTEGER NOT NULL,
+    "role" "RoleProjet" NOT NULL DEFAULT 'MEMBRE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
