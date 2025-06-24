@@ -28,8 +28,14 @@ type ParsedForm = {
 }
 
 const parseForm = (req: NextApiRequest): Promise<ParsedForm> => {
+  const uploadDir = path.join(process.cwd(), 'public/uploads')
+
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true })
+  }
+  
   const form = new IncomingForm({
-    uploadDir: path.join(process.cwd(), 'public/uploads'),
+    uploadDir,
     keepExtensions: true,
     maxFileSize: 1 * 1024 * 1024, // 1 Mo
     multiples: false,
@@ -82,28 +88,28 @@ export async function POST(req: Request) {
     const { nom, prenom, email, password, role, departementId } = fields
     const image = files.image
 
-    if (!nom || !prenom || !email || !password || !role || !image) {
+    // 🔁 L'image n'est plus obligatoire ici
+    if (!nom || !prenom || !email || !password || !role) {
       return NextResponse.json({ message: 'Champs requis manquants' }, { status: 400 })
     }
 
-    if (!('size' in image) || !('filepath' in image)) {
+    if (image && (!('size' in image) || !('filepath' in image))) {
       return NextResponse.json({ message: 'Fichier image invalide' }, { status: 400 })
     }
 
-    if (image.size > 1_048_576) {
+    if (image && image.size > 1_048_576) {
       fs.unlinkSync(image.filepath)
       return NextResponse.json({ message: 'Image trop volumineuse (>1 Mo)' }, { status: 400 })
     }
 
     const userExist = await prisma.user.findUnique({ where: { email } })
     if (userExist) {
-      fs.unlinkSync(image.filepath)
+      if (image) fs.unlinkSync(image.filepath)
       return NextResponse.json({ message: 'Utilisateur déjà existant' }, { status: 409 })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-    const fileName = path.basename(image.filepath)
-    const imagePath = `/uploads/${fileName}`
+    const imagePath = image ? `/uploads/${path.basename(image.filepath)}` : null
 
     const user = await prisma.user.create({
       data: {
@@ -113,7 +119,7 @@ export async function POST(req: Request) {
         password: hashedPassword,
         role,
         departementId: departementId ? Number(departementId) : null,
-        image: imagePath,
+        image: imagePath, // 👈 null si non fourni
       },
     })
 
@@ -123,3 +129,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 })
   }
 }
+

@@ -39,6 +39,7 @@ CREATE TABLE "Document" (
     "id" SERIAL NOT NULL,
     "titre" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "fichier" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

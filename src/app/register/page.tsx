@@ -1,19 +1,18 @@
-'use client'  
-   
-import { useRouter } from 'next/navigation'  
-import { useState, useEffect } from 'react'     
-import { z } from 'zod'      
-import { Eye, EyeOff } from 'lucide-react' // au début du fichier si tu utilises une icône       
+'use client'
 
-const registerSchema = z.object({ 
+import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { z } from 'zod'
+import { Eye, EyeOff } from 'lucide-react'
+
+const registerSchema = z.object({
   prenom: z.string().min(2, 'Prénom requis'),
-  nom: z.string().min(2, 'Nom requis'), 
+  nom: z.string().min(2, 'Nom requis'),
   email: z.string().email('Email invalide'),
   password: z.string().min(6, '6 caractères minimum'),
   confirmPassword: z.string().min(6, 'Confirmation requise'),
   departementId: z.string().nullable().optional(),
-}).refine((data) => data.password === data.confirmPassword,
-{
+}).refine((data) => data.password === data.confirmPassword, {
   message: "Les mots de passe ne correspondent pas",
   path: ["confirmPassword"],
 })
@@ -27,6 +26,7 @@ export default function Register() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [loadingDeps, setLoadingDeps] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
 
   useEffect(() => {
     const fetchDepartements = async () => {
@@ -36,9 +36,9 @@ export default function Register() {
           const data = await res.json()
           setDepartements(data)
         }
-      }catch (err) {
+      } catch (err) {
         console.error('Erreur chargement départements', err)
-      }finally {
+      } finally {
         setLoadingDeps(false)
       }
     }
@@ -54,13 +54,13 @@ export default function Register() {
 
     const form = e.currentTarget // ✅ Plus précis que e.target
 
-    const notRobot = (form.elements.namedItem('not-robot') as HTMLInputElement)
-    const password = (form.elements.namedItem('password') as HTMLInputElement)
-    const confirmPassword = (form.elements.namedItem('confirmPassword') as HTMLInputElement)
-    const departement = form.elements.namedItem('departement') as HTMLSelectElement | null
-    const prenom = (form.elements.namedItem('prenom') as HTMLInputElement)
-    const nom = (form.elements.namedItem('nom') as HTMLInputElement)
-    const email = (form.elements.namedItem('email') as HTMLInputElement)
+    const notRobot = form.elements.namedItem('not-robot') as HTMLInputElement
+    const password = form.elements.namedItem('password') as HTMLInputElement
+    const confirmPassword = form.elements.namedItem('confirmPassword') as HTMLInputElement
+    const departement = form.elements.namedItem('departement') as HTMLSelectElement
+    const prenom = form.elements.namedItem('prenom') as HTMLInputElement
+    const nom = form.elements.namedItem('nom') as HTMLInputElement
+    const email = form.elements.namedItem('email') as HTMLInputElement
 
     if (!notRobot?.checked) {
       setServerError('Veuillez confirmer que vous n’êtes pas un robot.')
@@ -69,12 +69,12 @@ export default function Register() {
     }
 
     if (password.value !== confirmPassword.value) {
-    setErrors({ password: ['Les mots de passe ne correspondent pas'] })
-    setIsSubmitting(false)
-    return
-  }
+      setErrors({ password: ['Les mots de passe ne correspondent pas'] })
+      setIsSubmitting(false)
+      return
+    }
 
-    const formData = {
+    const formDataValidation = {
       prenom: prenom?.value || '',
       nom: nom?.value || '',
       email: email?.value || '',
@@ -83,66 +83,54 @@ export default function Register() {
       departementId: departement?.value || undefined,
     }
 
-    const validation = registerSchema.safeParse(formData)
+    const validation = registerSchema.safeParse(formDataValidation)
     if (!validation.success) {
       setErrors(validation.error.flatten().fieldErrors)
       setIsSubmitting(false)
       return
-    } 
+    }
+
+    const formData = new FormData()
+    formData.append('prenom', prenom.value)
+    formData.append('nom', nom.value)
+    formData.append('email', email.value)
+    formData.append('password', password.value)
+    formData.append('departementId', departement.value || '')
+
+    if (imageFile) {
+      formData.append('image', imageFile)
+    }
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: formData,
       })
 
       const data = await res.json()
 
-      // ✅ Gérer les erreurs de l'inscription ici
       if (!res.ok) {
         setServerError(data.message || 'Erreur lors de l’inscription.')
         return
       }
 
-      // ✅ Si inscription réussie, tenter la connexion
-      //const resLogin = await signIn('credentials', {
-        //redirect: false,
-        //email: formData.email,
-        //password: formData.password,    
-      //})
-
-      //Tentative de connexion au dashboard après connexion réussie
-      //if (resLogin?.ok) {
-        //const sessionRes = await fetch('/api/auth/session')
-        //const sessionData = await sessionRes.json()
-
-        //if (sessionData?.user?.role === 'ADMIN') {
-          //router.push('/admin/dashboard')
-        //} else {
-          //router.push('/interfaceUtilisateur/dashboard')
-        //}
-      //}else {
-        //setServerError('Connexion échouée après inscription.')
-      //}
-
-      // ✅ Redirection vers la page de login avec message
       router.push('/login?registered=success')
-    }catch (error) {
-    console.error(error);
-    setServerError("Une erreur inattendue s’est produite.");
-    }finally {
-    setIsSubmitting(false)
+    } catch (error) {
+      console.error(error)
+      setServerError("Une erreur inattendue s’est produite.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   return (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8 ">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
     <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
       <div className="text-center">
         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">INSCRIVEZ-VOUS</h2>
       </div>
-      <form onSubmit={handleRegister} className="mt-8 space-y-6">
+
+      <form onSubmit={handleRegister} className="mt-8 space-y-6" encType="multipart/form-data">
         <div className="rounded-md shadow-sm space-y-4">
           <div>
             <label htmlFor="prenom" className="sr-only">Prénom</label>
@@ -205,7 +193,7 @@ export default function Register() {
           </div>
 
           <div className="relative">
-            <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label> 
+            <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
             <input
               id="confirmPassword"
               name="confirmPassword"
@@ -248,6 +236,16 @@ export default function Register() {
           )}
         </div>
 
+        <div>
+          <label htmlFor="image" className="block text-sm font-medium">Image (optionnelle)</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+
         <div className="flex items-center">
           <input
             id="not-robot"
@@ -261,12 +259,12 @@ export default function Register() {
         </div>
 
         <div>
-          <button  
+          <button
             type="submit"
             disabled={isSubmitting}
             className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
           >
-            {isSubmitting ? 'Traitement...' : 'SOUMETTRE'} 
+            {isSubmitting ? 'Traitement...' : 'SOUMETTRE'}
           </button>
           {serverError && <p className="text-red-600 text-sm mt-2 text-center">{serverError}</p>}
         </div>
@@ -276,11 +274,12 @@ export default function Register() {
         <p className="text-sm text-gray-600">
           Avez vous déjà un compte ?{' '}
           <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Connectez vous 
+            Connectez vous
           </a>
         </p>
       </div>
     </div>
   </div>
-  )
+)
 }
+  

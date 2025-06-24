@@ -9,6 +9,7 @@ declare module "next-auth" {
       id: string;      
       role: Role;
       prenom: string;
+      image?: string // 👈 facultatif, si image existe
     } & DefaultSession["user"]
   }
 
@@ -16,11 +17,13 @@ declare module "next-auth" {
     id: string;
     role: Role;
     prenom: string;
+    image?: string // 👈 facultatif, si image existe
   }
 
   interface JWT {
     id: string;
     role: Role;
     prenom: string;
+    image?: string // 👈 facultatif, si image existe
   }
 }

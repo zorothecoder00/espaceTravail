@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation' 
-import { Role } from '@prisma/client'    
-import Link from 'next/link' 
+import { useRouter } from 'next/navigation'
+import { Role } from '@prisma/client'
+import Link from 'next/link'
 
 type FormState = {
   nom: string
@@ -29,14 +29,12 @@ export default function AjouterUtilisateur() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file) return
-
-    if (file.size > 1_048_576) { // 1 Mo
+    if (file && file.size > 1_048_576) {
       setMessage('❌ L’image est trop grande. Maximum 1 Mo.')
       setImageFile(null)
     } else {
       setMessage('')
-      setImageFile(file)
+      setImageFile(file || null)
     }
   }
 
@@ -47,10 +45,6 @@ export default function AjouterUtilisateur() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!imageFile) {
-      setMessage('Veuillez choisir une image de profil valide.')
-      return
-    }
 
     const formData = new FormData()
     formData.append('nom', form.nom)
@@ -59,7 +53,10 @@ export default function AjouterUtilisateur() {
     formData.append('password', form.password)
     formData.append('role', form.role)
     formData.append('departementId', form.departementId || '')
-    formData.append('image', imageFile)
+
+    if (imageFile) {
+      formData.append('image', imageFile)
+    }
 
     const res = await fetch('/api/utilisateurs', {
       method: 'POST',
@@ -79,83 +76,41 @@ export default function AjouterUtilisateur() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      {/* Lien de retour vers la liste des utilisateurs */}
       <div className="mb-4">
         <Link href="/admin/utilisateurs/liste" className="text-blue-600 hover:underline">
           ← Retour à la liste des utilisateurs
         </Link>
       </div>
       <h1 className="text-2xl font-bold mb-4">Ajouter un utilisateur</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
         <div>
-          <label htmlFor="nom" className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-          <input
-            id="nom"
-            name="nom"
-            onChange={handleChange}
-            placeholder="Nom"
-            className="w-full p-2 border rounded"
-            required
-          />
+          <label htmlFor="nom" className="block mb-1 font-medium">Nom</label>
+          <input id="nom" name="nom" onChange={handleChange} required className="w-full border p-2 rounded" />
         </div>
 
         <div>
-          <label htmlFor="prenom" className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
-          <input
-            id="prenom"
-            name="prenom"
-            onChange={handleChange}
-            placeholder="Prénom"
-            className="w-full p-2 border rounded"
-            required
-          />
+          <label htmlFor="prenom" className="block mb-1 font-medium">Prénom</label>
+          <input id="prenom" name="prenom" onChange={handleChange} required className="w-full border p-2 rounded" />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full p-2 border rounded"
-            required
-          />
+          <label htmlFor="email" className="block mb-1 font-medium">Email</label>
+          <input id="email" name="email" type="email" onChange={handleChange} required className="w-full border p-2 rounded" />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            onChange={handleChange}   
-            placeholder="Mot de passe"
-            className="w-full p-2 border rounded"
-            required
-          />
+          <label htmlFor="password" className="block mb-1 font-medium">Mot de passe</label>
+          <input id="password" name="password" type="password" onChange={handleChange} required className="w-full border p-2 rounded" />
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-sm font-medium mb-1">Photo de profil (max 1 Mo)</label>
-          <input
-            id="image"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full p-2 border rounded"
-            required
-          />
+          <label htmlFor="image" className="block mb-1 font-medium">Image de profil (facultative, max 1 Mo)</label>
+          <input id="image" type="file" accept="image/*" onChange={handleFileChange} className="w-full border p-2 rounded" />
         </div>
-  
+
         <div>
-          <label className="block mb-1 font-medium">Rôle de l&apos;utilisateur</label>
-          <select
-            value={form.role}
-            onChange={(e) => setForm({ ...form, role: e.target.value as Role })}
-            className="w-full border px-3 py-2 rounded"
-          >
+          <label htmlFor="role" className="block mb-1 font-medium">Rôle</label>
+          <select name="role" value={form.role} onChange={handleChange} className="w-full border p-2 rounded">
             <option value={Role.UTILISATEUR}>👤 Utilisateur</option>
             <option value={Role.ADMIN}>🛠️ Admin</option>
             <option value={Role.SUPER_ADMIN}>👑 Super Admin</option>
@@ -163,21 +118,21 @@ export default function AjouterUtilisateur() {
         </div>
 
         <div>
-          <label htmlFor="departementId" className="block text-sm font-medium text-gray-700 mb-1">Département associé(optionnel)</label>
+          <label htmlFor="departementId" className="block mb-1 font-medium">Département (optionnel)</label>
           <input
             id="departementId"
             name="departementId"
             type="number"
             onChange={handleChange}
-            placeholder="ID du département (optionnel)"
-            className="w-full p-2 border rounded"
+            className="w-full border p-2 rounded"
+            placeholder="ID du département"
           />
         </div>
 
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-indigo-700 hover:cursor-pointer">
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
           Ajouter
         </button>
-        {message && <p className="text-sm text-red-500 mt-2">{message}</p>}
+        {message && <p className="text-sm mt-2 text-center text-red-600">{message}</p>}
       </form>
     </div>
   )

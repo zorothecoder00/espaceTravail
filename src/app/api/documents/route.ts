@@ -1,7 +1,17 @@
 import { getAuthSession } from "@/lib/auth"
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import formidable, { File } from "formidable"
+import fs from "fs"
+import path from "path"
+import type { IncomingMessage } from "http"
 import type { Departement, User, Projet, Document, PartageDocument } from "@prisma/client"
+
+export const config = {  
+  api: {
+    bodyParser: false, // désactiver le body parser Next.js
+  },
+}
 
 type PartageAvecRelations = PartageDocument & {
   document: Document  
@@ -11,21 +21,42 @@ type PartageAvecRelations = PartageDocument & {
   partageur: User
 }
 
+const uploadDir = path.join(process.cwd(), "public/uploads")
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true })
+}
+
+// Utilitaire pour parser formulaire avec formidable et gérer fichiers
+function parseForm(req: IncomingMessage): Promise<{ fields: formidable.Fields; files: formidable.Files }> {
+  const form = formidable({
+    uploadDir,
+    keepExtensions: true,
+    maxFileSize: 1 * 1024 * 1024, // 1 Mo max
+    multiples: false,
+  })
+
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err)
+      else resolve({ fields, files })
+    })
+  })
+}
+
 export async function GET() {
   const session = await getAuthSession()
-
   if (!session?.user?.id) {
     return NextResponse.json({ message: "Non autorisé" }, { status: 401 })
   }
-
   const userId = parseInt(session.user.id)
 
   try {
     const partages: PartageAvecRelations[] = await prisma.partageDocument.findMany({
       where: {
         OR: [
-          { userId: userId },        // Reçus
-          { partageurId: userId }    // Partagés
+          { userId: userId },
+          { partageurId: userId }
         ]
       },
       include: {
@@ -35,12 +66,9 @@ export async function GET() {
         projet: true,
         partageur: true
       },
-      orderBy: {
-        datePartage: "desc"
-      }
+      orderBy: { datePartage: "desc" }
     })
 
-    // Séparer les partages reçus et envoyés
     const documentsRecus = partages.filter(p => p.userId === userId)
     const documentsPartages = partages.filter(p => p.partageurId === userId)
 
@@ -56,7 +84,6 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await getAuthSession()
-
   if (!session?.user?.id) {
     return NextResponse.json({ message: "Non autorisé" }, { status: 401 })
   }
@@ -64,25 +91,45 @@ export async function POST(req: Request) {
   const userId = parseInt(session.user.id)
 
   try {
-    const body = await req.json()
+    const { fields, files } = await parseForm(req as unknown as IncomingMessage)
 
-    const { titre, description, utilisateurs, departements, projets } = body
+    const titre = Array.isArray(fields.titre) ? fields.titre[0] : fields.titre
+    const description = Array.isArray(fields.description) ? fields.description[0] : fields.description ?? ''
 
-    if (!titre || (!utilisateurs?.length && !departements?.length && !projets?.length)) {
+    const utilisateurs = fields.utilisateurs ? JSON.parse(Array.isArray(fields.utilisateurs) ? fields.utilisateurs[0] : fields.utilisateurs) : []
+    const departements = fields.departements ? JSON.parse(Array.isArray(fields.departements) ? fields.departements[0] : fields.departements) : []
+    const projets = fields.projets ? JSON.parse(Array.isArray(fields.projets) ? fields.projets[0] : fields.projets) : []
+
+    if (!titre || (!utilisateurs.length && !departements.length && !projets.length)) {
       return NextResponse.json({ message: "Titre ou destinataires manquants" }, { status: 400 })
     }
 
-    // 1. Créer le document
+    // Gérer le fichier uploadé (optionnel)
+    let fichierPath: string | null = null
+    if (files.fichier) {
+      const file = Array.isArray(files.fichier) ? files.fichier[0] : files.fichier as File
+
+      if (file.size > 1_048_576) {
+        // Supprimer fichier trop gros
+        fs.unlinkSync(file.filepath)
+        return NextResponse.json({ message: "Fichier trop volumineux (max 1 Mo)" }, { status: 400 })
+      }
+      // Stocker le chemin relatif dans la base
+      fichierPath = `/uploads/${path.basename(file.filepath)}`
+    }
+
+    // 1. Créer le document avec fichier
     const document = await prisma.document.create({
       data: {
         titre,
         description,
+        fichier: fichierPath,
       },
     })
 
+    // 2. Créer les partages
     const partagesToCreate = []
 
-    // 2. Partages aux utilisateurs
     if (Array.isArray(utilisateurs)) {
       for (const uid of utilisateurs) {
         partagesToCreate.push({
@@ -94,7 +141,6 @@ export async function POST(req: Request) {
       }
     }
 
-    // 3. Partages aux départements
     if (Array.isArray(departements)) {
       for (const did of departements) {
         partagesToCreate.push({
@@ -106,7 +152,6 @@ export async function POST(req: Request) {
       }
     }
 
-    // 4. Partages aux projets
     if (Array.isArray(projets)) {
       for (const pid of projets) {
         partagesToCreate.push({
@@ -122,7 +167,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Aucun destinataire fourni" }, { status: 400 })
     }
 
-    // Au lieu de createMany, faire des créations une par une en Promise.all
     const partagesCreateds = await Promise.all(
       partagesToCreate.map(data =>
         prisma.partageDocument.create({ data })
@@ -130,19 +174,17 @@ export async function POST(req: Request) {
     )
     console.log(`${partagesCreateds.length} partages créés`)
 
-    // 6. Créer les notifications uniquement pour les utilisateurs
+    // Notifications pour utilisateurs uniquement
     const notificationsToCreate = utilisateurs?.map((uid: number) => ({
       userId: uid,
       documentId: document.id,
       message: `Vous avez reçu un nouveau document : ${titre}`,
     })) || []
 
-    await prisma.notification.createMany({
-      data: notificationsToCreate,
-    })
+    await prisma.notification.createMany({ data: notificationsToCreate })
 
     return NextResponse.json({
-      message: "Document créé et partagé avec succès",
+      message: "Document créé, fichier uploadé (si fourni) et partagé avec succès",
       document,
     })
   } catch (error) {
@@ -150,4 +192,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Erreur serveur" }, { status: 500 })
   }
 }
-

@@ -16,8 +16,14 @@ export const config = {
 
 // Fonction de parsing du formulaire avec formidable (typée)
 const parseForm = (req: IncomingMessage): Promise<{ fields: Fields; files: Files }> => {
+  const uploadDir = path.join(process.cwd(), 'public/uploads')
+
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true })
+  }
+
   const form = new IncomingForm({
-    uploadDir: path.join(process.cwd(), 'public/uploads'),
+    uploadDir,  
     keepExtensions: true,
     maxFileSize: 1 * 1024 * 1024, // 1 Mo
     multiples: false,
@@ -47,6 +53,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     if (!nom || !prenom || !email || !password || !role) {
       return NextResponse.json({ message: 'Champs requis manquants' }, { status: 400 })
+    }
+
+    const roleValue = role.toString()
+    if (!Object.values(Role).includes(roleValue as Role)) {
+      return NextResponse.json({ message: 'Rôle invalide' }, { status: 400 })
     }
 
     const user = await prisma.user.findUnique({ where: { id } })
@@ -108,9 +119,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 
   const user = await prisma.user.findUnique({ where: { id } })
-  if (!user) {
+  if (!user) {  
     return NextResponse.json({ message: 'Utilisateur introuvable' }, { status: 404 })
-  }
+  }  
 
   try {
     // Supprimer l'image si elle existe

@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -8,30 +9,36 @@ export default function NouvellePageDocument() {
   const [titre, setTitre] = useState('')
   const [description, setDescription] = useState('')
   const [utilisateurs, setUtilisateurs] = useState('')
+  const [fichier, setFichier] = useState<File | null>(null)
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setMessage('')
 
     try {
-      const res = await fetch('/api/partageDocument', {
+      const formData = new FormData()
+      formData.append('titre', titre)
+      formData.append('description', description)
+      formData.append('utilisateurs', JSON.stringify(utilisateurs.split(',').map(id => parseInt(id.trim()))))
+      formData.append('departements', JSON.stringify([])) // tu peux modifier si besoin
+      formData.append('projets', JSON.stringify([]))      // idem
+
+      if (fichier) {
+        formData.append('fichier', fichier)
+      }
+
+      const res = await fetch('/api/documents', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          titre,
-          description,
-          utilisateurs: utilisateurs.split(',').map(id => parseInt(id.trim())),
-          departements: [],
-          projets: [],
-        }),
+        body: formData, // PAS de Content-Type, fetch s’en charge automatiquement
       })
 
       const data = await res.json()
 
       if (res.ok) {
-        setMessage('Document partagé avec succès.')
+        setMessage('Document créé et partagé avec succès.')
         router.push('/admin/documents/liste')
       } else {
         setMessage(data.message || 'Erreur.')
@@ -48,7 +55,7 @@ export default function NouvellePageDocument() {
     <div className="p-6 max-w-xl mx-auto">
       <h1 className="text-xl font-bold mb-4">Créer et partager un document</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
         <div>
           <label className="block text-sm font-medium">Titre</label>
           <input
@@ -80,12 +87,22 @@ export default function NouvellePageDocument() {
           />
         </div>
 
-        <button
+        <div>
+          <label className="block text-sm font-medium">Fichier (optionnel, max 1 Mo)</label>
+          <input
+            type="file"
+            onChange={e => setFichier(e.target.files ? e.target.files[0] : null)}
+            accept="image/*,application/pdf" // adapte selon tes besoins
+            className="w-full p-2 border rounded"
+          />
+        </div>
+
+        <button 
           type="submit"
           disabled={loading}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          {loading ? 'Partage en cours...' : 'Partager le document'}
+          {loading ? 'Envoi en cours...' : 'Partager le document'}
         </button>
 
         {message && <p className="text-sm mt-2">{message}</p>}

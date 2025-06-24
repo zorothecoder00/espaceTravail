@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";               
-import { Statut, Role } from "@prisma/client";     
+import { Statut, Role } from "@prisma/client";       
 import {          
-  LayoutDashboard,             
+  LayoutDashboard,                
   Users,         
   Building2,
   FolderKanban,  
@@ -15,14 +15,14 @@ import Image from 'next/image'
 import ProjectActivityChart from '@/components/ProjectActivityChart'
 import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'   
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
-import Link from "next/link"
+import Link from "next/link"  
    
 export default async function Dashboard() {       
   const session = await getAuthSession(); 
   console.log("Session admin dashboard:", session);   
 
-  if (!session?.user?.role || session.user.role !== Role.ADMIN) {
-    redirect("/login");
+  if (!session?.user?.role || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    redirect("/login")
   }
 
   const [
@@ -48,6 +48,7 @@ export default async function Dashboard() {
       select: {
         prenom: true,
         nom: true,
+        image: true,
       },
     }),
   ]);
@@ -99,9 +100,15 @@ export default async function Dashboard() {
               Notifications
               <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 3
-              </span>
+              </span>  
             </Link>
-            <Image src="/profile.png" alt="Profil" width={40} height={40} className="rounded-full" />
+            <Image
+              src={session?.user?.image || "/profile.png"}
+              alt="Profil"
+              width={40}
+              height={40}
+              className="rounded-full object-cover"
+            />
             <SignOutButton /> {/* 👈 le bouton Déconnexion dynamique */}
           </div>
         </div>
@@ -128,9 +135,10 @@ export default async function Dashboard() {
            items={tachesRecentes.map(t => t.titre)} 
            icon={CheckSquare}
           />
-          <Card title="Utilisateurs connectés récemment"
-           items={usersOnline.map(user => `${user.prenom} ${user.nom}`)} 
-           icon={Users} 
+          <Card
+            title="Utilisateurs connectés récemment"
+            items={usersOnline} // juste un tableau d’objets { prenom, nom, image? }
+            icon={Users}
           />
         </div>  
   
@@ -174,7 +182,7 @@ function Card({
   icon: Icon,
 }: {
   title: string;
-  items: string[];
+  items: ({ prenom: string; nom: string; image?: string | null } | string)[];
   icon: React.ElementType;
 }) {
   return (
@@ -184,12 +192,34 @@ function Card({
         <h3 className="text-xl font-bold">{title}</h3>
       </div>
       <ul className="space-y-2">
-        {items.map((item, i) => (
-          <li key={i} className="border-b pb-2">{item}</li>
-        ))}
+        {items.map((item, i) => {
+          if (typeof item === "string") {
+            // Cas d’un titre simple (ex : tâche)
+            return (
+              <li key={i} className="border-b pb-2 text-white">
+                {item}
+              </li>
+            )
+          }
+  
+          // Cas d’un utilisateur avec prenom, nom et image
+          return (
+            <li key={i} className="border-b pb-2 flex items-center gap-3">
+              <Image
+                src={item.image || "/profile.png"}
+                alt={`${item.prenom} ${item.nom}`}
+                width={24}
+                height={24}
+                className="rounded-full object-cover"
+              />
+              <span>{`${item.prenom} ${item.nom}`}</span>
+            </li>
+          )
+        })}
       </ul>
     </div>
-  );
+  )
 }
+
 
 

@@ -31,6 +31,7 @@ export const authOptions: NextAuthOptions = {
           name: `${user.prenom} ${user.nom}`, // construire le champ 'name' souvent obligatoire avec CredentialsProvider      
           email: user.email,  
           role: user.role,
+          image: user.image ?? undefined, // <- plus de null
         }
 
       },
@@ -43,7 +44,8 @@ export const authOptions: NextAuthOptions = {
       if (user) { 
         token.role = user.role
         token.id = user.id
-        token.prenom = user.prenom;   
+        token.prenom = user.prenom
+        token.image = user.image   
       }
       return token
     },
@@ -52,8 +54,9 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role as Role;
         session.user.id = token.id as string;
         session.user.prenom = token.prenom as string;
+        session.user.image = token.image as string
       }
-      return session;
+      return session;  
     },
 
   },
