@@ -10,6 +10,7 @@ interface Projet {
   statut: string
   description?: string
   departement: { nom: string }
+  chefProjet: { nom: string }
 }
 
 export default function ListeProjetsPage() {
@@ -91,7 +92,7 @@ export default function ListeProjetsPage() {
             <tr className="bg-gray-100">
               <th className="border p-2 text-left">Nom</th>
               <th className="border p-2 text-left">Statut</th>
-              <th className="border p-2 text-left">Département</th>
+              <th className="border p-2 text-left">Chef du Projet</th>
               <th className="border p-2 text-left">Actions</th>
             </tr>
           </thead>
@@ -100,8 +101,8 @@ export default function ListeProjetsPage() {
               <tr key={projet.id}>
                 <td className="border p-2">{projet.nom}</td>
                 <td className="border p-2">{projet.statut}</td>
-                <td className="border p-2">{projet.departement.nom}</td>
-                <td className="border p-2 space-x-2">
+                <td className="border p-2">{projet.chefProjet?.nom ?? '-'}</td>
+                <td className="border p-2 space-x-2">  
                   <Link
                     href={`/admin/projets/${projet.id}/edit`}
                     className="text-sm text-blue-600 hover:underline"

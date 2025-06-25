@@ -17,7 +17,8 @@ export async function GET(req: Request) {
       },
     },
     include: {
-      departement: true,
+      departement: { select: { nom: true } },
+      chefProjet: { select: { nom: true } }, // ✅ au lieu de tout l'objet
     },
     skip: (page - 1) * limit,
     take: limit,
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json(projet, { status: 201 })
-  } catch (error) {
+  }catch (error) {
     console.error('Erreur création projet:', error)
     return NextResponse.json({ message: 'Erreur lors de la création' }, { status: 500 })
   }

@@ -1,11 +1,11 @@
 // src/app/interfaceUtilisateur/dashboard/page.tsx
-import { getAuthSession } from "@/lib/auth"
+import { getAuthSession } from "@/lib/auth"  
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {
-  LayoutDashboard,  
-  FolderKanban,
-  CheckSquare,
+  LayoutDashboard,      
+  FolderKanban,   
+  CheckSquare,  
   FileText,
   Calendar
 } from "lucide-react"

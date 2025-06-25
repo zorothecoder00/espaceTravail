@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";               
-import { Statut, Role } from "@prisma/client";       
+import { Statut, Role } from "@prisma/client";          
 import {          
   LayoutDashboard,                
   Users,         
@@ -175,7 +175,7 @@ function Stat({
     </div>
   );
 }
-
+  
 function Card({
   title,
   items,
