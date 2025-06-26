@@ -71,6 +71,19 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ message: 'Champs requis manquants ou invalides' }, { status: 400 })
   }
 
+  if (role === RoleProjet.CHEF_EQUIPE) {
+    const chefExistant = await prisma.membreProjet.findFirst({
+      where: {
+        projetId,
+        role: RoleProjet.CHEF_EQUIPE,
+      },
+    })
+
+    if (chefExistant && chefExistant.userId !== Number(userId)) {
+      return NextResponse.json({ message: 'Ce projet a déjà un chef d\'équipe' }, { status: 400 })
+    }
+  }
+
   try {
     const assignation = await prisma.membreProjet.upsert({
       where: { userId_projetId: { userId: Number(userId), projetId } },

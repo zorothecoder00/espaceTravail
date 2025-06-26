@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 type Params = {
-  params: { id: string }
+  params: { id: string }  
 }   
 
 export async function GET(req: Request, { params }: Params) {
@@ -35,13 +35,15 @@ export async function DELETE(req: Request, { params }: Params) {
   }    
 
   try {
-    await prisma.tacheUtilisateur.deleteMany({
-      where: { tacheId, userId },
-    }) 
+    await prisma.tacheUtilisateur.delete({
+      where: { tacheId_userId: { tacheId, userId } },
+    })
+
 
     return NextResponse.json({ message: 'Utilisateur retiré de la tâche' })
   } catch (error) {
     console.error('Erreur DELETE assignation:', error)  // <-- logger l’erreur
     return NextResponse.json({ message: 'Erreur lors de la suppression' }, { status: 500 })
   }
+
 }
