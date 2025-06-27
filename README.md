@@ -152,6 +152,8 @@ npm run dev
 👤 Mon espace
 .GET /api/mesProjets — Voir mes projets
 
+.GET /api/mesProjetsDiriges — Voir mes projets dirigés
+
 .GET /api/mesTaches — Voir mes tâches
 
 .GET /api/monDepartement — Voir mon département

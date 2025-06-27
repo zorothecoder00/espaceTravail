@@ -5,7 +5,7 @@ import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {
   LayoutDashboard,      
   FolderKanban,   
-  CheckSquare,  
+  CheckSquare,       
   FileText,
   Calendar
 } from "lucide-react"
@@ -30,6 +30,10 @@ export default async function UtilisateurDashboard() {
           <Link href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <LayoutDashboard className="w-5 h-5" />
             Dashboard
+          </Link>
+          <Link href="/interfaceUtilisateur/projetsDiriges/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+            <FolderKanban className="w-5 h-5" />
+            Projets dirigés
           </Link>
           <Link href="/interfaceUtilisateur/mesProjets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FolderKanban className="w-5 h-5" />
@@ -98,6 +102,6 @@ export default async function UtilisateurDashboard() {
           </div>
         </div>
       </main>
-    </div>
-  )
+    </div>  
+  )      
 }
