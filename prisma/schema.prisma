@@ -7,7 +7,7 @@
 generator client {               
   provider = "prisma-client-js"     
   //output   = "./node_modules/@prisma/client"    
-}         
+}           
 
 datasource db {  
   provider = "postgresql"
@@ -24,7 +24,7 @@ model Departement {
   partages  PartageDocument[]
 }
 
-enum Role {
+enum Role {             
   SUPER_ADMIN
   ADMIN
   UTILISATEUR
@@ -37,7 +37,7 @@ model User {
   email                      String             @unique
   password                   String
   role                       Role               @default(UTILISATEUR)
-  departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id])
+  departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id], onDelete: Cascade)
 
   departementId              Int?
   image                      String?            //URL profil   
@@ -55,7 +55,7 @@ model User {
   partagesEnTantQuePartageur PartageDocument[]  @relation("Partageur")
   notificationsEmises        Notification[]     @relation("NotificationEmetteur")
 
-  notifications              Notification[]     @relation("NotificationDestinataire")
+  notifications              Notification[]     @relation("NotificationDestinataire")  
 
 }
 
@@ -86,10 +86,10 @@ model Projet {
   statut        Statut            @default(ATTENTE)
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
-  departement   Departement       @relation(fields: [departementId], references: [id])
+  departement   Departement       @relation(fields: [departementId], references: [id], onDelete: Cascade)
 
   departementId Int
-  chefProjet    User              @relation("ChefProjet", fields: [chefProjetId], references: [id])  // 👈 Chef de projet
+  chefProjet    User              @relation("ChefProjet", fields: [chefProjetId], references: [id], onDelete: Cascade)  // 👈 Chef de projet
 
   chefProjetId   Int
   membres       MembreProjet[]
@@ -104,7 +104,7 @@ model Tache {
   id               Int                @id @default(autoincrement())
   titre            String
   description      String?
-  projet           Projet             @relation(fields: [projetId], references: [id])
+  projet           Projet             @relation(fields: [projetId], references: [id], onDelete: Cascade)
 
   projetId         Int
   deadline         DateTime?
@@ -118,9 +118,9 @@ model Tache {
 }
 
 model TacheUtilisateur {
-  tache     Tache    @relation(fields: [tacheId], references: [id])
+  tache     Tache    @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId   Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -138,9 +138,9 @@ enum RoleProjet {
 }  
   
 model MembreProjet {
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  projet    Projet   @relation(fields: [projetId], references: [id])
+  projet    Projet   @relation(fields: [projetId], references: [id], onDelete: Cascade)
   projetId  Int
   role      RoleProjet  @default(MEMBRE) // <--- le rôle spécifique dans le projet
   createdAt DateTime @default(now())
@@ -151,18 +151,18 @@ model MembreProjet {
 
 model PartageDocument {
   id            Int          @id @default(autoincrement())
-  document      Document     @relation(fields: [documentId], references: [id])
+  document      Document     @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   documentId    Int
-  user          User?        @relation(fields: [userId], references: [id])
+  user          User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        Int?
-  departement   Departement? @relation(fields: [departementId], references: [id])
+  departement   Departement? @relation(fields: [departementId], references: [id], onDelete: Cascade)
 
   departementId Int?
-  projet        Projet?      @relation(fields: [projetId], references: [id])
+  projet        Projet?      @relation(fields: [projetId], references: [id], onDelete: Cascade)
   projetId      Int?
   datePartage   DateTime     @default(now())
-  partageur     User         @relation("Partageur", fields: [partageurId], references: [id])
+  partageur     User         @relation("Partageur", fields: [partageurId], references: [id], onDelete: Cascade)
 
   partageurId   Int
   historique    String?
@@ -185,17 +185,17 @@ model Notification {
   messageId        Int?
 
   // Relations
-  user             User         @relation("NotificationDestinataire",fields: [userId], references: [id])
+  user             User         @relation("NotificationDestinataire",fields: [userId], references: [id], onDelete: Cascade)
 
-  emetteur         User?        @relation("NotificationEmetteur", fields: [emetteurId], references: [id])
+  emetteur         User?        @relation("NotificationEmetteur", fields: [emetteurId], references: [id], onDelete: Cascade)
 
-  document         Document?    @relation("DocumentNotification",fields: [documentId], references: [id])
+  document         Document?    @relation("DocumentNotification",fields: [documentId], references: [id], onDelete: Cascade)
 
-  projet           Projet?      @relation("ProjetNotification",fields: [projetId], references: [id])
+  projet           Projet?      @relation("ProjetNotification",fields: [projetId], references: [id], onDelete: Cascade)
 
-  tache            Tache?       @relation("TacheNotification",fields: [tacheId], references: [id])
+  tache            Tache?       @relation("TacheNotification",fields: [tacheId], references: [id], onDelete: Cascade)
 
-  messageAssocie   Message?     @relation("MessageNotification",fields: [messageId], references: [id])
+  messageAssocie   Message?     @relation("MessageNotification",fields: [messageId], references: [id], onDelete: Cascade)
 }
    
 
@@ -206,17 +206,20 @@ model Message {
 
   createdAt  DateTime         @default(now())
 
-  sender     User             @relation("MessagesEnvoyes", fields: [senderId], references: [id])
+  sender     User             @relation("MessagesEnvoyes", fields: [senderId], references: [id], onDelete: Cascade)
+
 
   senderId   Int
   vu         Boolean          @default(false)
-  receiver   User?            @relation("MessagesRecus", fields: [receiverId], references: [id])
+  receiver   User?            @relation("MessagesRecus", fields: [receiverId], references: [id], onDelete: Cascade)
+
 
   receiverId Int?
-  projet     Projet? @relation(fields: [projetId], references: [id])
+  projet     Projet? @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  
   projetId     Int?
 
-  tache        Tache?  @relation(fields: [tacheId], references: [id])
+  tache        Tache?  @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId       Int?
   notifications    Notification[]     @relation("MessageNotification")
 }

@@ -1,36 +1,266 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 Espace de Travail Collaboratif
 
-## Getting Started
+Plateforme web permettant aux membres d'une entreprise ou d'une organisation de collaborer efficacement autour de **projets**, **tâches**, **documents**, **messages** et de **notifications** en temps réel , avec des statistiques représentatives de nos activités et un calendrier de tâches pour mieux visualiser.
 
-First, run the development server:
+---
+
+## 🎯 Objectif
+
+Cette application permet de :
+- S'inscire et se connecter via l'authentification avec Next-Auth
+- Gérer les **projets** par département
+- Assigner des **membres** avec des **rôles spécifiques** par projet
+- Créer et attribuer des **tâches**
+- Partager des **documents** et des **messages** aux membres, projets ou départements
+- Notifier automatiquement les utilisateurs selon les événements
+
+---
+
+## 🛠️ Technologies utilisées
+
+- **Next.js (App Router)**  
+- **TypeScript**  
+- **Prisma (ORM)**  
+- **PostgreSQL**  
+- **pgAdmin 4**  
+- **TailwindCSS**
+
+---
+
+## ⚙️ Installation
+
+### 1. Cloner le projet
 
 ```bash
+git clone https://github.com/mon-utilisateur/espace-travail.git
+cd espace-travail
+2. Installer les dépendances
+bash
+Copier
+Modifier
+npm install
+3. Configuration environnementale
+Créer un fichier .env.local à la racine :
+
+env
+Copier
+Modifier
+DATABASE_URL="postgresql://postgres:admin@localhost:5432/espace-travail"
+NEXTAUTH_SECRET=VOTRE_CLE_SECRETE
+NEXTAUTH_URL=http://localhost:3000
+4. Initialiser Prisma
+bash
+Copier
+Modifier
+npx prisma generate
+npx prisma db push
+5. Démarrer le serveur
+bash
+Copier
+Modifier
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🧩 Structure de la base de données
+| Modèle           | Description                                   |
+|------------------|-----------------------------------------------|
+| `User`           | Utilisateurs de l'application                  |
+| `Departement`    | Contient des projets et utilisateurs          |
+| `Projet`         | Projets avec un chef de projet et des membres  |
+| `MembreProjet`   | Table Pivot utilisateur ↔ projet + rôle             |
+| `Tache`          | Tâches rattachées à un projet                   |
+| `TacheUtilisateur`|Table Pivot utilisateur ↔ tâche                   |
+| `Document`       | Fichiers partagés                            |
+| `PartageDocument`| Historique des partages                       |
+| `Notification`   | Notifications internes                        |
+| `Message`        | Messagerie liée à un projet ou tâche          |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔌 API
+🧑 Utilisateurs
+.GET /api/utilisateurs — Lister tous les utilisateurs
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+.POST /api/utilisateurs — Créer un nouvel utilisateur
 
-## Learn More
+.GET /api/utilisateurs/:id — Récupérer un utilisateur par ID
 
-To learn more about Next.js, take a look at the following resources:
+.PUT /api/utilisateurs/:id — Modifier un utilisateur
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+.DELETE /api/utilisateurs/:id — Supprimer un utilisateur
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📁 Projets
+.GET /api/projets — Lister les projets
 
-## Deploy on Vercel
+.POST /api/projets — Créer un projet
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+.GET /api/projets/:id — Détails d’un projet
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+.PUT /api/projets/:id — Mettre à jour un projet
+
+.DELETE /api/projets/:id — Supprimer un projet
+
+.GET /api/projets/:id/assignations — Voir les membres d’un projet
+
+.POST /api/projets/:id/assignations — Assigner un membre à un projet
+
+.DELETE /api/projets/:id/assignations — Retirer un membre d’un projet
+
+📌 Tâches
+.GET /api/taches — Lister les tâches
+
+.POST /api/taches — Créer une tâche
+
+.GET /api/taches/:id — Détails d’une tâche
+
+.PUT /api/taches/:id — Mettre à jour une tâche
+
+.DELETE /api/taches/:id — Supprimer une tâche
+
+.GET /api/taches/:id/assignations — Voir les membres assignés
+
+.DELETE /api/taches/:id/assignations — Retirer un membre d’une tâche
+
+📄 Documents
+.GET /api/documents — Lister les documents
+
+.POST /api/documents — Ajouter un document
+
+.GET /api/documents/:id — Détails d’un document
+
+.PUT /api/documents/:id — Modifier un document
+
+.DELETE /api/documents/:id — Supprimer un document
+
+🏢 Départements
+.GET /api/departements — Lister les départements
+
+.POST /api/departements — Créer un département
+
+.GET /api/departements/:id — Détails d’un département
+
+.PUT /api/departements/:id — Modifier un département
+
+.DELETE /api/departements/:id — Supprimer un département
+
+
+🗓️ Calendrier
+.GET /api/calendrier — Obtenir les événements calendaires
+
+👥 Assignations
+.POST /api/assignations/projet — Assigner un utilisateur à un projet
+
+.POST /api/assignations/tache — Assigner un utilisateur à une tâche
+
+👤 Mon espace
+.GET /api/mesProjets — Voir mes projets
+
+.GET /api/mesTaches — Voir mes tâches
+
+.GET /api/monDepartement — Voir mon département
+
+.GET /api/monCalendrier — Voir mon calendrier
+
+📊 Statistiques
+.GET /api/statistiques — Résumé global de l’activité
+
+🔐 Rôles
+
+🧑‍💼 Rôles globaux (application entière)
+SUPER_ADMIN: Accès complet à l’application, y compris gestion des utilisateurs, projets et départements
+
+ADMIN: Gère les utilisateurs et les projets (ajout, modification, suppression)
+
+UTILISATEUR: Accès limité : peut uniquement consulter et interagir avec ses projets, tâches et documents
+
+
+🧱 Rôles dans un projet
+CHEF_EQUIPE: Dirige le projet, gère les membres, valide les tâches
+
+DEVELOPPEUR: Implémente les fonctionnalités techniques
+
+QA: Vérifie la qualité, effectue les tests
+
+DESIGNER: Conçoit l’interface et l’expérience utilisateur (UI/UX)
+
+COMMUNICANT: 	Gère la communication interne et la documentation
+
+
+## 📦 Dépendances et bibliothèques utilisées
+
+🖥️ Frontend
+Next.js – Framework React pour les applications web modernes (next)
+
+React & React DOM – Bibliothèque principale d'interface utilisateur (react, react-dom)
+
+Tailwind CSS – Framework CSS utilitaire (tailwindcss, tailwind-merge)
+
+Lucide React – Bibliothèque d’icônes SVG modernes (lucide-react)
+
+clsx & class-variance-authority – Aide à la composition conditionnelle de classes
+
+Zod – Validation de schémas TypeScript (zod)
+
+NextAuth.js – Authentification sécurisée et intégrée dans Next.js (next-auth)
+
+Axios – Client HTTP simple pour interagir avec l’API (axios)
+
+FullCalendar – Affichage d’un calendrier interactif (@fullcalendar/core, @fullcalendar/daygrid, @fullcalendar/react)
+
+Chart.js & Recharts – Affichage de graphiques statistiques (chart.js, react-chartjs-2, recharts)
+
+
+🧱 Backend & Base de données
+Prisma – ORM pour interagir avec PostgreSQL (@prisma/client, prisma)
+
+PostgreSQL – Base de données relationnelle (utilisée via Prisma)
+
+Formidable – Gestion de l’upload de fichiers (formidable)
+
+Bcrypt / Bcryptjs – Hachage des mots de passe (bcrypt, bcryptjs)
+
+⚙️ Développement
+TypeScript – Typage statique robuste (typescript, ts-node)
+
+ESLint – Linter pour la qualité du code (eslint, eslint-config-next, @eslint/eslintrc)
+
+Types pour TypeScript – (@types/*) pour avoir l’autocomplétion et le typage fort
+
+tw-animate-css – Ajout d’animations utilitaires à Tailwind
+
+
+📜 Scripts NPM importants
+✅ Vérification complète (check)
+
+"check": "npm run lint && tsc --noEmit && next build"
+Ce script fait trois choses cruciales avant un déploiement ou un commit sérieux :
+
+npm run lint : détecte les erreurs de style ou de code avec ESLint
+
+tsc --noEmit : vérifie le typage TypeScript sans générer de fichiers
+
+next build : s'assure que l'application peut être buildée sans erreur
+
+🧠 Très utile pour prévenir les erreurs de runtime ou de build avant la production.
+
+
+🧬 Génération Prisma automatique (postinstall)
+"postinstall": "prisma generate"
+Ce script se déclenche automatiquement après l'installation des dépendances (npm install) et sert à :
+
+Générer le client Prisma (@prisma/client) à partir du schéma schema.prisma
+
+S'assurer que ton ORM est toujours à jour après un git clone ou un déploiement
+
+🛠️ Indispensable pour que Prisma fonctionne correctement en local ou sur une plateforme comme Vercel.
+
+
+
+🧪 Tests
+Tu peux utiliser Postman pour tester les routes API ou intégrer Jest/Playwright si tu veux automatiser des tests plus tard.
+
+📸 Aperçus (optionnel)
+Ajoute ici des captures d’écran du dashboard, de l’interface projets, ou des notifications.
+
+
+✍️ Auteur
+Projet développé par AMOUSSOU-GUENOU Awledou
+Encadré par [Nom du chef ou de l'encadrant]
+
