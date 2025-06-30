@@ -44,6 +44,7 @@ export const authOptions: NextAuthOptions = {
       if (user) { 
         token.role = user.role
         token.id = user.id
+        token.nom = user.nom
         token.prenom = user.prenom
         token.image = user.image   
       }
@@ -53,10 +54,11 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.role = token.role as Role;
         session.user.id = token.id as string;
-        session.user.prenom = token.prenom as string;
+        session.user.nom = token.nom as string;
+        session.user.prenom = token.prenom as string;        
         session.user.image = token.image as string
       }
-      return session;  
+      return session;    
     },
 
   },

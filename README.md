@@ -1,6 +1,6 @@
 # 🧠 Espace de Travail Collaboratif
 
-Plateforme web permettant aux membres d'une entreprise ou d'une organisation de collaborer efficacement autour de **projets**, **tâches**, **documents**, **messages** et de **notifications** en temps réel , avec des statistiques représentatives de nos activités et un calendrier de tâches pour mieux visualiser.
+Plateforme web permettant aux membres d’une entreprise ou d'une organisation de collaborer efficacement autour de **projets**, **tâches**, **documents**, **messages** et de **notifications** en temps réel , avec des statistiques représentatives de nos activités et un calendrier de tâches pour mieux visualiser.
 
 ---
 
@@ -63,7 +63,7 @@ npm run dev
 🧩 Structure de la base de données
 | Modèle           | Description                                   |
 |------------------|-----------------------------------------------|
-| `User`           | Utilisateurs de l'application                  |
+| `User`           | Utilisateurs de l’application                  |
 | `Departement`    | Contient des projets et utilisateurs          |
 | `Projet`         | Projets avec un chef de projet et des membres  |
 | `MembreProjet`   | Table Pivot utilisateur ↔ projet + rôle             |
@@ -75,6 +75,17 @@ npm run dev
 | `Message`        | Messagerie liée à un projet ou tâche          |
 
 🔌 API
+🏢 Départements
+.GET /api/departements — Lister les départements
+
+.POST /api/departements — Créer un département
+
+.GET /api/departements/:id — Détails d’un département
+
+.PUT /api/departements/:id — Modifier un département
+
+.DELETE /api/departements/:id — Supprimer un département
+
 🧑 Utilisateurs
 .GET /api/utilisateurs — Lister tous les utilisateurs
 
@@ -93,7 +104,7 @@ npm run dev
 
 .GET /api/projets/:id — Détails d’un projet
 
-.PUT /api/projets/:id — Mettre à jour un projet
+.PUT /api/projets/:id — Mettre à jour un projet   
 
 .DELETE /api/projets/:id — Supprimer un projet
 
@@ -104,7 +115,7 @@ npm run dev
 .DELETE /api/projets/:id/assignations — Retirer un membre d’un projet
 
 📌 Tâches
-.GET /api/taches — Lister les tâches
+.GET /api/taches — Lister les tâches  
 
 .POST /api/taches — Créer une tâche
 
@@ -118,6 +129,11 @@ npm run dev
 
 .DELETE /api/taches/:id/assignations — Retirer un membre d’une tâche
 
+👥 Assignations
+.POST /api/assignations/projet — Assigner un utilisateur à un projet
+
+.POST /api/assignations/tache — Assigner un utilisateur à une tâche
+
 📄 Documents
 .GET /api/documents — Lister les documents
 
@@ -129,36 +145,53 @@ npm run dev
 
 .DELETE /api/documents/:id — Supprimer un document
 
-🏢 Départements
-.GET /api/departements — Lister les départements
+📨 Messages
+.GET /api/messages — Lister tous les messages
 
-.POST /api/departements — Créer un département
+.GET /api/messages/:id — Détails d’un message
 
-.GET /api/departements/:id — Détails d’un département
+.POST /api/messages — Envoyer un message
 
-.PUT /api/departements/:id — Modifier un département
+.GET /api/projets/:id/messages — Lister les messages d’un projet
 
-.DELETE /api/departements/:id — Supprimer un département
+.GET /api/taches/:id/messages — Lister les messages d’une tâche
 
+.DELETE /api/messages/:id — Supprimer un message
+
+🔔 Notifications
+.GET /api/notifications — Lister toutes les notifications de l’utilisateur
+
+.GET /api/notifications/:id — Détails d’une notification
+
+.POST /api/notifications — Créer une notification
+
+.PUT /api/notifications/:id — Marquer comme lue ou modifier
+
+.DELETE /api/notifications/:id — Supprimer une notification
 
 🗓️ Calendrier
 .GET /api/calendrier — Obtenir les événements calendaires
 
-👥 Assignations
-.POST /api/assignations/projet — Assigner un utilisateur à un projet
-
-.POST /api/assignations/tache — Assigner un utilisateur à une tâche
-
 👤 Mon espace
 .GET /api/mesProjets — Voir mes projets
 
+.GET /api/mesProjets/:id — Voir un projet
+
 .GET /api/mesProjetsDiriges — Voir mes projets dirigés
 
+.GET /api/mesProjetsDiriges/:id/gestion — Voir un projet dirigé spécifique
+
 .GET /api/mesTaches — Voir mes tâches
+
+.GET /api/mesTaches/:id — Voir une tâche
 
 .GET /api/monDepartement — Voir mon département
 
 .GET /api/monCalendrier — Voir mon calendrier
+
+.GET /api/mesDocuments — Voir mes documents
+
+.GET /api/mesMessages — Voir mes messages
 
 📊 Statistiques
 .GET /api/statistiques — Résumé global de l’activité

@@ -38,7 +38,7 @@ model User {
   password                   String
   role                       Role               @default(UTILISATEUR)
   departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id], onDelete: Cascade)
-
+  
   departementId              Int?
   image                      String?            //URL profil   
 
@@ -46,7 +46,7 @@ model User {
   messagesRecus              Message[]          @relation("MessagesRecus")
   lastActiveAt               DateTime?          @default(now()) //<--- Ce champ pour suivre l'activité
 
-  createdAt                  DateTime           @default(now())
+  createdAt                  DateTime           @default(now())  
   updatedAt                  DateTime           @updatedAt
   projets                    MembreProjet[]
   projetsDiriges             Projet[]           @relation("ChefProjet")
@@ -173,8 +173,11 @@ model PartageDocument {
 model Notification {
   id               Int      @id @default(autoincrement())
   userId           Int                          // Destinataire
-  emetteurId       Int?                         // Celui qui déclenche la notif
+
+  emetteurId       Int?                           // Celui qui déclenche la notif
+
   message          String                       // Ex: "Tu as reçu une nouvelle tâche"
+
   vu               Boolean     @default(false)
   dateNotification DateTime     @default(now())
 
@@ -183,6 +186,7 @@ model Notification {
   projetId         Int?
   tacheId          Int?
   messageId        Int?
+  lien             String?
 
   // Relations
   user             User         @relation("NotificationDestinataire",fields: [userId], references: [id], onDelete: Cascade)
