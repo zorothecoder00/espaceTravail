@@ -72,12 +72,52 @@ const parseForm = (req: NextApiRequest): Promise<ParsedForm> => {
   })
 }
 
-export async function GET() {
-  const utilisateurs = await prisma.user.findMany({
-    include: { departement: true },
-    orderBy: { createdAt: 'desc' },
-  })
-  return NextResponse.json(utilisateurs)
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url)
+
+  // 🔢 Pagination
+  const page = parseInt(searchParams.get('page') || '1')
+  const limit = parseInt(searchParams.get('limit') || '10')
+  const skip = (page - 1) * limit  
+
+  // 🔍 Filtrage (par nom ou email)
+  const search = searchParams.get('search')?.trim() || ''
+
+  // ↕️ Tri dynamique
+  const sortField = searchParams.get('sortField') || 'createdAt'
+  const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
+
+  try{
+    const[utilisateurs, total] = await Promise.all([
+      prisma.user.findMany({
+        where: {
+          OR: [
+            { nom: { contains: search } },
+            { prenom: { contains: search } },
+            { email: { contains: search } },
+            { role: { equals: search as Role } },
+            { departement: { nom: { contains: search } } },
+          ],
+        },
+        include: { departement: true },
+        orderBy: { [sortField]: sortOrder },
+        skip,
+        take: limit,
+      }),
+     
+      prisma.user.count()
+      ])
+
+    return NextResponse.json({
+      data: utilisateurs,
+      total,
+      totalPages: Math.ceil(total / limit)
+    })
+  }catch(error){
+    console.error("Erreur lors de la récupération", error)
+    return NextResponse.json({ message: "Erreur serveur"}, { status: 500 })
+  }
+  
 }
 
 export async function POST(req: Request) {

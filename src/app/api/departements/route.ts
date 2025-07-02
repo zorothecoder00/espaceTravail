@@ -3,11 +3,46 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma' 
 
 // GET : récupérer tous les départements
-export async function GET() {
-  const departements = await prisma.departement.findMany({
-    orderBy: { nom: 'asc' },
-  })
-  return NextResponse.json(departements)
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url)
+
+  // 🔢 Pagination
+  const page = parseInt(searchParams.get('page') || '1')
+  const limit = parseInt(searchParams.get('limit') || '10')
+  const skip = (page - 1) * limit
+
+  // 🔍 Filtrage (par nom)
+  const search = searchParams.get('search')?.trim() || ''  
+
+  // ↕️ Tri dynamique
+  const sortField = searchParams.get('sortField') || 'createdAt'
+  const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
+
+  try{
+    const [departements, total] = await Promise.all([
+      prisma.departement.findMany({
+        where: {
+          OR: [
+            { nom: { contains: search } },
+          ],
+        },
+        orderBy: { [sortField]: sortOrder },
+        skip,
+        take: limit,
+      }),
+
+      prisma.departement.count(),
+    ])
+    
+    return NextResponse.json({
+      data: departements,
+      total,
+      totalPages: Math.ceil(total / limit)
+    })
+  }catch(error){
+    console.error("Erreur lors de la récupération", error)
+    return NextResponse.json({ message: "Erreur interne"}, { status: 500 })
+  } 
 }
 
 // POST : créer un nouveau département

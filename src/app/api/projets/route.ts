@@ -1,40 +1,47 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Statut, RoleProjet } from '@prisma/client'
+import { Statut, RoleProjet } from '@prisma/client'  
 
 // GET — liste avec option de recherche et pagination
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '10')
-  const search = searchParams.get('search') || ''
+  const search = searchParams.get('search')?.trim() || ''
+  const sortField = searchParams.get('sortField') || 'createdAt' 
+  const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
 
-  const projets = await prisma.projet.findMany({
-    where: {
-      nom: {
-        contains: search,
-        //mode: 'insensitive',
-      },
-    },
-    include: {
-      departement: { select: { nom: true } },
-      chefProjet: { select: { nom: true } }, // ✅ au lieu de tout l'objet
-    },
-    skip: (page - 1) * limit,
-    take: limit,
-    orderBy: { createdAt: 'desc' },
-  })
+  try{
+    const [projets, total] = await Promise.all([
+      prisma.projet.findMany({
+        where: {
+          OR: [
+            { nom: { contains: search } },  
+            { statut: { equals: search as Statut } },
+            { chefProjet: { nom: { contains: search } } },
+          ],    
+        },
+        include: {
+          departement: { select: { nom: true } },
+          chefProjet: { select: { nom: true } }, // ✅ au lieu de tout l'objet
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { [sortField]: sortOrder },
+      }),
 
-  const total = await prisma.projet.count({
-    where: {
-      nom: {
-        contains: search,
-        //mode: 'insensitive',
-      },
-    },
-  })
+      prisma.projet.count()
+    ])
 
-  return NextResponse.json({ data: projets, total })
+    return NextResponse.json({
+     data: projets,
+     total,
+     totalPages: Math.ceil(total / limit)
+   })
+  }catch(error){
+    console.error("Erreur lors de la récupération", error)
+    return NextResponse.json({ message: "Erreur interne"}, { status: 500 })
+  }
 }
 
 // POST — création d’un projet avec chefProjet et insertion dans MembreProjet

@@ -271,7 +271,7 @@ Ce script fait trois choses cruciales avant un déploiement ou un commit sérieu
 
 "postinstall": "prisma generate"
 
-Ce script se déclenche automatiquement après l’installation des dépendances (npm install) et sert à :
+  Ce script se déclenche automatiquement après l’installation des dépendances (npm install) et sert à :
 
   Générer le client Prisma (@prisma/client) à partir du schéma schema.prisma
 
