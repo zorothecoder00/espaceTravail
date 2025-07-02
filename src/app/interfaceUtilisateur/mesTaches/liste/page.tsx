@@ -8,7 +8,7 @@ import { Statut } from '@prisma/client'
 
 type Tache = {
   id: string
-  nom: string
+  titre: string
   statut: Statut
   projet: {
     nom: string
@@ -97,7 +97,7 @@ export default function ListeTachesPage() {
         <table className="w-full border-collapse border rounded bg-white shadow">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Nom</th>
+              <th className="border p-2 text-left">Titre</th>
               <th className="border p-2 text-left">Statut</th>
               <th className="border p-2 text-left">Projet</th>
             </tr>
@@ -105,7 +105,7 @@ export default function ListeTachesPage() {
           <tbody>
             {taches.map((tache) => (
               <tr key={tache.id}>
-                <td className="border p-2">{tache.nom}</td>
+                <td className="border p-2">{tache.titre}</td>
                 <td className="border p-2">{afficherStatutLisible(tache.statut)}</td>
                 <td className="border p-2">{tache.projet.nom}</td>
               </tr>

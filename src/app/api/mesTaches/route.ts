@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"  
 import prisma from "@/lib/prisma"
 import { getAuthSession } from "@/lib/auth"
-import type { Tache, Projet, TacheUtilisateur } from "@prisma/client"
+import type { Tache, Projet, TacheUtilisateur, Statut } from "@prisma/client"
 
 type TacheAvecProjet = Tache & {
   projet: Projet      
@@ -22,39 +22,50 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const search = searchParams.get('search') || ''
   const page = parseInt(searchParams.get('page') || '1')
-  const limit = 25
+  const limit = 10
+  const skip = (page - 1) * limit
+
+  const sortField = searchParams.get('sortField') || "createdAt"
+  const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
 
   try {
-    const tachesAssignees: TacheUtilisateurAvecTache[] = await prisma.tacheUtilisateur.findMany({
-      where: {
-        userId: parseInt(session.user.id),
-        tache: {
-            titre: {
-              contains: search,
-            },
-        },
-      },
-      include: {
-        tache: {
+    const [tachesAssignees, totalTaches]: [TacheUtilisateurAvecTache[], number] = await Promise.all([
+        prisma.tacheUtilisateur.findMany({  
+          where: {
+            userId: parseInt(session.user.id),
+              OR: [
+                { tache: { titre: { contains: search, } } },
+                { tache: { statut: { equals: search as Statut } } },
+                { tache: { projet: { nom: { contains: search } } } },
+              ],
+            },      
           include: {
-            projet: true,
-          },
-        },
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-    })
-
-    const totalTaches = await prisma.tacheUtilisateur.count({
-      where: {
-        userId: parseInt(session.user.id),
-        tache: { 
-            titre: {
-              contains: search,
+            tache: {
+              include: {
+                projet: true,
+              },
             },
-        },
-      },
-    })
+          },
+          orderBy: {
+            tache: {
+              [sortField]: sortOrder,
+            }         
+          },
+          skip,
+          take: limit,
+        }),
+
+        prisma.tacheUtilisateur.count({
+          where: {
+            userId: parseInt(session.user.id),
+            OR: [
+              { tache: { titre: { contains: search } } },
+              { tache: { statut: { equals: search as Statut } } },
+              { tache: { projet: { nom: { contains: search } } } },
+            ],
+          },
+        }),
+    ])    
 
     const taches = tachesAssignees.map((item) => item.tache)
 
