@@ -22,43 +22,47 @@ export default function AssignationTachePage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null)
 
-  const fetchMembres = async () => {
-    setLoading(true)
-    try {
-      const params = new URLSearchParams({
-        search,
-        page: page.toString(),
-        limit: '10',
-        sortField,
-        sortOrder,
-      })
-
-      const res = await fetch(`/api/taches/${id}/assignations?${params}`)
-      const { data, totalPages } = await res.json()
-
-      setMembres(data)
-
-      const preselection = data
-        .filter((m: Membre) => m.estAssigne)
-        .map((m: Membre) => m.id)
-
-      setSelectedIds(new Set(preselection))
-      setTotalPages(totalPages)
-    } catch (error) {
-      console.error('Erreur lors du chargement des membres', error)
-      setMessage({ text: 'Erreur lors du chargement des membres.', type: 'error' })
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
+    const fetchMembres = async () => {
+      setLoading(true)
+      try {
+        const params = new URLSearchParams({
+          search,
+          page: page.toString(),
+          limit: '10',
+          sortField,
+          sortOrder,
+        })
+
+        const res = await fetch(`/api/taches/${id}/assignations?${params}`)
+        const { data, totalPages } = await res.json()
+
+        setMembres(data)
+
+        const preselection = data
+          .filter((m: Membre) => m.estAssigne)
+          .map((m: Membre) => m.id)
+
+        setSelectedIds(new Set(preselection))
+        setTotalPages(totalPages)
+      } catch (error) {
+        console.error('Erreur lors du chargement des membres', error)
+        setMessage({ text: 'Erreur lors du chargement des membres.', type: 'error' })
+      } finally {
+        setLoading(false)
+      }
+    }
+
     fetchMembres()
-  }, [search, page, sortField, sortOrder])
+  }, [search, page, sortField, sortOrder, id])
 
   const toggleSelection = (userId: number) => {
     const updated = new Set(selectedIds)
-    updated.has(userId) ? updated.delete(userId) : updated.add(userId)
+    if (updated.has(userId)) {
+      updated.delete(userId)
+    } else {
+      updated.add(userId)
+    }
     setSelectedIds(updated)
   }
 

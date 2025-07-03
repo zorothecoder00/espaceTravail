@@ -38,18 +38,17 @@ export async function GET(req: Request, { params }: { params: { id: string } })
         where: { 
           OR: [
           { nom: { contains: search } } ,
-          { projets: { role: { equals: search as RoleProjet } } },
+          { projets: { some: { role: search as RoleProjet } } },
          ],
         }, 
         include: {
           projets: {
-            where: {
-              select: {
-                role: true,
-              }
+            where: { projetId },
+            select: {
+              role: true,
+            }
             }
           },
-        },
         skip,
         take: limit,
         orderBy: {
@@ -59,10 +58,10 @@ export async function GET(req: Request, { params }: { params: { id: string } })
 
       prisma.user.count({
         where: {
-          projetId,
+          projets: { some: { projetId } },
           OR: [
             { nom: { contains: search } },
-            { projts: { role: { equals: search as RoleProjet } } },
+            { projets: { some: { role: search as RoleProjet } } },
           ],
         }
       })
