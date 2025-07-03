@@ -1,103 +1,88 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { RoleProjet } from '@prisma/client'
+import prisma from '@/lib/prisma'
+import { RoleProjet } from '@prisma/client' // optionnel si tu veux typer
 
-type Params = {
-  params: { id: string }
-}
-
-// 🔍 GET — récupérer les membres avec leurs rôles
-export async function GET(req: Request, { params }: Params) {
+export async function GET(req: Request, { params }: { params: { id: string } }) 
+{
   const projetId = parseInt(params.id)
 
   if (isNaN(projetId)) {
-    return NextResponse.json({ message: 'ID invalide' }, { status: 400 })
+    return NextResponse.json({ message: "Projet introuvable" }, { status: 400 })
   }
 
-  try {
-    const assignations = await prisma.membreProjet.findMany({
-      where: { projetId },
-      include: { user: true },
-    })
-
-    return NextResponse.json(assignations)
-  } catch (error) {
-    console.error('Erreur GET assignations:', error)
-    return NextResponse.json({ message: 'Erreur lors de la récupération' }, { status: 500 })
-  }
-}
-
-// ❌ DELETE — retirer un utilisateur (sauf chef d’équipe)
-export async function DELETE(req: Request, { params }: Params) {
-  const projetId = parseInt(params.id)
   const { searchParams } = new URL(req.url)
-  const userId = parseInt(searchParams.get('userId') || '')
 
-  if (isNaN(projetId) || isNaN(userId)) {
-    return NextResponse.json({ message: 'ID(s) invalide(s)' }, { status: 400 })
-  }
+  // ✅ Lecture des query params
+  const page = parseInt(searchParams.get("page") || "1")
+  const limit = parseInt(searchParams.get("limit") || "10")
+  const skip = (page - 1) * limit
 
-  try {
-    const membre = await prisma.membreProjet.findUnique({
-      where: { userId_projetId: { projetId, userId } },
-    })
+  const search = searchParams.get("search") || ""
 
-    if (!membre) {
-      return NextResponse.json({ message: 'Aucune assignation trouvée' }, { status: 404 })
-    }
-
-    if (membre.role === 'CHEF_EQUIPE') {
-      return NextResponse.json({ message: 'Impossible de retirer le chef de projet' }, { status: 403 })
-    }
-
-    await prisma.membreProjet.delete({
-      where: { userId_projetId: { projetId, userId } },
-    })
-
-    return NextResponse.json({ message: 'Utilisateur retiré du projet' })
-  } catch (error) {
-    console.error('Erreur DELETE assignation:', error)
-    return NextResponse.json({ message: 'Erreur lors de la suppression' }, { status: 500 })
-  }
-}
-
-// ✅ POST — assigner un membre avec un rôle au projet
-export async function POST(req: Request, { params }: Params) {
-  const projetId = parseInt(params.id)
-  const body = await req.json()
-  const { userId, role } = body
-
-  if (!userId || !role || isNaN(projetId)) {
-    return NextResponse.json({ message: 'Champs requis manquants ou invalides' }, { status: 400 })
-  }
-
-  if (role === RoleProjet.CHEF_EQUIPE) {
-    const chefExistant = await prisma.membreProjet.findFirst({
-      where: {
-        projetId,
-        role: RoleProjet.CHEF_EQUIPE,
-      },
-    })
-
-    if (chefExistant && chefExistant.userId !== Number(userId)) {
-      return NextResponse.json({ message: 'Ce projet a déjà un chef d\'équipe' }, { status: 400 })
-    }
-  }
+  const sortField = searchParams.get("sortField") || "nom"
+  const sortOrder = searchParams.get("sortOrder") === "desc" ? "desc" : "asc"
 
   try {
-    const assignation = await prisma.membreProjet.upsert({
-      where: { userId_projetId: { userId: Number(userId), projetId } },
-      update: { role: role as RoleProjet },
-      create: {
-        userId: Number(userId),
-        projetId,
-        role: role as RoleProjet,
-      },
+    // Vérifie que le projet existe
+    const projet = await prisma.projet.findUnique({
+      where: { id: projetId },
     })
 
-    return NextResponse.json(assignation, { status: 201 })
+    if (!projet) {
+      return NextResponse.json({ message: "Projet introuvable" }, { status: 404 })
+    }
+
+    // Récupère les utilisateurs
+    const [users, total] = await Promise.all([
+      prisma.user.findMany({
+        where: { 
+          OR: [
+          { nom: { contains: search } } ,
+          { projets: { role: { equals: search as RoleProjet } } },
+         ],
+        }, 
+        include: {
+          projets: {
+            where: {
+              select: {
+                role: true,
+              }
+            }
+          },
+        },
+        skip,
+        take: limit,
+        orderBy: {
+          [sortField]: sortOrder
+        }
+      }),
+
+      prisma.user.count({
+        where: {
+          projetId,
+          OR: [
+            { nom: { contains: search } },
+            { projts: { role: { equals: search as RoleProjet } } },
+          ],
+        }
+      })
+    ])
+
+    // Structure propre à retourner
+    const membres = users.map((u) => ({
+      id: u.id,
+      nom: u.nom,
+      role: u.projets[0]?.role ?? null,
+      estDejaMembre: u.projets.length > 0,
+    }))
+
+    return NextResponse.json({
+      data: membres,
+      total,
+      totalPages: Math.ceil(total / limit)
+    })
   } catch (error) {
-    console.error('Erreur POST assignation:', error)
-    return NextResponse.json({ message: 'Erreur lors de l’assignation' }, { status: 500 })
+    console.error("Erreur API utilisateurs :", error)
+    return NextResponse.json({ message: "Erreur serveur" }, { status: 500 })
   }
 }
