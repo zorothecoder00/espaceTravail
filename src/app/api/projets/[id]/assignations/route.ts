@@ -154,7 +154,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       return NextResponse.json({ message: "Projet introuvable" }, { status: 404 })
     }
 
-    // 🔔 Prépare les notifications
+    // 🔔 Prépare les notifications   
     const notificationsData = [
       ...aAjouter.map(userId => ({
         userId,

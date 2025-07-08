@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { toast } from 'react-toastify'
 
 type Membre = {
   id: number
@@ -47,7 +48,7 @@ export default function AssignationTachePage() {
         setTotalPages(totalPages)
       } catch (error) {
         console.error('Erreur lors du chargement des membres', error)
-        setMessage({ text: 'Erreur lors du chargement des membres.', type: 'error' })
+        toast.error('Erreur lors du chargement des membres.')
       } finally {
         setLoading(false)
       }
@@ -57,37 +58,45 @@ export default function AssignationTachePage() {
   }, [search, page, sortField, sortOrder, id])
 
   const toggleSelection = (userId: number) => {
-    const updated = new Set(selectedIds)
-    if (updated.has(userId)) {
-      updated.delete(userId)
-    } else {
-      updated.add(userId)
-    }
-    setSelectedIds(updated)
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if(next.has(userId)) next.delete(userId)
+      else next.add(userId)
+      return next
+    })
   }
 
   const enregistrer = async () => {
     setLoading(true)
 
-    const res = await fetch(`/api/taches/${id}/assignations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        utilisateursIds: Array.from(selectedIds),
-      }),
-    })
+    try{
+      const res = await fetch(`/api/taches/${id}/assignations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          utilisateursIds: Array.from(selectedIds),
+        }),
+      })
 
-    setTimeout(() => {
+      setTimeout(() => {
+        setLoading(false)
+        if (res.ok) {
+          setMessage({ text: 'Assignations mises à jour avec succès !', type: 'success' })
+        } else {
+          setMessage({ text: "Erreur lors de l'enregistrement", type: 'error' })
+        }
+        setTimeout(() => setMessage(null), 3000)
+      }, 1000)
+    }catch(error) { 
+      console.error("Erreur lors de l’enregistrement", error)
+      const errMsg = error instanceof Error ? error.message : "Erreur lors de l’enregistrement"
+      setMessage({ text: errMsg, type: "error" })
+    }finally {
       setLoading(false)
-      if (res.ok) {
-        setMessage({ text: 'Assignations mises à jour avec succès !', type: 'success' })
-      } else {
-        setMessage({ text: "Erreur lors de l'enregistrement", type: 'error' })
-      }
       setTimeout(() => setMessage(null), 3000)
-    }, 1000)
+    }
   }
 
   return (

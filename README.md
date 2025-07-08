@@ -1,10 +1,10 @@
-🧠 Espace de Travail Collaboratif
-
+🧠 Espace de Travail Collaboratif       
+   
 Plateforme web permettant aux membres d’une entreprise ou d'une organisation de collaborer efficacement autour de **projets**, **tâches**, **documents**, **messages** et de **notifications** en temps réel , avec des statistiques représentatives de nos activités et un **calendrier** de tâches pour mieux les visualiser.
-
+ 
 ---
 
-🎯 Objectif
+🎯 Objectif  
 
 Cette application permet de :
 - S'inscire et se connecter via l'authentification avec Next-Auth
@@ -255,10 +255,9 @@ Cette application permet de :
 📜 Scripts NPM importants
 
 ✅ Vérification complète (check)
-
-"check": "npm run lint && tsc --noEmit && next build"
-Ce script fait trois choses cruciales avant un déploiement ou un commit sérieux :
-
+"check": "npm run lint && tsc --noEmit && next build"             
+Ce script fait trois choses cruciales avant un déploiement ou un commit sérieux :           
+   
   npm run lint : détecte les erreurs de style ou de code avec ESLint
 
   tsc --noEmit : vérifie le typage TypeScript sans générer de fichiers
@@ -268,16 +267,22 @@ Ce script fait trois choses cruciales avant un déploiement ou un commit sérieu
   🧠 Très utile pour prévenir les erreurs de runtime ou de build avant la production.
 
 🧬 Génération Prisma automatique (postinstall)
-
 "postinstall": "prisma generate"
 
   Ce script se déclenche automatiquement après l’installation des dépendances (npm install) et sert à :
 
   Générer le client Prisma (@prisma/client) à partir du schéma schema.prisma
 
-  S’assurer que ton ORM est toujours à jour après un git clone ou un déploiement
+  S’assurer que ton ORM est toujours à jour après un git clone ou un déploiement   
 
-  🛠️ Indispensable pour que Prisma fonctionne correctement en local ou sur une plateforme comme Vercel.
+  🛠️ Indispensable pour que Prisma fonctionne correctement en local ou sur une plateforme comme Vercel.  
+
+🚀 Déploiement des migrations en production (Neon)
+"deploy:prod": "dotenv -e .env.production -- npx prisma migrate deploy"
+
+  💾 Ce script applique les migrations Prisma vers ta base PostgreSQL hébergée (ex: Neon) en utilisant le fichier .env.production.
+
+  Il est utile quand tu veux synchroniser ta base de données distante avec les derniers changements de ton schéma Prisma (schema.prisma).  
 
 🧪 Tests
   Tu peux utiliser Postman pour tester les routes API ou intégrer Jest/Playwright si tu veux automatiser des tests plus tard.

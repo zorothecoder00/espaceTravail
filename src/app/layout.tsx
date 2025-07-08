@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionWrapper } from "@/components/SessionWrapper"; // <-- importer le wrapper
+import { ToastProvider } from "@/components/ToastProvider";
 
 const geistSans = Geist({   
-  variable: "--font-geist-sans",
+  variable: "--font-geist-sans",  
   subsets: ["latin"],
 });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionWrapper>
+          <ToastProvider /> {/* <== insère ici le ToastProvider client */}
           {children}
         </SessionWrapper>
       </body>
