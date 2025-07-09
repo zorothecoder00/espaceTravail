@@ -26,7 +26,7 @@ export default function AssignationProjetPage() {
 
   // Fonction pour récupérer les utilisateurs avec filtres, tri et pagination
   useEffect(() => {
-    const fetchUtilisateurs = async () => {
+    const fetchUtilisateurs = async () => {  
       setLoading(true)
       try {
         const params = new URLSearchParams({
@@ -55,7 +55,7 @@ export default function AssignationProjetPage() {
 
     //Rechargement à chaque changement de page, recherche, tri
     fetchUtilisateurs()
-  }, [page, search, sortField, sortOrder])
+  }, [page, search, sortField, sortOrder, id])
 
   // Toggle checkbox avec Set pour éviter doublons
   const toggleCheckbox = (id: number) => {
