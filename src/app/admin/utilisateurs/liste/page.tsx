@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from 'next/image'  
 
 type Utilisateur = {
   id: number
@@ -32,7 +32,7 @@ export default function ListeUtilisateurs() {
         search,
         page: page.toString(),
         limit: '10',
-        sortField,
+        sortField,     
         sortOrder,
       })
 

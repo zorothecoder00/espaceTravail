@@ -95,7 +95,7 @@ export default function Register() {
     formData.append('nom', nom.value)
     formData.append('email', email.value)
     formData.append('password', password.value)
-    formData.append('departementId', departement.value || '')
+    formData.append('departementId', departement?.value || '')
 
     if (imageFile) {
       formData.append('image', imageFile)
