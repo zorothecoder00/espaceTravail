@@ -1,46 +1,58 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Statut, RoleProjet } from '@prisma/client'  
+import { Statut, RoleProjet, Prisma } from '@prisma/client'  
 
 // GET — liste avec option de recherche et pagination
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
+
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '10')
+  const skip = (page - 1) * limit
   const search = searchParams.get('search')?.trim() || ''
-  const sortField = searchParams.get('sortField') || 'createdAt' 
+  const sortField = searchParams.get('sortField') || 'createdAt'
   const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
 
-  try{
+  // ✅ Typage explicite pour éviter l’erreur TS
+    const orFilters: Prisma.ProjetWhereInput[] = [
+      { nom: { contains: search } },
+      { chefProjet: { nom: { contains: search } } },
+    ]
+
+    if (Object.values(Statut).includes(search as Statut)) {
+      orFilters.push({ statut: { equals: search as Statut } })
+    }
+
+  try {
     const [projets, total] = await Promise.all([
       prisma.projet.findMany({
         where: {
-          OR: [
-            { nom: { contains: search } },  
-            { statut: { equals: search as Statut } },
-            { chefProjet: { nom: { contains: search } } },
-          ],    
+          OR: orFilters,
         },
         include: {
           departement: { select: { nom: true } },
-          chefProjet: { select: { nom: true } }, // ✅ au lieu de tout l'objet
+          chefProjet: { select: { nom: true } },
         },
-        skip: (page - 1) * limit,
+        skip,
         take: limit,
         orderBy: { [sortField]: sortOrder },
       }),
 
-      prisma.projet.count()
+      prisma.projet.count({
+        where: {
+          OR: orFilters,
+        },
+      }),
     ])
 
     return NextResponse.json({
-     data: projets,
-     total,
-     totalPages: Math.ceil(total / limit)
-   })
-  }catch(error){
-    console.error("Erreur lors de la récupération", error)
-    return NextResponse.json({ message: "Erreur interne"}, { status: 500 })
+      data: projets,
+      total,
+      totalPages: Math.ceil(total / limit),
+    })
+  } catch (error) {
+    console.error('Erreur lors de la récupération', error)
+    return NextResponse.json({ message: 'Erreur interne' }, { status: 500 })
   }
 }
 

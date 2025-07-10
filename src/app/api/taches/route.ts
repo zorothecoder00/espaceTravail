@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Statut } from "@prisma/client";  
+import { Prisma, Statut } from '@prisma/client'       
 
 // GET – Liste des tâches
 export async function GET(req: Request) {
@@ -12,20 +12,28 @@ export async function GET(req: Request) {
   const skip = (page - 1) * limit
 
   // 🔍 Filtrage
-  const search = searchParams.get('search')?.trim() || ''  
+  const search = searchParams.get('search')?.trim() || ''
 
   // ↕️ Tri dynamique
   const sortField = searchParams.get('sortField') || 'createdAt'
   const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
+
+  // ✅ Construction des filtres
+  const orFilters: Prisma.TacheWhereInput[] = [
+    { titre: { contains: search } },
+    { projet: { nom: { contains: search } } },
+  ]
+
+  // ✅ Ajouter filtre sur statut uniquement si search est un enum valide
+  if (Object.values(Statut).includes(search as Statut)) {
+    orFilters.push({ statut: { equals: search as Statut } })
+  }
+
   try {
     const [taches, total] = await Promise.all([
       prisma.tache.findMany({
         where: {
-          OR: [
-            { titre: { contains: search } },
-            { projet: { nom: { contains: search } } },
-            { statut: { equals: search as Statut } },
-          ],
+          OR: orFilters,
         },
         include: {
           projet: true,
@@ -35,7 +43,11 @@ export async function GET(req: Request) {
         take: limit,
       }),
 
-      prisma.tache.count()
+      prisma.tache.count({
+        where: {
+          OR: orFilters,
+        },
+      }),
     ])
 
     return NextResponse.json({
@@ -45,7 +57,10 @@ export async function GET(req: Request) {
     })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ message: 'Erreur lors de la récupération des tâches' }, { status: 500 })
+    return NextResponse.json(
+      { message: 'Erreur lors de la récupération des tâches' },
+      { status: 500 }
+    )
   }
 }
 

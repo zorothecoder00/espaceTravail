@@ -93,7 +93,7 @@ export default function Register() {
     const formData = new FormData()
     formData.append('prenom', prenom.value)
     formData.append('nom', nom.value)
-    formData.append('email', email.value)
+    formData.append('email', email.value)   
     formData.append('password', password.value)
     formData.append('departementId', departement?.value || '')
 

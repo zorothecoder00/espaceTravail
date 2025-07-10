@@ -5,7 +5,7 @@ import { IncomingForm, File } from 'formidable'
 import fs from 'fs'
 import path from 'path'
 import type { NextApiRequest } from 'next'
-import { Role } from '@prisma/client'
+import { Role, Prisma } from '@prisma/client'
 
 export const config = {
   api: {
@@ -80,44 +80,54 @@ export async function GET(req: Request) {
   const limit = parseInt(searchParams.get('limit') || '10')
   const skip = (page - 1) * limit  
 
-  // 🔍 Filtrage (par nom ou email)
+  // 🔍 Filtrage
   const search = searchParams.get('search')?.trim() || ''
 
-  // ↕️ Tri dynamique
+  // ↕️ Tri
   const sortField = searchParams.get('sortField') || 'createdAt'
   const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
 
-  try{
-    const[utilisateurs, total] = await Promise.all([
+  // ✅ Construction dynamique du filtre
+  const orFilters: Prisma.UserWhereInput[] = [
+    { nom: { contains: search } },
+    { prenom: { contains: search } },
+    { email: { contains: search } },
+    { departement: { nom: { contains: search } } },
+  ]
+
+  // ✅ Ajouter filtre sur le rôle uniquement si la valeur est valide
+  if (Object.values(Role).includes(search as Role)) {
+    orFilters.push({ role: { equals: search as Role } })
+  }
+
+  try {
+    const [utilisateurs, total] = await Promise.all([
       prisma.user.findMany({
         where: {
-          OR: [
-            { nom: { contains: search } },
-            { prenom: { contains: search } },
-            { email: { contains: search } },
-            { role: { equals: search as Role } },
-            { departement: { nom: { contains: search } } },
-          ],
+          OR: orFilters,
         },
         include: { departement: true },
         orderBy: { [sortField]: sortOrder },
         skip,
         take: limit,
       }),
-     
-      prisma.user.count()
-      ])
+
+      prisma.user.count({
+        where: {
+          OR: orFilters,
+        },
+      }),
+    ])
 
     return NextResponse.json({
       data: utilisateurs,
       total,
-      totalPages: Math.ceil(total / limit)
+      totalPages: Math.ceil(total / limit),
     })
-  }catch(error){
-    console.error("Erreur lors de la récupération", error)
-    return NextResponse.json({ message: "Erreur serveur"}, { status: 500 })
+  } catch (error) {
+    console.error('Erreur lors de la récupération', error)
+    return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 })
   }
-  
 }
 
 export async function POST(req: Request) {
