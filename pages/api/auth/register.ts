@@ -55,7 +55,7 @@ function parseForm(req: NextApiRequest): Promise<ParsedForm> {
           departementId: getField(fields.departementId),
         },
         files: {
-          image: Array.isArray(files.image) ? files.image[0] : files.image,
+          image: Array.isArray(files.image) ? files.image[0] : files.image ?? undefined,
         },
       })
     })
