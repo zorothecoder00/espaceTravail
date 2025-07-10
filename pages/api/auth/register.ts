@@ -26,7 +26,7 @@ type ParsedForm = {
 }
 
 function parseForm(req: NextApiRequest): Promise<ParsedForm> {
-  const uploadDir = path.join(process.cwd(), 'public/uploads')
+  const uploadDir = path.join('/tmp', 'uploads') // ✅ uniquement autorisé sur Vercel
 
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true })
@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         fs.unlinkSync(image.filepath)
         return res.status(400).json({ message: 'Image trop volumineuse (max 1 Mo)' })
       }
-      imagePath = `/uploads/${path.basename(image.filepath)}`
+      imagePath = image.filepath // ou mieux encore : uploader ensuite vers un vrai service (S3, Supabase, etc.)
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
