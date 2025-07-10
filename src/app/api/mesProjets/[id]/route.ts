@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+   import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getAuthSession } from "@/lib/auth"
 
@@ -18,11 +18,22 @@ export async function GET(
   }
 
   try {
-    const projet = await prisma.projet.findFirst({
+    // Vérifie si l’utilisateur est membre du projet
+    const membre = await prisma.membreProjet.findUnique({
       where: {
-        id: projetId,
-        chefProjetId: parseInt(session.user.id), // sécurité
+        userId_projetId: {
+          userId: parseInt(session.user.id),
+          projetId,
+        },
       },
+    })
+
+    if (!membre) {
+      return NextResponse.json({ message: "Accès refusé à ce projet" }, { status: 403 })
+    }
+
+    const projet = await prisma.projet.findUnique({
+      where: { id: projetId },
       include: {
         departement: { select: { id: true, nom: true } },
         chefProjet: { select: { id: true, nom: true, prenom: true } },
@@ -39,12 +50,12 @@ export async function GET(
     })
 
     if (!projet) {
-      return NextResponse.json({ message: "Projet introuvable ou accès refusé" }, { status: 404 })
+      return NextResponse.json({ message: "Projet introuvable" }, { status: 404 })
     }
 
     return NextResponse.json({ data: projet }, { status: 200 })
   } catch (error) {
-    console.error("Erreur GET mesProjetsDiriges/:id :", error)
+    console.error("Erreur GET mesProjets/:id :", error)
     return NextResponse.json({ message: "Erreur interne" }, { status: 500 })
   }
 }

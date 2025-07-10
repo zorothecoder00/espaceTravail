@@ -19,7 +19,7 @@ export async function GET() {
       },
     })
 
-    return NextResponse.json(notifications, { status: 200 })
+    return NextResponse.json({ data: notifications }, { status: 200 })
   } catch (error) {
     console.error('Erreur lors de la récupération des notifications', error)
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 })

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 import type { TacheUtilisateur, Tache, Projet } from "@prisma/client"
 
 type TacheAvecProjet = Tache & {
-  projet: Projet
+  projet: Projet  
 }
 
 type TacheUtilisateurAvecTache = TacheUtilisateur & {
