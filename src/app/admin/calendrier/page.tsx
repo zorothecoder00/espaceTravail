@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -13,7 +13,9 @@ type TacheEvent = {
 }
 
 export default function CalendrierPage() {
-  const [events, setEvents] = useState<{ title: string; date: string }[]>([])
+  const [events, setEvents] = useState<
+    { title: string; date: string; url: string }[]
+  >([])
 
   useEffect(() => {
     const fetchTaches = async () => {
@@ -23,7 +25,8 @@ export default function CalendrierPage() {
 
         const formattedEvents = data.map(t => ({
           title: `${t.titre} (${t.projet.nom})`,
-          date: t.deadline
+          date: t.deadline,
+          url: `/admin/calendrier/${t.id}`, // 👈 lien cliquable vers le détail
         }))
 
         setEvents(formattedEvents)
@@ -55,6 +58,13 @@ export default function CalendrierPage() {
           left: 'prev,next today',
           center: 'title',
           right: 'dayGridMonth',
+        }}
+        eventClick={(info) => {
+          // ouverture via lien cliquable
+          info.jsEvent.preventDefault()
+          if (info.event.url) {
+            window.open(info.event.url, "_self") // ← redirige vers la page [id]
+          }
         }}
       />
     </div>

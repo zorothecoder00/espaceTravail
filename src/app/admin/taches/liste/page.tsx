@@ -165,7 +165,13 @@ export default function ListeTaches() {
                 </td>
                 <td className="p-2 space-x-2">
                   <Link
-                    href={`/admin/taches/${t.id}/edit`}
+                    href={`/admin/taches/liste/${t.id}`}
+                    className="text-indigo-600 hover:underline text-sm"
+                  >
+                    Détails
+                  </Link>
+                  <Link
+                    href={`/admin/taches/edit/${t.id}`}
                     className="text-blue-600 hover:underline text-sm"
                   >
                     Modifier

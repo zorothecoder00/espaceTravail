@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 type MembreProjet = {
   id: number
   nom: string
-  role: string | null
+  role: string | null  
   estDejaMembre: boolean
 }
 

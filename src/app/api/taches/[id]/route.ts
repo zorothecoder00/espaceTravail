@@ -20,7 +20,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         notifications: true,
         messages: true,
       }
-    })
+    })  
 
     if (!tache) {
       return NextResponse.json({ message: "Tâche introuvable" }, { status: 404 })
@@ -32,7 +32,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ message: "Erreur interne" }, { status: 500 })
   }
 }
-
 
 export async function DELETE(req: Request, { params }: { params: { id: string } })
 {

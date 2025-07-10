@@ -37,6 +37,38 @@ const parseForm = (req: IncomingMessage): Promise<{ fields: Fields; files: Files
   })
 }
 
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const id = parseInt(params.id)
+  if (!params.id || isNaN(id)) {
+    return NextResponse.json({ message: 'ID invalide' }, { status: 400 })
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        departement: { select: { id: true, nom: true } },
+        projetsDiriges: { select: { id: true, nom: true } },
+        taches: true,
+        projets: true,
+        partages: true,
+        partagesEnTantQuePartageur: true,
+        notificationsEmises: true,
+        notifications: true,
+      }
+    })
+
+    if (!user) {
+      return NextResponse.json({ message: 'Utilisateur introuvable' }, { status: 404 })
+    }     
+
+    return NextResponse.json({ data: user }, { status: 200 }) // ← structure avec data
+  } catch (error) {
+    console.error('Erreur serveur GET:', error)
+    return NextResponse.json({ message: 'Erreur interne' }, { status: 500 })
+  }
+}
+
 // PUT — mise à jour d'un utilisateur (avec image)
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const id = parseInt(params.id)
@@ -140,34 +172,3 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 }
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const id = parseInt(params.id)
-  if (!params.id || isNaN(id)) {
-    return NextResponse.json({ message: 'ID invalide' }, { status: 400 })
-  }
-
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: {
-        departement: { select: { id: true, nom: true } },
-        projetsDiriges: { select: { id: true, nom: true } },
-        taches: true,
-        projets: true,
-        partages: true,
-        partagesEnTantQuePartageur: true,
-        notificationsEmises: true,
-        notifications: true,
-      }
-    })
-
-    if (!user) {
-      return NextResponse.json({ message: 'Utilisateur introuvable' }, { status: 404 })
-    }
-
-    return NextResponse.json({ data: user }, { status: 200 }) // ← structure avec data
-  } catch (error) {
-    console.error('Erreur serveur GET:', error)
-    return NextResponse.json({ message: 'Erreur interne' }, { status: 500 })
-  }
-}

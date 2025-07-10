@@ -149,7 +149,13 @@ export default function ListeProjetsPage() {
                 <td className="border p-2">{projet.chefProjet?.nom ?? '-'}</td>
                 <td className="border p-2 space-x-2">
                   <Link
-                    href={`/admin/projets/${projet.id}/edit`}
+                    href={`/admin/projets/liste/${projet.id}`}
+                    className="text-sm text-indigo-600 hover:underline"
+                  >
+                    Détails
+                  </Link>
+                  <Link
+                    href={`/admin/projets/edit/${projet.id}`}
                     className="text-sm text-blue-600 hover:underline"
                   >
                     Modifier

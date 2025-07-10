@@ -159,6 +159,12 @@ export default function ListeUtilisateurs() {
                 <td className="p-2 border">{u.departement?.nom || '-'}</td>
                 <td className="p-2 border space-x-2">
                   <Link
+                    href={`/admin/utilisateurs/liste/${u.id}`}
+                    className="text-purple-600 hover:underline"
+                  >
+                    Détails
+                  </Link>
+                  <Link
                     href={`/admin/utilisateurs/edit/${u.id}`}
                     className="text-blue-600 hover:underline"
                   >
