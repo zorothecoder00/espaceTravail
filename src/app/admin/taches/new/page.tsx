@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Statut } from "@prisma/client"; 
-import Link from 'next/link'    
+import Link from 'next/link'         
   
 type Projet = {
   id: number
@@ -70,7 +70,7 @@ export default function NouvelleTache() {
         }, 1500) // attend 1,5 seconde avant la redirection
       } else {
         const data = await res.json()
-        setError(data.message || "❌ Une erreur est survenue lors de l'enregistrement.")
+        setError(data.message || "❌ Une erreur est survenue lors de l'enregistrement.")   
       }
     } catch (err) {
       console.error(err)
@@ -82,7 +82,7 @@ export default function NouvelleTache() {
   <div className="p-6 max-w-xl mx-auto">  
     {/* Lien de retour vers la liste des tâches */}
     <div className="mb-4">
-      <Link href="/admin/tâches/liste" className="text-blue-600 hover:underline">
+      <Link href="/admin/taches/liste" className="text-blue-600 hover:underline">
         ← Retour à la liste des tâches
       </Link>
     </div>

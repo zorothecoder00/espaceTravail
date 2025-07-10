@@ -34,7 +34,7 @@ export default function CreateProjetPage() {
     // Récupérer tous les départements pour le menu déroulant
     fetch('/api/departements')
       .then(res => res.json())
-      .then(data => setDepartements(data))
+      .then(data => setDepartements(data.data))
       .catch(() => setError('Erreur lors du chargement des départements'))
   }, [])
 
@@ -42,7 +42,7 @@ export default function CreateProjetPage() {
   useEffect(() => {
     fetch('/api/utilisateurs')
       .then(res => res.json())
-      .then(data => setUtilisateurs(data))
+      .then(data => setUtilisateurs(data.data))
       .catch(() => setError('Erreur lors du chargement des utilisateurs'))
   }, [])
 
