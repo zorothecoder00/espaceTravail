@@ -11,10 +11,10 @@ export default async function Home() {
     redirect('/register') 
   }
 
-  // Redirection en fonction du rôle
+  // Redirection en fonction du rôle   
   const role = session.user.role
 
-  if (role === Role.ADMIN) {
+  if (role === Role.ADMIN || role === Role.SUPER_ADMIN) {
     redirect('/admin/dashboard')
   } else {
     redirect('/interfaceUtilisateur/dashboard')
