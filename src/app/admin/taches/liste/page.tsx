@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 
 type Tache = {
@@ -16,83 +16,147 @@ type Tache = {
 
 export default function ListeTaches() {
   const [taches, setTaches] = useState<Tache[]>([])
+  const [search, setSearch] = useState('')
+  const [sortField, setSortField] = useState<'titre' | 'statut' | 'deadline' | 'createdAt'>('createdAt')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('') // 🔥 nécessaire
 
-  const fetchTaches = async () => {
+  const chargerTaches = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/taches')
+      const params = new URLSearchParams({
+        search,
+        page: page.toString(),
+        sortField,
+        sortOrder,
+      })
+      const res = await fetch(`/api/taches?${params.toString()}`)
       const data = await res.json()
-      setTaches(data)
+      setTaches(data.data)
+      setTotalPages(data.totalPages)
     } catch (err) {
       console.error(err)
       setError('Erreur lors du chargement des tâches.')
-    }
-    setLoading(false)
-  }
+    }finally{
+      setLoading(false)
+    }    
+  },[search, page, sortField, sortOrder])
 
   useEffect(() => {
-    fetchTaches()
-  }, [])
+    chargerTaches()
+  }, [chargerTaches])
 
-  const handleDelete = async (id: string) => {
-    const confirmed = confirm('Voulez-vous vraiment supprimer cette tâche ?')
-    if (!confirmed) return
+  const supprimerTache = async (id: string) => {
+    if (!confirm('Voulez-vous vraiment supprimer cette tâche?')){
+      return
+    } 
+    setLoading(true)
 
     try {
       const res = await fetch(`/api/taches/${id}`, { method: 'DELETE' })
       if (res.ok) {
-        fetchTaches()
+        setMessage('Tâche supprimée')
+        await chargerTaches()
       } else {
-        setError('Échec de la suppression.')
+        setMessage('Erreur lors de la suppression')
       }
-    }catch (err) {
-      console.error(err)
-      setError('Une erreur est survenue lors de la suppression.')
+    } catch (err) {
+      console.error('Erreur suppression:', err)
+      setMessage('Erreur lors de la suppression')
+    } finally {
+      setLoading(false)
     }
   }
 
-
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <Link
-          href="/admin/dashboard"
-          className="text-sm text-gray-600 underline"
-        >
-          ← Retour au Dashboard
-        </Link>
+  <div className="p-6 max-w-6xl mx-auto">
+    {/* Haut de page */}
+    <div className="flex justify-between items-center mb-6">
+      <Link
+        href="/admin/dashboard"
+        className="text-sm text-gray-600 underline"
+      >
+        ← Retour au Dashboard
+      </Link>
+      <h2 className="text-2xl font-bold">Liste des tâches</h2>
+      <Link
+        href="/admin/taches/new"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        + Nouvelle tâche
+      </Link>
+    </div>
 
-        <h2 className="text-2xl font-bold">Liste des tâches</h2>
-        <Link
-          href="/admin/taches/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Nouvelle tâche
-        </Link>
-      </div>
+    {/* Barre de recherche */}
+    <div className="mb-4">
+      <input
+        type="text"
+        placeholder="🔍 Rechercher par titre, projet, statut..."
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value)
+          setPage(1)
+        }}
+        className="border border-gray-300 px-4 py-2 rounded w-full md:w-1/2"
+      />
+    </div>
 
-      {error && <p className="text-red-500">{error}</p>}
-      {loading ? (
-        <p>Chargement...</p>
-      ) : taches.length === 0 ? (
-        <p>Aucune tâche trouvée.</p>
-      ) : (
-        <table className="w-full border bg-white shadow rounded">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 text-left">Titre</th>
+    {/* Message ou erreur */}
+    {message && <p className="text-green-600 mb-2">{message}</p>}
+    {error && <p className="text-red-500 mb-2">{error}</p>}
+
+    {/* Tableau */}
+    {loading ? (
+      <p>Chargement des tâches...</p>
+    ) : taches.length === 0 ? (
+      <p>Aucune tâche trouvée.</p>
+    ) : (
+      <div className="overflow-auto">
+        <table className="w-full table-auto border bg-white shadow rounded">
+          <thead className="bg-gray-100">
+            <tr>
+              <th
+                className="p-2 text-left cursor-pointer"
+                onClick={() =>
+                  sortField === 'titre'
+                    ? setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+                    : setSortField('titre')
+                }
+              >
+                Titre {sortField === 'titre' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+              </th>
               <th className="p-2 text-left">Projet</th>
-              <th className="p-2 text-left">Statut</th>
-              <th className="p-2 text-left">Deadline</th>
+              <th
+                className="p-2 text-left cursor-pointer"
+                onClick={() =>
+                  sortField === 'statut'
+                    ? setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+                    : setSortField('statut')
+                }
+              >
+                Statut {sortField === 'statut' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+              </th>
+              <th
+                className="p-2 text-left cursor-pointer"
+                onClick={() =>
+                  sortField === 'deadline'
+                    ? setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+                    : setSortField('deadline')
+                }
+              >
+                Deadline {sortField === 'deadline' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+              </th>
               <th className="p-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {taches.map((t) => (
-              <tr key={t.id} className="border-t">
+              <tr key={t.id} className="border-t hover:bg-gray-50">
                 <td className="p-2">{t.titre}</td>
                 <td className="p-2">{t.projet?.nom || '—'}</td>
                 <td className="p-2">{t.statut}</td>
@@ -107,7 +171,7 @@ export default function ListeTaches() {
                     Modifier
                   </Link>
                   <button
-                    onClick={() => handleDelete(t.id)}
+                    onClick={() => supprimerTache(t.id)}
                     className="text-red-600 hover:underline text-sm"
                   >
                     Supprimer
@@ -117,7 +181,32 @@ export default function ListeTaches() {
             ))}
           </tbody>
         </table>
-      )}
-    </div>
-  )
+      </div>
+    )}
+
+    {/* Pagination */}
+    {totalPages > 1 && (
+      <div className="flex justify-between items-center mt-6">
+        <button
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          disabled={page === 1}
+          className="px-4 py-2 border rounded disabled:opacity-50"
+        >
+          ← Précédent
+        </button>
+        <span>
+          Page {page} / {totalPages}
+        </span>
+        <button
+          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          disabled={page === totalPages}
+          className="px-4 py-2 border rounded disabled:opacity-50"
+        >
+          Suivant →
+        </button>
+      </div>
+    )}
+  </div>
+)
+
 }

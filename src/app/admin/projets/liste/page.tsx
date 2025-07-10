@@ -18,22 +18,35 @@ export default function ListeProjetsPage() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [sortField, setSortField] = useState<'nom' | 'statut' | 'deadline' | 'createdAt'>('createdAt')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
 
-  const fetchProjets = useCallback(async () => {  
+  const fetchProjets = useCallback(async () => {
     setLoading(true)
+    setError('')
     try {
-      const res = await fetch(`/api/projets?search=${search}&page=${page}`)
-      const data = await res.json()
-      setProjets(Array.isArray(data.data) ? data.data : [])
-      setTotalPages(Math.ceil((data.total || 0) / 10)) // ← 10 = valeur de limit
+      const params = new URLSearchParams({
+        search,
+        page: page.toString(),
+        sortField,
+        sortOrder
+      })
 
-    } catch {
+      const res = await fetch(`/api/projets?${params.toString()}`)
+      const data = await res.json()
+
+      setProjets(data.data)
+      setTotalPages(data.totalPages)
+    } catch (err) {
+      console.error("Erreur lors du charhement :", err)
       setError('Erreur lors du chargement des projets.')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
-  }, [search, page])
+  }, [search, page, sortField, sortOrder])
 
   useEffect(() => {
     fetchProjets()
@@ -42,15 +55,34 @@ export default function ListeProjetsPage() {
   const handleDelete = async (id: number) => {
     const confirmed = confirm('Voulez-vous vraiment supprimer ce projet ?')
     if (!confirmed) return
-
-    const res = await fetch(`/api/projets/${id}`, { method: 'DELETE' })
-    if (res.ok) {
-      fetchProjets()
-    } else {
-      alert('Échec de la suppression.')    
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/projets/${id}`, { method: 'DELETE' })
+      if (res.ok) {
+        setMessage('Projet supprimé.')
+        await fetchProjets()
+      } else {
+        setMessage('Erreur lors de la suppression.')
+      }
+    } catch (err) {
+      console.error(err)
+      setMessage('Erreur lors de la suppression.')
+    } finally {
+      setLoading(false)
     }
   }
 
+  // Fonction de tri dynamique
+  const handleSort = (field: typeof sortField) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortOrder('asc')
+    }
+    setPage(1)
+  }
+  
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="flex items-center justify-between mb-4">
@@ -81,7 +113,10 @@ export default function ListeProjetsPage() {
         className="mb-4 p-2 border w-full rounded"
       />
 
-      {error && <p className="text-red-500">{error}</p>}
+      {/* Messages */}
+      {message && <p className="text-green-600 mb-2">{message}</p>}
+      {error && <p className="text-red-500 mb-2">{error}</p>}
+
       {loading ? (
         <p>Chargement...</p>
       ) : projets.length === 0 ? (
@@ -90,8 +125,18 @@ export default function ListeProjetsPage() {
         <table className="w-full border-collapse border rounded bg-white shadow">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Nom</th>
-              <th className="border p-2 text-left">Statut</th>
+              <th
+                className="border p-2 text-left cursor-pointer"
+                onClick={() => handleSort('nom')}
+              >
+                Nom {sortField === 'nom' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+              </th>
+              <th
+                className="border p-2 text-left cursor-pointer"
+                onClick={() => handleSort('statut')}
+              >
+                Statut {sortField === 'statut' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
+              </th>
               <th className="border p-2 text-left">Chef du Projet</th>
               <th className="border p-2 text-left">Actions</th>
             </tr>
@@ -102,7 +147,7 @@ export default function ListeProjetsPage() {
                 <td className="border p-2">{projet.nom}</td>
                 <td className="border p-2">{projet.statut}</td>
                 <td className="border p-2">{projet.chefProjet?.nom ?? '-'}</td>
-                <td className="border p-2 space-x-2">  
+                <td className="border p-2 space-x-2">
                   <Link
                     href={`/admin/projets/${projet.id}/edit`}
                     className="text-sm text-blue-600 hover:underline"
@@ -122,6 +167,7 @@ export default function ListeProjetsPage() {
         </table>
       )}
 
+      {/* Pagination */}
       <div className="mt-4 flex justify-between">
         <button
           disabled={page <= 1}
