@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-interface Tache {
+interface Tache {  
   id: number
   titre: string
   statut: string
@@ -63,7 +63,7 @@ export default function AssignationsUtilisateursPage() {
                       {projet.taches.map((tache) => (
                         <li key={tache.id}>
                           📝 {tache.titre} <span className="italic text-gray-500">({tache.statut})</span>
-                        </li>
+                        </li>     
                       ))}
                     </ul>
                   )}

@@ -171,7 +171,7 @@ export default function ListeUtilisateurs() {
                     Modifier
                   </Link>
                   <Link
-                    href={`/admin/utilisateurs/assignations?id=${u.id}`}
+                    href={`/admin/utilisateurs/assignations/${u.id}`}
                     className="text-green-600 hover:underline"
                   >
                     Assignations
