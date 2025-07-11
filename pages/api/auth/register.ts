@@ -5,6 +5,7 @@ import fs from 'fs'
 import path from 'path'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma'
+import cloudinary from '@/lib/cloudinary' // 👈 Ajout Cloudinary
 
 export const config = {
   api: {
@@ -88,14 +89,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: { role: Role.SUPER_ADMIN },
     })
 
-    // Traiter l'image si fournie
-    let imagePath = null
+     // 🔁 Traitement de l’image avec Cloudinary
+    let imagePath: string | null = null
     if (image && 'filepath' in image) {
-      if (image.size > 1_048_576) {
+      if (image.size > 5 * 1024 * 1024) {
         fs.unlinkSync(image.filepath)
-        return res.status(400).json({ message: 'Image trop volumineuse (max 1 Mo)' })
+        return res.status(400).json({ message: 'Image trop volumineuse (max 5 Mo)' })
       }
-      imagePath = image.filepath // ou mieux encore : uploader ensuite vers un vrai service (S3, Supabase, etc.)
+
+      const uploaded = await cloudinary.uploader.upload(image.filepath, {
+        folder: 'utilisateurs',
+        resource_type: 'image',
+      })
+
+      fs.unlinkSync(image.filepath) // Nettoyage fichier temporaire
+      imagePath = uploaded.secure_url
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)

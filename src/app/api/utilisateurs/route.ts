@@ -6,6 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import type { NextApiRequest } from 'next'
 import { Role, Prisma } from '@prisma/client'
+import cloudinary from '@/lib/cloudinary'
 
 export const config = {
   api: {
@@ -143,23 +144,41 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Champs requis manquants' }, { status: 400 })
     }
 
-    if (image && (!('size' in image) || !('filepath' in image))) {
-      return NextResponse.json({ message: 'Fichier image invalide' }, { status: 400 })
+    if(image && Array.isArray(image)){
+      return NextResponse.json({ message: "Une seule image autorisée"} ,{ status: 400 })
     }
 
-    if (image && image.size > 1_048_576) {
-      fs.unlinkSync(image.filepath)
-      return NextResponse.json({ message: 'Image trop volumineuse (>1 Mo)' }, { status: 400 })
+    const userExist = await prisma.user.findUnique({
+      where: { email: email.toString().trim() },
+    })
+
+    if(userExist){
+      if(image && 'filepath' in image){
+        fs.unlinkSync(image.filepath)
+      }
+      return NextResponse.json({message: "Utilisateur déjà existant"}, { status: 409})
     }
 
-    const userExist = await prisma.user.findUnique({ where: { email } })
-    if (userExist) {
-      if (image) fs.unlinkSync(image.filepath)
-      return NextResponse.json({ message: 'Utilisateur déjà existant' }, { status: 409 })
+    let imagePath : string | null = null 
+
+    if(image){
+      const file = image as File 
+
+      if(file.size > 1_048_576){
+        fs.unlinkSync(file.filepath)
+        return NextResponse.json({ message: "Image trop volumineuse(> 1 Mo) "}, { status: 400})
+      }
+      
+      // ✅ Upload vers Cloudinary
+      const uploaded = await cloudinary.uploader.upload(file.filepath,{
+        folder: 'utilisateurs',
+      })
+
+      fs.unlinkSync(file.filepath) //❌ Nettoyage fichier local
+      imagePath = uploaded.secure_url //✅ URL Cloudinary
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const imagePath = image ? `/uploads/${path.basename(image.filepath)}` : null
+    const hashedPassword = await bcrypt.hash(password.toString().trim(), 10)
 
     const user = await prisma.user.create({
       data: {

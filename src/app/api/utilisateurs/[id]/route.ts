@@ -6,6 +6,7 @@ import path from 'path'
 import fs from 'fs'
 import { IncomingForm, Files, Fields, File } from 'formidable'
 import type { IncomingMessage } from 'http'
+import cloudinary from '@/lib/cloudinary' // 👈 AJOUTÉ
 
 // Désactiver bodyParser pour pouvoir parser les fichiers
 export const config = {
@@ -69,7 +70,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-// PUT — mise à jour d'un utilisateur (avec image)
+// ✅ PUT mis à jour avec Cloudinary
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const id = parseInt(params.id)
   if (!params.id || isNaN(id)) {
@@ -77,7 +78,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 
   try {
-    // On caste la Request en IncomingMessage pour formidable
     const { fields, files } = await parseForm(req as unknown as IncomingMessage)
 
     const { nom, prenom, email, password, role, departementId } = fields
@@ -97,28 +97,29 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ message: 'Utilisateur introuvable' }, { status: 404 })
     }
 
-     let imagePath = user.image
+    let imagePath = user.image
 
     if (image) {
-      if (Array.isArray(image))
+      if (Array.isArray(image)) {
         return NextResponse.json({ message: 'Une seule image autorisée' }, { status: 400 })
+      }
 
       const file = image as File
 
-      if (file.size > 1_048_576) {
+      if (file.size > 5 * 1024 * 1024) {
         fs.unlinkSync(file.filepath)
-        return NextResponse.json({ message: 'Image trop volumineuse (> 1 Mo)' }, { status: 400 })
+        return NextResponse.json({ message: 'Image trop volumineuse (> 5 Mo)' }, { status: 400 })
       }
 
-      // Supprime l’ancienne image s’il y en avait une (dans /tmp/uploads)
-      if (user.image) {
-        const oldTmpPath = path.join('/tmp', 'uploads', path.basename(user.image))
-        if (fs.existsSync(oldTmpPath)) fs.unlinkSync(oldTmpPath)
-      }
+      // ✅ Upload vers Cloudinary
+      const uploaded = await cloudinary.uploader.upload(file.filepath, {
+        folder: 'utilisateurs',
+        resource_type: 'image',
+      })
 
-      // Ici, on garde le chemin temporaire. Idéalement tu copierais vers S3 ou /public/uploads
-      imagePath = file.filepath
-    }  
+      fs.unlinkSync(file.filepath) // Supprimer fichier local temporaire
+      imagePath = uploaded.secure_url
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id },

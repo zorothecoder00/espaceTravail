@@ -6,6 +6,7 @@ import fs from "fs"
 import path from "path"
 import type { IncomingMessage } from "http"
 import type { Departement, User, Projet, Document, PartageDocument } from "@prisma/client"
+import cloudinary from '@/lib/cloudinary' 
 
 export const config = {  
   api: {
@@ -105,25 +106,38 @@ export async function POST(req: Request) {
     }
 
     // Gérer le fichier uploadé (optionnel)
-    let fichierPath: string | null = null
-    if (files.fichier) {
-      const file = Array.isArray(files.fichier) ? files.fichier[0] : files.fichier as File
+     /* 3. Upload (optionnel) vers Cloudinary ------------------------------ */
+  let fichierUrl: string | null = null
 
-      if (file.size > 1_048_576) {
-        // Supprimer fichier trop gros
-        fs.unlinkSync(file.filepath)
-        return NextResponse.json({ message: "Fichier trop volumineux (max 1 Mo)" }, { status: 400 })
-      }
-      // Stocker le chemin relatif dans la base
-      fichierPath = `/uploads/${path.basename(file.filepath)}`
+  if (files.fichier) {
+    const file = Array.isArray(files.fichier)
+      ? (files.fichier[0] as File)
+      : (files.fichier as File)
+
+    // 5 Mo max (déjà vérifié par Formidable), on peut refaire un check
+    if (file.size > 5 * 1024 * 1024) {
+      fs.unlinkSync(file.filepath)
+      return NextResponse.json(
+        { message: 'Fichier trop volumineux (> 5 Mo)' },
+        { status: 400 }
+      )
     }
+      // Upload Cloudinary (dossier “documents”)
+    const uploaded = await cloudinary.uploader.upload(file.filepath, {
+      folder: 'documents',
+      resource_type: 'auto',   // accepte image, pdf, etc.
+    })
+
+    fs.unlinkSync(file.filepath) // nettoyage
+    fichierUrl = uploaded.secure_url
+  }
 
     // 1. Créer le document avec fichier
     const document = await prisma.document.create({
       data: {
         titre,
         description,
-        fichier: fichierPath,
+        fichier: fichierUrl,
       },
     })
 

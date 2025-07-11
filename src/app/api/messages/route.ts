@@ -5,6 +5,7 @@ import path from 'path'
 import { getAuthSession } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { IncomingMessage } from 'http'
+import cloudinary from '@/lib/cloudinary' // 👈 à ajouter
 
 export const config = {
   api: {
@@ -83,9 +84,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Champs requis manquants' }, { status: 400 })
     }
 
-    const fileUrl = file
-      ? `/uploads/${path.basename(file.filepath)}`
-      : null
+    let fileUrl: string | null = null
+
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        fs.unlinkSync(file.filepath)
+        return NextResponse.json({ message: 'Fichier trop volumineux (> 5 Mo)' }, { status: 400 })
+      }
+
+      const uploaded = await cloudinary.uploader.upload(file.filepath, {
+        folder: 'messages',
+        resource_type: 'auto', // supporte images, PDF, etc.
+      })
+
+      fs.unlinkSync(file.filepath) // Supprime le fichier temporaire
+      fileUrl = uploaded.secure_url
+    }
 
     const nouveauMessage = await prisma.message.create({
       data: {
