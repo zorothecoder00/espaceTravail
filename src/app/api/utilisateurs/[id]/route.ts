@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { Role } from '@prisma/client'
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs'   
 import path from 'path'
 import fs from 'fs'
 import { IncomingForm, Files, Fields, File } from 'formidable'
@@ -16,7 +16,7 @@ export const config = {
 
 // Fonction de parsing du formulaire avec formidable (typée)
 const parseForm = (req: IncomingMessage): Promise<{ fields: Fields; files: Files }> => {
-  const uploadDir = path.join(process.cwd(), 'public/uploads')
+  const uploadDir = path.join('/tmp', 'uploads') // ✅ uniquement autorisé sur Vercel
 
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true })
@@ -97,31 +97,28 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ message: 'Utilisateur introuvable' }, { status: 404 })
     }
 
-    let imagePath = user.image // garder l’image actuelle par défaut
+     let imagePath = user.image
 
     if (image) {
-      if (Array.isArray(image)) {
+      if (Array.isArray(image))
         return NextResponse.json({ message: 'Une seule image autorisée' }, { status: 400 })
-      }
 
-      // image est de type File
       const file = image as File
 
       if (file.size > 1_048_576) {
         fs.unlinkSync(file.filepath)
-        return NextResponse.json({ message: 'Image trop volumineuse (> 1 Mo)' }, { status: 400 })
+        return NextResponse.json({ message: 'Image trop volumineuse (> 1 Mo)' }, { status: 400 })
       }
 
+      // Supprime l’ancienne image s’il y en avait une (dans /tmp/uploads)
       if (user.image) {
-        const oldImagePath = path.join(process.cwd(), 'public', user.image)
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath)
-        }
+        const oldTmpPath = path.join('/tmp', 'uploads', path.basename(user.image))
+        if (fs.existsSync(oldTmpPath)) fs.unlinkSync(oldTmpPath)
       }
 
-      const filename = path.basename(file.filepath)
-      imagePath = `/uploads/${filename}`
-    }
+      // Ici, on garde le chemin temporaire. Idéalement tu copierais vers S3 ou /public/uploads
+      imagePath = file.filepath
+    }  
 
     const updatedUser = await prisma.user.update({
       where: { id },
@@ -158,7 +155,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   try {
     // Supprimer l'image si elle existe
     if (user.image) {
-      const imagePath = path.join(process.cwd(), 'public', user.image)
+      const imagePath = path.join('/tmp', 'uploads', user.image)
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath)
       }

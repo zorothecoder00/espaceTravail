@@ -45,7 +45,7 @@ export async function PUT(req: Request, { params } : { params : { id : string } 
     }
 
     const updated = await prisma.departement.update({ where :{ id }, data: { nom: nom.trim() },})
-    return NextResponse.json(updated , { status : 200 })
+    return NextResponse.json({ data: updated }, { status : 200 })
   }catch(error){
     console.error("Erreur lors de la mise à jour du département" ,error)
     return NextResponse.json({ message : "Erreur interne" } ,{ status : 500 })
