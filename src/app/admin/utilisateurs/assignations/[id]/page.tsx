@@ -116,7 +116,7 @@ export default function AssignationsUtilisateurPage() {
       </div>
 
       <div className="mt-4">
-        <Link href="/admin/utilisateurs" className="text-blue-600 hover:underline">
+        <Link href="/admin/utilisateurs/liste" className="text-blue-600 hover:underline">
           ← Retour à la liste des utilisateurs
         </Link>
       </div>
