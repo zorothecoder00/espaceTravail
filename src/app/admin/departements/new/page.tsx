@@ -8,31 +8,44 @@ export default function CreerDepartement() {
   const [nom, setNom] = useState('')
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState<boolean | null>(null)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+    setMessage('')
+    setSuccess(null)
 
-    const res = await fetch('/api/departements', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nom }),
-    })
+    try{
+      const res = await fetch('/api/departements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom }),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (res.ok) {
-      setMessage('Département créé avec succès !')
-      setSuccess(true)
-      setNom('')
+      if (res.ok) {
+        setMessage('Département créé avec succès !')
+        setSuccess(true)
+        setNom('')
 
-      setTimeout(() => {
-        router.push('/admin/departements/liste')
-      }, 1000)
-    } else {
-      setMessage(data.message || 'Erreur lors de la création')
+        setTimeout(() => {
+          router.push('/admin/departements/liste')
+        }, 1000)
+      } else {
+        setMessage(data.message || 'Erreur lors de la création')
+        setSuccess(false)
+      }
+    }catch (error) {
+      console.error("Erreur intern", error)
+      setMessage("Erreur réseau")
       setSuccess(false)
-    }
+    }finally {
+      setLoading(false)
+    } 
+ 
   }
 
   return (
@@ -54,11 +67,17 @@ export default function CreerDepartement() {
           onChange={(e) => setNom(e.target.value)}
           required
           className="w-full px-3 py-2 border rounded"
+          disabled={loading}
         />
         </div>
 
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-indigo-700 hover:cursor-pointer">
-          Créer
+        <button 
+        type="submit"
+        disabled={loading}
+        className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-indigo-700 
+            ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {loading ? 'Création...' : 'Créer'}       
         </button>
         {message && (
           <p className={`mt-2 text-sm ${success ? 'text-green-600' : 'text-red-600'}`}>

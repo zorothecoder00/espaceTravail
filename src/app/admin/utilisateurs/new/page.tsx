@@ -26,6 +26,7 @@ export default function AjouterUtilisateur() {
   })
   const [message, setMessage] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -45,6 +46,8 @@ export default function AjouterUtilisateur() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    setMessage('')
 
     const formData = new FormData()
     formData.append('nom', form.nom)
@@ -72,6 +75,8 @@ export default function AjouterUtilisateur() {
       const data = await res.json()
       setMessage(data.message || '❌ Une erreur est survenue')
     }
+
+    setIsSubmitting(false)
   }
 
   return (
@@ -129,8 +134,14 @@ export default function AjouterUtilisateur() {
           />
         </div>
 
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          Ajouter
+        <button 
+        type="submit"
+        disabled={isSubmitting}
+          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${
+            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          {isSubmitting ? 'Ajout en cours...' : 'Ajouter'}
         </button>
         {message && <p className="text-sm mt-2 text-center text-red-600">{message}</p>}
       </form>

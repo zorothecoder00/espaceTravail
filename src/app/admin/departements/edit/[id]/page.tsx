@@ -11,7 +11,8 @@ export default function EditDepartement() {
   const [nom, setNom] = useState('')
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState<boolean | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true) // pour chargement initial
+  const [isSubmitting, setIsSubmitting] = useState(false) // pour chargement bouton
 
   // Charger les infos du département
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function EditDepartement() {
         setMessage("Erreur réseau ou serveur")
         setSuccess(false)
       } finally {  
-        setLoading(false)
+        setIsLoading(false)
       }
     }
 
@@ -43,29 +44,40 @@ export default function EditDepartement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    e.preventDefault()
+    setIsSubmitting(true)
+    setMessage('')
+    setSuccess(null)
 
-    const res = await fetch(`/api/departements/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nom }),
-    })
+    try {
+      const res = await fetch(`/api/departements/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom }),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (res.ok) {
-      setMessage('Département modifié avec succès !')
-      setSuccess(true)
-
-      setTimeout(() => {
-        router.push('/admin/departements/liste')
-      }, 1000)
-    } else {
-      setMessage(data.message || 'Erreur lors de la modification')
+      if (res.ok) {
+        setMessage('Département modifié avec succès !')
+        setSuccess(true)
+        setTimeout(() => {
+          router.push('/admin/departements/liste')
+        }, 1000)
+      } else {
+        setMessage(data.message || 'Erreur lors de la modification')
+        setSuccess(false)
+      }
+    } catch (error) {
+      console.error("Erreur interne", error)
+      setMessage('Erreur réseau ou serveur')
       setSuccess(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  if (loading) return <p>Chargement...</p>
+  if (isLoading) return <p>Chargement...</p>
 
   return (
     <div className="max-w-md mx-auto mt-10">
@@ -94,9 +106,11 @@ export default function EditDepartement() {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-indigo-700 hover:cursor-pointer"
+          disabled={isSubmitting}
+          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-indigo-700 
+            ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          Enregistrer les modifications
+          {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </button>
 
         {message && (

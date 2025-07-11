@@ -34,6 +34,7 @@ export default function ModifierTachePage() {
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Charger tous les projets pour la liste
   useEffect(() => {
@@ -82,9 +83,10 @@ export default function ModifierTachePage() {
   }, [id])
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+     e.preventDefault()
     setSuccess('')
     setError('')
+    setIsSubmitting(true)
 
     try {
       const res = await fetch(`/api/taches/${id}`, {
@@ -109,6 +111,8 @@ export default function ModifierTachePage() {
     } catch (err) {
       console.error(err)
       setError("❌ Une erreur réseau est survenue.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -203,8 +207,13 @@ export default function ModifierTachePage() {
         </div>
 
         <div>
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Enregistrer les modifications
+          <button type="submit"
+            disabled={isSubmitting}
+            className={`bg-blue-600 text-white px-4 py-2 rounded ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 hover:cursor-pointer'
+            }`}
+          >
+            {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
           </button>
         </div>
       </form>

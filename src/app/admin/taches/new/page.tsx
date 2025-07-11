@@ -33,6 +33,7 @@ export default function NouvelleTache() {
   const [projets, setProjets] = useState<Projet[]>([])
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function NouvelleTache() {
     e.preventDefault()
     setSuccess('')
     setError('')
+    setIsSubmitting(true)
 
     try {
       const res = await fetch('/api/taches', {
@@ -75,6 +77,8 @@ export default function NouvelleTache() {
     } catch (err) {
       console.error(err)
       setError("❌ Une erreur réseau est survenue.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -170,8 +174,14 @@ export default function NouvelleTache() {
 
       {/* Bouton */}
       <div>
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer">
-          Enregistrer
+        <button 
+        type="submit"
+        disabled={isSubmitting}
+            className={`bg-blue-600 text-white px-4 py-2 rounded ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 hover:cursor-pointer'
+            }`}
+          >
+            {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
         </button>
       </div>
     </form>

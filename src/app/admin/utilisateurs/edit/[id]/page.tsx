@@ -30,6 +30,7 @@ export default function EditUtilisateur() {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Chargement des données de l’utilisateur
   useEffect(() => {
@@ -81,6 +82,8 @@ export default function EditUtilisateur() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    setMessage('')
 
     const formData = new FormData()
     formData.append('nom', form.nom)
@@ -109,6 +112,8 @@ export default function EditUtilisateur() {
     } else {
       setMessage(data.message || '❌ Erreur lors de la mise à jour')
     }
+
+    setIsSubmitting(false)
   }
 
   if (loading) return <p>Chargement...</p>
@@ -169,8 +174,14 @@ export default function EditUtilisateur() {
           />
         </div>
 
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          Enregistrer les modifications
+        <button 
+        type="submit"
+        disabled={isSubmitting}
+          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ${
+            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </button>
         {message && <p className="text-sm mt-2 text-center text-red-600">{message}</p>}
       </form>

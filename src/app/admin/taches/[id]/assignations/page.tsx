@@ -183,10 +183,10 @@ export default function AssignationTachePage() {
 
       <button
         onClick={enregistrer}
-        className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:opacity-50"
+        className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         disabled={loading}
       >
-        Enregistrer les assignations
+        {loading ? "Chargement..." : "Enregistrer les assignations"}
       </button>
 
       {message && (

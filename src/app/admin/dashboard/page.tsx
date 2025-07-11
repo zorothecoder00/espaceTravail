@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/auth"; // helper  
 import prisma from "@/lib/prisma";               
 import { Statut, Role } from "@prisma/client";          
-import {          
-  LayoutDashboard,                
-  Users,         
-  Building2,
+import {             
+  LayoutDashboard,                                                   
+  Users,            
+  Building2,         
   FolderKanban,  
   CheckSquare,        
   FileText,
@@ -28,8 +28,8 @@ export default async function Dashboard() {
   const [
     { totalTaches },   
     { projetsAttente },
-    { projetsEnCours },
-    tachesRecentes,
+    { projetsEnCours },      
+    tachesRecentes,        
     usersOnline
   ] = await Promise.all([
     prisma.tache.count().then(count => ({ totalTaches: count })),
@@ -37,7 +37,7 @@ export default async function Dashboard() {
     prisma.projet.count({ where: { statut: Statut.EN_COURS } }).then(count => ({ projetsEnCours: count })),
     prisma.tache.findMany({
       orderBy: { createdAt: "desc" },
-      take: 3,
+      take: 3,   
     }),
     prisma.user.findMany({
       where: {
@@ -115,23 +115,32 @@ export default async function Dashboard() {
 
         {/* Statistiques */}  
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Stat title="Total Tâches" 
+          <Stat 
+          title="Total Tâches" 
           value={totalTaches} 
-          icon={CheckSquare}/>
-          <Stat title="Utilisateurs en ligne" 
+          icon={CheckSquare}
+          />
+          <Stat 
+          title="Utilisateurs en ligne" 
           value={usersOnline.length} 
-          icon={Users} />
-          <Stat title="Projets en attente" 
+          icon={Users} 
+          />
+          <Stat 
+          title="Projets en attente" 
           value={projetsAttente} 
-          icon={FolderKanban}/>
-          <Stat title="Projets en cours" 
+          icon={FolderKanban}
+          />
+          <Stat 
+          title="Projets en cours" 
           value={projetsEnCours} 
-          icon={FolderKanban}/>
+          icon={FolderKanban}
+          />
         </div> 
 
         {/* Listes */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card title="Tâches Récentes" 
+          <Card 
+           title="Tâches Récentes" 
            items={tachesRecentes.map(t => t.titre)} 
            icon={CheckSquare}
           />
@@ -155,14 +164,14 @@ export default async function Dashboard() {
     </div>
   );
 }
-
-function Stat({
-  title,
-  value,
+      
+function Stat({                                      
+  title,      
+  value,  
   icon: Icon, // 👈 icône dynamique
 }: {
   title: string;
-  value: number;
+  value: number;   
   icon: React.ElementType;
 }) {
   return (
