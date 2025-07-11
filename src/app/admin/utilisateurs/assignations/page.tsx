@@ -32,10 +32,10 @@ export default function AssignationsUtilisateursPage() {
 
   useEffect(() => {
     const fetchAssignations = async () => {
-      const res = await fetch('/api/utilisateurs/assignations')
+      const res = await fetch('/api/assignations')   
       const data = await res.json()
       setUtilisateurs(data)
-      setLoading(false)
+      setLoading(false)   
     }
     fetchAssignations()
   }, [])

@@ -15,9 +15,9 @@ export default function EditDepartement() {
 
   // Charger les infos du département
   useEffect(() => {
-    if (!id) return
+    if (!id) return     
 
-    async function fetchDepartement() {
+    async function fetchDepartement() {     
       try {
         const res = await fetch(`/api/departements/${id}`)
         const json = await res.json()
@@ -33,7 +33,7 @@ export default function EditDepartement() {
         console.error("Erreur fetch :", error)
         setMessage("Erreur réseau ou serveur")
         setSuccess(false)
-      } finally {
+      } finally {  
         setLoading(false)
       }
     }

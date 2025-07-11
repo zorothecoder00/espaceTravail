@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'  
 
-type Utilisateur = {
+type Utilisateur = {  
   id: number
   nom: string
   prenom: string
