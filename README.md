@@ -90,7 +90,7 @@ Cette application permet de :
 📁 Projets
   .GET /api/projets — Lister les projets
 
-  .POST /api/projets — Créer un projet
+  .POST /api/projets — Créer un projet  
 
   .GET /api/projets/:id — Détails d’un projet
 
@@ -117,12 +117,14 @@ Cette application permet de :
 
   .GET /api/taches/:id/assignations — Voir les membres assignés
 
+  .POST /api/taches/:id/assignations — Assigner un utilisateur à une tâche
+
   .DELETE /api/taches/:id/assignations — Retirer un membre d’une tâche
 
 👥 Assignations
-  .POST /api/assignations/projet — Assigner un utilisateur à un projet
+  .GET /api/assignations/projet/:id — Voir les projets où un utilisateur est assigné
 
-  .POST /api/assignations/tache — Assigner un utilisateur à une tâche
+  .GET /api/assignations/tache/:id — Voir les tâches assignées à un utilisateur
 
 📄 Documents
   .GET /api/documents — Lister les documents
@@ -159,13 +161,14 @@ Cette application permet de :
 
 🗓️ Calendrier
   .GET /api/calendrier — Obtenir les événements calendaires
+  .GET /api/calendrier/:id — Obtenir les détails d'un événement 
 
 👤 Mon espace
   .GET /api/mesProjets — Voir mes projets
 
   .GET /api/mesProjets/:id — Voir un projet
 
-  .GET /api/mesProjetsDiriges — Voir mes projets dirigés
+  .GET /api/mesProjetsDiriges — Voir mes projets dirigés  
 
   .GET /api/mesProjetsDiriges/:id/gestion — Voir un projet dirigé spécifique
 

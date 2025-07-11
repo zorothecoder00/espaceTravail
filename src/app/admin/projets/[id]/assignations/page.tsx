@@ -208,11 +208,11 @@ export default function AssignationProjetPage() {
               disabled={page === totalPages || loading}
               className="px-4 py-1 border rounded disabled:opacity-50"
             >
-              Suivant
+              Suivant  
             </button>
           </div>
         </>
-      )}
+      )}   
 
       <button
         onClick={handleAssignation}

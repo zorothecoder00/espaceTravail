@@ -80,7 +80,7 @@ export default function ListeProjetsPage() {
       setSortField(field)
       setSortOrder('asc')
     }
-    setPage(1)
+    setPage(1)    
   }
   
   return (
