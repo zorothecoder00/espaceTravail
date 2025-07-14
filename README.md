@@ -58,14 +58,14 @@ Cette application permet de :
 | `MembreProjet`    | Table Pivot utilisateur ↔ projet + rôle       |
 | `Tache`           | Tâches rattachées à un projet                 |
 | `TacheUtilisateur`| Table Pivot utilisateur ↔ tâche               |
-| `Document`        | Fichiers partagés                             | 
-| `PartageDocument` | Historique des partages                       |
+| `Document`        | Fichiers partagés                                 | 
+| `PartageDocument` | Historique des partages                         |
 | `Notification`    | Notifications internes                        |
 | `Message`         | Messagerie liée à un projet ou tâche          |
 
-🔌 API
-
-🏢 Départements
+🔌 API           
+     
+🏢 Départements                  
   .GET /api/departements — Lister les départements  
 
   .POST /api/departements — Créer un département
@@ -166,12 +166,32 @@ Cette application permet de :
 👤 Mon espace
   .GET /api/mesProjets — Voir mes projets
 
-  .GET /api/mesProjets/:id — Voir un projet
+  .GET /api/mesProjets/:id — Voir un projet  
 
-  .GET /api/mesProjetsDiriges — Voir mes projets dirigés  
-
-  .GET /api/mesProjetsDiriges/:id/gestion — Voir un projet dirigé spécifique
-
+  🔧 : Mes projets dirigés
+   .GET `/api/mesProjetsDiriges` — Voir tous mes projets dirigés  
+   .GET `/api/mesProjetsDiriges/:id` — Voir un projet dirigé spécifique  
+   .PUT `/api/mesProjetsDiriges/:id/edit` — Modifier un projet dirigé  
+   👥 Membres
+   .GET `/api/mesProjetsDiriges/:id/membres` — Voir les membres du projet  
+   .POST `/api/mesProjetsDiriges/:id/membres` — Ajouter un membre au projet 
+   .DELETE `/api/mesProjetsDiriges/:id/membres/:userId` — Supprimer un membre du projet  
+   💬 Messages
+   .GET `/api/mesProjetsDiriges/:id/messages` — Voir les messages du projet  
+   .POST `/api/mesProjetsDiriges/:id/messages` — Envoyer un message au projet  
+   🔔 Notifications
+   .GET `/api/mesProjetsDiriges/:id/notifications` — Voir les notifications du projet  
+   📂 Partages de documents
+   .GET `/api/mesProjetsDiriges/:id/partages` — Voir les documents partagés 
+   .POST `/api/mesProjetsDiriges/:id/partages` — Partager un document avec le projet  
+   ✅ Tâches
+   .GET `/api/mesProjetsDiriges/:id/taches` — Voir les tâches du projet  
+   .POST `/api/mesProjetsDiriges/:id/taches` — Créer une tâche dans le projet  
+   .GET `/api/mesProjetsDiriges/:id/taches/:tacheId` — Voir les détails d'une tâche  
+   .PUT `/api/mesProjetsDiriges/:id/taches/:tacheId` — Mettre à jour une tâche  
+   .DELETE `/api/mesProjetsDiriges/:id/taches/:tacheId` — Supprimer une tâche  
+   .POST `/api/mesProjetsDiriges/:id/taches/:tacheId/assigner` — Assigner une tâche à un membre du projet
+  
   .GET /api/mesTaches — Voir mes tâches
 
   .GET /api/mesTaches/:id — Voir une tâche
