@@ -35,7 +35,6 @@ type Message = {
   sender: Utilisateur
 }
 
-
 type ProjetDetail = {
   id: number
   nom: string

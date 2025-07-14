@@ -31,7 +31,7 @@ export default async function UtilisateurDashboard() {
             <LayoutDashboard className="w-5 h-5" />
             Dashboard
           </Link>   
-          <Link href="/interfaceUtilisateur/mesProjetsDiriges/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Link href="/interfaceUtilisateur/mesProjetsDiriges" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FolderKanban className="w-5 h-5" />
             Projets dirigés
           </Link>

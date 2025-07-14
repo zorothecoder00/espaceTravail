@@ -163,7 +163,7 @@ export default function MesProjetsDirigesPage() {
                     href={`/interfaceUtilisateur/mesProjetsDiriges/${projet.id}/membres`}
                     className="text-purple-600 hover:underline text-sm"
                   >
-                    Membres
+                    Membres    
                   </Link>
                   <button
                     onClick={() => handleDelete(projet.id)}
