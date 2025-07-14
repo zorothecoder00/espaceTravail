@@ -27,12 +27,19 @@ export default function CalendrierTacheDetail() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!id) return 
+    if (!id) return
 
-    async function fetchTache() {
+    async function fetchTache() {  
       try {
-        const res = await fetch(`/api/calendrier/${id}`)
-        if (!res.ok) throw new Error("Erreur récupération tâche")
+        const res = await fetch(`/api/monCalendrier/${id}`)
+        if (!res.ok) {
+          if (res.status === 401) {
+            setTache(null)
+            alert("Session expirée. Veuillez vous reconnecter.")
+          }
+          throw new Error("Erreur récupération tâche")
+        }
+
         const json = await res.json()
         setTache(json.data)
       } catch (error) {
@@ -52,7 +59,7 @@ export default function CalendrierTacheDetail() {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Détail de la tâche (Calendrier)</h1>
-      <Link href="/admin/calendrier" className="text-blue-600 hover:underline block mb-4">
+      <Link href="/interfaceUtilisateur/calendrier" className="text-blue-600 hover:underline block mb-4">
         ← Retour au calendrier
       </Link>
 

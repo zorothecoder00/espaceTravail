@@ -46,5 +46,5 @@ export async function GET(
   } catch (error) {
     console.error("Erreur GET mesProjetsDiriges/:id :", error)
     return NextResponse.json({ message: "Erreur interne" }, { status: 500 })
-  }
+  }  
 }

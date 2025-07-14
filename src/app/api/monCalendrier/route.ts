@@ -47,7 +47,7 @@ export async function GET() {
       projet: item.tache.projet?.nom || '',
     }))
 
-    return NextResponse.json(result)
+    return NextResponse.json({ data: result })
   } catch (error) {
     console.error("Erreur calendrier personnel :", error)
     return NextResponse.json({ message: "Erreur interne" }, { status: 500 })

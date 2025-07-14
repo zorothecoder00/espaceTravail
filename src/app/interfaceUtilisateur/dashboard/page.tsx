@@ -1,13 +1,13 @@
 // src/app/interfaceUtilisateur/dashboard/page.tsx
-import { getAuthSession } from "@/lib/auth"  
+import { getAuthSession } from "@/lib/auth"      
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
-import {
-  LayoutDashboard,      
+import {    
+  LayoutDashboard,               
   FolderKanban,   
   CheckSquare,       
-  FileText,
-  Calendar
+  FileText,   
+  Calendar  
 } from "lucide-react"
 import Image from "next/image"
 import SignOutButton from "@/components/SignOutButton"
@@ -16,22 +16,22 @@ import Link from "next/link"
 export default async function UtilisateurDashboard() {
   const session = await getAuthSession()
 
-  if (!session?.user) redirect("/login")
-  if (session.user.role !== "UTILISATEUR") redirect("/")
+  if (!session?.user) redirect("/login")    
+  if (session.user.role !== "UTILISATEUR") redirect("/")  
 
-  const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)
+  const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)  
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen">        
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">
+      <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">  
         <div className="text-2xl font-bold mb-10">LOGO</div>
         <nav className="flex flex-col gap-4">
           <Link href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <LayoutDashboard className="w-5 h-5" />
             Dashboard
-          </Link>
-          <Link href="/interfaceUtilisateur/projetsDiriges/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          </Link>   
+          <Link href="/interfaceUtilisateur/mesProjetsDiriges/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FolderKanban className="w-5 h-5" />
             Projets dirigés
           </Link>
@@ -59,7 +59,7 @@ export default async function UtilisateurDashboard() {
         <div className="flex justify-between items-center mb-8">
           <input
             type="text"
-            placeholder="Rechercher..."
+            placeholder="Rechercher..."   
             className="p-2 border rounded w-1/2"
           />
           <div className="flex items-center gap-4">
@@ -104,4 +104,4 @@ export default async function UtilisateurDashboard() {
       </main>
     </div>  
   )      
-}
+}      

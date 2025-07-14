@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react'    
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { Statut } from '@prisma/client'
 
 type Tache = {
-  id: string
+  id: number
   titre: string
   statut: Statut
   projet: {
@@ -16,8 +14,6 @@ type Tache = {
 }
 
 export default function ListeTachesPage() {
-  const { status } = useSession()
-  const router = useRouter()
 
   const [search, setSearch] = useState('')
   const [taches, setTaches] = useState<Tache[]>([])
@@ -25,12 +21,6 @@ export default function ListeTachesPage() {
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login')
-    }
-  }, [status, router])
 
   useEffect(() => {
     const fetchTaches = async () => {
@@ -44,16 +34,13 @@ export default function ListeTachesPage() {
         setError('')
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Erreur inconnue.'
-        setError(message)
+        setError(message)  
       } finally {
         setLoading(false)
       }
     }
-
-    if (status === 'authenticated') {
-      fetchTaches()
-    }
-  }, [search, page, status])
+    fetchTaches()
+  }, [search, page])
 
   const afficherStatutLisible = (statut: Statut): string => {
     switch (statut) {
@@ -100,6 +87,7 @@ export default function ListeTachesPage() {
               <th className="border p-2 text-left">Titre</th>
               <th className="border p-2 text-left">Statut</th>
               <th className="border p-2 text-left">Projet</th>
+              <th className="border p-2 text-left">Actions</th> {/* ✅ colonne ajoutée */}
             </tr>
           </thead>
           <tbody>
@@ -108,6 +96,14 @@ export default function ListeTachesPage() {
                 <td className="border p-2">{tache.titre}</td>
                 <td className="border p-2">{afficherStatutLisible(tache.statut)}</td>
                 <td className="border p-2">{tache.projet.nom}</td>
+                <td className="border p-2">
+                  <Link
+                    href={`/interfaceUtilisateur/mesTaches/liste/${tache.id}`}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
+                    Détails
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

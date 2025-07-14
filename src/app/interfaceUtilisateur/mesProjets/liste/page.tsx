@@ -111,7 +111,7 @@ export default function ListeProjetsPage() {
                 <td className="border p-2">{projet.departement.nom}</td>
                 <td className="border p-2 space-x-2">
                   <Link
-                    href={`/interfaceUtilisateur/projets/${projet.id}/details`}
+                    href={`/interfaceUtilisateur/mesProjets/liste/${projet.id}`}
                     className="text-sm text-blue-600 hover:underline"
                   >
                     Détails
