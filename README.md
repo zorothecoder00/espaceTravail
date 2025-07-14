@@ -1,6 +1,19 @@
-🧠 Espace de Travail Collaboratif       
+🧠 Espace de Travail Collaboratif 
+![Licence: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)      
    
 Plateforme web permettant aux membres d’une entreprise ou d'une organisation de collaborer efficacement autour de **projets**, **tâches**, **documents**, **messages** et de **notifications** en temps réel , avec des statistiques représentatives de nos activités et un **calendrier** de tâches pour mieux les visualiser.
+
+## 📚 Table des matières
+
+- [🎯 Objectif](#objectif)  
+- [🛠️ Technologies utilisées](#technologies-utilisées)  
+- [⚙️ Installation](#installation)  
+- [📦 API](#api)  
+- [🔐 Rôles](#rôles)  
+- [📦 Dépendances et bibliothèques utilisées](#dépendances-et-bibliothèques-utilisées)  
+- [📜 Scripts NPM importants](#scripts-npm-importants)  
+- [🧪 Tests](#tests)  
+- [✍️ Auteur](#auteur)  
  
 ---
 
