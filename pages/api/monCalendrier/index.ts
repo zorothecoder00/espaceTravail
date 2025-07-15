@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: `Méthode ${req.method} non autorisée` })
   }
 
-  const session = await getAuthSession()
+  const session = await getAuthSession(req, res)
   if (!session?.user?.id) {
     return res.status(401).json({ message: 'Non autorisé' })
   }

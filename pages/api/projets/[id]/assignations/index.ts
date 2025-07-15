@@ -82,7 +82,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
     // Authentification
-    const session = await getAuthSession()
+    const session = await getAuthSession(req, res)
     if (!session?.user?.id) {
       return res.status(401).json({ message: 'Non autorisé' })
     }

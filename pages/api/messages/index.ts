@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   /* ----------------------------------------------------------------- POST */
   if (req.method === 'POST') {
-    const session = await getAuthSession()
+    const session = await getAuthSession(req, res)
     if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
     try {
       const { fields, files } = await parseForm(req)

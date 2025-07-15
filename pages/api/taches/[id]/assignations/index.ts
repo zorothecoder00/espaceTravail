@@ -95,7 +95,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       // Authentification
-      const session = await getAuthSession();
+      const session = await getAuthSession(req, res);
       if (!session?.user?.id) {
         return res.status(401).json({ message: "Non autorisé" });
       }

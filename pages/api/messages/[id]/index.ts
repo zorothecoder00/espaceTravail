@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   /* ------------------------------------------------------------ DELETE */
   if (req.method === 'DELETE') {
-    const session = await getAuthSession()
+    const session = await getAuthSession(req, res)
     if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
     try {
       const message = await prisma.message.findUnique({ where: { id: messageId } })

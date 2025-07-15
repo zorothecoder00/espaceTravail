@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
 import { getAuthSession } from '@/lib/auth'
-import formidable, { File } from 'formidable'
+import formidable, { File } from 'formidable'  
 import fs from 'fs'
 import path from 'path'
 import cloudinary from '@/lib/cloudinary'
@@ -32,7 +32,7 @@ function parseForm(req: NextApiRequest): Promise<{ fields: formidable.Fields; fi
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   /* ---------------------------------------------------------------- GET */
   if (req.method === 'GET') {
-    const session = await getAuthSession()
+    const session = await getAuthSession(req, res)
     if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
 
     const userId = parseInt(session.user.id)
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   /* --------------------------------------------------------------- POST */
   if (req.method === 'POST') {
-    const session = await getAuthSession()
+    const session = await getAuthSession(req, res)
     if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
 
     const userId = parseInt(session.user.id)
@@ -90,7 +90,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
 
         if (!uploaded.secure_url) throw new Error('Upload Cloudinary échoué');
-        
+
         fs.unlinkSync(file.filepath)
         fichierUrl = uploaded.secure_url
       }
