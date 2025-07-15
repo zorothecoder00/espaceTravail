@@ -17,7 +17,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const pageNum = parseInt(page as string)
       const limitNum = parseInt(limit as string)
       const skip = (pageNum - 1) * limitNum
-      const order = (sortOrder as string) === 'desc' ? 'desc' : 'asc'
+      const allowedFields = ['nom', 'email']  // sécurisation
+      const field = allowedFields.includes(sortField as string)
+        ? sortField
+        : 'createdAt'
+      const safeField = field as string
+      const order = sortOrder === 'asc' ? 'asc' : 'desc'  
       const searchStr = (search as string).trim()
 
       const orFilters: Prisma.UserWhereInput[] = [{ nom: { contains: searchStr } }]
@@ -46,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           skip,
           take: limitNum,
-          orderBy: { [sortField as string]: order },
+          orderBy: { [safeField]: order },
         }),
 
         prisma.user.count({

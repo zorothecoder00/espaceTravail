@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const {
     search = '',
-    page = '1',
+    page = '1',  
     sortField = 'createdAt',
     sortOrder = 'desc',
   } = req.query
@@ -22,7 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pageNum = parseInt(page as string)
   const limit = 10
   const skip = (pageNum - 1) * limit
-  const orderDir = sortOrder === 'asc' ? 'asc' : 'desc'
+  const allowedFields = ['titre', 'statut', 'deadline']  // sécurisation
+  const field = allowedFields.includes(sortField as string)
+      ? sortField
+      : 'createdAt'
+  const safeField = field as string
+  const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
   try {
     const [tachesAssignees, total] = await Promise.all([
@@ -46,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         take: limit,
         orderBy: {
           tache: {
-            [sortField as string]: orderDir,
+            [safeField]: order,
           },
         },
       }),

@@ -16,7 +16,7 @@ export default function AssignationTachePage() {
   const [membres, setMembres] = useState<Membre[]>([])
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
   const [search, setSearch] = useState('')
-  const [sortField, setSortField] = useState('nom')
+  const [sortField, setSortField] = useState('user.nom')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)

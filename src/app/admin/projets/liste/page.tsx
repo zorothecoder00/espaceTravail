@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 
-interface Projet {
+interface Projet {  
   id: number
   nom: string
   deadline: string
@@ -18,7 +18,7 @@ export default function ListeProjetsPage() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const [sortField, setSortField] = useState<'nom' | 'statut' | 'deadline' | 'createdAt'>('createdAt')
+  const [sortField, setSortField] = useState<'nom' | 'statut' | 'deadline' | 'chefProjet' | 'createdAt'>('createdAt')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

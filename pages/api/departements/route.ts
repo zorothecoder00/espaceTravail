@@ -11,6 +11,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pageNum = parseInt(page as string)
     const limitNum = parseInt(limit as string)
     const skip = (pageNum - 1) * limitNum
+    const allowedFields = ['nom']  // sécurisation
+    const field = allowedFields.includes(sortField as string)
+      ? sortField
+      : 'createdAt'
+    const safeField = field as string
     const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
     try {
@@ -21,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               contains: search as string,
             },
           },
-          orderBy: { [sortField as string]: order },
+          orderBy: { [safeField]: order },
           skip,
           take: limitNum,
         }),

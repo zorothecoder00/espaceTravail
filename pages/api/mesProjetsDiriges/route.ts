@@ -22,7 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pageNum   = parseInt(page as string)
   const limit     = 10
   const skip      = (pageNum - 1) * limit
-  const orderDir  = sortOrder === 'asc' ? 'asc' : 'desc'
+  const allowedFields = ['nom', 'statut', 'deadline','chefProjet']  // sécurisation
+  const field = allowedFields.includes(sortField as string)
+      ? sortField
+      : 'createdAt'
+  const safeField = field as string
+  const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
   try {
     const [projets, total] = await Promise.all([
@@ -41,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
         skip,
         take: limit,
-        orderBy: { [sortField as string]: orderDir },
+        orderBy: { [safeField]: order },
       }),
 
       prisma.projet.count({

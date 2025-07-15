@@ -10,6 +10,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const limitNum = parseInt(limit as string)
     const skip = (pageNum - 1) * limitNum
     const searchStr = (search as string).trim()
+    const allowedSortFields = ['titre', 'statut','projet','deadline']
+    const field = allowedSortFields.includes(sortField as string)
+        ? (sortField as string)
+        : 'createdAt'
+    const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
     const orFilters: Prisma.TacheWhereInput[] = [
       { titre: { contains: searchStr, mode: 'insensitive' } },
@@ -25,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisma.tache.findMany({
           where: { OR: orFilters },
           include: { projet: true },
-          orderBy: { [sortField as string]: sortOrder === 'asc' ? 'asc' : 'desc' },
+          orderBy: { [field]: order },
           skip,
           take: limitNum,
         }),

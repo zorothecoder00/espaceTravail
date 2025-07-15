@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import { getAuthSession } from "@/lib/auth";
+import { Prisma } from '@prisma/client'
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,7 +20,23 @@ export default async function handler(
       const limitNum = parseInt(limit as string);
       const skip = (pageNum - 1) * limitNum;
       const searchStr = (search as string).trim();
-      const order: "asc" | "desc" = sortOrder === "desc" ? "desc" : "asc";
+      // ---------- Sécurisation du champ de tri ----------
+      const allowedFields = ['user.nom', 'role']                // 👈 utilisé
+      const rawField      = allowedFields.includes(sortField as string)
+        ? (sortField as string)
+        : 'createdAt'                                           // fallback
+
+      const order: 'asc' | 'desc' = sortOrder === 'asc' ? 'asc' : 'desc'
+
+      // Construction dynamique pour Prisma
+      let orderBy: Prisma.MembreProjetOrderByWithRelationInput
+      if (rawField === 'user.nom') {
+        orderBy = { user: { nom: order } }
+      } else if (rawField === 'role') {
+        orderBy = { role: order }
+      } else {
+        orderBy = { createdAt: order }
+      }
 
       // 1. Vérifier que la tâche existe
       const tache = await prisma.tache.findUnique({ where: { id: tacheId } });
@@ -39,7 +56,7 @@ export default async function handler(
           include: { user: { select: { id: true, nom: true } } },
           skip,
           take: limitNum,
-          orderBy: { [sortField as string]: order },
+          orderBy,
         }),
 
         prisma.membreProjet.count({

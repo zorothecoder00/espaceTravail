@@ -24,14 +24,14 @@ export default function NewDocumentForm() {
   const [selectedProjets, setSelectedProjets] = useState<number[]>([])
 
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-   
-  useEffect(() => {
-    async function fetchData() {
+  const [message, setMessage] = useState('')    
+                                       
+  useEffect(() => {      
+    async function fetchData() {             
       try {
         const [usersRes, depsRes, projsRes] = await Promise.all([
           fetch('/api/utilisateurs'),
-          fetch('/api/departements'),
+          fetch('/api/departements'),  
           fetch('/api/projets'),
         ])
 

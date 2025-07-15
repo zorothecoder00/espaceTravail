@@ -17,7 +17,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pageNum = parseInt(page as string)
     const limitNum = parseInt(limit as string)
     const skip = (pageNum - 1) * limitNum
-    const order = (sortOrder as string) === 'asc' ? 'asc' : 'desc'
+    const allowedFields = ['nom', 'statut', 'deadline','chefProjet']  // sécurisation
+    const field = allowedFields.includes(sortField as string)
+      ? sortField
+      : 'createdAt'
+    const safeField = field as string
+    const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
     const orFilters: Prisma.ProjetWhereInput[] = [
       { nom: { contains: search as string } },
@@ -37,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           skip,
           take: limitNum,
-          orderBy: { [sortField as string]: order },
+          orderBy: { [safeField]: order },
         }),
         prisma.projet.count({ where: { OR: orFilters } }),
       ])

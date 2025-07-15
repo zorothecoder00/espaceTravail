@@ -7,7 +7,7 @@ import path from 'path'
 import { Role, Prisma } from '@prisma/client'
 import cloudinary from '@/lib/cloudinary'
 
-export const config = {
+export const config = {  
   api: {
     bodyParser: false, // important pour formidable
   },
@@ -79,7 +79,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const pageNum = parseInt(page as string)
       const limitNum = parseInt(limit as string)
       const skip = (pageNum - 1) * limitNum
-      const order = (sortOrder as string) === 'asc' ? 'asc' : 'desc'
+
+      const allowedSortFields = ['nom', 'email','role']
+      const field = allowedSortFields.includes(sortField as string)
+        ? (sortField as string)
+        : 'createdAt'
+      const order = sortOrder === 'asc' ? 'asc' : 'desc'
+
       const searchStr = (search as string).trim()
 
       const orFilters: Prisma.UserWhereInput[] = [
@@ -97,7 +103,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisma.user.findMany({
           where: { OR: orFilters },
           include: { departement: true },
-          orderBy: { [sortField as string]: order },
+          orderBy: { [field]: order },
           skip,
           take: limitNum,
         }),
