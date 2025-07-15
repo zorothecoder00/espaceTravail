@@ -149,6 +149,8 @@ export default function ListeUtilisateurs() {
                   <Image
                     src={u.image || "/profile.png"}
                     alt="avatar"
+                    width={24}          // ← obligatoire
+                    height={24}         // ← obligatoire
                     className="w-6 h-6 rounded-full object-cover"
                   />
                   {u.nom}
