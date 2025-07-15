@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     })
 
-    return res.status(200).json(taches)
+    return res.status(200).json({ data: taches })
   } catch (error) {
     console.error('Erreur lors de la récupération des tâches du calendrier :', error)
     return res.status(500).json({ message: 'Erreur serveur' })

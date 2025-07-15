@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const taches = tachesAssignees.map(t => t.tache)
 
     return res.status(200).json({
-      taches,
+      data: taches,
       total,
       totalPages: Math.ceil(total / limit),
     })
