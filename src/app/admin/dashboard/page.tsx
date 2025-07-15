@@ -119,21 +119,25 @@ export default async function Dashboard() {
           title="Total Tâches" 
           value={totalTaches} 
           icon={CheckSquare}
+          
           />
           <Stat 
           title="Utilisateurs en ligne" 
           value={usersOnline.length} 
           icon={Users} 
+          
           />
           <Stat 
           title="Projets en attente" 
           value={projetsAttente} 
           icon={FolderKanban}
+          
           />
           <Stat 
           title="Projets en cours" 
           value={projetsEnCours} 
           icon={FolderKanban}
+          
           />
         </div> 
 
@@ -165,37 +169,42 @@ export default async function Dashboard() {
   );
 }
       
-function Stat({                                      
-  title,      
-  value,  
-  icon: Icon, // 👈 icône dynamique
+function Stat({
+  title,
+  value,
+  icon: Icon,
+  bgColor = 'bg-black',
 }: {
   title: string;
-  value: number;   
+  value: number;
   icon: React.ElementType;
+  bgColor?: string;
 }) {
   return (
-    <div className="bg-green-700 border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 hover:bg-green-700/70 flex items-center gap-4">
-      <Icon className="w-8 h-8 text-white" />
-      <div>
+    <div className={`${bgColor} border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 flex items-center gap-4`}>
+      <Icon className={`w-8 h-8 ${bgColor === 'bg-white' ? 'text-black' : 'text-white'}`} />
+      <div className={`${bgColor === 'bg-white' ? 'text-black' : 'text-white'}`}>
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="text-2xl">{value}</p>
-      </div>   
+      </div>
     </div>
   );
 }
+
   
 function Card({
   title,
   items,
   icon: Icon,
+  bgColor = 'bg-white',
 }: {
   title: string;
   items: ({ prenom: string; nom: string; image?: string | null } | string)[];
   icon: React.ElementType;
+  bgColor?: string;
 }) {
   return (
-    <div className="bg-sky-500 backdrop-blur-md border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 hover:bg-sky-500/70">
+    <div className={`${bgColor} backdrop-blur-md border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 hover:bg-sky-500/70`}>
       <div className="flex items-center gap-3 mb-4">
         <Icon className="w-6 h-6 text-white" />
         <h3 className="text-xl font-bold">{title}</h3>

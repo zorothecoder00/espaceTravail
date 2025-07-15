@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 
-interface Departement {
+interface Departement {  
   id: number
   nom: string
 }

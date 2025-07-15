@@ -69,9 +69,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { fields, files } = await parseForm(req)
       const titre        = Array.isArray(fields.titre)        ? fields.titre[0]        : fields.titre
       const description  = Array.isArray(fields.description)  ? fields.description[0]  : fields.description ?? ''
-      const utilisateurs = fields.utilisateurs ? JSON.parse(Array.isArray(fields.utilisateurs) ? fields.utilisateurs[0] : fields.utilisateurs) : []
-      const departements = fields.departements ? JSON.parse(Array.isArray(fields.departements) ? fields.departements[0] : fields.departements) : []
-      const projets      = fields.projets      ? JSON.parse(Array.isArray(fields.projets)      ? fields.projets[0]      : fields.projets)      : []
+      const utilisateurs = (fields.utilisateurs ? JSON.parse(Array.isArray(fields.utilisateurs) ? fields.utilisateurs[0] : fields.utilisateurs) : []).map(Number)
+      const departements = (fields.departements ? JSON.parse(Array.isArray(fields.departements) ? fields.departements[0] : fields.departements) : []).map(Number)
+      const projets      = (fields.projets      ? JSON.parse(Array.isArray(fields.projets)      ? fields.projets[0]      : fields.projets)      : []).map(Number)
 
       if (!titre || (!utilisateurs.length && !departements.length && !projets.length))
         return res.status(400).json({ message: 'Titre ou destinataires manquants' })
@@ -88,6 +88,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           folder: 'documents',
           resource_type: 'auto',
         })
+
+        if (!uploaded.secure_url) throw new Error('Upload Cloudinary échoué');
+        
         fs.unlinkSync(file.filepath)
         fichierUrl = uploaded.secure_url
       }
@@ -118,7 +121,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })),
       ]
 
-      await prisma.partageDocument.createMany({ data: partagesData })
+      if (partagesData.length) {
+        await prisma.partageDocument.createMany({ data: partagesData });
+      }
+
 
       /* Notifications pour utilisateurs directs ----------------------- */
       if (utilisateurs.length) {

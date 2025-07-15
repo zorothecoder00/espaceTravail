@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'       
 import Link from 'next/link'
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar from '@fullcalendar/react'  
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 type TacheEvent = {
@@ -21,7 +21,8 @@ export default function CalendrierPage() {
     const fetchTaches = async () => {
       try {
         const res = await fetch('/api/calendrier')
-        const data: TacheEvent[] = await res.json()
+        const json = await res.json()
+        const data: TacheEvent[] = json.data // 👈 ici on prend bien le tableau
 
         const formattedEvents = data.map(t => ({
           title: `${t.titre} (${t.projet.nom})`,
