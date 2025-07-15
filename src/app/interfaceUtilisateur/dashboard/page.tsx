@@ -29,8 +29,8 @@ export default async function UtilisateurDashboard() {
         <nav className="flex flex-col gap-4">
           <Link href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <LayoutDashboard className="w-5 h-5" />
-            Dashboard
-          </Link>   
+            Dashboard        
+          </Link>     
           <Link href="/interfaceUtilisateur/mesProjetsDiriges" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FolderKanban className="w-5 h-5" />
             Projets dirigés

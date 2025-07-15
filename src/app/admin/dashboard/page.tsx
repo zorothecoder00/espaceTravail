@@ -28,9 +28,9 @@ export default async function Dashboard() {
   const [
     { totalTaches },   
     { projetsAttente },
-    { projetsEnCours },      
-    tachesRecentes,        
-    usersOnline
+    { projetsEnCours },             
+    tachesRecentes,                  
+    usersOnline    
   ] = await Promise.all([
     prisma.tache.count().then(count => ({ totalTaches: count })),
     prisma.projet.count({ where: { statut: Statut.ATTENTE } }).then(count => ({ projetsAttente: count })),
@@ -38,7 +38,7 @@ export default async function Dashboard() {
     prisma.tache.findMany({
       orderBy: { createdAt: "desc" },
       take: 3,   
-    }),
+    }), 
     prisma.user.findMany({
       where: {
         lastActiveAt: {

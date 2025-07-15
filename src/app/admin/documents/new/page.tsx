@@ -11,25 +11,21 @@ type Projet = { id: number; nom: string }
 export default function NewDocumentForm() {
   const router = useRouter()
 
-  // States pour données sélectionnables
   const [users, setUsers] = useState<User[]>([])
   const [departements, setDepartements] = useState<Departement[]>([])
   const [projets, setProjets] = useState<Projet[]>([])
 
-  // Form inputs
   const [titre, setTitre] = useState('')
   const [description, setDescription] = useState('')
   const [fichier, setFichier] = useState<File | null>(null)
 
-  // Selected destinataires (IDs)
   const [selectedUsers, setSelectedUsers] = useState<number[]>([])
   const [selectedDepartements, setSelectedDepartements] = useState<number[]>([])
   const [selectedProjets, setSelectedProjets] = useState<number[]>([])
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-
-  // Fetch données utilisateurs, départements, projets pour les selects
+   
   useEffect(() => {
     async function fetchData() {
       try {
@@ -53,7 +49,6 @@ export default function NewDocumentForm() {
     fetchData()
   }, [])
 
-  // Gérer sélection multiple dans les selects
   const handleSelectChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
     setState: React.Dispatch<React.SetStateAction<number[]>>
@@ -62,7 +57,6 @@ export default function NewDocumentForm() {
     setState(selectedOptions)
   }
 
-  // Soumission formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -92,15 +86,15 @@ export default function NewDocumentForm() {
       formData.append('departements', JSON.stringify(selectedDepartements))
       formData.append('projets', JSON.stringify(selectedProjets))
 
-      if (fichier) {
-        formData.append('fichier', fichier)
-      }
+      if (fichier) formData.append('fichier', fichier)
 
+      console.log('Envoi du document en cours...')
       const res = await fetch('/api/documents', {
         method: 'POST',
         body: formData,
       })
 
+      console.log('Réponse reçue', res)
       const data = await res.json()
 
       if (res.ok) {
@@ -120,15 +114,15 @@ export default function NewDocumentForm() {
   return (
     <div className="max-w-3xl mx-auto p-6 sm:px-4">
       <h1 className="text-2xl font-bold mb-6">📄Créer et partager un document</h1>
-      <Link
-        href="/admin/documents/liste"
-        className="text-blue-600 hover:underline block mb-4"
-      >
+      <Link href="/admin/documents/liste" className="text-blue-600 hover:underline block mb-4">
         ← Retour à la liste des documents
       </Link>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white shadow-md rounded-lg p-6 border" encType="multipart/form-data">
-        {/* Titre */}
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 bg-white shadow-md rounded-lg p-6 border"
+        encType="multipart/form-data"
+      >
         <div>
           <label className="block mb-1 font-medium" htmlFor="titre">
             Titre <span className="text-red-600">*</span>
@@ -144,7 +138,6 @@ export default function NewDocumentForm() {
           />
         </div>
 
-        {/* Description */}
         <div>
           <label className="block mb-1 font-medium" htmlFor="description">
             Description
@@ -159,7 +152,6 @@ export default function NewDocumentForm() {
           />
         </div>
 
-        {/* Utilisateurs (multi-select) */}
         <div>
           <label className="block mb-1 font-medium" htmlFor="utilisateurs">
             Utilisateurs (destinataires)
@@ -179,10 +171,13 @@ export default function NewDocumentForm() {
               </option>
             ))}
           </select>
-          <small className="text-gray-500">Sélectionnez un ou plusieurs utilisateurs</small>
+          {selectedUsers.length > 0 && (
+            <p className="text-sm text-gray-600 mt-1">
+              Sélectionnés : {selectedUsers.map(id => users.find(u => u.id === id)?.nom).join(', ')}
+            </p>
+          )}
         </div>
 
-        {/* Départements (multi-select) */}
         <div>
           <label className="block mb-1 font-medium" htmlFor="departements">
             Départements (destinataires)
@@ -202,10 +197,13 @@ export default function NewDocumentForm() {
               </option>
             ))}
           </select>
-          <small className="text-gray-500">Sélectionnez un ou plusieurs départements</small>
+          {selectedDepartements.length > 0 && (
+            <p className="text-sm text-gray-600 mt-1">
+              Sélectionnés : {selectedDepartements.map(id => departements.find(d => d.id === id)?.nom).join(', ')}
+            </p>
+          )}
         </div>
 
-        {/* Projets (multi-select) */}
         <div>
           <label className="block mb-1 font-medium" htmlFor="projets">
             Projets (destinataires)
@@ -225,13 +223,16 @@ export default function NewDocumentForm() {
               </option>
             ))}
           </select>
-          <small className="text-gray-500">Sélectionnez un ou plusieurs projets</small>
+          {selectedProjets.length > 0 && (
+            <p className="text-sm text-gray-600 mt-1">
+              Sélectionnés : {selectedProjets.map(id => projets.find(p => p.id === id)?.nom).join(', ')}
+            </p>
+          )}
         </div>
 
-        {/* Fichier (optionnel) */}
         <div>
           <label className="block mb-1 font-medium" htmlFor="fichier">
-            Fichier (optionnel, max 5 Mo)
+            📎 Fichier (max 5 Mo)
           </label>
           <input
             id="fichier"
@@ -241,9 +242,13 @@ export default function NewDocumentForm() {
             accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             disabled={loading}
           />
+          {fichier && (
+            <p className="text-sm text-green-600 mt-1">
+              Fichier sélectionné : <strong>{fichier.name}</strong>
+            </p>
+          )}
         </div>
 
-        {/* Message */}
         {message && (
           <div
             className={`p-3 rounded ${
@@ -256,7 +261,6 @@ export default function NewDocumentForm() {
           </div>
         )}
 
-        {/* Bouton submit */}
         <button
           type="submit"
           disabled={loading}

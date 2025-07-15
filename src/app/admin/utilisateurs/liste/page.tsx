@@ -37,7 +37,7 @@ export default function ListeUtilisateurs() {
       })
 
       const res = await fetch(`/api/utilisateurs?${params.toString()}`)
-      const data = await res.json()
+      const data = await res.json()  
 
       setUtilisateurs(data.data)
       setTotalPages(data.totalPages)

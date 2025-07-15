@@ -5,9 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init  
   
 generator client {               
-  provider = "prisma-client-js"     
-  //output   = "./node_modules/@prisma/client"    
-}           
+  provider = "prisma-client-js"            
+  //output   = "./node_modules/@prisma/client"        
+}                   
 
 datasource db {  
   provider = "postgresql"
@@ -24,11 +24,11 @@ model Departement {
   partages  PartageDocument[]
 }
 
-enum Role {             
+enum Role {               
   SUPER_ADMIN
   ADMIN
   UTILISATEUR
-}
+}  
 
 model User {
   id                         Int                @id @default(autoincrement())
@@ -44,7 +44,7 @@ model User {
 
   messagesEnvoyes            Message[]          @relation("MessagesEnvoyes")
   messagesRecus              Message[]          @relation("MessagesRecus")
-  lastActiveAt               DateTime?          @default(now()) //<--- Ce champ pour suivre l'activité
+  lastActiveAt               DateTime?          @default(now()) //<--- Ce champ pour suivre l'activité  
 
   createdAt                  DateTime           @default(now())  
   updatedAt                  DateTime           @updatedAt
@@ -55,11 +55,11 @@ model User {
   partagesEnTantQuePartageur PartageDocument[]  @relation("Partageur")
   notificationsEmises        Notification[]     @relation("NotificationEmetteur")
 
-  notifications              Notification[]     @relation("NotificationDestinataire")  
+  notifications                Notification[]     @relation("NotificationDestinataire")    
 
 }
 
-model Document {
+model Document {       
   id            Int               @id @default(autoincrement())
   titre         String
   description   String
@@ -82,8 +82,8 @@ model Projet {
   id            Int               @id @default(autoincrement())
   nom           String
   description   String?
-  deadline      DateTime?
-  statut        Statut            @default(ATTENTE)
+  deadline      DateTime?   
+  statut        Statut              @default(ATTENTE)
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   departement   Departement       @relation(fields: [departementId], references: [id], onDelete: Cascade)
@@ -92,14 +92,14 @@ model Projet {
   chefProjet    User              @relation("ChefProjet", fields: [chefProjetId], references: [id], onDelete: Cascade)  // 👈 Chef de projet
 
   chefProjetId   Int
-  membres       MembreProjet[]
+  membres       MembreProjet[]    
   taches        Tache[]
   partages      PartageDocument[]
   notifications Notification[]    @relation("ProjetNotification")
   messages      Message[]
 
-}
-
+}     
+ 
 model Tache {
   id               Int                @id @default(autoincrement())
   titre            String
@@ -115,9 +115,9 @@ model Tache {
   notifications    Notification[]     @relation("TacheNotification")
   messages         Message[]
 
-}
+}  
 
-model TacheUtilisateur {
+model TacheUtilisateur {  
   tache     Tache    @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId   Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -135,7 +135,7 @@ enum RoleProjet {
   DESIGNER
   COMMUNICANT
   QA
-}  
+}     
   
 model MembreProjet {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -165,7 +165,7 @@ model PartageDocument {
   partageur     User         @relation("Partageur", fields: [partageurId], references: [id], onDelete: Cascade)
 
   partageurId   Int
-  historique    String?
+  historique    String?  
 
   @@unique([documentId, userId, departementId, projetId])
 }

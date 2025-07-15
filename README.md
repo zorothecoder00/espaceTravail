@@ -3,7 +3,7 @@
    
 Plateforme web permettant aux membres d’une entreprise ou d'une organisation de collaborer efficacement autour de **projets**, **tâches**, **documents**, **messages** et de **notifications** en temps réel , avec des statistiques représentatives de nos activités et un **calendrier** de tâches pour mieux les visualiser.
 
-## 📚 Table des matières
+## 📚 Table des matières        
 
 - [🎯 Objectif](#objectif)  
 - [🛠️ Technologies utilisées](#technologies-utilisées)  
@@ -135,9 +135,8 @@ Cette application permet de :
   .DELETE /api/taches/:id/assignations — Retirer un membre d’une tâche
 
 👥 Assignations
-  .GET /api/assignations/projet/:id — Voir les projets où un utilisateur est assigné
+  .GET /api/assignations/:id/projet/:id — Voir les projets et les tâches où un utilisateur est assigné
 
-  .GET /api/assignations/tache/:id — Voir les tâches assignées à un utilisateur
 
 📄 Documents
   .GET /api/documents — Lister les documents
