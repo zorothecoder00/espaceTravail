@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { Statut, Role } from "@prisma/client";          
 import {             
   LayoutDashboard,                                                   
-  Users,            
+  Users,              
   Building2,         
   FolderKanban,  
   CheckSquare,        
@@ -58,7 +58,15 @@ export default async function Dashboard() {
     <div className="flex h-screen">    
       {/* Sidebar*/}
       <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">
-        <div className="text-2xl font-bold mb-10">LOGO</div> 
+        <div className="mb-10 flex justify-center">
+          <Image
+            src="/logocea.jpeg"
+            alt="Logo"
+            width={96}
+            height={96}
+            className="object-contain"
+          />
+        </div> 
         <nav className="flex flex-col gap-4">  
           <Link href="/admin/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <LayoutDashboard className="w-5 h-5" />
@@ -66,7 +74,7 @@ export default async function Dashboard() {
           </Link>
           <Link href="/admin/utilisateurs/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Users className="w-5 h-5" />
-          Utilisateurs
+          Utilisateurs                   
           </Link>
           <Link href="/admin/departements/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Building2 className="w-5 h-5" />
@@ -200,7 +208,7 @@ function Card({
 }: {
   title: string;
   items: ({ prenom: string; nom: string; image?: string | null } | string)[];
-  icon: React.ElementType;
+  icon: React.ElementType;       
   bgColor?: string;
 }) {
   return (

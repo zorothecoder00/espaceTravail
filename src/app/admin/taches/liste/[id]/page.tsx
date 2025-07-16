@@ -102,7 +102,7 @@ export default function TacheDetailPage() {
           ) : (
             <ul className="list-disc pl-5">
               {tache.TacheUtilisateur.map((tu) => (
-                <li key={tu.id}>{tu.user.nom} {tu.user.prenom}</li>
+                <li key={tu.user.id}>{tu.user.nom} {tu.user.prenom}</li>
               ))}
             </ul>
           )}

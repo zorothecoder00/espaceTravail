@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { getAuthSession } from "@/lib/auth";
 import { Prisma } from '@prisma/client'
 
-export default async function handler(
+export default async function handler(  
   req: NextApiRequest,
   res: NextApiResponse
 ) {

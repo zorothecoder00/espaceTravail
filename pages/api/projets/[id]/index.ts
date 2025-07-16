@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    if (req.method === 'GET') {
+    if (req.method === 'GET') {  
       /* ─────── DÉTAILS ─────── */
       const projet = await prisma.projet.findUnique({
         where: { id: projetId },

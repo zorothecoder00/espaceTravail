@@ -49,8 +49,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         include: {
           departement: { select: { id: true, nom: true } },
           projetsDiriges: { select: { id: true, nom: true } },
-          taches: true,
-          projets: true,
+          projets: {         // <- clé vers MembreProjet[]
+            include: {
+              projet: { select: { id: true, nom: true } }
+            }
+          },
+          taches: {          // <- clé vers TacheUtilisateur[]
+            include: {
+              tache: {
+                select: { id: true, titre: true, statut: true, deadline: true }
+              }
+            }
+          },
           partages: true,
           partagesEnTantQuePartageur: true,
           notificationsEmises: true,

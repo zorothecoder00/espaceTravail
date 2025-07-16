@@ -35,7 +35,7 @@ export default function AssignationTachePage() {
           sortOrder,
         })
 
-        const res = await fetch(`/api/taches/${id}/assignations?${params}`)
+        const res = await fetch(`/api/taches/${id}/assignations?${params.toString()}`)
         const { data, totalPages } = await res.json()
 
         setMembres(data)

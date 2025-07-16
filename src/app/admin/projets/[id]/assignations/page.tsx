@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
-
+   
 type MembreProjet = {
   id: number
   nom: string
@@ -30,13 +30,13 @@ export default function AssignationProjetPage() {
       setLoading(true)
       try {
         const params = new URLSearchParams({
-          search,
-          sortField,
+          search,  
+          sortField,  
           sortOrder,
           page: page.toString(),
-        })
+        })  
 
-        const res = await fetch(`/api/assignations/projet/${id}?${params.toString()}`)
+        const res = await fetch(`/api/projets/${id}/assignations?${params.toString()}`)
         if (!res.ok) throw new Error("Erreur serveur")
         const data = await res.json()
 

@@ -146,13 +146,19 @@ export default function ListeProjetsPage() {
               <tr key={projet.id}>
                 <td className="border p-2">{projet.nom}</td>
                 <td className="border p-2">{projet.statut}</td>
-                <td className="border p-2">{projet.chefProjet?.nom ?? '-'}</td>
+                <td className="border p-2">{projet.chefProjet?.nom ?? '-'}</td>  
                 <td className="border p-2 space-x-2">
                   <Link
                     href={`/admin/projets/liste/${projet.id}`}
                     className="text-sm text-indigo-600 hover:underline"
                   >
-                    Détails
+                    Détails     
+                  </Link>
+                  <Link  
+                    href={`/admin/projets/${projet.id}/assignations`}
+                    className="text-sm text-indigo-600 hover:underline"
+                  >
+                    Assignations       
                   </Link>
                   <Link
                     href={`/admin/projets/edit/${projet.id}`}

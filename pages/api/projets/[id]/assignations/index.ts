@@ -17,16 +17,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const pageNum = parseInt(page as string)
       const limitNum = parseInt(limit as string)
       const skip = (pageNum - 1) * limitNum
-      const allowedFields = ['nom', 'email']  // sécurisation
-      const field = allowedFields.includes(sortField as string)
-        ? sortField
-        : 'createdAt'
+      const allowedFields = ['nom', 'email']
+      const field = allowedFields.includes(sortField as string) ? sortField : 'createdAt'
       const safeField = field as string
-      const order = sortOrder === 'asc' ? 'asc' : 'desc'  
+      const order = sortOrder === 'asc' ? 'asc' : 'desc'
       const searchStr = (search as string).trim()
 
       const orFilters: Prisma.UserWhereInput[] = [{ nom: { contains: searchStr } }]
-
       if (Object.values(RoleProjet).includes(searchStr as RoleProjet)) {
         orFilters.push({
           projets: {
@@ -39,10 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const [users, total] = await Promise.all([
         prisma.user.findMany({
-          where: {
-            projets: { some: { projetId } },
-            OR: orFilters,
-          },
+          where: { OR: orFilters },
           include: {
             projets: {
               where: { projetId },
@@ -55,10 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }),
 
         prisma.user.count({
-          where: {
-            projets: { some: { projetId } },
-            OR: orFilters,
-          },
+          where: { OR: orFilters },
         }),
       ])
 

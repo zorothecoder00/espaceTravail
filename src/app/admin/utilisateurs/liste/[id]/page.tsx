@@ -24,6 +24,14 @@ type Tache = {
   deadline: string | null
 }
 
+type ProjetAssigné = {
+  projet: Projet
+}
+
+type TacheAssignée = {
+  tache: Tache
+}
+
 type PartageDocument = {
   id: number
   documentId: number
@@ -45,8 +53,8 @@ type UserDetail = {
   role: string
   departement: Departement | null
   projetsDiriges: Projet[]
-  projets: Projet[]
-  taches: Tache[]
+  projets: ProjetAssigné[]   // 👈 au lieu de Projet[]
+  taches: TacheAssignée[]    // 👈 au lieu de Tache[]
   partages: PartageDocument[]
   partagesEnTantQuePartageur: PartageDocument[]
   notifications: Notification[]
@@ -73,7 +81,7 @@ export default function UserDetailPage() {
       }
     }
 
-    fetchUser()
+    fetchUser()  
   }, [id])
 
   if (loading) {
@@ -97,7 +105,7 @@ export default function UserDetailPage() {
           <p><strong>Nom :</strong> {user.nom} {user.prenom}</p>
           <p><strong>Email :</strong> {user.email}</p>
           <p><strong>Rôle :</strong> <Badge>{user.role}</Badge></p>
-          <p><strong>Département :</strong> {user.departement?.nom || "Aucun"}</p>
+          <p><strong>Département :</strong> {user.departement?.nom || "Aucun"}</p>  
         </CardContent>
       </Card>
 
@@ -109,7 +117,7 @@ export default function UserDetailPage() {
           ) : (
             <ul className="list-disc pl-5">
               {user.projetsDiriges.map(p => (
-                <li key={p.id}>{p.nom}</li>
+                <li key={`dirige-${p.id}`}>{p.nom}</li>
               ))}
             </ul>
           )}
@@ -124,20 +132,20 @@ export default function UserDetailPage() {
           ) : (
             <ul className="list-disc pl-5">
               {user.projets.map(p => (
-                <li key={p.id}>{p.nom}</li>
-              ))}
+                <li key={`assigné-${p.projet.id}`}>{p.projet.nom}</li>
+              ))}  
             </ul>
-          )}
-        </CardContent>
+          )}   
+        </CardContent>   
       </Card>
 
       <Card>
         <CardContent className="space-y-2 pt-4">
           <h2 className="text-lg font-semibold">Tâches assignées</h2>
           <p>{user.taches.length} tâche(s)</p>
-          {user.taches.map(t => (
-            <div key={t.id}>
-              <p><strong>{t.titre}</strong> – {t.statut} {t.deadline ? `(📅 ${new Date(t.deadline).toLocaleDateString("fr-FR")})` : ''}
+          {user.taches.map(tu => (
+            <div key={`tache-${tu.tache.id}`}>
+              <p><strong>{tu.tache.titre}</strong> – {tu.tache.statut} {tu.tache.deadline ? `(📅 ${new Date(tu.tache.deadline).toLocaleDateString("fr-FR")})` : ''}
               </p>
             </div>
           ))}

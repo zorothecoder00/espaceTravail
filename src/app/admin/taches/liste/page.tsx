@@ -170,6 +170,12 @@ export default function ListeTaches() {
                     Détails
                   </Link>
                   <Link
+                    href={`/admin/taches/${t.id}/assignations`}
+                    className="text-indigo-600 hover:underline text-sm"
+                  >
+                    Assignations
+                  </Link>
+                  <Link
                     href={`/admin/taches/edit/${t.id}`}
                     className="text-blue-600 hover:underline text-sm"
                   >
