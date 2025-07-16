@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pageNum   = parseInt(page as string)
   const limit     = 10
   const skip      = (pageNum - 1) * limit
-  const allowedFields = ['nom', 'statut', 'deadline','chefProjet']  // sécurisation
+  const allowedFields = ['nom', 'statut', 'deadline']  // sécurisation
   const field = allowedFields.includes(sortField as string)
       ? sortField
       : 'createdAt'

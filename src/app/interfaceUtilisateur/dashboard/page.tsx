@@ -2,7 +2,7 @@
 import { getAuthSession } from "@/lib/auth"      
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
-import {    
+import {     
   LayoutDashboard,               
   FolderKanban,   
   CheckSquare,       
@@ -17,7 +17,7 @@ export default async function UtilisateurDashboard() {
   const session = await getAuthSession()
 
   if (!session?.user) redirect("/login")    
-  if (session.user.role !== "UTILISATEUR") redirect("/")  
+  if (session?.user?.role !== "UTILISATEUR") redirect("/")  
 
   const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)  
 
@@ -34,7 +34,7 @@ export default async function UtilisateurDashboard() {
             className="object-contain"
           />
         </div> 
-        <nav className="flex flex-col gap-4">
+        <nav className="flex flex-col gap-4">  
           <Link href="/interfaceUtilisateur/dashboard" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <LayoutDashboard className="w-5 h-5" />
             Dashboard        
@@ -81,7 +81,7 @@ export default async function UtilisateurDashboard() {
               </span>
             </Link>
             <Image
-              src={session.user.image || "/profile.png"}
+              src={session?.user?.image || "/profile.png"}
               alt="Profil utilisateur"
               width={40}
               height={40}

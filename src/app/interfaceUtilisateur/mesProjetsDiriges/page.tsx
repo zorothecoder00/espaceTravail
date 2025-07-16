@@ -39,7 +39,7 @@ export default function MesProjetsDirigesPage() {
         }
 
         const data = await res.json()
-        setProjets(data.projets)
+        setProjets(data.data)
         setTotalPages(data.totalPages)
         setError('')
       } catch (err) {
@@ -131,7 +131,7 @@ export default function MesProjetsDirigesPage() {
             </tr>
           </thead>
           <tbody>
-            {projets.map((projet) => (
+            {projets.map((projet) => (      
               <tr key={projet.id}>
                 <td className="border p-2">{projet.nom}</td>
                 <td className="border p-2">
@@ -163,7 +163,7 @@ export default function MesProjetsDirigesPage() {
                     href={`/interfaceUtilisateur/mesProjetsDiriges/${projet.id}/membres`}
                     className="text-purple-600 hover:underline text-sm"
                   >
-                    Membres    
+                    Membres       
                   </Link>
                   <button
                     onClick={() => handleDelete(projet.id)}
