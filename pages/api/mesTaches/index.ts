@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
 import { getAuthSession } from '@/lib/auth'
-import type { Statut } from '@prisma/client'
+import { Prisma, Statut } from '@prisma/client'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -29,16 +29,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const safeField = field as string
   const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
+  const searchStr = search.toString().trim()
+
+  const orFilters: Prisma.TacheUtilisateurWhereInput[] = [
+      { tache: { titre: { contains: searchStr, mode: 'insensitive' } } },
+      { tache: { projet: { nom: { contains: searchStr, mode: 'insensitive' } } } },
+    ]
+
+    if (Object.values(Statut).includes(searchStr as Statut)) {
+      orFilters.push({ tache: { statut: { equals: searchStr as Statut } } })
+    }
+
   try {
     const [tachesAssignees, total] = await Promise.all([
       prisma.tacheUtilisateur.findMany({
         where: {
           userId: parseInt(session.user.id),
-          OR: [
-            { tache: { titre: { contains: search as string, mode: 'insensitive' } } },
-            { tache: { statut: { equals: search as Statut } } },
-            { tache: { projet: { nom: { contains: search as string, mode: 'insensitive' } } } },
-          ],
+          OR: orFilters,
         },
         include: {
           tache: {
@@ -59,13 +66,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       prisma.tacheUtilisateur.count({
         where: {
           userId: parseInt(session.user.id),
-          OR: [
-            { tache: { titre: { contains: search as string, mode: 'insensitive' } } },
-            { tache: { statut: { equals: search as Statut } } },
-            { tache: { projet: { nom: { contains: search as string, mode: 'insensitive' } } } },
-          ],
+          OR: orFilters,
         },
-      }),
+      }),     
     ])
 
     const taches = tachesAssignees.map(t => t.tache)

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'    
 import Link from 'next/link'
-import { Statut } from '@prisma/client'
+import { Statut } from '@prisma/client'    
 
 type Tache = {
   id: number
@@ -16,8 +16,10 @@ type Tache = {
 export default function ListeTachesPage() {
 
   const [search, setSearch] = useState('')
+  const [sortField, setSortField] = useState<'titre' | 'statut' | 'deadline'>('titre')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [taches, setTaches] = useState<Tache[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)  
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -26,13 +28,14 @@ export default function ListeTachesPage() {
     const fetchTaches = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`/api/mesTaches?search=${search}&page=${page}`)
+        const res = await fetch(`/api/mesTaches?search=${search}&page=${page}&sortField=${sortField}&sortOrder=${sortOrder}`)
         if (!res.ok) throw new Error('Erreur lors du chargement.')
-        const data = await res.json()
-        setTaches(data.taches)
-        setTotalPages(data.totalPages)
-        setError('')
-      } catch (err) {
+          const data = await res.json()
+          console.log("Réponse API mesTaches :", data)
+          setTaches(data.data)
+          setTotalPages(data.totalPages)
+          setError('')
+      }catch (err) {
         const message = err instanceof Error ? err.message : 'Erreur inconnue.'
         setError(message)  
       } finally {
@@ -40,7 +43,7 @@ export default function ListeTachesPage() {
       }
     }
     fetchTaches()
-  }, [search, page])
+  }, [search, page, sortField, sortOrder])
 
   const afficherStatutLisible = (statut: Statut): string => {
     switch (statut) {
@@ -52,6 +55,15 @@ export default function ListeTachesPage() {
         return 'Terminée'
       default:
         return statut
+    }
+  }
+
+  const handleSort = (field: 'titre' | 'statut' | 'deadline') => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortOrder('asc')
     }
   }
 
@@ -84,8 +96,18 @@ export default function ListeTachesPage() {
         <table className="w-full border-collapse border rounded bg-white shadow">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Titre</th>
-              <th className="border p-2 text-left">Statut</th>
+              <th
+                className="border p-2 text-left cursor-pointer"
+                onClick={() => handleSort('titre')}
+              >
+                Titre {sortField === 'titre' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              </th>
+              <th
+                className="border p-2 text-left cursor-pointer"
+                onClick={() => handleSort('statut')}
+              >
+                Statut {sortField === 'statut' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              </th>
               <th className="border p-2 text-left">Projet</th>
               <th className="border p-2 text-left">Actions</th> {/* ✅ colonne ajoutée */}
             </tr>

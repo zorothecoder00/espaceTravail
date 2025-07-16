@@ -1,13 +1,11 @@
 'use client'
-
-import { useEffect, useState } from 'react'      
+  
+import { useEffect, useState } from 'react'       
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { Statut } from '@prisma/client'
 
 type Projet = {  
-  id: string
+  id: string  
   nom: string
   statut: Statut
   departement: {
@@ -16,30 +14,24 @@ type Projet = {
 }
 
 export default function ListeProjetsPage() {
-  const { status } = useSession()
-  const router = useRouter()
 
   const [search, setSearch] = useState('')
   const [projets, setProjets] = useState<Projet[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)  
   const [error, setError] = useState('')
+  const [sortField, setSortField] = useState<'nom' | 'statut'>('nom')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login')
-    }
-  }, [status, router])
 
   useEffect(() => {
     const fetchProjets = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`/api/mesProjets?search=${search}&page=${page}`)
+        const res = await fetch(`/api/mesProjets?search=${search}&page=${page}&sortField=${sortField}&sortOrder=${sortOrder}`)
         if (!res.ok) throw new Error('Erreur lors du chargement.')
         const data = await res.json()
-        setProjets(data.projets)
+        setProjets(data.data)
         setTotalPages(data.totalPages)
         setError('')
       } catch (err) {
@@ -50,22 +42,31 @@ export default function ListeProjetsPage() {
       }
     }
 
-    if (status === 'authenticated') {
       fetchProjets()
-    }
-  }, [search, page, status])
+  }, [search, page, sortField, sortOrder])
 
   const afficherStatutLisible = (statut: Statut): string => {
     switch (statut) {
       case Statut.EN_COURS:
         return 'En cours'
-      case Statut.TERMINE:
+      case Statut.TERMINE: 
         return 'Terminé'
       case Statut.ATTENTE:
         return 'En attente'
       default:
         return statut
     }
+  }
+
+  // Gestion du clic sur le tri
+  const handleSort = (field: 'nom' | 'statut') => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortOrder('asc')
+    }
+    
   }
 
   return (
@@ -97,8 +98,18 @@ export default function ListeProjetsPage() {
         <table className="w-full border-collapse border rounded bg-white shadow">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Nom</th>
-              <th className="border p-2 text-left">Statut</th>
+              <th
+                className="border p-2 text-left cursor-pointer select-none"
+                onClick={() => handleSort('nom')}
+              >
+                Nom {sortField === 'nom' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              </th>
+              <th
+                className="border p-2 text-left cursor-pointer select-none"
+                onClick={() => handleSort('statut')}
+              >
+                Statut {sortField === 'statut' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              </th>
               <th className="border p-2 text-left">Département</th>
               <th className="border p-2 text-left">Actions</th>
             </tr>

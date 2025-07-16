@@ -27,10 +27,11 @@ export default function CalendrierPage() {
             window.location.href = '/login'
             return
           }
-          throw new Error('Erreur serveur.')
+          throw new Error('Erreur serveur.')    
         }
 
-        const data: TacheEvent[] = await res.json()
+        const json = await res.json()
+        const data: TacheEvent[] = json.data
 
         const formattedEvents = data.map(t => ({
           title: `${t.titre} (${t.projet.nom})`,
