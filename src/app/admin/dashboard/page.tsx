@@ -37,7 +37,21 @@ export default async function Dashboard() {
     prisma.projet.count({ where: { statut: Statut.EN_COURS } }).then(count => ({ projetsEnCours: count })),
     prisma.tache.findMany({
       orderBy: { createdAt: "desc" },
-      take: 3,   
+      take: 3, 
+      include: {
+        TacheUtilisateur :{
+          take: 3,
+          orderBy: { createdAt: 'desc' },
+          include: {
+            user: {           
+              select: {
+                nom: true,
+                image: true,
+              },
+            },
+          },
+        },
+      } 
     }), 
     prisma.user.findMany({
       where: {
@@ -53,9 +67,17 @@ export default async function Dashboard() {
     }),
   ]);
 
+  const formattedTaches = tachesRecentes.map(t => ({
+    titre: t.titre,
+    utilisateurs: t.TacheUtilisateur.map(tu => ({
+      nom: tu.user.nom,
+      image: tu.user.image
+    }))
+  }));
 
-  return (
-    <div className="flex h-screen">    
+
+  return ( 
+    <div className="flex h-screen">             
       {/* Sidebar*/}
       <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">
         <div className="mb-10 flex justify-center">
@@ -153,7 +175,7 @@ export default async function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card 
            title="Tâches Récentes" 
-           items={tachesRecentes.map(t => t.titre)} 
+           items={formattedTaches} 
            icon={CheckSquare}
           />
           <Card
@@ -207,8 +229,12 @@ function Card({
   bgColor = 'bg-white',
 }: {
   title: string;
-  items: ({ prenom: string; nom: string; image?: string | null } | string)[];
-  icon: React.ElementType;       
+  items: (
+    | { titre: string; utilisateurs?: { nom: string; image?: string | null }[] }
+    | {  prenom: string; nom: string; image?: string | null }
+    | string
+  )[];
+  icon: React.ElementType;
   bgColor?: string;
 }) {
   return (
@@ -217,34 +243,58 @@ function Card({
         <Icon className="w-6 h-6 text-white" />
         <h3 className="text-xl font-bold">{title}</h3>
       </div>
-      <ul className="space-y-2">
+      <ul className="space-y-4">
         {items.map((item, i) => {
-          if (typeof item === "string") {
-            // Cas d’un titre simple (ex : tâche)
+          // 1. Tâche enrichie avec utilisateurs
+          if (typeof item === "object" && "titre" in item) {
             return (
-              <li key={i} className="border-b pb-2 text-white">
-                {item}
+              <li key={i} className="border-b pb-3">
+                <div className="font-semibold text-black">{item.titre}</div>
+                {item.utilisateurs && item.utilisateurs.length > 0 && (
+                  <div className="mt-1 flex items-center gap-2">
+                    {item.utilisateurs.map((u, idx) => (
+                      <div
+                        key={idx}  
+                        className="flex items-center gap-1 text-sm text-gray-700 bg-white/50 px-2 py-1 rounded shadow"
+                      >
+                        <Image   
+                          src={u.image || "/profile.png"}
+                          alt={`${u.nom}`}
+                          width={20}
+                          height={20}
+                          className="rounded-full object-cover"
+                        />
+                        <span>{`${u.nom}`}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </li>
-            )
+            );
           }
-  
-          // Cas d’un utilisateur avec prenom, nom et image
-          return (
-            <li key={i} className="border-b pb-2 flex items-center gap-3">
-              <Image
-                src={item.image || "/profile.png"}
-                alt={`${item.prenom} ${item.nom}`}
-                width={24}
-                height={24}
-                className="rounded-full object-cover"
-              />
-              <span>{`${item.prenom} ${item.nom}`}</span>
-            </li>
-          )
+
+          // 2. Utilisateur simple
+          if (typeof item === "object" && "prenom" in item && "nom" in item) {
+            return (
+              <li key={i} className="border-b pb-2 flex items-center gap-3">
+                <Image
+                  src={item.image || "/profile.png"}
+                  alt={`${item.prenom} ${item.nom}`}
+                  width={24}
+                  height={24}
+                  className="rounded-full object-cover"
+                />
+                <span>{`${item.prenom} ${item.nom}`}</span>
+              </li>
+            );
+          }
+
+          
         })}
       </ul>
     </div>
-  )
+  );
+
 }
 
 

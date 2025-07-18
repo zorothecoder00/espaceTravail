@@ -29,12 +29,12 @@ export default function Register() {
   const [imageFile, setImageFile] = useState<File | null>(null)
 
   useEffect(() => {
-    const fetchDepartements = async () => {
+    const fetchDepartements = async () => {       
       try {
         const res = await fetch('/api/departements')
         if (res.ok) {
           const data = await res.json()
-          setDepartements(data)
+          setDepartements(data.data)    
         }
       } catch (err) {
         console.error('Erreur chargement départements', err)

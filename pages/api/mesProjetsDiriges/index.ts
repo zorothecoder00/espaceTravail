@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthSession } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { Statut } from '@prisma/client'
+import prisma from '@/lib/prisma'
+import { Statut, Prisma } from '@prisma/client'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -27,17 +27,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ? sortField
       : 'createdAt'
   const safeField = field as string
-  const order = sortOrder === 'asc' ? 'asc' : 'desc'
+  const order = sortOrder === 'asc' ? 'asc' : 'desc'   
+
+  const searchStr = search.toString().trim()
+
+  const orFilters: Prisma.ProjetWhereInput[] = [
+      { nom: { contains: searchStr, mode: 'insensitive' } },
+    ]
+
+    if (Object.values(Statut).includes(searchStr as Statut)) {
+      orFilters.push({ statut: { equals: searchStr as Statut } })
+    }
 
   try {
     const [projets, total] = await Promise.all([
       prisma.projet.findMany({
         where: {
           chefProjetId: parseInt(session.user.id),
-          OR: [
-            { nom:    { contains: search as string, mode: 'insensitive' } },
-            { statut: { equals:   search as Statut } },
-          ],
+          OR: orFilters,
         },
         include: {
           departement: true,
@@ -52,10 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       prisma.projet.count({
         where: {
           chefProjetId: parseInt(session.user.id),
-          OR: [
-            { nom:    { contains: search as string, mode: 'insensitive' } },
-            { statut: { equals:   search as Statut } },
-          ],
+          OR: orFilters,
         },
       }),
     ])

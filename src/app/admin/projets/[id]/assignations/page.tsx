@@ -72,7 +72,7 @@ export default function AssignationProjetPage() {
     if (loading) return
     setLoading(true)
     try {
-      const res = await fetch(`/api/assignations/projet/${id}`, {
+      const res = await fetch(`/api/projets/${id}/assignations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ utilisateursIds: Array.from(checkedIds) }),

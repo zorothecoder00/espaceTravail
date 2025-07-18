@@ -109,7 +109,7 @@ export default function ListeTachesPage() {
                 Statut {sortField === 'statut' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
               </th>
               <th className="border p-2 text-left">Projet</th>
-              <th className="border p-2 text-left">Actions</th> {/* ✅ colonne ajoutée */}
+              <th className="border p-2 text-left">Actions</th>{/*✅ colonne ajoutée */}
             </tr>
           </thead>
           <tbody>

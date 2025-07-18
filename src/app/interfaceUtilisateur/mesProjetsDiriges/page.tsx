@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Statut } from '@prisma/client'
+import { Statut } from '@prisma/client'  
 
 type Projet = {
   id: number
