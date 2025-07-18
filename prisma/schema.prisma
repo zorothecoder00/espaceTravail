@@ -241,7 +241,8 @@ model Message {
 model TachePersonnelle {
   id             Int      @id @default(autoincrement())
   titre          String
-  description    String?
+  contenu        String?  @db.Text   // Ici c'est la description riche en HTML ou Markdow
+
   date           DateTime @default(now()) // Date de la tâche (journalier)
   statut         Statut   @default(ATTENTE)
 
@@ -249,14 +250,14 @@ model TachePersonnelle {
   auteurId       Int
 
   superviseur    User?    @relation("SuperviseurTachePersonnelle", fields: [superviseurId], references: [id], onDelete: SetNull)
-  superviseurId  Int?
+  superviseurId  Int?     
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   notifications  Notification[] @relation("TachePersonnelleNotification")
 }
-
+  
 model Note {
   id        Int      @id @default(autoincrement())
   titre     String   @db.VarChar(191)
