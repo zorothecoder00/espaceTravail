@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 type Utilisateur = {
   id: number
@@ -9,13 +11,14 @@ type Utilisateur = {
 }
 
 export default function NouvelleTachePersonnelle() {
+  const router = useRouter()
+
   const [titre, setTitre] = useState('')
   const [contenu, setContenu] = useState('')
   const [statut, setStatut] = useState('TERMINEE')
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10))
 
   const [sousTaches, setSousTaches] = useState<string[]>([''])
-
   const [superviseurId, setSuperviseurId] = useState<number | null>(null)
   const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
   const [searchUser, setSearchUser] = useState('')
@@ -23,7 +26,7 @@ export default function NouvelleTachePersonnelle() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
-  // Charger utilisateurs filtrés selon searchUser
+  // Charger utilisateurs filtrés
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -34,7 +37,7 @@ export default function NouvelleTachePersonnelle() {
       } catch (error) {
         console.error(error)
       }
-    }  
+    }
     fetchUsers()
   }, [searchUser])
 
@@ -51,7 +54,7 @@ export default function NouvelleTachePersonnelle() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setMessage('')  
+    setMessage('')
 
     if (!titre.trim() || !contenu.trim()) {
       setMessage('Le titre et contenu sont obligatoires.')
@@ -78,15 +81,11 @@ export default function NouvelleTachePersonnelle() {
       if (!res.ok) throw new Error('Erreur lors de la création')
 
       setMessage('Tâche créée avec succès')
-      // Reset form
-      setTitre('')
-      setContenu('')
-      setStatut('TERMINEE')
-      setDate(new Date().toISOString().slice(0, 10))
-      setSousTaches([''])
-      setSuperviseurId(null)
-      setSearchUser('')
-      setUtilisateurs([])
+
+      // Redirection après succès (1 seconde pour affichage message)
+      setTimeout(() => {
+        router.push('/interfaceUtilisateur/tachesPersonnelles/liste')
+      }, 1000)
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Erreur inconnue')
     } finally {
@@ -96,6 +95,16 @@ export default function NouvelleTachePersonnelle() {
 
   return (
     <div className="max-w-xl mx-auto p-4">
+      {/* Bouton de retour */}
+      <div className="mb-4">
+        <Link
+          href="/interfaceUtilisateur/tachesPersonnelles/liste"
+          className="text-blue-600 hover:underline"
+        >
+          ← Retour à la liste des tâches personnelles
+        </Link>
+      </div>
+
       <h1 className="text-2xl font-bold mb-4">Créer une tâche personnelle</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">

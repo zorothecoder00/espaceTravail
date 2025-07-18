@@ -106,7 +106,7 @@ export default async function handler(
           titre,
           contenu, // Contenu riche (HTML ou Markdown)
           // Selon ton besoin, tu veux que le statut soit par défaut TERMINE :
-          statut: statut as Statut,
+          statut: Statut[statut as keyof typeof Statut],
           auteur: {
             connect: { id: parseInt(session.user.id) }
           },
