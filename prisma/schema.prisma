@@ -231,7 +231,7 @@ model Message {
   receiverId Int?
   projet     Projet? @relation(fields: [projetId], references: [id], onDelete: Cascade)
   
-  projetId     Int?
+  projetId     Int?     
 
   tache        Tache?  @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId       Int?
@@ -256,7 +256,17 @@ model TachePersonnelle {
   updatedAt      DateTime @updatedAt
 
   notifications  Notification[] @relation("TachePersonnelleNotification")
+  sousTaches     SousTache[]
 }
+
+model SousTache {
+  id                 Int    @id @default(autoincrement())
+  contenu            String
+  statut             Statut @default(ATTENTE) // si tu veux suivre les étapes individuellement
+  tachePersonnelleId Int
+  tachePersonnelle   TachePersonnelle @relation(fields: [tachePersonnelleId], references: [id])
+}
+
   
 model Note {
   id        Int      @id @default(autoincrement())
