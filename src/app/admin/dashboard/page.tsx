@@ -284,7 +284,7 @@ function Card({
                   height={24}
                   className="rounded-full object-cover"
                 />
-                <span>{`${item.prenom} ${item.nom}`}</span>
+                <span>{`${item.nom}`}</span>
               </li>
             );
           }

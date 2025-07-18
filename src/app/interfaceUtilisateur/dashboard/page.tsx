@@ -51,6 +51,10 @@ export default async function UtilisateurDashboard() {
             <CheckSquare className="w-5 h-5" />
             Mes Tâches
           </Link>
+          <Link href="/interfaceUtilisateur/tachesPersonnelles/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+            <CheckSquare className="w-5 h-5" />
+            Mon agenda de Tâches 
+          </Link>
           <Link href="/interfaceUtilisateur/mesDocuments/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FileText className="w-5 h-5" />
             Mes Documents
@@ -62,7 +66,7 @@ export default async function UtilisateurDashboard() {
         </nav>
       </aside>
 
-      {/* Main Content */}
+      {/* Main Content */}       
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <input
