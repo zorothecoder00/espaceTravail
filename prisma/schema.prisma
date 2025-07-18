@@ -37,7 +37,7 @@ model User {
   email                      String             @unique
   password                   String
   role                       Role               @default(UTILISATEUR)
-  departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id], onDelete: Cascade)
+  departement                Departement?       @relation("DepartementUtilisateur", fields: [departementId], references: [id], onDelete: Cascade)        
   
   departementId              Int?
   image                      String?            //URL profil   
@@ -55,8 +55,14 @@ model User {
   partagesEnTantQuePartageur PartageDocument[]  @relation("Partageur")
   notificationsEmises        Notification[]     @relation("NotificationEmetteur")
 
-  notifications                Notification[]     @relation("NotificationDestinataire")    
+  notifications               Notification[]     @relation("NotificationDestinataire")
 
+  // Tâches personnelles créées par cet utilisateur
+  tachesPersonnellesCreees    TachePersonnelle[] @relation("AuteurTachePersonnelle")
+
+  // Supervision de tâches personnelles d'autres utilisateurs
+  tachesPersonnellesSupervisees TachePersonnelle[] @relation("SuperviseurTachePersonnelle")    
+  notes                       Note[]
 }
 
 model Document {       
@@ -200,6 +206,10 @@ model Notification {
   tache            Tache?       @relation("TacheNotification",fields: [tacheId], references: [id], onDelete: Cascade)
 
   messageAssocie   Message?     @relation("MessageNotification",fields: [messageId], references: [id], onDelete: Cascade)
+
+  tachePersonnelleId Int?
+  tachePersonnelle   TachePersonnelle?      @relation("TachePersonnelleNotification", fields: [tachePersonnelleId], references: [id], onDelete: Cascade)
+
 }
    
 
@@ -226,5 +236,36 @@ model Message {
   tache        Tache?  @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId       Int?
   notifications    Notification[]     @relation("MessageNotification")
+}
+
+model TachePersonnelle {
+  id             Int      @id @default(autoincrement())
+  titre          String
+  description    String?
+  date           DateTime @default(now()) // Date de la tâche (journalier)
+  statut         Statut   @default(ATTENTE)
+
+  auteur         User     @relation("AuteurTachePersonnelle", fields: [auteurId], references: [id], onDelete: Cascade)
+  auteurId       Int
+
+  superviseur    User?    @relation("SuperviseurTachePersonnelle", fields: [superviseurId], references: [id], onDelete: SetNull)
+  superviseurId  Int?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  notifications  Notification[] @relation("TachePersonnelleNotification")
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  titre     String   @db.VarChar(191)
+  contenu   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation avec l'utilisateur (auteur de la note)
+  auteurId Int
+  auteur   User      @relation(fields: [auteurId], references: [id])
 }
 
