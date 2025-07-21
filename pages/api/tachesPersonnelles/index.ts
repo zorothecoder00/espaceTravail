@@ -1,12 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
-import { getAuthSession } from 'lib/auth'
+import { getAuthSession } from '@/lib/auth'
+
+type SousTacheInput = {
+  contenu: string  
+  statut?: string
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const session = await getSession({ req, res })
+  const session = await getAuthSession(req, res)
   if (!session) return res.status(401).json({ message: 'Non authentifié' })
 
-  const userId = session.user.id
+  const userId = parseInt(session.user.id)
 
   if (req.method === 'GET') {
     const taches = await prisma.tachePersonnelle.findMany({
@@ -32,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           auteurId: userId,
           superviseurId: superviseurId || null,
           sousTaches: {
-            create: sousTaches.map((s: any) => ({
+            create: sousTaches.map((s: SousTacheInput) => ({
               contenu: s.contenu,
               statut: s.statut || 'ATTENTE'
             }))
@@ -40,8 +45,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           notifications: superviseurId
             ? {
                 create: {
-                  contenu: `Nouvelle tâche à superviser : "${titre}"`,
-                  utilisateurId: superviseurId
+                  message: `Nouvelle tâche à superviser : "${titre}"`,
+                  userId: superviseurId
                 }
               }
             : undefined
@@ -51,6 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(201).json(nouvelleTache)
     } catch (err) {
+      console.error('Erreur interne', err)
       return res.status(500).json({ error: 'Erreur lors de la création de la tâche.' })
     }
   }

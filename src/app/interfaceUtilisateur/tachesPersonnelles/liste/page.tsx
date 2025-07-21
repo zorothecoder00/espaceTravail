@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { format, parseISO } from 'date-fns'
-import '@fullcalendar/common/main.css'
-import '@fullcalendar/daygrid/main.css'  
+import { format, parseISO } from 'date-fns'  
+import { EventClickArg } from '@fullcalendar/core'
 
-type SousTache = {
+type SousTache = {  
   id: number
   contenu: string
   statut: string
@@ -41,7 +40,7 @@ export default function ListeTachesPersonnelles() {
     color: tache.statut === 'TERMINEE' ? '#16a34a' : '#f59e0b', // Vert ou orange
   }))
 
-  const handleEventClick = (info: any) => {
+  const handleEventClick = (info: EventClickArg) => {
     const tache = info.event.extendedProps as Tache
     setTacheActive(tache)
   }

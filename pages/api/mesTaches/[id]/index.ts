@@ -38,6 +38,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               statutPersonnel: true,
               dateDebut: true,
               dateFin: true,
+              user: {
+                select: {
+                  id: true,
+                  prenom: true,
+                  nom: true,
+                },
+              },
             },
           },
           notifications: true,
@@ -84,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ message: 'Date de fin invalide' })
           }
           data.dateFin = dFin
-        } else if (statutPersonnel === Statut.TERMINEE) {
+        } else if (statutPersonnel === Statut.TERMINE) {
           data.dateFin = new Date() // par défaut si non fournie
         }
 
@@ -139,7 +146,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
         })
       }
-
+     
       return res.status(200).json({ message: 'Mise à jour réussie', data: updated })
     } catch (error) {
       console.error('Erreur PATCH mesTaches/[id] :', error)

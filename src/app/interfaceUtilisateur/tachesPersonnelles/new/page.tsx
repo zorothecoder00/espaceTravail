@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 type Utilisateur = {
   id: number
@@ -22,7 +22,7 @@ export default function NouvelleTachePersonnelle() {
   // Charger la liste des utilisateurs pour choisir un superviseur
   useEffect(() => {
     fetch('/api/utilisateurs') // à créer : liste des users
-      .then(res => res.json())
+      .then(res => res.json())  
       .then(data => setUtilisateurs(data))
   }, [])
 
@@ -56,7 +56,7 @@ export default function NouvelleTachePersonnelle() {
     })
 
     if (res.ok) {
-      router.push('/taches-personnelles')
+      router.push('/tachesPersonnelles/liste')
     } else {
       alert("Erreur lors de la création")
     }

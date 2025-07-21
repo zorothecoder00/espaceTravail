@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 
 type Utilisateur = {
-  id: number
+  id: number  
   nom: string
   prenom: string
 }
@@ -37,7 +37,12 @@ type TacheDetail = {
   deadline: string | null
   statut: string
   projet: Projet
-  TacheUtilisateur: { user: Utilisateur }[]
+  TacheUtilisateur: { 
+    user: Utilisateur
+    statutPersonnel?: string
+    dateDebut?: string
+    dateFin?: string 
+  }[]
   notifications: Notification[]
   messages: Message[]
 }
@@ -102,7 +107,25 @@ export default function TacheDetailPage() {
           <p><strong>Deadline :</strong> {tache.deadline ? new Date(tache.deadline).toLocaleString('fr-FR') : 'Non définie'}</p>
           <p><strong>Statut :</strong> <Badge>{tache.statut}</Badge></p>
           <p><strong>Projet :</strong> {tache.projet?.nom || 'Aucun'}</p>
-          <p><strong>Utilisateurs assignés :</strong> {tache.TacheUtilisateur.map(a => `${a.user.prenom} ${a.user.nom}`).join(', ') || 'Aucun'}</p>
+          <p>
+            <strong>Utilisateurs assignés :</strong>{' '}
+            {tache.TacheUtilisateur.length === 0 ? (
+              'Aucun'
+            ) : (
+              tache.TacheUtilisateur.map((a, i) => {
+                const debut = a.dateDebut ? new Date(a.dateDebut).toLocaleDateString('fr-FR') : '-'
+                const fin = a.dateFin ? new Date(a.dateFin).toLocaleDateString('fr-FR') : '-'
+                return (
+                  <span key={a.user.id}>
+                    {a.user.prenom} {a.user.nom} (
+                    statut: {a.statutPersonnel || '-'}, début: {debut}, fin: {fin}
+                    ){i < tache.TacheUtilisateur.length - 1 ? ', ' : ''}
+                  </span>
+                )
+              })    
+            )}
+          </p>
+
           <p><strong>Notifications :</strong> {tache.notifications.length}</p>
           <p><strong>Messages :</strong> {tache.messages.length}</p>
         </CardContent>
