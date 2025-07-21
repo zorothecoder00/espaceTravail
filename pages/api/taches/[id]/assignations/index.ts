@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import { getAuthSession } from "@/lib/auth";
-import { Prisma } from '@prisma/client'
+import { Prisma, Statut } from '@prisma/client'
 
 export default async function handler(  
   req: NextApiRequest,
@@ -13,41 +13,40 @@ export default async function handler(
   }
 
   if (req.method === "GET") {
-    try {
-      const { page = "1", limit = "10", search = "", sortField = "nom", sortOrder = "asc" } = req.query;
+    try{
+      const {
+        page = "1",
+        limit = "10",
+        search = "",
+        sortField = "user.nom",
+        sortOrder = "asc",
+      } = req.query;
 
       const pageNum = parseInt(page as string);
       const limitNum = parseInt(limit as string);
       const skip = (pageNum - 1) * limitNum;
       const searchStr = (search as string).trim();
-      // ---------- Sécurisation du champ de tri ----------
-      const allowedFields = ['user.nom', 'role']                // 👈 utilisé
-      const rawField      = allowedFields.includes(sortField as string)
-        ? (sortField as string)
-        : 'createdAt'                                           // fallback
 
-      const order: 'asc' | 'desc' = sortOrder === 'asc' ? 'asc' : 'desc'
+      const allowedFields = ["user.nom"];
+      const rawField = allowedFields.includes(sortField as string) ? (sortField as string) : "user.nom";
+      const order: "asc" | "desc" = sortOrder === "desc" ? "desc" : "asc";
 
-      // Construction dynamique pour Prisma
-      let orderBy: Prisma.MembreProjetOrderByWithRelationInput
-      if (rawField === 'user.nom') {
-        orderBy = { user: { nom: order } }
-      } else if (rawField === 'role') {
-        orderBy = { role: order }
+      let orderBy: Prisma.MembreProjetOrderByWithRelationInput;
+      if (rawField === "user.nom") {
+        orderBy = { user: { nom: order } };
       } else {
-        orderBy = { createdAt: order }
+        orderBy = { [rawField]: order };
       }
 
-      // 1. Vérifier que la tâche existe
-      const tache = await prisma.tache.findUnique({ where: { id: tacheId } });
+      // Étape 1 : Vérifier la tâche
+      const tache = await prisma.tache.findUnique({ where: { id: tacheId }, select: { projetId: true } });
       if (!tache) {
         return res.status(404).json({ message: "Tâche introuvable" });
       }
-
       const projetId = tache.projetId;
 
-      // 2. Récupérer membres du projet avec pagination et filtrage
-      const [membresProjet, total] = await Promise.all([
+      // Étape 2 & 3 en parallèle
+      const [membresProjet, total, assignations] = await Promise.all([
         prisma.membreProjet.findMany({
           where: {
             projetId,
@@ -65,28 +64,48 @@ export default async function handler(
             user: { nom: { contains: searchStr, mode: "insensitive" } },
           },
         }),
+
+        prisma.tacheUtilisateur.findMany({
+          where: {
+            tacheId,
+          },
+          select: {
+            userId: true,
+            statutPersonnel: true,
+            dateDebut: true,
+            dateFin: true,
+          },
+        }),
       ]);
 
-      // 3. Récupérer utilisateurs déjà assignés à la tâche
-      const assignations = await prisma.tacheUtilisateur.findMany({
-        where: { tacheId },
+      const membresAvecStatut = membresProjet.map((m) => {
+        const assignation = assignations.find((a) => a.userId === m.user.id);
+
+        // Vérification sécurisée du statutPersonnel
+        let statut: Statut | null = null;
+        if (
+          assignation?.statutPersonnel &&
+          Object.values(Statut).includes(assignation.statutPersonnel)
+        ) {
+          statut = assignation.statutPersonnel;
+        }
+
+        return {
+          id: m.user.id,
+          nom: m.user.nom,
+          estAssigne: !!assignation,
+          statutPersonnel: statut,
+          dateDebut: assignation?.dateDebut ?? null,
+          dateFin: assignation?.dateFin ?? null,
+        };
       });
-
-      const idsAssigne = assignations.map((a) => a.userId);
-
-      // 4. Construire réponse avec statut d'assignation
-      const membresAvecStatut = membresProjet.map((m) => ({
-        id: m.user.id,
-        nom: m.user.nom,
-        estAssigne: idsAssigne.includes(m.user.id),
-      }));
 
       return res.status(200).json({
         data: membresAvecStatut,
         total,
         totalPages: Math.ceil(total / limitNum),
       });
-    } catch (error) {
+    }catch (error) {
       console.error("Erreur API assignations tâche :", error);
       return res.status(500).json({ message: "Erreur serveur" });
     }

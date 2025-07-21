@@ -1,24 +1,28 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'   
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
+import { Statut } from '@prisma/client'
 
 type Membre = {
   id: number
   nom: string
   estAssigne: boolean
+  statutPersonnel: Statut | null
+  dateDebut: string | null
+  dateFin: string | null
 }
 
 export default function AssignationTachePage() {
   const { id } = useParams() as { id: string }
   const [membres, setMembres] = useState<Membre[]>([])
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
-  const [search, setSearch] = useState('')
-  const [sortField, setSortField] = useState('user.nom')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [sortField, setSortField] = useState('nom')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [totalPages, setTotalPages] = useState(1)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null)
@@ -99,6 +103,20 @@ export default function AssignationTachePage() {
     }
   }
 
+  const formatStatut = (statutPersonnel: Statut | null) => {
+    switch (statutPersonnel) {
+      case 'ATTENTE': return 'En attente'
+      case 'EN_COURS': return 'En cours'
+      case 'TERMINE': return 'Terminée'
+      default: return '-'
+    }
+  }
+
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return '-'
+    return new Intl.DateTimeFormat('fr-FR').format(new Date(dateStr))
+  }
+
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <div className="flex justify-between items-center mb-4">
@@ -128,7 +146,7 @@ export default function AssignationTachePage() {
         <div className="text-center text-gray-500 py-6">Aucun membre trouvé</div>
       ) : (
         <>
-          <table className="w-full mb-4 border">
+          <table className="w-full mb-4 border text-sm">
             <thead>
               <tr className="bg-gray-100">
                 <th className="p-2 text-left">Sélection</th>
@@ -141,6 +159,9 @@ export default function AssignationTachePage() {
                 >
                   Nom {sortField === 'nom' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                 </th>
+                <th className="p-2 text-left">Statut</th>
+                <th className="p-2 text-left">Date début</th>
+                <th className="p-2 text-left">Date fin</th>
               </tr>
             </thead>
             <tbody>
@@ -154,6 +175,9 @@ export default function AssignationTachePage() {
                     />
                   </td>
                   <td className="p-2">{membre.nom}</td>
+                  <td className="p-2">{formatStatut(membre.statutPersonnel)}</td>
+                  <td className="p-2">{formatDate(membre.dateDebut)}</td>
+                  <td className="p-2">{formatDate(membre.dateFin)}</td>
                 </tr>
               ))}
             </tbody>
