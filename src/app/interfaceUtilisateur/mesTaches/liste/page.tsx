@@ -125,6 +125,12 @@ export default function ListeTachesPage() {
                   >
                     Détails
                   </Link>
+                  <Link
+                    href={`/interfaceUtilisateur/mesTaches/edit/${tache.id}`}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
+                    Mettre à jour
+                  </Link>
                 </td>
               </tr>
             ))}

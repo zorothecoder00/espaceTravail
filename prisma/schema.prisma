@@ -128,6 +128,12 @@ model TacheUtilisateur {
   tacheId   Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
+  statutPersonnel    Statut?   // Nullable
+
+  dateDebut DateTime?         // Nullable
+
+  dateFin   DateTime?         // Nullable
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -278,5 +284,5 @@ model Note {
   // Relation avec l'utilisateur (auteur de la note)
   auteurId Int
   auteur   User      @relation(fields: [auteurId], references: [id])
-}
+}        
 

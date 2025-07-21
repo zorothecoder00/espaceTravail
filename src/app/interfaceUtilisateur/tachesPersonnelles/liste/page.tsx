@@ -1,175 +1,95 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import { format, parseISO } from 'date-fns'
+import '@fullcalendar/common/main.css'
+import '@fullcalendar/daygrid/main.css'  
+
+type SousTache = {
+  id: number
+  contenu: string
+  statut: string
+}
 
 type Tache = {
   id: number
   titre: string
+  contenu: string
   date: string
-  superviseur: {
-    nom: string
-  } | null
+  statut: string
+  sousTaches: SousTache[]
 }
 
-export default function TachesPersonnellesPage() {
+export default function ListeTachesPersonnelles() {
   const [taches, setTaches] = useState<Tache[]>([])
-  const [search, setSearch] = useState('')
-  const [sortField] = useState<'titre'>('titre') // fix: plus de select, donc champ fixe
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-
-  const fetchTaches = useCallback(async () => {
-    setLoading(true)
-    setMessage('')
-    try {
-      const res = await fetch(
-        `/api/tachesPersonnelles?search=${encodeURIComponent(search)}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
-      )
-      const data = await res.json()
-      setTaches(data.data)
-      setTotalPages(data.totalPages)
-    } catch (error) {
-      console.error('Erreur lors de la récupération des tâches :', error)
-    } finally {
-      setLoading(false)
-    }
-  }, [search, sortField, sortOrder, page])
+  const [tacheActive, setTacheActive] = useState<Tache | null>(null)
 
   useEffect(() => {
-    const delay = setTimeout(() => {
-      fetchTaches()
-    }, 400)
-    return () => clearTimeout(delay)
-  }, [fetchTaches])
+    fetch('/api/tachesPersonnelles')
+      .then(res => res.json())
+      .then(data => setTaches(data))
+  }, [])
 
-  const handleDelete = async (id: number) => {
-    const confirmDelete = confirm('Confirmer la suppression ?')
-    if (!confirmDelete) return
+  const events = taches.map(tache => ({
+    id: String(tache.id),
+    title: tache.titre,
+    date: tache.date,
+    extendedProps: tache,
+    color: tache.statut === 'TERMINEE' ? '#16a34a' : '#f59e0b', // Vert ou orange
+  }))
 
-    try {
-      const res = await fetch(`/api/tachesPersonnelles/${id}`, {
-        method: 'DELETE',
-      })
-      if (res.ok) {
-        setMessage('Tâche supprimée avec succès ✅')
-        fetchTaches()
-      } else {
-        setMessage('❌ Erreur lors de la suppression')
-      }
-    } catch (error) {
-      console.error('Erreur suppression :', error)
-      setMessage('❌ Une erreur est survenue')
-    }
+  const handleEventClick = (info: any) => {
+    const tache = info.event.extendedProps as Tache
+    setTacheActive(tache)
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Tâches personnelles</h1>
-        <Link
-          href="/interfaceUtilisateur/dashboard"
-          className="text-sm text-blue-600 underline"
-        >
-          Retour au dashboard
-        </Link>
-      </div>
+    <div className="p-6 max-w-5xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Mon planning personnel</h1>
 
-      <div className="flex justify-between items-center mb-4">
-        <input
-          type="text"
-          placeholder="Rechercher par titre..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded w-1/2"
-        />
-        <Link
-          href="/interfaceUtilisateur/tachesPersonnelles/new"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Nouvelle tâche
-        </Link>
-      </div>
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={events}
+        eventClick={handleEventClick}
+        locale="fr"
+        height="auto"
+        headerToolbar={{
+          start: 'prev,next today',
+          center: 'title',
+          end: 'dayGridMonth',
+        }}
+      />
 
-      <div className="mb-4 flex items-center gap-2">
-        <label className="text-sm">Ordre :</label>
-        <select
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
-          className="border p-1 rounded"
-        >
-          <option value="asc">Croissant (A-Z)</option>
-          <option value="desc">Décroissant (Z-A)</option>
-        </select>
-      </div>
+      {tacheActive && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white rounded shadow-md p-6 w-full max-w-md">
+            <h2 className="text-xl font-semibold">{tacheActive.titre}</h2>
+            <p className="mt-2 text-gray-700 text-sm">{tacheActive.contenu}</p>
+            <p className="text-sm mt-2"><strong>Date :</strong> {format(parseISO(tacheActive.date), 'dd/MM/yyyy')}</p>
+            <p className="text-sm"><strong>Statut :</strong> <span className={tacheActive.statut === 'TERMINEE' ? 'text-green-600' : 'text-orange-500'}>{tacheActive.statut}</span></p>
 
-      {message && <p className="text-green-600 mb-4">{message}</p>}
-      {loading ? (
-        <p>Chargement des tâches...</p>
-      ) : (
-        <table className="w-full border border-collapse">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">Titre</th>
-              <th className="border p-2">Date</th>
-              <th className="border p-2">Superviseur</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {taches.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="text-center p-4">
-                  Aucune tâche trouvée.
-                </td>
-              </tr>
-            ) : (
-              taches.map((tache) => (
-                <tr key={tache.id}>
-                  <td className="border p-2">{tache.titre}</td>
-                  <td className="border p-2">
-                    {new Date(tache.date).toLocaleDateString()}
-                  </td>
-                  <td className="border p-2">
-                    {tache.superviseur ? tache.superviseur.nom : 'Non défini'}
-                  </td>
-                  <td className="border p-2 space-x-2">
-                    <Link
-                      href={`/tachesPersonnelles/liste/${tache.id}`}
-                      className="text-blue-600 underline"
-                    >
-                      Détails
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(tache.id)}
-                      className="text-red-600 underline"
-                    >
-                      Supprimer
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+            <h3 className="mt-4 font-medium">Sous-tâches :</h3>
+            <ul className="list-disc list-inside text-sm">
+              {tacheActive.sousTaches.map(s => (
+                <li key={s.id}>
+                  {s.contenu} — <span className={s.statut === 'TERMINEE' ? 'text-green-600' : 'text-orange-600'}>{s.statut}</span>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              className="mt-6 px-4 py-2 bg-red-500 text-white rounded"
+              onClick={() => setTacheActive(null)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
       )}
-
-      <div className="mt-4 flex justify-center gap-2">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setPage(i + 1)}
-            className={`px-3 py-1 rounded border ${
-              page === i + 1 ? 'bg-blue-500 text-white' : ''
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }
