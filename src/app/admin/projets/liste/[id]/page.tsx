@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import ReactMarkdown from 'react-markdown'
 
 type Departement = {
   id: number
@@ -113,7 +114,16 @@ export default function ProjetDetailPage() {
       <Card>
         <CardContent className="space-y-2 pt-4">
           <p><strong>Nom :</strong> {projet.nom}</p>
-          <p><strong>Description :</strong> {projet.description || "Aucune description"}</p>
+          <div>
+            <strong>Description :</strong>
+            <div className="mt-2 text-sm leading-relaxed text-gray-800 dark:text-gray-200">
+              {projet.description ? (
+                <ReactMarkdown>{projet.description}</ReactMarkdown>
+              ) : (
+                <em>Aucune description</em>
+              )}
+            </div>
+          </div>
           <p><strong>Deadline :</strong> {projet.deadline ? new Date(projet.deadline).toLocaleDateString("fr-FR") : "Aucune"}</p>
           <p><strong>Statut :</strong> <Badge>{projet.statut}</Badge></p>
           <p><strong>Département :</strong> {projet.departement?.nom || "Aucun"}</p>

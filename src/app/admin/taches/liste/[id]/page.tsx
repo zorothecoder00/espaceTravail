@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"    
+import Link from "next/link" 
+import ReactMarkdown from "react-markdown"   
 
 type User = {
   id: number
@@ -63,6 +64,7 @@ export default function TacheDetailPage() {
         }
         const json = await res.json()
         setTache(json.data)
+
       } catch (error) {
         console.error(error)
       } finally {
@@ -83,11 +85,18 @@ export default function TacheDetailPage() {
       <Link href="/admin/taches/liste" className="text-blue-600 hover:underline mb-4 block">
         ← Retour à la liste des tâches
       </Link>
-
+  
       <Card>
-        <CardContent>
+        <CardContent>          
           <p><strong>Titre :</strong> {tache.titre}</p>
-          <p><strong>Description :</strong> {tache.description ?? "Aucune description"}</p>
+          <div>
+            <strong>Description :</strong>  
+            <div className="mt-2 space-y-2 text-sm leading-relaxed text-gray-800 dark:text-gray-200">
+              <ReactMarkdown>
+                {tache.description ?? "_Aucune description_"}
+              </ReactMarkdown>
+            </div>
+          </div>
           <p><strong>Statut :</strong> {tache.statut}</p>
           <p><strong>Deadline :</strong> {tache.deadline ? new Date(tache.deadline).toLocaleDateString("fr-FR") : "Non définie"}</p>
           <p><strong>Projet :</strong> {tache.projet.nom}</p>
@@ -143,4 +152,5 @@ export default function TacheDetailPage() {
       </Card>
     </div>
   )
+
 }

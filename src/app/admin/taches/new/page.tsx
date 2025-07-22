@@ -117,7 +117,7 @@ export default function NouvelleTache() {
           className="w-full border px-3 py-2 rounded"
           required
         />
-      </div>
+      </div>  
 
       {/* Description */}
       <div>
