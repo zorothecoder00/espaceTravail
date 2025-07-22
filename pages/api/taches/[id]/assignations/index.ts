@@ -125,7 +125,7 @@ export default async function handler(
 
       if (!Array.isArray(utilisateursIds)) {
         return res.status(400).json({ message: "Liste des utilisateurs invalide" });
-      }
+      }   
 
       // Récupérer assignations existantes
       const anciennesAssignations = await prisma.tacheUtilisateur.findMany({

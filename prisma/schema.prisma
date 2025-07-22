@@ -28,7 +28,14 @@ enum Role {
   SUPER_ADMIN
   ADMIN
   UTILISATEUR
-}  
+} 
+
+enum Priorite {
+  BASSE
+  MOYENNE
+  ELEVEE
+}
+
 
 model User {
   id                         Int                @id @default(autoincrement())
@@ -62,7 +69,15 @@ model User {
 
   // Supervision de tâches personnelles d'autres utilisateurs
   tachesPersonnellesSupervisees TachePersonnelle[] @relation("SuperviseurTachePersonnelle")    
+
   notes                       Note[]
+
+  sousTachesProjetSousResponsabilite SousTacheUtilisateur[]
+
+  commentaires                Commentaire[]
+
+  sousTachesDontJeSuisResponsable SousTacheProjet[] @relation("ResponsableSousTacheProjet")
+
 }
 
 model Document {       
@@ -75,21 +90,23 @@ model Document {
   updatedAt     DateTime          @updatedAt  
   partages      PartageDocument[]
   notifications Notification[]    @relation("DocumentNotification")
+  sousTachesProjet SousTacheProjet[] @relation("PiecesJointesSousTache")
+
 
 }
 
-enum Statut {  
+enum Statut {     
   ATTENTE
   EN_COURS
   TERMINE
-}
+}  
 
 model Projet {   
   id            Int               @id @default(autoincrement())
   nom           String
   description   String?
   deadline      DateTime?   
-  statut        Statut              @default(ATTENTE)
+  statut        Statut            @default(ATTENTE)
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   departement   Departement       @relation(fields: [departementId], references: [id], onDelete: Cascade)
@@ -104,9 +121,9 @@ model Projet {
   notifications Notification[]    @relation("ProjetNotification")
   messages      Message[]
 
-}     
+}           
  
-model Tache {
+model Tache {  
   id               Int                @id @default(autoincrement())
   titre            String
   description      String?
@@ -120,8 +137,68 @@ model Tache {
   TacheUtilisateur TacheUtilisateur[]
   notifications    Notification[]     @relation("TacheNotification")
   messages         Message[]
+  sousTachesProjet SousTacheProjet[]
 
 }  
+
+model SousTacheProjet {
+  id          Int       @id @default(autoincrement())
+  titre       String
+  description String?
+  tache       Tache     @relation(fields: [tacheId], references: [id], onDelete: Cascade)
+  tacheId     Int
+  statut      Statut    @default(ATTENTE)
+  deadline    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  utilisateurs SousTacheUtilisateur[]
+  notifications Notification[]      @relation("SousTacheProjetNotification")
+   // ✅ Nouveau : Responsable unique
+  responsable   User?    @relation("ResponsableSousTacheProjet", fields: [responsableId], references: [id], onDelete: SetNull)
+  responsableId Int?
+
+  // ✅ Nouveau : Priorité
+  priorite     Priorite?            @default(MOYENNE)
+
+  // ✅ Nouveau : Pièces jointes
+  piecesJointes Document[]          @relation("PiecesJointesSousTache")
+
+  // ✅ Nouveau : Commentaires / Approbations
+  commentaires  Commentaire[]
+}
+
+model SousTacheUtilisateur {
+  sousTacheProjet   SousTacheProjet @relation(fields: [sousTacheProjetId], references: [id], onDelete: Cascade)
+  sousTacheProjetId Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+
+  statutPersonnel Statut?   // ATTENTE, EN_COURS, TERMINE
+
+  dateDebut       DateTime?
+  dateFin         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([sousTacheProjetId, userId])
+}
+
+model Commentaire {
+  id               Int              @id @default(autoincrement())
+  titre            String?
+  contenu          String
+  estApprobation   Boolean          @default(false)
+  auteur           User             @relation(fields: [auteurId], references: [id])
+  auteurId         Int
+  sousTacheProjet  SousTacheProjet  @relation(fields: [sousTacheProjetId], references: [id], onDelete: Cascade)
+  sousTacheProjetId Int
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+}
+
 
 model TacheUtilisateur {  
   tache     Tache    @relation(fields: [tacheId], references: [id], onDelete: Cascade)
@@ -183,19 +260,19 @@ model PartageDocument {
 }
 
 model Notification {
-  id               Int      @id @default(autoincrement())
+  id               Int          @id @default(autoincrement())
   userId           Int                          // Destinataire
 
   emetteurId       Int?                           // Celui qui déclenche la notif
 
   message          String                       // Ex: "Tu as reçu une nouvelle tâche"
 
-  vu               Boolean     @default(false)
+  vu               Boolean      @default(false)
   dateNotification DateTime     @default(now())
 
   // Optionnels selon le contexte
   documentId       Int?
-  projetId         Int?
+  projetId         Int?   
   tacheId          Int?
   messageId        Int?
   lien             String?
@@ -216,9 +293,11 @@ model Notification {
   tachePersonnelleId Int?
   tachePersonnelle   TachePersonnelle?      @relation("TachePersonnelleNotification", fields: [tachePersonnelleId], references: [id], onDelete: Cascade)
 
+  sousTacheProjetId Int?
+  sousTacheProjet  SousTacheProjet? @relation("SousTacheProjetNotification",fields: [sousTacheProjetId], references: [id], onDelete: Cascade)
+
 }
    
-
 model Message {
   id         Int              @id @default(autoincrement())
   contenu    String
@@ -259,7 +338,7 @@ model TachePersonnelle {
   superviseurId  Int?     
 
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  updatedAt      DateTime @updatedAt    
 
   notifications  Notification[] @relation("TachePersonnelleNotification")
   sousTaches     SousTache[]
