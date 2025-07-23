@@ -14,8 +14,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const tache = await prisma.tache.findUnique({
         where: { id },
         include: {
-          projet: { select: { id: true, nom: true } },
-          TacheUtilisateur: { include: { user: { select: { id: true, nom: true, prenom: true } } } },
+          projet: { 
+            select: { 
+              id: true, 
+              nom: true 
+            } 
+          },
+          TacheUtilisateur: { 
+            include: { 
+              user: { 
+                select: { 
+                  id: true,
+                  nom: true,
+                  prenom: true 
+                } 
+              } 
+            } 
+          },
+          sousTachesProjet: {
+            include: {
+              responsable: {
+                select: {
+                  id: true,
+                  nom: true,
+                  prenom: true,
+                },
+              },
+              utilisateurs: {
+                include: {
+                  user: {
+                    select: {
+                      id: true,
+                      nom: true,
+                      prenom: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           notifications: true,
           messages: true,
         },

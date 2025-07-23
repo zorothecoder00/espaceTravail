@@ -5,13 +5,51 @@ import { useParams } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link" 
-import ReactMarkdown from "react-markdown"   
+import ReactMarkdown from "react-markdown"
+import { Statut, Priorite } from '@prisma/client'   
 
 type User = {
   id: number
   nom: string
   prenom: string
 }
+
+type Document = {
+  id: number
+  titre: string
+  fichier: string
+}
+
+type Commentaire = {
+  id: number
+  titre?: string
+  contenu: string
+  auteur?: User
+  createdAt?: string
+}
+
+type SousTacheProjet = {
+  id: number
+  titre: string
+  description?: string | null
+  deadline?: string | null
+  statut: Statut
+  responsable?: User | null
+  utilisateurs?: SousTacheUtilisateur[]
+  priorite?: Priorite
+  commentaires?: Commentaire[] | null
+  pieceJointe?: Document[] | null
+}
+
+type SousTacheUtilisateur = {
+  sousTacheProjet: SousTacheProjet
+  user: User
+  statutPersonnel?: Statut
+  dateDebut?: string
+  dateFin?: string
+
+}
+
 
 type TacheUtilisateur = {
   id: number
@@ -41,12 +79,13 @@ type TacheDetail = {
   titre: string
   description: string | null
   deadline: string | null
-  statut: string
+  statut: Statut
   projet: Projet
+  sousTachesProjet: SousTacheProjet[]
   TacheUtilisateur: TacheUtilisateur[]
   notifications: Notification[]
   messages: Message[]
-}
+}   
 
 export default function TacheDetailPage() {
   const { id } = useParams() as { id: string }
@@ -150,6 +189,113 @@ export default function TacheDetailPage() {
           )}
         </CardContent>
       </Card>
+
+      <Card>
+        <CardContent>
+          <h2 className="text-lg font-semibold mb-2">Sous-tâches</h2>
+          {tache.sousTachesProjet.length === 0 ? (
+            <p>Aucune sous-tâche</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm text-left border border-gray-200">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="p-2 border">Titre</th>
+                    <th className="p-2 border">Responsable</th>
+                    <th className="p-2 border">Date début</th>
+                    <th className="p-2 border">Date fin</th>
+                    <th className="p-2 border">Statut personnel</th>
+                    <th className="p-2 border">Priorité</th>
+                    <th className="p-2 border">Pièces jointes</th>
+                    <th className="p-2 border">Commentaires</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tache.sousTachesProjet.map((st) => {
+                    const utilisateurs = st.utilisateurs ?? []
+                    if(utilisateurs?.length > 0){
+                      return utilisateurs.map((u) => (
+                        <tr key={`${st.id}-${u.user.id}`}>
+                        <td className="p-2 border">{st.titre}</td>
+                        <td className="p-2 border">{st.responsable ? `${st.responsable.nom} ${st.responsable.prenom}` : '—'}</td>
+                        <td className="p-2 border">{u.dateDebut ? new Date(u.dateDebut).toLocaleDateString("fr-FR") : '—'}</td>
+                        <td className="p-2 border">{u.dateFin ? new Date(u.dateFin).toLocaleDateString("fr-FR") : '—'}</td>
+                        <td className="p-2 border">{u.statutPersonnel ?? '—'}</td>
+                        <td className="p-2 border">{st.priorite ?? '—'}</td>
+                        <td className="p-2 border">
+                          {st.pieceJointe && st.pieceJointe.length > 0 ? (
+                            <ul className="list-disc pl-4">
+                              {st.pieceJointe.map((doc, i) => (
+                                <li key={i}>
+                                <a
+                                  href={doc.fichier}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 underline"
+                                >
+                                  {doc.titre || `Document ${i + 1}`}
+                                </a>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : '—'}
+                        </td>
+                        <td className="p-2 border">
+                          {st.commentaires && st.commentaires.length > 0 ? (
+                            <ul className="list-disc pl-4">
+                              {st.commentaires.map((c, i) => (
+                                <li key={i}>{c.contenu}</li>
+                              ))}
+                            </ul>
+                          ) : '—'}
+                        </td>
+                      </tr>
+                    )) 
+                    }else{
+                      return(
+                      <tr key={st.id}>
+                        <td className="p-2 border">{st.titre}</td>
+                        <td className="p-2 border">{st.responsable ? `${st.responsable.nom} ${st.responsable.prenom}` : '—'}</td>
+                        <td className="p-2 border">—</td>
+                        <td className="p-2 border">—</td>
+                        <td className="p-2 border">—</td>
+                        <td className="p-2 border">{st.priorite ?? '—'}</td>
+                        <td className="p-2 border">
+                          {st.pieceJointe && st.pieceJointe.length > 0 ? (
+                            <ul className="list-disc pl-4">
+                              {st.pieceJointe.map((doc, i) => (
+                                <li key={i}>{doc.titre}</li>
+                              ))}
+                            </ul>
+                          ) : '—'}
+                        </td>
+                        <td className="p-2 border">
+                          {st.commentaires && st.commentaires.length > 0 ? (
+                            <ul className="list-disc pl-4">
+                              {st.commentaires.map((c, i) => (
+                                <li key={i}>
+                                  {c.contenu}
+                                  {c.auteur && (
+                                    <span className="text-gray-500 text-xs"> — {c.auteur.nom} {c.auteur.prenom}</span>
+                                  )}
+                                </li>
+
+                              ))}
+                            </ul>
+                          ) : '—'}
+                        </td>
+                      </tr>
+                    )
+                    }
+                                           
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
     </div>
   )
 

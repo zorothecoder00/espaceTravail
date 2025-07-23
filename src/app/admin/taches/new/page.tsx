@@ -328,7 +328,7 @@ export default function NouvelleTache() {
               },
             ])
           }
-          className="mt-2 text-blue-600 underline"
+          className="mt-2 text-blue-600 underline hover:cursor-pointer"
         >
           + Ajouter une sous-tâche
         </button>
