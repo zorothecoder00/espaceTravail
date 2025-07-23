@@ -2,16 +2,23 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { Statut } from "@prisma/client"; 
+import { Statut, Priorite, RoleProjet } from "@prisma/client"; 
 import Link from 'next/link'         
   
-type Projet = {
+type Projet = {   
   id: number
   nom: string
 }
 
+type MembreProjet = {
+  id: number
+  nom: string
+  prenom: string
+  role: RoleProjet
+}
+
 // Type explicite du formulaire
-type FormState = {
+type Tache = {
   titre: string
   description: string
   projetId: string
@@ -19,11 +26,20 @@ type FormState = {
   statut: Statut
 }
 
+type SousTache = {
+  titre: string
+  description?: string
+  deadline?: string
+  statut: Statut
+  responsableId?: string
+  priorite?: Priorite
+}
+
 export default function NouvelleTache() {
   const router = useRouter()
 
   // useState avec type explicite et valeur initiale correcte
-  const [form, setForm] = useState<FormState>({
+  const [form, setForm] = useState<Tache>({
     titre: '',
     description: '',
     projetId: '',
@@ -31,6 +47,8 @@ export default function NouvelleTache() {
     statut: Statut.ATTENTE,   // Valeur initiale correcte ici
   })
   const [projets, setProjets] = useState<Projet[]>([])
+  const [membres, setMembres] = useState<MembreProjet[]>([])
+  const [sousTaches, setSousTaches] = useState<SousTache[]>([])
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -38,7 +56,7 @@ export default function NouvelleTache() {
 
   useEffect(() => {
     fetch('/api/projets')
-      .then(res => res.json())
+      .then(res => res.json())   
       .then(data => {
         if (Array.isArray(data.data)) {
           setProjets(data.data)
@@ -51,6 +69,29 @@ export default function NouvelleTache() {
       })
   }, [])
 
+  // **NOUVEAU**: Charger les membres dès que projetId change
+  useEffect(() => {
+    if (!form.projetId) {
+      setMembres([]) // vide si pas de projet sélectionné
+      return
+    }
+
+    fetch(`/api/projets/${form.projetId}/membres`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data.data)) {
+          setMembres(data.data)
+        } else {
+          setMembres([])
+          console.error("Format inattendu membres :", data)
+        }
+      })
+      .catch(err => {
+        setMembres([])
+        console.error("Erreur chargement membres :", err)
+      })
+  }, [form.projetId])
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -62,7 +103,7 @@ export default function NouvelleTache() {
       const res = await fetch('/api/taches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, sousTaches }),
       })
 
       if (res.ok) {
@@ -171,6 +212,128 @@ export default function NouvelleTache() {
           <option value={Statut.TERMINE}>✅ Terminée</option>
         </select>
       </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Sous-tâches</h3>
+
+        {sousTaches.map((sousTache, index) => (
+          <div key={index} className="border p-4 rounded bg-gray-50 space-y-2">
+            <input
+              type="text"
+              placeholder="Titre"
+              value={sousTache.titre}
+              onChange={(e) => {
+                const updated = [...sousTaches]
+                updated[index].titre = e.target.value
+                setSousTaches(updated)
+              }}
+              className="w-full border px-2 py-1 rounded"
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Description"
+              value={sousTache.description || ''}
+              onChange={(e) => {
+                const updated = [...sousTaches]
+                updated[index].description = e.target.value
+                setSousTaches(updated)
+              }}
+              className="w-full border px-2 py-1 rounded"
+            />
+
+            <input
+              type="datetime-local"
+              value={sousTache.deadline || ''}
+              onChange={(e) => {
+                const updated = [...sousTaches]
+                updated[index].deadline = e.target.value
+                setSousTaches(updated)
+              }}
+              className="w-full border px-2 py-1 rounded"
+            />
+
+            <select
+              value={sousTache.statut}
+              onChange={(e) => {
+                const updated = [...sousTaches]
+                updated[index].statut = e.target.value as Statut
+                setSousTaches(updated)
+              }}
+              className="w-full border px-2 py-1 rounded"
+            >
+              <option value={Statut.ATTENTE}>🕓 En attente</option>
+              <option value={Statut.EN_COURS}>🔄 En cours</option>
+              <option value={Statut.TERMINE}>✅ Terminée</option>
+            </select>
+
+            <label className="block mb-1 font-medium">Responsable</label>
+            <select
+              value={sousTache.responsableId || ''}
+              onChange={(e) => {
+                const updated = [...sousTaches]
+                updated[index].responsableId = e.target.value
+                setSousTaches(updated)
+              }}
+              className="w-full border px-2 py-1 rounded"
+            >
+              <option value="">-- Choisir un responsable --</option>
+              {membres.map(membre => (
+                <option key={membre.id} value={membre.id.toString()}>
+                  {membre.nom} {membre.prenom} ({membre.role})
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={sousTache.priorite || Priorite.MOYENNE}
+              onChange={(e) => {
+                const updated = [...sousTaches]
+                updated[index].priorite = e.target.value as Priorite
+                setSousTaches(updated)
+              }}
+              className="w-full border px-2 py-1 rounded"
+            >
+              <option value={Priorite.BASSE}>🟢 Basse</option>
+              <option value={Priorite.MOYENNE}>🟡 Moyenne</option>
+              <option value={Priorite.ELEVEE}>🔴 Haute</option>
+            </select>
+
+            <button
+              type="button"
+              onClick={() => {
+                const updated = sousTaches.filter((_, i) => i !== index)
+                setSousTaches(updated)
+              }}
+              className="text-red-600 text-sm underline"
+            >
+              Supprimer cette sous-tâche
+            </button>
+          </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={() =>
+            setSousTaches([
+              ...sousTaches,
+              {
+                titre: '',
+                description: '',
+                deadline: '',
+                statut: Statut.ATTENTE,
+                responsableId: '',
+                priorite: Priorite.MOYENNE,
+              },
+            ])
+          }
+          className="mt-2 text-blue-600 underline"
+        >
+          + Ajouter une sous-tâche
+        </button>
+      </div>
+
 
       {/* Bouton */}
       <div>
