@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
 import { Prisma, Statut } from '@prisma/client'
-import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/lib/auth'   
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getAuthSession(req, res)
@@ -41,8 +41,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               user: {
                 select: {
                   id: true,
-                  prenom: true,
+                  prenom: true,    
                   nom: true,
+                },
+              },
+            },
+          },
+          sousTachesProjet: {
+            include: {
+              responsable: {
+                select: {
+                  id: true,
+                  nom: true,
+                  prenom: true,
+                },
+              },
+              utilisateurs: {
+                include: {
+                  user: {
+                    select: {
+                      id: true,
+                      nom: true,
+                      prenom: true,
+                    },
+                  },
                 },
               },
             },
