@@ -146,13 +146,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  if (req.method === 'POST') {
-    const session = await getAuthSession()
+  if (req.method === 'POST') {  
+    const session = await getAuthSession(req, res)
     if (!session || !session.user) {
       return res.status(401).json({ error: 'Non authentifié.' })
     }
 
-    const sousTacheId = parseInt(req.query.sousTacheid as string)
+    const sousTacheId = parseInt(req.body.sousTacheId)
 
     if (isNaN(sousTacheId)) {
       return res.status(400).json({ error: 'ID invalide.' })

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation' 
+import { useParams, useRouter } from 'next/navigation' 
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { Statut } from '@prisma/client'    
@@ -27,6 +27,7 @@ interface SousTacheProjet {
 }
 
 export default function AssignationsSousTaches() {
+
   const { id } = useParams() as { id: string }
   const [sousTaches, setSousTaches] = useState<SousTacheProjet[]>([])
   const [selectedSousTacheId, setSelectedSousTacheId] = useState<number | ''>('')
@@ -87,6 +88,8 @@ export default function AssignationsSousTaches() {
     )
   }
 
+  const router = useRouter()
+
   const handleSubmit = async () => {
     if (!selectedSousTacheId) {
       toast.error("Veuillez sélectionner une sous-tâche.")
@@ -103,6 +106,9 @@ export default function AssignationsSousTaches() {
 
       if (res.ok) {
         toast.success("Assignations mises à jour.")
+        setTimeout(()=>{
+          router.push("/admin/taches/liste")
+        },2500)
       } else {
         const err = await res.json()
         toast.error(`Erreur: ${err.error || 'Inconnue'}`)
@@ -165,11 +171,7 @@ export default function AssignationsSousTaches() {
               >
                 <div>
                   <span className="font-medium">{user.nom}</span>
-                  {user.statutPersonnel && (
-                    <span className="ml-2 text-sm text-gray-500">
-                      ({user.statutPersonnel})
-                    </span>
-                  )}
+                  
                 </div>
                 <button
                   onClick={() => toggleAssignation(user.id)}
