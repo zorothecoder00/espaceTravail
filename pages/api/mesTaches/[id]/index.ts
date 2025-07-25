@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
 import { Prisma, Statut } from '@prisma/client'
-import { getAuthSession } from '@/lib/auth'   
+import { getAuthSession } from '@/lib/auth'                      
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getAuthSession(req, res)
-  if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
+  if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })  
 
   const id = parseInt(req.query.id as string)
   if (isNaN(id)) return res.status(400).json({ message: 'ID invalide' })

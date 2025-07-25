@@ -2,6 +2,14 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button"
 
 type Tache = {
   id: string
@@ -169,12 +177,33 @@ export default function ListeTaches() {
                   >
                     Détails
                   </Link>
+                  {/*
                   <Link
                     href={`/admin/taches/${t.id}/assignations`}
                     className="text-indigo-600 hover:underline text-sm"
                   >
                     Assignations
                   </Link>
+                  */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="text-indigo-600 text-sm px-0 hover:underline">
+                        Assignations
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/admin/taches/${t.id}/assignations`}>
+                          Tâche principale
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/admin/taches/${t.id}/assignationsSousTaches`}>
+                          Sous-tâches
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <Link
                     href={`/admin/taches/edit/${t.id}`}
                     className="text-blue-600 hover:underline text-sm"
