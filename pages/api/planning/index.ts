@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import prisma from "@/lib/prisma"  
-import getAuthSession from "@/lib/auth"
+import { getAuthSession } from "@/lib/auth"  
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse)
 {
-  const session = await getAuthSession(req, res)
+  const session = await getAuthSession(req, res)   
 
   if(!session || !session?.user?.nom){
     return res.status(401).json({ message: "Vous n'êtes pas autorisés" })
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try{
       const plannings = await prisma.planning.findMany({
-        where: { id: parseInt(session.user.id) }
+        where: { userId: parseInt(session.user.id) },
         orderBy: { date:'desc'},  
       })
 
@@ -39,7 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         titre,
         date: new Date(date),
         slug,
-        taches, 
+        taches,
+        userId: parseInt(session.user.id) 
       }      
     })
 

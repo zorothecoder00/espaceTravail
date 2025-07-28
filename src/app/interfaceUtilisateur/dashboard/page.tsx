@@ -51,9 +51,9 @@ export default async function UtilisateurDashboard() {
             <CheckSquare className="w-5 h-5" />
             Mes Tâches
           </Link>
-          <Link href="/interfaceUtilisateur/planning/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Link href="/interfaceUtilisateur/planning/vue" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <Calendar className="w-5 h-5" />  
-            Mon agenda personnel 
+            Mon agenda personnel  
           </Link>
           <Link href="/interfaceUtilisateur/mesDocuments/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FileText className="w-5 h-5" />
@@ -61,7 +61,7 @@ export default async function UtilisateurDashboard() {
           </Link>
           <Link href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <Calendar className="w-5 h-5" />
-            Calendrier
+            Calendrier   
           </Link>
         </nav>
       </aside>
