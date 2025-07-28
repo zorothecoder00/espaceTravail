@@ -72,6 +72,8 @@ model User {
 
   sousTachesDontJeSuisResponsable SousTacheProjet[] @relation("ResponsableSousTacheProjet")
 
+  plannings                    Planning[]
+
 }     
 
 model Document {       
@@ -323,15 +325,17 @@ model Note {
 
   // Relation avec l'utilisateur (auteur de la note)
   auteurId Int
-  auteur   User      @relation(fields: [auteurId], references: [id])
+  auteur   User      @relation(fields: [auteurId], references: [id], onDelete: Cascade)
 }        
 
 model Planning {
-  id Int @id @default(autoincrement())
-  titre String @db.VarChar(191)
-  date DateTime @default(now())
-  slug String @unique
-  taches String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int           @id @default(autoincrement())   
+  titre     String        @db.VarChar(191)
+  date      DateTime      @default(now())
+  slug      String        @unique
+  taches    String[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  userId    Int
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
