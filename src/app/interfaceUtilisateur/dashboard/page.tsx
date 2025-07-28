@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {     
-  LayoutDashboard,               
+  LayoutDashboard,                  
   FolderKanban,   
   CheckSquare,       
   FileText,   
@@ -51,9 +51,9 @@ export default async function UtilisateurDashboard() {
             <CheckSquare className="w-5 h-5" />
             Mes Tâches
           </Link>
-          <Link href="/interfaceUtilisateur/tachesPersonnelles/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
-            <CheckSquare className="w-5 h-5" />
-            Mon agenda de Tâches 
+          <Link href="/interfaceUtilisateur/planning/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+            <Calendar className="w-5 h-5" />  
+            Mon agenda personnel 
           </Link>
           <Link href="/interfaceUtilisateur/mesDocuments/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FileText className="w-5 h-5" />
@@ -112,8 +112,8 @@ export default async function UtilisateurDashboard() {
             <h2 className="text-lg font-semibold text-gray-700">Documents reçus</h2>
             <p className="text-3xl font-bold text-green-600">{documents}</p>
           </div>
-        </div>
-      </main>
-    </div>  
+        </div>  
+      </main>      
+    </div>       
   )      
 }      

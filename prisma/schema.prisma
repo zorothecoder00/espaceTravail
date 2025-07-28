@@ -7,7 +7,7 @@
 generator client {               
   provider = "prisma-client-js"            
   //output   = "./node_modules/@prisma/client"        
-}                   
+}                      
 
 datasource db {  
   provider = "postgresql"
@@ -64,12 +64,6 @@ model User {
 
   notifications               Notification[]     @relation("NotificationDestinataire")
 
-  // Tâches personnelles créées par cet utilisateur
-  tachesPersonnellesCreees    TachePersonnelle[] @relation("AuteurTachePersonnelle")
-
-  // Supervision de tâches personnelles d'autres utilisateurs
-  tachesPersonnellesSupervisees TachePersonnelle[] @relation("SuperviseurTachePersonnelle")    
-
   notes                       Note[]
 
   sousTachesProjetSousResponsabilite SousTacheUtilisateur[]
@@ -78,7 +72,7 @@ model User {
 
   sousTachesDontJeSuisResponsable SousTacheProjet[] @relation("ResponsableSousTacheProjet")
 
-}
+}     
 
 model Document {       
   id            Int               @id @default(autoincrement())
@@ -123,7 +117,7 @@ model Projet {
 
 }           
  
-model Tache {  
+model Tache {             
   id               Int                @id @default(autoincrement())
   titre            String
   description      String?
@@ -152,7 +146,7 @@ model SousTacheProjet {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  utilisateurs SousTacheUtilisateur[]
+  utilisateurs SousTacheUtilisateur[]   
   notifications Notification[]      @relation("SousTacheProjetNotification")
    // ✅ Nouveau : Responsable unique
   responsable   User?    @relation("ResponsableSousTacheProjet", fields: [responsableId], references: [id], onDelete: SetNull)
@@ -257,7 +251,7 @@ model PartageDocument {
   historique    String?  
 
   @@unique([documentId, userId, departementId, projetId])
-}
+}      
 
 model Notification {
   id               Int          @id @default(autoincrement())
@@ -290,9 +284,6 @@ model Notification {
 
   messageAssocie   Message?     @relation("MessageNotification",fields: [messageId], references: [id], onDelete: Cascade)
 
-  tachePersonnelleId Int?
-  tachePersonnelle   TachePersonnelle?      @relation("TachePersonnelleNotification", fields: [tachePersonnelleId], references: [id], onDelete: Cascade)
-
   sousTacheProjetId Int?
   sousTacheProjet  SousTacheProjet? @relation("SousTacheProjetNotification",fields: [sousTacheProjetId], references: [id], onDelete: Cascade)
 
@@ -322,36 +313,6 @@ model Message {
   tacheId       Int?
   notifications    Notification[]     @relation("MessageNotification")
 }
-
-model TachePersonnelle {
-  id             Int      @id @default(autoincrement())
-  titre          String
-  contenu        String?  @db.Text   // Ici c'est la description riche en HTML ou Markdow
-
-  date           DateTime @default(now()) // Date de la tâche (journalier)
-  statut         Statut   @default(ATTENTE)
-
-  auteur         User     @relation("AuteurTachePersonnelle", fields: [auteurId], references: [id], onDelete: Cascade)
-  auteurId       Int
-
-  superviseur    User?    @relation("SuperviseurTachePersonnelle", fields: [superviseurId], references: [id], onDelete: SetNull)
-  superviseurId  Int?     
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt    
-
-  notifications  Notification[] @relation("TachePersonnelleNotification")
-  sousTaches     SousTache[]
-}
-
-model SousTache {
-  id                 Int    @id @default(autoincrement())
-  contenu            String
-  statut             Statut @default(ATTENTE) // si tu veux suivre les étapes individuellement
-  tachePersonnelleId Int
-  tachePersonnelle   TachePersonnelle @relation(fields: [tachePersonnelleId], references: [id])
-}
-
   
 model Note {
   id        Int      @id @default(autoincrement())
@@ -365,3 +326,12 @@ model Note {
   auteur   User      @relation(fields: [auteurId], references: [id])
 }        
 
+model Planning {
+  id Int @id @default(autoincrement())
+  titre String @db.VarChar(191)
+  date DateTime @default(now())
+  slug String @unique
+  taches String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
