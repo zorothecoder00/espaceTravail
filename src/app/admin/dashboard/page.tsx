@@ -77,7 +77,7 @@ export default async function Dashboard() {
           Calendrier
           </Link>
         </nav>
-      </aside>  
+      </aside>    
  
       {/* Main content */}          
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">   
@@ -86,7 +86,7 @@ export default async function Dashboard() {
           <div className="flex items-center gap-4">
             <Link href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">   
               Notifications
-              <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">   
                 3
               </span>  
             </Link>

@@ -81,7 +81,7 @@ export default function AjouterUtilisateur() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <div className="mb-4">
+      <div className="mb-4 ">
         <Link href="/admin/utilisateurs/liste" className="text-blue-600 hover:underline">
           ← Retour à la liste des utilisateurs
         </Link>
