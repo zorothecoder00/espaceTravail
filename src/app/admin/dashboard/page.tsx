@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth"; // helper
 import { Role } from '@prisma/client';
 import { getDashboardData } from '@/lib/getAdminDashboardStats'      
 import {             
-  LayoutDashboard,                                                     
+  LayoutDashboard,                                                        
   Users,              
   Building2,         
   FolderKanban,  
@@ -12,8 +12,9 @@ import {
   Calendar  
 } from "lucide-react";         
 import Image from 'next/image'  
-import ProjectActivityChart from '@/components/ProjectActivityChart'
-import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'   
+/*import ProjectActivityChart from '@/components/ProjectActivityChart'
+import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'*/ 
+import ChartSection from '@/components/ChartSection'  
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
 import Link from "next/link"  
    
@@ -147,9 +148,10 @@ export default async function Dashboard() {
           <h3 className="text-xl font-bold mb-4">Avancement des Projets</h3>
           <div className="h-64 flex items-center justify-center text-gray-400">[ Graphique ici bientôt 📊 ]</div>
         </div>*/}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-          <ProjectActivityChart />
-          <ProjectDoughnutChart />
+        <div className="">
+          {/*<ProjectActivityChart />
+          <ProjectDoughnutChart />*/}
+          <ChartSection />  {/* rendu uniquement côté client, dynamique */}
         </div>
       </main>
     </div>
