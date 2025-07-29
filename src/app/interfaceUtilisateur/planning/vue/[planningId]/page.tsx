@@ -30,7 +30,7 @@ export default function VoirPlanning() {
   const [destinataire, setDestinataire] = useState('')
   const [envoiEnCours, setEnvoiEnCours] = useState(false)
   const [confirmation, setConfirmation] = useState('')
-
+      
   const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
   const [loadingUtilisateurs, setLoadingUtilisateurs] = useState(false)
 
@@ -40,7 +40,7 @@ export default function VoirPlanning() {
       const lienComplet = `${window.location.origin}${lienPlanning}`
       setMessage(`Voici le planning à consulter : <a href="${lienComplet}" target="_blank" rel="noopener noreferrer">${lienComplet}</a>`)
     }
-  }, [lienPlanning])
+  }, [lienPlanning])     
 
   useEffect(() => {
     const fetchPlanning = async () => {  

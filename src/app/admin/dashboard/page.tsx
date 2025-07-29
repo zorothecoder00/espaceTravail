@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation"; 
 import { getAuthSession } from "@/lib/auth"; // helper  
-import prisma from "@/lib/prisma";               
-import { Statut, Role } from "@prisma/client";          
+import { Role } from '@prisma/client';
+import { getDashboardData } from '@/lib/getAdminDashboardStats'      
 import {             
-  LayoutDashboard,                                                   
+  LayoutDashboard,                                                     
   Users,              
   Building2,         
   FolderKanban,  
@@ -17,64 +17,21 @@ import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'
 import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
 import Link from "next/link"  
    
-export default async function Dashboard() {       
-  const session = await getAuthSession(); 
+export default async function Dashboard() {         
+  const session = await getAuthSession();         
   console.log("Session admin dashboard:", session);   
 
   if (!session?.user?.role || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
     redirect("/login")
   }
 
-  const [
-    { totalTaches },   
-    { projetsAttente },
-    { projetsEnCours },             
-    tachesRecentes,                  
-    usersOnline    
-  ] = await Promise.all([
-    prisma.tache.count().then(count => ({ totalTaches: count })),
-    prisma.projet.count({ where: { statut: Statut.ATTENTE } }).then(count => ({ projetsAttente: count })),
-    prisma.projet.count({ where: { statut: Statut.EN_COURS } }).then(count => ({ projetsEnCours: count })),
-    prisma.tache.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 3, 
-      include: {
-        TacheUtilisateur :{
-          take: 3,
-          orderBy: { createdAt: 'desc' },
-          include: {
-            user: {           
-              select: {
-                nom: true,
-                image: true,
-              },
-            },
-          },
-        },
-      } 
-    }), 
-    prisma.user.findMany({
-      where: {
-        lastActiveAt: {
-          gte: new Date(Date.now() - 5 * 60 * 1000),
-        },
-      },   
-      select: {
-        prenom: true,
-        nom: true,
-        image: true,
-      },
-    }),
-  ]);
-
-  const formattedTaches = tachesRecentes.map(t => ({
-    titre: t.titre,
-    utilisateurs: t.TacheUtilisateur.map(tu => ({
-      nom: tu.user.nom,
-      image: tu.user.image
-    }))
-  }));
-
+  const {
+    totalTaches,
+    projetsAttente,
+    projetsEnCours,
+    tachesRecentes,
+    usersOnline
+  } = await getDashboardData();
 
   return ( 
     <div className="flex h-screen">             
@@ -175,7 +132,7 @@ export default async function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card 
            title="Tâches Récentes" 
-           items={formattedTaches} 
+           items={tachesRecentes} 
            icon={CheckSquare}
           />
           <Card

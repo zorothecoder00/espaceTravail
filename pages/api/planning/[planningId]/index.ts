@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma' // adapte ce chemin à ton projet
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {     
   const planningId = parseInt(req.query.planningId as string)
 
-  if (isNaN(planningId)) {
+  if (isNaN(planningId)) {  
     return res.status(400).json({ message: 'ID invalide' })
   }
 
