@@ -64,7 +64,7 @@ model User {
 
   notifications               Notification[]     @relation("NotificationDestinataire")
 
-  notes                       Note[]
+  notes                       Note[]    
 
   sousTachesProjetSousResponsabilite SousTacheUtilisateur[]
 
@@ -307,13 +307,17 @@ model Message {
 
 
   receiverId Int?
+
   projet     Projet? @relation(fields: [projetId], references: [id], onDelete: Cascade)
-  
   projetId     Int?     
 
   tache        Tache?  @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId       Int?
+
   notifications    Notification[]     @relation("MessageNotification")
+
+  planning   Planning? @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  planningId Int?
 }
   
 model Note {
@@ -338,4 +342,5 @@ model Planning {
   updatedAt DateTime      @updatedAt
   userId    Int
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]     
 }
