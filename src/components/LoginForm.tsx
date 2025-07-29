@@ -125,14 +125,7 @@ export default function LoginForm() {
         <p className="text-center text-sm text-gray-600">Connexion en cours...</p>
       )}
 
-      <div className="text-center mt-4">
-        <p className="text-sm text-gray-600">
-          Pas encore de compte ?{' '}
-          <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Inscrivez-vous
-          </a>
-        </p>
-      </div>
+      
     </div>
   </div>
 )

@@ -8,7 +8,7 @@ export default async function Home() {
 
   if (!session) {  
     // Pas connecté → redirection vers register
-    redirect('/register') 
+    redirect('/login') 
   }
 
   // Redirection en fonction du rôle   
