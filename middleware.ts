@@ -17,6 +17,14 @@ export async function middleware(request: NextRequest) {
 
   const role = token?.role
 
+  // Autoriser tout utilisateur connecté à voir un planning partagé
+  if (pathname.startsWith("/interfaceUtilisateur/planning/vue/")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", request.url))
+    }
+    return NextResponse.next()
+  }
+
   // Protection des routes /admin/**
   if (pathname.startsWith("/admin")) {
     if (!role || (role !== "ADMIN" && role !== "SUPER_ADMIN")) {
