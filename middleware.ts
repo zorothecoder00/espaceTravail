@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   if (!token) {
     if (pathname.startsWith("/admin") || pathname.startsWith("/interfaceUtilisateur")) {
       return NextResponse.redirect(new URL("/login", request.url))
-    }
+    }  
   }
 
   const role = token?.role

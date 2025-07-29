@@ -34,6 +34,14 @@ export default function VoirPlanning() {
   const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
   const [loadingUtilisateurs, setLoadingUtilisateurs] = useState(false)
 
+  // le lien complet avec window, mis à jour côté client
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const lienComplet = `${window.location.origin}${lienPlanning}`
+      setMessage(`Voici le planning à consulter : <a href="${lienComplet}" target="_blank" rel="noopener noreferrer">${lienComplet}</a>`)
+    }
+  }, [lienPlanning])
+
   useEffect(() => {
     const fetchPlanning = async () => {  
       try {
@@ -69,7 +77,7 @@ export default function VoirPlanning() {
         setLoadingUtilisateurs(false)
       }
     }
-
+  
     if (showPartager) {
       fetchUtilisateurs()
     }else{
@@ -158,7 +166,7 @@ export default function VoirPlanning() {
       <button
         onClick={() => setShowPartager(true)}
         disabled={loadingUtilisateurs}
-        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer disabled:opacity-50 "
       >
         Partager ce planning
       </button>
@@ -206,7 +214,7 @@ export default function VoirPlanning() {
               <button
                 onClick={envoyerMessage}
                 disabled={envoiEnCours}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
               >
                 {envoiEnCours ? 'Envoi...' : 'Envoyer'}
               </button>
