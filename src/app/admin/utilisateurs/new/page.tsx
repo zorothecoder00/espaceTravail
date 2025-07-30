@@ -1,9 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Role } from '@prisma/client'
 import Link from 'next/link'
+
+type Departement = {
+  id: number
+  nom: string
+}
 
 type FormState = {
   nom: string
@@ -16,6 +21,7 @@ type FormState = {
 
 export default function AjouterUtilisateur() {
   const router = useRouter()
+  const [departements, setDepartements] = useState<Departement[]>([])
   const [form, setForm] = useState<FormState>({
     nom: '',
     prenom: '',
@@ -26,7 +32,32 @@ export default function AjouterUtilisateur() {
   })
   const [message, setMessage] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    const fetchDepartemnt = async () =>{
+      try{
+      setLoading(true)
+
+      const res = await fetch('/api/departements')
+
+      if(!res.ok){
+        console.error("Erreur lors du chargement")
+        return
+      }
+
+      const data = await res.json()
+      setDepartements(data.data || [])
+
+      }catch(error){
+        console.error("Erreur réseau", error)
+      }finally{
+        setLoading(false)
+      }
+    }
+    fetchDepartemnt()
+  },[])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -55,7 +86,11 @@ export default function AjouterUtilisateur() {
     formData.append('email', form.email)
     formData.append('password', form.password)
     formData.append('role', form.role)
-    formData.append('departementId', form.departementId || '')
+    if (form.departementId) {
+      formData.append('departementId', String(Number(form.departementId)))
+    } else {
+      formData.append('departementId', '')
+    }
 
     if (imageFile) {
       formData.append('image', imageFile)
@@ -124,14 +159,25 @@ export default function AjouterUtilisateur() {
 
         <div>
           <label htmlFor="departementId" className="block mb-1 font-medium">Département (optionnel)</label>
-          <input
-            id="departementId"
-            name="departementId"
-            type="number"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            placeholder="ID du département"
-          />
+          <select
+          id="departementId"
+          name="departementId"
+          value={form.departementId}
+          onChange={handleChange}
+          className="w-full border p-2 rounded">
+            {loading ? (
+              <option>Chargement...</option>
+              ) : (
+              <>
+              <option value="">-- Aucun département --</option>
+              {departements.map((dep) =>( 
+                <option key={dep.id} value={dep.id}>
+                  {dep.nom}
+                </option>
+              ))}
+              </>
+            )}
+          </select>
         </div>
 
         <button 
