@@ -77,9 +77,9 @@ export default async function Dashboard() {
           Calendrier
           </Link>
         </nav>
-      </aside>    
+      </aside>                 
  
-      {/* Main content */}          
+      {/* Main content */}            
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">   
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
@@ -97,6 +97,13 @@ export default async function Dashboard() {
               height={40}
               className="rounded-full object-cover"
             />
+            {/* Nouveau lien Profil / Paramètres */}
+            <Link
+              href="/profil"
+              className="text-sm text-blue-600 font-semibold hover:underline"
+            >
+              Profil
+            </Link>
             <SignOutButton /> {/* 👈 le bouton Déconnexion dynamique */}
           </div>
         </div>

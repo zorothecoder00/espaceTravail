@@ -39,7 +39,7 @@ enum Priorite {
 
 model User {
   id                         Int                @id @default(autoincrement())
-  nom                          String
+  nom                        String
   prenom                     String
   email                      String             @unique
   password                   String
@@ -152,7 +152,7 @@ model SousTacheProjet {
   notifications Notification[]      @relation("SousTacheProjetNotification")
    // ✅ Nouveau : Responsable unique
   responsable   User?    @relation("ResponsableSousTacheProjet", fields: [responsableId], references: [id], onDelete: SetNull)
-  responsableId Int?
+  responsableId Int?   
 
   // ✅ Nouveau : Priorité
   priorite     Priorite?            @default(MOYENNE)
@@ -162,14 +162,14 @@ model SousTacheProjet {
 
   // ✅ Nouveau : Commentaires / Approbations
   commentaires  Commentaire[]
-}
+}  
 
 model SousTacheUtilisateur {
   sousTacheProjet   SousTacheProjet @relation(fields: [sousTacheProjetId], references: [id], onDelete: Cascade)
   sousTacheProjetId Int
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-
+  userId      Int  
+    
   statutPersonnel Statut?   // ATTENTE, EN_COURS, TERMINE
 
   dateDebut       DateTime?
@@ -329,7 +329,7 @@ model Note {
 
   // Relation avec l'utilisateur (auteur de la note)
   auteurId Int
-  auteur   User      @relation(fields: [auteurId], references: [id], onDelete: Cascade)
+  auteur   User      @relation(fields: [auteurId], references: [id], onDelete: Cascade)   
 }        
 
 model Planning {
@@ -343,4 +343,4 @@ model Planning {
   userId    Int
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages  Message[]     
-}
+}    
