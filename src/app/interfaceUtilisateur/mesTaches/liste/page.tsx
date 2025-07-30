@@ -1,8 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'    
+import React, { useEffect, useState } from 'react'    
 import Link from 'next/link'
-import { Statut } from '@prisma/client'    
+import { Statut } from '@prisma/client'
+
+type SousTacheProjet = {
+  id: number
+  titre: string
+  statut: Statut
+}    
 
 type Tache = {
   id: number
@@ -11,9 +17,10 @@ type Tache = {
   projet: {
     nom: string
   }
+  sousTachesProjet: SousTacheProjet[]
 }
 
-export default function ListeTachesPage() {
+export default function ListeTachesPage() {   
 
   const [search, setSearch] = useState('')
   const [sortField, setSortField] = useState<'titre' | 'statut' | 'deadline'>('titre')
@@ -23,6 +30,7 @@ export default function ListeTachesPage() {
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [expandedTaches, setExpandedTaches] = useState<number[]>([])
 
   useEffect(() => {
     const fetchTaches = async () => {
@@ -65,6 +73,12 @@ export default function ListeTachesPage() {
       setSortField(field)
       setSortOrder('asc')
     }
+  }
+
+  const toggleTache = (id: number) => {
+    setExpandedTaches((prev) =>
+      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
+    )
   }
 
   return (
@@ -114,26 +128,64 @@ export default function ListeTachesPage() {
           </thead>
           <tbody>
             {taches.map((tache) => (
-              <tr key={tache.id}>
-                <td className="border p-2">{tache.titre}</td>
-                <td className="border p-2">{afficherStatutLisible(tache.statut)}</td>
-                <td className="border p-2">{tache.projet.nom}</td>
-                <td className="border p-2">
-                  <Link
-                    href={`/interfaceUtilisateur/mesTaches/liste/${tache.id}`}
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    Détails
-                  </Link>
-                  <span className="mx-2" /> {/* Espace horizontal entre les liens */}
-                  <Link
-                    href={`/interfaceUtilisateur/mesTaches/edit/${tache.id}`}
-                    className="text-sm text-green-600 hover:underline"
-                  >
-                    Mettre à jour
-                  </Link>
-                </td>
-              </tr>
+                <React.Fragment key={tache.id}>
+                  <tr className="hover:bg-gray-50">
+                    <td className="border p-2">
+                      <div className="flex items-center justify-between">
+                        <span>{tache.titre}</span>
+                        <button
+                          onClick={() => toggleTache(tache.id)}
+                          className="text-sm text-blue-600 underline ml-2 hover:cursor-pointer"
+                        >
+                          {expandedTaches.includes(tache.id) ? 'Masquer' : 'Voir sous-tâches'}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="border p-2">{afficherStatutLisible(tache.statut)}</td>
+                    <td className="border p-2">{tache.projet.nom}</td>
+                    <td className="border p-2">
+                      <Link
+                        href={`/interfaceUtilisateur/mesTaches/liste/${tache.id}`}
+                        className="text-sm text-blue-600 hover:underline"
+                      >
+                        Détails
+                      </Link>
+                      <span className="mx-2" />
+                      <Link
+                        href={`/interfaceUtilisateur/mesTaches/edit/${tache.id}`}
+                        className="text-sm text-green-600 hover:underline"
+                      >
+                        Mettre à jour
+                      </Link>
+                    </td>
+                  </tr>
+
+                  {expandedTaches.includes(tache.id) && (
+                    <tr className="bg-gray-50">
+                      <td colSpan={4} className="p-4">
+                        {tache.sousTachesProjet?.length > 0 ? (
+                          <ul className="list-disc ml-6 space-y-1">
+                            {tache.sousTachesProjet.map((sous) => (
+                              <li key={sous.id}>
+                                {sous.titre} – {afficherStatutLisible(sous.statut)}
+                                <Link
+                                  href={`/interfaceUtilisateur/mesTaches/sousTache/edit/${sous.id}`}
+                                  className="ml-2 text-sm text-green-600 hover:underline cursor-pointer"
+                                >
+                                  Modifier
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <span className="text-gray-500 italic">
+                            Aucune sous-tâche liée à vous.
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
             ))}
           </tbody>
         </table>

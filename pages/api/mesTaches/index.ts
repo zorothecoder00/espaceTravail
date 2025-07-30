@@ -51,6 +51,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           tache: {
             include: {
               projet: true,
+              sousTachesProjet: {
+                where: {
+                  utilisateurs: {
+                    some: {
+                      userId: parseInt(session.user.id)
+                    }
+                  }
+                },
+                select: {
+                  id: true,
+                  titre: true,
+                  statut: true,
+                }
+              }
             },
           },
         },

@@ -24,6 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const searchStr = (search as string).trim()
 
       const orFilters: Prisma.UserWhereInput[] = [{ nom: { contains: searchStr } }]
+      
       if (Object.values(RoleProjet).includes(searchStr as RoleProjet)) {
         orFilters.push({
           projets: {
