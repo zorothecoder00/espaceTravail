@@ -2,77 +2,101 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import { useRouter } from 'next/navigation'
 
-interface Planning {
+type Planning = {
   id: number
   titre: string
-  date: string // Format ISO : '2025-07-28'
+  date: string
+  slug: string
+  taches: string[]
+  objectif?: string
+  resultatAttendu?: string
+  etat?: boolean
+  commentaires?: string
+  responsable?: {
+    nom: string
+    prenom: string
+  }
 }
 
-export default function PlanningCalendarView() {
+export default function CalendrierPage() {
   const [plannings, setPlannings] = useState<Planning[]>([])
-  const router = useRouter()
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('/api/planning')
-      const json = await res.json()
-      setPlannings(json.data || [])
-    }
-    fetchData()     
+    fetch('/api/planning')
+      .then((res) => res.json())
+      .then((data) => setPlannings(data.data))
   }, [])
 
-  const events = plannings.map((plan) => ({
-    id: String(plan.id),
-    title: plan.titre,
-    date: plan.date,
-    backgroundColor: '#2563eb',
-    textColor: 'white',
-  }))
+  const formatDate = (isoDate: string) => {
+    const date = new Date(isoDate)
+    return date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    })
+  }
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Vue planning</h1>
-        <div className="flex gap-2">
-          <Link
-            href="/interfaceUtilisateur/dashboard"
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"  
-          >
-            ← Retour
-          </Link>
-          <Link
-            href="/interfaceUtilisateur/planning/new"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Ajouter un planning
-          </Link>
-        </div>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Planning Journalier</h1>
+
+      {/* Lien pour revenir à la page planning vue */}
+      <div className="mb-6">
+        <Link
+          href="/interfaceUtilisateur/planning/new"
+          className="text-blue-600 hover:underline"
+        >
+          ← Créer un nouveau Planning
+        </Link>
       </div>
 
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={events}
-        locale="fr"
-        eventClick={(info) => {
-          const planningId = info.event.id
-          router.push(`/interfaceUtilisateur/planning/vue/${planningId}`)
-        }}
-        dateClick={(info) => {
-          router.push(`/interfaceUtilisateur/planning/new?date=${info.dateStr}`)
-        }}
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth',
-        }}
-        height="auto"
-      />
+      <table className="w-full border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="p-2 border">Date</th>
+            <th className="p-2 border">Titre</th>
+            <th className="p-2 border">Objectifs</th>
+            <th className="p-2 border">Résultat Attendu</th>
+            <th className="p-2 border">Tâches</th>
+            <th className="p-2 border">Responsable</th>
+            <th className="p-2 border">Commentaires</th>
+            <th className="p-2 border">État</th>
+          </tr>
+        </thead>   
+        <tbody>
+          {plannings.map((plan) => (
+            <tr key={plan.id}>
+              <td className="p-2 border whitespace-nowrap">
+                {formatDate(plan.date)}
+              </td>
+              <td className="p-2 border">{plan.titre}</td>
+              <td className="p-2 border">{plan?.objectif || '--'}</td>
+              <td className="p-2 border">{plan?.resultatAttendu || '--'}</td>
+              <td className="p-2 border">
+                <ul className="list-disc list-inside space-y-1">
+                  {plan?.taches?.length > 0 ? (
+                    plan.taches.map((tache, idx) => <li key={idx}>{tache}</li>)
+                  ) : (
+                    <li>--</li>
+                  )}
+                </ul>
+              </td>
+              <td className="p-2 border">
+                {plan.responsable
+                  ? `${plan.responsable.prenom} ${plan.responsable.nom}`
+                  : '--'
+                }
+              </td>
+              <td className="p-2 border">{plan?.commentaires || '--'}</td>
+              <td className="p-2 border">
+                {plan?.etat ? '✅ Terminé' : '⏳ En cours'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

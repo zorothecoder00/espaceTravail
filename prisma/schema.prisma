@@ -73,6 +73,7 @@ model User {
   sousTachesDontJeSuisResponsable SousTacheProjet[] @relation("ResponsableSousTacheProjet")
 
   plannings                    Planning[]
+  planningsDiriges             Planning[]         @relation("ResponsablePlanning")
 
 }     
 
@@ -333,14 +334,24 @@ model Note {
 }        
 
 model Planning {
-  id        Int           @id @default(autoincrement())   
-  titre     String        @db.VarChar(191)
-  date      DateTime      @default(now())
-  slug      String        @unique
-  taches    String[]
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  userId    Int
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              Int           @id @default(autoincrement())   
+  titre           String        @db.VarChar(191)
+  date            DateTime      @default(now())
+  slug            String        @unique   
+  taches          String[]
+  objectif        String?
+  resultatAttendu String? 
+
+  responsableId   Int? 
+  responsable     User?          @relation("ResponsablePlanning", fields: [responsableId], references: [id], onDelete: Cascade)            
+
+  etat            Boolean?       @default(false)
+  commentaires    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   messages  Message[]     
 }    

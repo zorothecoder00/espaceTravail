@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Planning" ALTER COLUMN "objectif" DROP NOT NULL,
+ALTER COLUMN "objectif" SET DATA TYPE TEXT;

@@ -1,12 +1,203 @@
-import { Suspense } from 'react'
-import PlanningFormClient from '@/components/PlanningFormClient'
+'use client'  
 
-export default function NouvellePagePlanning() {
+import { useState, useEffect } from 'react'     
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'  // <-- Import Link ici
+
+type Utilisateur = {
+  id: string
+  nom: string
+  prenom: string
+}
+
+export default function NouveauPlanning() {
+  const router = useRouter()
+
+  const [titre, setTitre] = useState('')
+  const [date, setDate] = useState('')
+  const [taches, setTaches] = useState<string[]>([''])
+  const [objectif, setObjectif] = useState('')
+  const [resultatAttendu, setResultatAttendu] = useState('')
+  const [responsableId, setResponsableId] = useState('')
+  const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
+  const [etat, setEtat] = useState(false)
+  const [commentaires, setCommentaires] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  // 👇 Fetch des utilisateurs
+  useEffect(() => {
+    const fetchUtilisateurs = async () => {
+      try {
+        const res = await fetch('/api/utilisateurs')
+        if (!res.ok) throw new Error('Erreur lors du chargement des utilisateurs')
+        const data = await res.json()
+        setUtilisateurs(data.data)
+      } catch (err) {
+        console.error('Erreur fetch utilisateurs :', err)
+        setError((err as Error).message)
+      }
+    }
+
+    fetchUtilisateurs()
+  }, [])
+
+  const handleAddTache = () => setTaches([...taches, ''])
+  const handleRemoveTache = (index: number) => {
+    const newTaches = [...taches]
+    newTaches.splice(index, 1)
+    setTaches(newTaches)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      const res = await fetch('/api/planning', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titre,
+          date,
+          taches,
+          objectif,
+          resultatAttendu,
+          responsableId,
+          etat,
+          commentaires,
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.message || 'Erreur lors de la création du planning')
+      }
+
+      setSuccess('Planning créé avec succès')
+      setError('')
+      router.push('/interfaceUtilisateur/planning/vue') // à adapter si nécessaire
+    } catch (err) {
+      console.error("Erreur interne", err)
+      setError((err as Error).message)
+      setSuccess('')
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-100 via-white to-indigo-100 relative overflow-hidden">
-      <Suspense fallback={<p className="text-center mt-10 text-gray-600">Chargement...</p>}>
-        <PlanningFormClient />
-      </Suspense>  
+    <div className="max-w-2xl mx-auto py-8 px-4">
+      <h1 className="text-2xl font-bold mb-6">Créer un nouveau planning</h1>
+
+      {error && <p className="text-red-600 mb-4">{error}</p>}
+      {success && <p className="text-green-600 mb-4">{success}</p>}
+
+      {/* Lien pour revenir à la page planning vue */}
+      <div className="mb-6">
+        <Link
+          href="/interfaceUtilisateur/planning/vue"
+          className="text-blue-600 hover:underline"
+        >
+          ← Retour à la liste des plannings
+        </Link>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Titre"
+          value={titre}
+          onChange={(e) => setTitre(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="w-full border p-2 rounded"
+          required
+        />
+
+        <div>
+          <label>Tâches</label>
+          {taches.map((tache, index) => (
+            <div key={index} className="flex gap-2 mb-2">
+              <input
+                value={tache}
+                onChange={(e) => {
+                  const newTaches = [...taches]
+                  newTaches[index] = e.target.value
+                  setTaches(newTaches)
+                }}
+                className="border w-full p-2"
+                placeholder={`Tâche ${index + 1}`}
+              />
+              <button type="button" onClick={() => handleRemoveTache(index)} className="text-red-600">Supprimer</button>
+            </div>
+          ))}
+          <button type="button" onClick={handleAddTache} className="text-blue-600">+ Ajouter une tâche</button>
+        </div>
+
+        <div>
+          <label>Objectif</label>
+          <textarea
+            value={objectif}
+            onChange={(e) => setObjectif(e.target.value)}
+            className="w-full border p-2 rounded"
+            placeholder="Décris brièvement l'objectif du planning"
+            rows={2}
+            required
+          />
+        </div>
+
+        <textarea
+          placeholder="Résultat attendu"
+          value={resultatAttendu}
+          onChange={(e) => setResultatAttendu(e.target.value)}
+          className="w-full border p-2 rounded"
+          rows={2}
+        />
+
+        <div>
+          <label>Responsable</label>
+          <select
+            value={responsableId}
+            onChange={(e) => setResponsableId(e.target.value)}
+            className="w-full border p-2 rounded"
+          >
+          <option value="">-- Sélectionnez un responsable(optionnel) --</option>
+            {utilisateurs.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.prenom} {u.nom}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={etat}
+            onChange={(e) => setEtat(e.target.checked)}
+          />
+          <span>État (terminé ?)</span>
+        </label>
+
+        <textarea
+          placeholder="Commentaires"
+          value={commentaires}
+          onChange={(e) => setCommentaires(e.target.value)}
+          className="w-full border p-2 rounded"
+          rows={2}
+        />
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Enregistrer
+        </button>
+      </form>
     </div>
   )
 }
