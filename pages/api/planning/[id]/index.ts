@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ error: 'Planning non trouvé' })
       }
 
-      return res.status(200).json(planning)
+      return res.status(200).json({ data: planning })
     } catch (error) {
       console.error('Erreur API GET /planning/[id]:', error)
       return res.status(500).json({ error: 'Erreur serveur' })

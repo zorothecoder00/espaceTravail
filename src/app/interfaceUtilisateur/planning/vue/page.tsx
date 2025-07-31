@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
+      
 type Planning = {
   id: number
-  titre: string
+  titre: string    
   date: string
   slug: string
   taches: string[]
@@ -40,24 +40,30 @@ export default function CalendrierPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Planning Journalier</h1>
+      <div className="flex justify-between items-center mb-6">
+        <Link
+          href="/interfaceUtilisateur/dashboard"
+          className="text-blue-600 hover:underline"
+        >
+          ← Retour au Dashboard 
+        </Link>
 
-      {/* Lien pour revenir à la page planning vue */}
-      <div className="mb-6">
         <Link
           href="/interfaceUtilisateur/planning/new"
           className="text-blue-600 hover:underline"
         >
-          ← Créer un nouveau Planning
+          + Créer un nouveau Planning
         </Link>
       </div>
+
+      <h1 className="text-2xl font-bold mb-4">Planning Journalier</h1>
 
       <table className="w-full border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
             <th className="p-2 border">Date</th>
             <th className="p-2 border">Titre</th>
-            <th className="p-2 border">Objectifs</th>
+            <th className="p-2 border">Objectif</th>
             <th className="p-2 border">Résultat Attendu</th>
             <th className="p-2 border">Tâches</th>
             <th className="p-2 border">Responsable</th>
@@ -71,7 +77,11 @@ export default function CalendrierPage() {
               <td className="p-2 border whitespace-nowrap">
                 {formatDate(plan.date)}
               </td>
-              <td className="p-2 border">{plan.titre}</td>
+              <td className="p-2 border text-green-500 hover:underline">
+                <Link href = {`/interfaceUtilisateur/planning/vue/${plan.id}`}>
+                  {plan.titre}
+                </Link>
+              </td>
               <td className="p-2 border">{plan?.objectif || '--'}</td>
               <td className="p-2 border">{plan?.resultatAttendu || '--'}</td>
               <td className="p-2 border">
