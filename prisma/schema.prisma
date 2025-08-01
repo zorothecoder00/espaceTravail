@@ -62,18 +62,18 @@ model User {
   partagesEnTantQuePartageur PartageDocument[]  @relation("Partageur")
   notificationsEmises        Notification[]     @relation("NotificationEmetteur")
 
-  notifications               Notification[]     @relation("NotificationDestinataire")
+  notifications              Notification[]     @relation("NotificationDestinataire")
 
-  notes                       Note[]    
+  notes                      Note[]    
 
   sousTachesProjetSousResponsabilite SousTacheUtilisateur[]
 
-  commentaires                Commentaire[]
+  commentaires               Commentaire[]
 
   sousTachesDontJeSuisResponsable SousTacheProjet[] @relation("ResponsableSousTacheProjet")
 
-  plannings                    Planning[]
-  planningsDiriges             Planning[]         @relation("ResponsablePlanning")
+  plannings                  Planning[]
+  planningsDiriges           Planning[]         @relation("ResponsablePlanning")
 
 }     
 
@@ -88,7 +88,6 @@ model Document {
   partages      PartageDocument[]
   notifications Notification[]    @relation("DocumentNotification")
   sousTachesProjet SousTacheProjet[] @relation("PiecesJointesSousTache")
-
 
 }
 
@@ -111,7 +110,7 @@ model Projet {
   departementId Int
   chefProjet    User              @relation("ChefProjet", fields: [chefProjetId], references: [id], onDelete: Cascade)  // 👈 Chef de projet
 
-  chefProjetId   Int
+  chefProjetId  Int
   membres       MembreProjet[]    
   taches        Tache[]
   partages      PartageDocument[]
@@ -139,45 +138,40 @@ model Tache {
 }  
 
 model SousTacheProjet {
-  id          Int       @id @default(autoincrement())
+  id          Int                   @id @default(autoincrement())
   titre       String
   description String?
-  tache       Tache     @relation(fields: [tacheId], references: [id], onDelete: Cascade)
+  tache       Tache                 @relation(fields: [tacheId], references: [id], onDelete: Cascade)
   tacheId     Int
-  statut      Statut    @default(ATTENTE)
+  statut      Statut                @default(ATTENTE)
   deadline    DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
 
   utilisateurs SousTacheUtilisateur[]   
   notifications Notification[]      @relation("SousTacheProjetNotification")
-   // ✅ Nouveau : Responsable unique
-  responsable   User?    @relation("ResponsableSousTacheProjet", fields: [responsableId], references: [id], onDelete: SetNull)
+
+  responsable   User?               @relation("ResponsableSousTacheProjet", fields: [responsableId], references: [id], onDelete: SetNull)
   responsableId Int?   
 
-  // ✅ Nouveau : Priorité
   priorite     Priorite?            @default(MOYENNE)
-
-  // ✅ Nouveau : Pièces jointes
   piecesJointes Document[]          @relation("PiecesJointesSousTache")
-
-  // ✅ Nouveau : Commentaires / Approbations
   commentaires  Commentaire[]
 }  
 
 model SousTacheUtilisateur {
   sousTacheProjet   SousTacheProjet @relation(fields: [sousTacheProjetId], references: [id], onDelete: Cascade)
   sousTacheProjetId Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int  
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          Int  
     
   statutPersonnel Statut?   // ATTENTE, EN_COURS, TERMINE
 
   dateDebut       DateTime?
   dateFin         DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 
   @@id([sousTacheProjetId, userId])
 }
@@ -302,22 +296,22 @@ model Message {
   sender     User             @relation("MessagesEnvoyes", fields: [senderId], references: [id], onDelete: Cascade)
 
 
-  senderId   Int
+  senderId   Int   
   vu         Boolean          @default(false)
   receiver   User?            @relation("MessagesRecus", fields: [receiverId], references: [id], onDelete: Cascade)
 
 
-  receiverId Int?
+  receiverId Int? 
 
-  projet     Projet? @relation(fields: [projetId], references: [id], onDelete: Cascade)
-  projetId     Int?     
+  projet     Projet?          @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  projetId   Int?     
 
-  tache        Tache?  @relation(fields: [tacheId], references: [id], onDelete: Cascade)
-  tacheId       Int?
+  tache      Tache?           @relation(fields: [tacheId], references: [id], onDelete: Cascade)
+  tacheId    Int?
 
   notifications    Notification[]     @relation("MessageNotification")
 
-  planning   Planning? @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  planning   Planning?        @relation(fields: [planningId], references: [id], onDelete: Cascade)
   planningId Int?
 }
   
@@ -326,12 +320,12 @@ model Note {
   titre     String   @db.VarChar(191)
   contenu   String   @db.Text
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt   
 
   // Relation avec l'utilisateur (auteur de la note)
-  auteurId Int
-  auteur   User      @relation(fields: [auteurId], references: [id], onDelete: Cascade)   
-}        
+  auteurId  Int
+  auteur    User     @relation(fields: [auteurId], references: [id], onDelete: Cascade)   
+}            
 
 model Planning {
   id              Int           @id @default(autoincrement())   
@@ -340,12 +334,12 @@ model Planning {
   slug            String        @unique   
   taches          String[]
   objectif        String?
-  resultatAttendu String? 
+  resultatAttendu String?    
 
   responsableId   Int? 
-  responsable     User?          @relation("ResponsablePlanning", fields: [responsableId], references: [id], onDelete: Cascade)            
+  responsable     User?         @relation("ResponsablePlanning", fields: [responsableId], references: [id], onDelete: Cascade)            
 
-  etat            Boolean?       @default(false)
+  etat            Boolean?      @default(false)
   commentaires    String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -353,5 +347,5 @@ model Planning {
   userId          Int
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  messages  Message[]     
+  messages        Message[]     
 }    

@@ -63,10 +63,14 @@ export default async function Dashboard() {
           <Link href="/admin/projets/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <FolderKanban className="w-5 h-5" />
           Projets
-          </Link>
+          </Link> 
           <Link href="/admin/taches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <CheckSquare className="w-5 h-5" />
           Tâches
+          </Link>
+          <Link href="/admin/planning/vue" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+            <Calendar className="w-5 h-5" />  
+            Mon agenda personnel  
           </Link>
           <Link href="/admin/documents/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">   
           <FileText className="w-5 h-5" />
