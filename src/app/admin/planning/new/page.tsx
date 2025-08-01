@@ -10,20 +10,27 @@ type Utilisateur = {
   prenom: string
 }
 
+type TachePlanning = {
+  titre: string
+  heure: string
+  objectif?: string
+  resultatAttendu?: string
+  etat: boolean
+  commentaires?: string
+  priorite?: boolean
+}
+
 export default function NouveauPlanning() {
   const router = useRouter()
 
   const [titre, setTitre] = useState('')
   const [date, setDate] = useState('')
-  const [taches, setTaches] = useState<string[]>([''])
-  const [objectif, setObjectif] = useState('')
-  const [resultatAttendu, setResultatAttendu] = useState('')
+  const [taches, setTaches] = useState<TachePlanning[]>([])
   const [responsableId, setResponsableId] = useState('')
   const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
-  const [etat, setEtat] = useState(false)
-  const [commentaires, setCommentaires] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   // 👇 Fetch des utilisateurs
   useEffect(() => {
@@ -42,15 +49,39 @@ export default function NouveauPlanning() {
     fetchUtilisateurs()
   }, [])
 
-  const handleAddTache = () => setTaches([...taches, ''])
+  const handleAddTache = () =>
+  setTaches([
+    ...taches,
+    {
+      titre: '',
+      heure: '',
+      objectif: '',
+      resultatAttendu: '',
+      commentaires: '',
+      etat: false,
+      priorite: false,  
+    },
+  ])
   const handleRemoveTache = (index: number) => {
     const newTaches = [...taches]
     newTaches.splice(index, 1)
     setTaches(newTaches)
   }
+  const handleChangeTache = <K extends keyof TachePlanning>(
+  index: number,
+  field: K,
+  value: TachePlanning[K]) => {
+    setTaches((prevTaches) => {
+      const updated = [...prevTaches]
+      updated[index] = { ...updated[index], [field]: value }
+      return updated
+    })
+  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitting(true)
 
     try {
       const res = await fetch('/api/planning', {
@@ -59,12 +90,8 @@ export default function NouveauPlanning() {
         body: JSON.stringify({
           titre,
           date,
-          taches,
-          objectif,
-          resultatAttendu,
+          taches,     
           responsableId,
-          etat,
-          commentaires,
         }),
       })
 
@@ -75,11 +102,13 @@ export default function NouveauPlanning() {
 
       setSuccess('Planning créé avec succès')
       setError('')
+      setSubmitting(false)
       router.push('/admin/planning/vue') // à adapter si nécessaire
     } catch (err) {
       console.error("Erreur interne", err)
       setError((err as Error).message)
       setSuccess('')
+      setSubmitting(false)
     }
   }
 
@@ -119,44 +148,70 @@ export default function NouveauPlanning() {
         />
 
         <div>
-          <label>Tâches</label>
+          <label className="block font-semibold mb-2">Tâches</label>
           {taches.map((tache, index) => (
-            <div key={index} className="flex gap-2 mb-2">
+            <div key={index} className="border p-4 mb-4 rounded space-y-2 bg-gray-50">
               <input
-                value={tache}
-                onChange={(e) => {
-                  const newTaches = [...taches]
-                  newTaches[index] = e.target.value
-                  setTaches(newTaches)
-                }}
-                className="border w-full p-2"
-                placeholder={`Tâche ${index + 1}`}
+                type="text"
+                placeholder="Titre de la tâche"
+                value={tache.titre}
+                onChange={(e) => handleChangeTache(index, 'titre', e.target.value)}
+                className="w-full border p-2 rounded"
+                required
               />
-              <button type="button" onClick={() => handleRemoveTache(index)} className="text-red-600">Supprimer</button>
+              <input
+                type="time"
+                value={tache.heure}
+                onChange={(e) => handleChangeTache(index, 'heure', e.target.value)}
+                className="w-full border p-2 rounded"
+                required
+              />
+              <textarea
+                placeholder="Objectif"
+                value={tache.objectif ??''}
+                onChange={(e) => handleChangeTache(index, 'objectif', e.target.value)}
+                className="w-full border p-2 rounded"
+                rows={2}
+              />
+              <textarea
+                placeholder="Résultat attendu"
+                value={tache.resultatAttendu ??''}
+                onChange={(e) => handleChangeTache(index, 'resultatAttendu', e.target.value)}
+                className="w-full border p-2 rounded"
+                rows={2}
+              />
+              <textarea
+                placeholder="Commentaires"
+                value={tache.commentaires ??''}
+                onChange={(e) => handleChangeTache(index, 'commentaires', e.target.value)}
+                className="w-full border p-2 rounded"
+                rows={2}
+              />
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={tache.etat ?? false}
+                  onChange={(e) => handleChangeTache(index, 'etat', e.target.checked)}
+                />
+                <span>Terminée ?</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={tache.priorite ?? false}
+                  onChange={(e) => handleChangeTache(index, 'priorite', e.target.checked)}
+                />
+                <span>Priorité Élevée ?</span>
+              </label>
+              <button type="button" onClick={() => handleRemoveTache(index)} className="text-red-600 hover:underline hover:cursor-pointer">
+                Supprimer cette tâche
+              </button>
             </div>
           ))}
-          <button type="button" onClick={handleAddTache} className="text-blue-600">+ Ajouter une tâche</button>
+          <button type="button" onClick={handleAddTache} className="text-blue-600 hover:underline hover:cursor-pointer">
+            + Ajouter une tâche
+          </button>
         </div>
-
-        <div>
-          <label>Objectif</label>
-          <textarea
-            value={objectif}
-            onChange={(e) => setObjectif(e.target.value)}
-            className="w-full border p-2 rounded"
-            placeholder="Décris brièvement l'objectif du planning"
-            rows={2}
-            required
-          />
-        </div>
-
-        <textarea
-          placeholder="Résultat attendu"
-          value={resultatAttendu}
-          onChange={(e) => setResultatAttendu(e.target.value)}
-          className="w-full border p-2 rounded"
-          rows={2}
-        />
 
         <div>
           <label>Responsable</label>
@@ -174,28 +229,12 @@ export default function NouveauPlanning() {
           </select>
         </div>
 
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={etat}
-            onChange={(e) => setEtat(e.target.checked)}
-          />
-          <span>État (terminé ?)</span>
-        </label>
-
-        <textarea
-          placeholder="Commentaires"
-          value={commentaires}
-          onChange={(e) => setCommentaires(e.target.value)}
-          className="w-full border p-2 rounded"
-          rows={2}
-        />
-
         <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          type="submit"  
+          disabled={submitting}
+          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer disabled:cursor-not-allowed transition-opacity duration-200 ${submitting ? 'opacity-50' : 'opacity-100'} `}
         >
-          Enregistrer
+          {submitting ? 'Enregistrement...' : 'Enregistrer'}
         </button>
       </form>
     </div>

@@ -4,6 +4,17 @@ import { prisma } from '@/lib/prisma'
 import { getAuthSession } from '@/lib/auth'    
 import { slugify } from '@/lib/utils' // à créer si besoin
 
+type Tache = {   
+  id: number
+  titre: string
+  heure: string
+  etat?: boolean
+  commentaires?: string
+  resultatAttendu?: string
+  objectif?: string
+  priorite?: boolean
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const session = await getAuthSession(req, res)
@@ -22,6 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           responsable: {
             select: { id: true, nom: true, prenom: true },
           },
+          taches: true,
         },
       })
       return res.status(200).json({ data: plannings })
@@ -32,15 +44,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         titre,
         date,
         taches,
-        objectif,
-        resultatAttendu,
         responsableId,
-        etat,
-        commentaires,
       } = req.body
 
-      if (!titre || !date || !taches || !objectif) {
-        return res.status(400).json({ message: 'Champs requis manquants' })
+      if (!titre || !date || !taches|| !Array.isArray(taches) || taches.length === 0) {
+        return res.status(400).json({ message: 'Champs requis manquants ou mal formatés' })
       }
 
       const planning = await prisma.planning.create({
@@ -48,15 +56,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           titre,
           slug: slugify(titre),
           date: new Date(date),
-          taches,
-          objectif,
-          resultatAttendu,
+          taches: {
+            createMany: {
+              data: taches.map((t: Tache) => ({
+                titre: t.titre,
+                heure: t.heure,
+                objectif: t.objectif ?? '',
+                resultatAttendu: t.resultatAttendu ?? '',
+                etat: t.etat ?? false,
+                commentaires: t.commentaires ?? '',
+                priorite: t.priorite ?? false,
+              })),
+            },  
+          } ,
           responsableId: responsableId ? parseInt(responsableId) : null,
-          etat: etat ?? false,
-          commentaires: commentaires ?? '',
           userId,
         },
-      })
+      })   
 
       return res.status(201).json({ data: planning })
     }

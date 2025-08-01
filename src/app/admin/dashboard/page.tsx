@@ -4,7 +4,7 @@ import { Role } from '@prisma/client';
 import { getDashboardData } from '@/lib/getAdminDashboardStats'      
 import {             
   LayoutDashboard,                                                        
-  Users,              
+  Users,                
   Building2,         
   FolderKanban,  
   CheckSquare,        
@@ -15,8 +15,9 @@ import Image from 'next/image'
 /*import ProjectActivityChart from '@/components/ProjectActivityChart'
 import ProjectDoughnutChart from '@/components/ProjectDoughnutChart'*/ 
 import ChartSection from '@/components/ChartSection'  
-import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer   
-import Link from "next/link"  
+import SignOutButton from "@/components/SignOutButton"; // 👈 le bouton à créer 
+import NotificationLink from "@/components/NotificationLink"  
+import Link from "next/link"    
    
 export default async function Dashboard() {         
   const session = await getAuthSession();         
@@ -30,7 +31,7 @@ export default async function Dashboard() {
     totalTaches,
     projetsAttente,
     projetsEnCours,
-    tachesRecentes,
+    tachesRecentes,     
     usersOnline
   } = await getDashboardData();
 
@@ -88,16 +89,11 @@ export default async function Dashboard() {
         <div className="flex justify-between items-center mb-8">
           <input type="text" placeholder="Rechercher..." className="p-2 border rounded w-1/2" />
           <div className="flex items-center gap-4">
-            <Link href="/notifications" className="relative text-sm text-blue-800 font-semibold hover:underline">   
-              Notifications
-              <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">   
-                3
-              </span>  
-            </Link>
+            <NotificationLink/>
             <Image
               src={session?.user?.image || "/profile.png"}
               alt="Profil"
-              width={40}
+              width={40}  
               height={40}
               className="rounded-full object-cover"
             />

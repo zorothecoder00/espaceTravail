@@ -259,7 +259,7 @@ model Notification {
   message          String                       // Ex: "Tu as reçu une nouvelle tâche"
 
   vu               Boolean      @default(false)
-  dateNotification DateTime     @default(now())
+  dateNotification DateTime     @default(now())   
 
   // Optionnels selon le contexte
   documentId       Int?
@@ -332,20 +332,33 @@ model Planning {
   titre           String        @db.VarChar(191)
   date            DateTime      @default(now())
   slug            String        @unique   
-  taches          String[]
-  objectif        String?
-  resultatAttendu String?    
-
+  taches          TachePlanning[]
   responsableId   Int? 
   responsable     User?         @relation("ResponsablePlanning", fields: [responsableId], references: [id], onDelete: Cascade)            
 
   etat            Boolean?      @default(false)
-  commentaires    String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
   userId          Int
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  messages        Message[]     
-}    
+  messages        Message[]        
+}                
+
+model TachePlanning {
+  id         Int       @id @default(autoincrement())
+  titre      String
+  heure      String
+  etat       Boolean   @default(false) // ou tu peux utiliser un enum `Statut` si tu veux plus de flexibilité
+  commentaires String?
+  resultatAttendu String?
+  objectif  String?
+  priorite  Boolean?
+  planning   Planning  @relation(fields: [planningId], references: [id], onDelete: Cascade)
+  planningId Int
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt  
+
+}
