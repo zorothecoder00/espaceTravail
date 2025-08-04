@@ -125,13 +125,13 @@ export default function ListeTachesPage() {
               <th className="border p-2 text-left">Projet</th>
               <th className="border p-2 text-left">Actions</th>{/*✅ colonne ajoutée */}
             </tr>
-          </thead>
+          </thead>  
           <tbody>
             {taches.map((tache) => (
                 <React.Fragment key={tache.id}>
                   <tr className="hover:bg-gray-50">
                     <td className="border p-2">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-start gap-6">
                         <span>{tache.titre}</span>
                         <button
                           onClick={() => toggleTache(tache.id)}
@@ -182,6 +182,16 @@ export default function ListeTachesPage() {
                             Aucune sous-tâche liée à vous.
                           </span>
                         )}
+
+                        {/* Lien pour ajouter une sous-tâche */}
+                        <div className="mt-4">
+                          <Link
+                            href={`/interfaceUtilisateur/mesTaches/sousTache/new?tacheId=${tache.id}`}
+                            className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700"
+                          >
+                            + Ajouter une sous-tâche
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   )}
