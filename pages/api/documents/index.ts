@@ -128,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       /* Notifications pour utilisateurs directs ----------------------- */
       if (utilisateurs.length) {
-        await prisma.notification.createMany({
+        await prisma.notification.createMany({  
           data: utilisateurs.map((uid: number) => ({  
             userId: uid,
             documentId: document.id,
