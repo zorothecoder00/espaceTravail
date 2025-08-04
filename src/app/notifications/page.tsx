@@ -23,7 +23,7 @@ export default function NotificationsPage() {
       setLoading(true)
       try {
 
-        const res = await fetch('/api/notifications')
+        const res = await fetch('/api/notifications', { cache: 'no-store' })
         if (!res.ok) throw new Error('Erreur lors du chargement des notifications')
 
         const data = await res.json()

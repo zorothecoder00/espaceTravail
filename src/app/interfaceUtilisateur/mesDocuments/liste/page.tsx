@@ -19,7 +19,7 @@ export default function DocumentsRecusPage() {
   const [documents, setDocuments] = useState<DocumentPartage[]>([])
 
   useEffect(() => {
-    fetch('/api/documents')
+    fetch('/api/documents', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         setDocuments(data.recus || [])
