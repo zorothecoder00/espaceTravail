@@ -1,28 +1,34 @@
 import { prisma } from '@/lib/prisma'
 import 'dotenv/config'
 
-// Tu peux ajouter autant de remplacements que tu veux ici
 const remplacements: Record<string, string> = {
   'projets/': 'shared/projets/',
   'taches/': 'shared/taches/',
   'documents/': 'shared/documents/',
-  'messages/': 'shared/messages/'  
+  'messages/': 'shared/messages/',
 }
 
 async function nettoyerLiensNotifications() {
   const notifications = await prisma.notification.findMany()
 
   for (const notif of notifications) {
-    // Vérifie que notif.lien n'est pas null ou undefined
     if (!notif.lien) continue
-      
+
     let nouveauLien = notif.lien
     let modifie = false
 
-    for (const [ancien, nouveau] of Object.entries(remplacements)) {
-      if (nouveauLien.includes(ancien)) {
-        nouveauLien = nouveauLien.replace(ancien, nouveau)
-        modifie = true
+    // Supprimer tous les doublons de "shared/" au début du lien
+    const originalLien = nouveauLien
+    nouveauLien = nouveauLien.replace(/^(shared\/)+/, 'shared/')
+    if (nouveauLien !== originalLien) modifie = true
+
+    // Appliquer les remplacements si le lien ne commence pas déjà par "shared/"
+    if (!nouveauLien.startsWith('shared/')) {
+      for (const [ancien, nouveau] of Object.entries(remplacements)) {
+        if (nouveauLien.includes(ancien)) {
+          nouveauLien = nouveauLien.replace(ancien, nouveau)
+          modifie = true
+        }
       }
     }
 
