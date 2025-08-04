@@ -189,7 +189,7 @@ export default function ListeTachesPage() {
                             href={`/interfaceUtilisateur/mesTaches/sousTache/new?tacheId=${tache.id}`}
                             className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700"
                           >
-                            + Ajouter une sous-tâche
+                            + Ajouter sous-tâche
                           </Link>
                         </div>
                       </td>

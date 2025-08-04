@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { tacheId, sousTaches } = req.body
+    const { tacheId, sousTaches } = req.body  
 
     if (!tacheId || !Array.isArray(sousTaches) || sousTaches.length === 0) {
       return res.status(400).json({ error: 'Tâche parente ou sous-tâches invalides' })
@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         priorite: prioriteValide,
         tacheId: Number(tacheId),
       }
-    })
+    })  
 
     const created = await prisma.sousTacheProjet.createMany({ data })
 

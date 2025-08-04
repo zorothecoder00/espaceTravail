@@ -1,11 +1,12 @@
 import { prisma } from '@/lib/prisma'
+import 'dotenv/config'
 
 // Tu peux ajouter autant de remplacements que tu veux ici
 const remplacements: Record<string, string> = {
   'projets/': 'shared/projets/',
   'taches/': 'shared/taches/',
   'documents/': 'shared/documents/',
-  'messages/': 'shared/messages/'
+  'messages/': 'shared/messages/'  
 }
 
 async function nettoyerLiensNotifications() {
