@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
-import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/lib/auth' 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id: notificationId },
         data: { vu: true },
       })
-    }
+    }  
 
     const notificationDetail = await prisma.notification.findUnique({
       where: { id: notificationId },

@@ -139,14 +139,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           emetteurId,
           projetId,
           message: `Vous avez été ajouté au projet "${projet.nom}"`,
-          lien: `/projets/${projetId}`,
+          lien: `/shared/projets/${projetId}`,
         })),
         ...aRetirer.map(userId => ({
           userId,
           emetteurId,
           projetId,
           message: `Vous avez été retiré du projet "${projet.nom}"`,
-          lien: `/projets/${projetId}`,
+          lien: `/shared/projets/${projetId}`,
         })),
       ]
 

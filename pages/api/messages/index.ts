@@ -87,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           userId: receiverId,
           emetteurId: parseInt(session.user.id),
           message: `Nouveau message de ${session.user.nom}`,
-          lien: `/interfaceUtilisateur/mesMessages/${nouveauMessage.id}`,
+          lien: `/shared/messages/${nouveauMessage.id}`,
           messageId: nouveauMessage.id,
         },
       })

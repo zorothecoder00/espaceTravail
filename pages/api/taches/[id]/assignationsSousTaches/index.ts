@@ -290,7 +290,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const notifications = [
         ...idsAjoutes.map(userId => ({
-          message: `Vous avez été assigné(e) à la sous-tâche "${sousTache.titre}".`,
+          message: `Vous avez été assigné(e) à la sous-tâche "${sousTache.titre}".`, 
           userId,
           emetteurId: parseInt(session.user.id),
           sousTacheProjetId: sousTache.id,

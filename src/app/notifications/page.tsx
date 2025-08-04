@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'  
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
-type Notification = {
+type Notification = {   
   id: number
   message: string
   lien?: string | null
@@ -14,6 +15,8 @@ export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  const { data: session } = useSession()
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -34,9 +37,9 @@ export default function NotificationsPage() {
       }
     }
 
-    fetchNotifications()
+    fetchNotifications()  
   }, [])
-
+  
   if (loading) {
     return (
       <div className="p-4 space-y-4">
@@ -59,6 +62,16 @@ export default function NotificationsPage() {
 
   return (
     <div className="p-4">
+      {session?.user?.role === 'ADMIN' || 'SUPER_ADMIN' ? (
+        <Link href="/admin/dashboard" className="text-sm text-blue-600 underline">
+          Accéder à votre dashboard
+        </Link>
+      ) : (
+        <Link href="/interfaceUtilisateur/dashboard" className="text-sm text-blue-600 underline">
+          Accéder à votre dashboard
+        </Link>
+      )}
+
       <h1 className="text-xl font-semibold mb-4">Vos notifications</h1>
 
       {notifications.length === 0 ? (
@@ -72,7 +85,7 @@ export default function NotificationsPage() {
                 {new Date(notif.dateNotification).toLocaleString()}
               </p>
               {notif.lien && (
-                <Link href={notif.lien} className="text-blue-600 underline text-sm">
+                <Link href={`/notifications/${notif.id}`} className="text-blue-600 underline text-sm">
                   Voir plus
                 </Link>
               )}

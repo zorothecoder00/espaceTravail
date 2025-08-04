@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"  
+import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -107,8 +107,8 @@ export default function ProjetDetailPage() {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Détail du projet</h1>
-      <Link href="/admin/projets/liste" className="text-blue-600 hover:underline mb-4 block">
-        ← Retour à la liste des projets
+      <Link href={`/notifications/${projet.notifications[0]?.id} `} className="text-blue-600 hover:underline mb-4 block">
+        ← Retour vers la notification
       </Link>
 
       <Card>

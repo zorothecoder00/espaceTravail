@@ -3,15 +3,16 @@ import { getAuthSession } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {     
-  LayoutDashboard,                               
+  LayoutDashboard,                                              
   FolderKanban,   
   CheckSquare,       
-  FileText,   
+  FileText,       
   Calendar  
-} from "lucide-react"    
+} from "lucide-react"       
 import Image from "next/image"
 import SignOutButton from "@/components/SignOutButton"
 import Link from "next/link"
+import NotificationLink from "@/components/NotificationLink"
 
 export default async function UtilisateurDashboard() {
   const session = await getAuthSession()
@@ -49,11 +50,11 @@ export default async function UtilisateurDashboard() {
           </Link>
           <Link href="/interfaceUtilisateur/mesTaches/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <CheckSquare className="w-5 h-5" />
-            Mes Tâches
+            Mes Tâches  
           </Link>
           <Link href="/interfaceUtilisateur/planning/vue" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <Calendar className="w-5 h-5" />  
-            Mon agenda personnel  
+            Mon agenda personnel    
           </Link>
           <Link href="/interfaceUtilisateur/mesDocuments/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FileText className="w-5 h-5" />
@@ -75,15 +76,7 @@ export default async function UtilisateurDashboard() {
             className="p-2 border rounded w-1/2"
           />
           <div className="flex items-center gap-4">
-            <Link
-              href="/notifications"
-              className="relative text-sm text-blue-800 font-semibold hover:underline"
-            >
-              Notifications
-              <span className="absolute -top-2 -right-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                3
-              </span>
-            </Link>
+            <NotificationLink/>
             <Image
               src={session?.user?.image || "/profile.png"}
               alt="Profil utilisateur"

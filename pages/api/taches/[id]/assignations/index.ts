@@ -176,7 +176,7 @@ export default async function handler(
           tacheId,
           projetId: tache.projet.id,
           message: `Vous avez été assigné à la tâche "${tache.titre}" du projet "${tache.projet.nom}"`,
-          lien: `/taches/${tacheId}`,
+          lien: `/shared/taches/${tacheId}`,
         })),
         ...aSupprimer.map((userId) => ({
           userId,
@@ -184,7 +184,7 @@ export default async function handler(
           tacheId,
           projetId: tache.projet.id,
           message: `Vous avez été retiré de la tâche "${tache.titre}" du projet "${tache.projet.nom}"`,
-          lien: `/taches/${tacheId}`,
+          lien: `/shared/taches/${tacheId}`,
         })),
       ];
 
@@ -201,4 +201,4 @@ export default async function handler(
 
   res.setHeader("Allow", ["GET", "POST"]);
   return res.status(405).json({ message: `Méthode ${req.method} non autorisée` });
-}
+}   
