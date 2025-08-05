@@ -1,45 +1,33 @@
 import { prisma } from '@/lib/prisma'
 import 'dotenv/config'
 
-function supprimerTroisPremiersShared(lien: string): string {
-  if (!lien) return ''
-
-  let count = 0  
-  const result = lien
-    .split('/')
-    .filter((segment) => {
-      if (segment === 'shared' && count < 3) {
-        count++
-        return false // on saute les 3 premiers "shared"
-      }
-      return true
-    })
-    .join('/')
-
-  return result
-}
-
-async function nettoyerLiensNotifications() {
-  const notifications = await prisma.notification.findMany()
+async function corrigerNotificationsAvecDocument() {
+  const notifications = await prisma.notification.findMany({
+    where: {
+      lien: null,
+      documentId: { not: null },
+    },
+    include: {
+      document: true,
+    },
+  })
 
   for (const notif of notifications) {
-    const ancienLien = notif.lien
-    if (!ancienLien || typeof ancienLien !== 'string') continue
+    if (!notif.documentId) continue
 
-    const lienModifie = supprimerTroisPremiersShared(ancienLien)
+    const nouveauLien = `/shared/documents/${notif.documentId}`
 
-    if (lienModifie !== ancienLien) {
-      await prisma.notification.update({
-        where: { id: notif.id },
-        data: { lien: lienModifie },
-      })
-      console.log(`🔁 Notification ${notif.id} : ${ancienLien} → ${lienModifie}`)
-    }
-  }    
+    await prisma.notification.update({
+      where: { id: notif.id },
+      data: { lien: nouveauLien },
+    })
 
-  console.log('✅ Nettoyage terminé (3 premiers "shared" supprimés).')
+    console.log(`🔁 Notification ${notif.id} mise à jour avec lien : ${nouveauLien}`)
+  }
+
+  console.log('✅ Liens des notifications avec documentId corrigés.')
 }
 
-nettoyerLiensNotifications().catch((err) => {
-  console.error('❌ Erreur lors du nettoyage :', err)
+corrigerNotificationsAvecDocument().catch((err) => {
+  console.error('❌ Erreur lors de la correction des notifications :', err)
 })

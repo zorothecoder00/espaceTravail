@@ -63,6 +63,6 @@ export default function NotificationDetailPage() {
           Aller au lien
         </a>
       )}
-    </div> 
+    </div>   
   )
 }

@@ -77,7 +77,7 @@ export default function NotificationsPage() {
       {notifications.length === 0 ? (
         <p>Aucune notification pour le moment.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-4">   
           {notifications.map((notif) => (
             <li key={notif.id} className="border p-4 rounded shadow-sm bg-white">
               <p>{notif.message}</p>

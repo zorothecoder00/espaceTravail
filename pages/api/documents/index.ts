@@ -87,6 +87,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const uploaded = await cloudinary.uploader.upload(file.filepath, {
           folder: 'documents',
           resource_type: 'auto',
+          type: 'upload', // Spécifie le type de livraison (upload = public)
+          upload_preset: 'my_unsigned_public'
         })
 
         if (!uploaded.secure_url) throw new Error('Upload Cloudinary échoué');
