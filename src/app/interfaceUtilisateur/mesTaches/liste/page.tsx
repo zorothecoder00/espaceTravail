@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from 'react'    
 import Link from 'next/link'
-import { Statut } from '@prisma/client'
+import { Statut } from '@prisma/client'    
 
 type SousTacheProjet = {
   id: number
   titre: string
-  statut: Statut
+  statut: Statut  
 }    
 
 type Tache = {

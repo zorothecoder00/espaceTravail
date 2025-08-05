@@ -4,7 +4,7 @@ import 'dotenv/config'
 function supprimerTroisPremiersShared(lien: string): string {
   if (!lien) return ''
 
-  let count = 0
+  let count = 0  
   const result = lien
     .split('/')
     .filter((segment) => {
@@ -35,7 +35,7 @@ async function nettoyerLiensNotifications() {
       })
       console.log(`🔁 Notification ${notif.id} : ${ancienLien} → ${lienModifie}`)
     }
-  }
+  }    
 
   console.log('✅ Nettoyage terminé (3 premiers "shared" supprimés).')
 }

@@ -9,7 +9,7 @@ type Notification = {
   message: string
   lien?: string | null
   dateNotification: string   
-}
+}  
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -23,7 +23,7 @@ export default function NotificationsPage() {
       setLoading(true)
       try {
 
-        const res = await fetch('/api/notifications', { cache: 'no-store' })
+        const res = await fetch('/api/notifications')
         if (!res.ok) throw new Error('Erreur lors du chargement des notifications')
 
         const data = await res.json()
