@@ -1,14 +1,14 @@
  "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useSearchParams } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link" 
 import ReactMarkdown from "react-markdown"
 import { Statut, Priorite } from '@prisma/client'   
 
-type User = {
+type User = {  
   id: number
   nom: string
   prenom: string
@@ -89,6 +89,10 @@ type TacheDetail = {
 
 export default function TacheDetailPage() {
   const { id } = useParams() as { id: string }
+
+  const searchParams = useSearchParams()
+  const notifId = searchParams ? searchParams.get('notifId') : null
+  
   const [tache, setTache] = useState<TacheDetail | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -111,7 +115,7 @@ export default function TacheDetailPage() {
       }
     }
 
-    fetchTache()
+    fetchTache()  
   }, [id])
 
   if (loading) return <Skeleton className="w-full h-32 rounded-xl" />
@@ -121,9 +125,12 @@ export default function TacheDetailPage() {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Détail de la tâche</h1>
-      <Link href={`/notifications/${tache.notifications[0]?.id} `} className="text-blue-600 hover:underline mb-4 block">
-        ← Retour vers la notification  
-      </Link>
+      {notifId && (
+        <Link href={`/notifications/${notifId}`} className="text-blue-600 hover:underline mb-4 block">
+          ← Retour vers la notification
+        </Link>
+      )}
+   
   
       <Card>
         <CardContent>          

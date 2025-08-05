@@ -42,7 +42,7 @@ export default function NotificationDetailPage() {
   }, [id])
 
   if (error) return <p>{error}</p>
-  if (!notification) return <p>Chargement...</p>
+  if (!notification) return <p>Chargement...</p>  
 
   return (
     <div className="p-4">
@@ -59,7 +59,7 @@ export default function NotificationDetailPage() {
         {new Date(notification.dateNotification).toLocaleString()}
       </p>
       {notification.lien && (
-        <a href={notification.lien} className="text-blue-600 underline text-sm" target="_blank">
+        <a href={`${notification.lien}?notifId=${notification.id}`} className="text-blue-600 underline text-sm" target="_blank">
           Aller au lien
         </a>
       )}

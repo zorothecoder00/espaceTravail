@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'  
+import { useEffect, useState } from 'react'    
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
@@ -54,7 +54,7 @@ export default function NotificationsPage() {
             <div className="h-3 bg-gray-200 rounded w-1/4" />
           </div>
         ))}
-      </div>
+      </div>   
     )
   }
 
@@ -62,7 +62,7 @@ export default function NotificationsPage() {
 
   return (
     <div className="p-4">
-      {session?.user?.role === 'ADMIN' || 'SUPER_ADMIN' ? (
+      {session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN' ? (
         <Link href="/admin/dashboard" className="text-sm text-blue-600 underline">
           Accéder à votre dashboard
         </Link>

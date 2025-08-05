@@ -3,19 +3,22 @@ import { getAuthSession } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {     
-  LayoutDashboard,                                              
-  FolderKanban,   
+  LayoutDashboard,                                                              
+  FolderKanban,        
   CheckSquare,       
-  FileText,       
+  FileText,              
   Calendar  
 } from "lucide-react"       
-import Image from "next/image"
+import Image from "next/image"  
 import SignOutButton from "@/components/SignOutButton"
 import Link from "next/link"
-import NotificationLink from "@/components/NotificationLink"
+import NotificationLink from "@/components/NotificationLink"  
+
+
+
 
 export default async function UtilisateurDashboard() {
-  const session = await getAuthSession()
+  const session = await getAuthSession()             
 
   if (!session?.user) redirect("/login")    
   if (session?.user?.role !== "UTILISATEUR") redirect("/")  
@@ -23,7 +26,7 @@ export default async function UtilisateurDashboard() {
   const { projetsRestants, tachesRestantes, documents } = await getUserDashboardStats(session.user.id)      
 
   return (
-    <div className="flex h-screen">            
+    <div className="flex h-screen">              
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white flex flex-col p-6">  
         <div className="mb-10 flex justify-center">
