@@ -6,6 +6,6 @@ export default function Page() {
     <Suspense fallback={<div className="text-center mt-10">Chargement...</div>}>
       <NouvelleSousTacheForm />
     </Suspense>
-  )  
+  )    
 }
    

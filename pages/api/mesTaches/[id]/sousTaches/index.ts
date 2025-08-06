@@ -86,6 +86,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     )
 
+    // Récupérer le chefProjetId via la relation imbriquée
+    // Récupérer une seule fois le chefProjetId
+    const sousTacheAvecChef = await prisma.sousTacheProjet.findFirst({
+      where: { tacheId: Number(tacheId) },
+      select: {
+        tache: {
+          select: {
+            projet: {
+              select: {
+                chefProjetId: true,
+                nom: true,    // <--- ici on récupère le nom du projet
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const chefProjetId = sousTacheAvecChef?.tache?.projet?.chefProjetId;
+    const projetNom = sousTacheAvecChef?.tache?.projet?.nom ?? "votre projet";
+
+    // Récupérer le nom/prénom de l'émetteur (user connecté)
+    const emetteur = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { nom: true, prenom: true }
+    })
+    const emetteurNom = emetteur ? `${emetteur.nom ?? ''}`.trim() : `Utilisateur ${userId}`
+
+    // Puis boucle pour créer les notifications
+    for (const sousTache of createdSousTaches) {
+      const sousTacheId = sousTache.id;
+
+      // Ne pas créer la notification si l'émetteur est aussi le chef du projet
+      if (chefProjetId && chefProjetId !== userId) {
+        await prisma.notification.create({
+          data: {
+            userId: chefProjetId,
+            emetteurId: userId,
+            message: `L'utilisateur ${emetteurNom} a créé une nouvelle sous-tâche dans votre projet "${projetNom}".`,
+            sousTacheProjetId: sousTacheId,
+            dateNotification: new Date(),
+            vu: false,
+          },
+        });
+      }
+    }
+
     return res.status(201).json({
       message: 'Sous-tâches créées avec succès',
       data: createdSousTaches,
