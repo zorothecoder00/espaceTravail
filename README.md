@@ -126,8 +126,8 @@ Cette application permet de :
 
   .PUT /api/taches/:id — Mettre à jour une tâche
 
-  .DELETE /api/taches/:id — Supprimer une tâche
-
+  .DELETE /api/taches/:id — Supprimer une tâche        
+  
   .GET /api/taches/:id/assignations — Voir les membres assignés
 
   .POST /api/taches/:id/assignations — Assigner un utilisateur à une tâche
@@ -135,9 +135,9 @@ Cette application permet de :
   .DELETE /api/taches/:id/assignations — Retirer un membre d’une tâche
 
 👥 Assignations
-  .GET /api/assignations/:id/projet/:id — Voir les projets et les tâches où un utilisateur est assigné
-
-
+  .GET /api/assignations/:id/projet/:id — Voir les projets et les tâches  où un utilisateur est assigné        
+     
+  
 📄 Documents
   .GET /api/documents — Lister les documents
 
@@ -164,6 +164,8 @@ Cette application permet de :
     
 🔔 Notifications
   .GET /api/notifications — Lister toutes les notifications de l’utilisateur
+
+  .GET /api/notifications/nonLues — Compter les notifications non lues de l’utilisateur
 
   .GET /api/notifications/:id — Détails d’une notification  
 
