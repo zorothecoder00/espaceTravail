@@ -3,8 +3,12 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import Linkify from 'linkify-react'
+import { Button } from '@/components/ui/button'
+import { toast } from 'react-toastify'    
 
 type User = {     
+  id: number
   nom: string
   prenom: string
 }
@@ -35,6 +39,13 @@ export default function PlanningJournalier() {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const [showModal, setShowModal] = useState(false)
+  const [messageEnvoye, setMessageEnvoye] = useState(false)
+  const [lienPlanning, setLienPlanning] = useState('')
+
+  const [utilisateurs, setUtilisateurs] = useState<User[]>([])
+  const [selectedDestinataireId, setSelectedDestinataireId] = useState<number | null>(null)
+
   useEffect(() => {
     const fetchPlanning = async () => {
       setLoading(true)
@@ -61,6 +72,52 @@ export default function PlanningJournalier() {
     }
   }, [id])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && id) {
+      const url = new URL(`/interfaceUtilisateur/planning/vue/${id}`, window.location.origin)
+      setLienPlanning(url.toString())
+    }
+  }, [id])
+
+  // Fetch utilisateurs
+  useEffect(() => {
+    const fetchUtilisateurs = async () => {
+      try {
+        const res = await fetch('/api/utilisateurs')
+        const data = await res.json()
+        setUtilisateurs(data.data || [])
+      } catch (error) {
+        console.error('Erreur lors du fetch des utilisateurs', error)
+      }
+    }
+
+    fetchUtilisateurs()
+  }, [])
+
+  const envoyerMessage = async () => {
+    if (!selectedDestinataireId) return
+
+    const formData = new FormData()
+    formData.append('contenu', `Voici le lien du planning : ${lienPlanning}`)
+    formData.append('receiverId', selectedDestinataireId.toString())
+    try {
+      const res = await fetch('/api/messages', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (res.ok) {
+        setMessageEnvoye(true)
+        setShowModal(false)
+      }else{
+        const data = await res.json()
+        console.error("Erreur serveur", data.message)
+      }
+    } catch (error) {
+      console.error('Erreur envoi message', error)
+    }
+  }
+
   const formatDate = (isoDate: string) => {
     const date = new Date(isoDate)
     return date.toLocaleDateString('fr-FR', {
@@ -69,7 +126,9 @@ export default function PlanningJournalier() {
       month: 'long',
       year: 'numeric',
     })
-  }
+  }     
+
+  const destinataire = utilisateurs.find(u => u.id === selectedDestinataireId)
 
   if (loading) return <p>Chargement...</p>
   if (message) return <p>{message}</p>
@@ -84,6 +143,12 @@ export default function PlanningJournalier() {
         <Link href="/interfaceUtilisateur/planning/new" className="text-blue-600 hover:underline">
           + Créer un nouveau Planning
         </Link>
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:cursor-pointer"
+        >
+          📩 Envoyer ce planning par message
+        </button>
       </div>
 
       <h1 className="text-2xl font-bold mb-4">
@@ -140,6 +205,86 @@ export default function PlanningJournalier() {
           )}
         </tbody>
       </table>
+
+      {/* ✅ Modale */}
+      {showModal && (
+        <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-violet-300 rounded-lg p-6 w-[90%] max-w-md">
+            <h2 className="text-xl font-semibold mb-4 text-white">Envoyer ce planning par message</h2>
+            <label className="block mb-2 text-sm font-medium text-white">
+              Choisir un destinataire :
+            </label>
+            <select
+              value={selectedDestinataireId ?? ''}
+              onChange={(e) => setSelectedDestinataireId(Number(e.target.value))}
+              className="w-full p-2 mb-4 border rounded"
+            >
+              <option value="" disabled>-- Sélectionner un utilisateur --</option>
+              {utilisateurs.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.prenom} {user.nom}
+                </option>
+              ))}
+            </select>
+
+            <p className="mb-4 text-white">
+              Le message contiendra ce lien :
+              <br />
+              <span className="text-blue-600 underline">
+                {lienPlanning}
+              </span>
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={envoyerMessage}
+                disabled={!selectedDestinataireId}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300"
+              >  
+                Envoyer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* Affichage du nom */}
+      {destinataire && (
+        <p className="text-sm text-muted-foreground">
+          Message destiné à <strong>{destinataire.nom}</strong>
+        </p>
+      )}
+
+       {/* ✅ Message de succès */}
+      {messageEnvoye && (
+      <div className="mt-6 bg-green-100 border border-green-400 text-green-700 p-4 rounded">
+        <p>✅ Message envoyé avec succès !</p>
+        <p className="mt-2 text-sm">
+          <Linkify options={{ target: '_blank', rel: 'noopener noreferrer' }}>
+            {`Voici le lien du planning : ${lienPlanning}`}
+          </Linkify>
+        </p>
+
+        <Button
+          onClick={() => {
+            if (lienPlanning) {
+              navigator.clipboard.writeText(lienPlanning)
+              toast.success('Lien copié !')
+            }
+          }}
+        >
+          Copier le lien
+        </Button>
+
+      </div>
+    )}
+
     </div>
   )
 }

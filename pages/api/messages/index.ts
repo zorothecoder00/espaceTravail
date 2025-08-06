@@ -65,6 +65,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const uploaded = await cloudinary.uploader.upload(f.filepath, {
           folder: 'messages',
           resource_type: 'auto',
+          type: 'upload', // Spécifie le type de livraison (upload = public)
+          upload_preset: 'my_unsigned_public'
         })
         fs.unlinkSync(f.filepath)
         fileUrl = uploaded.secure_url
