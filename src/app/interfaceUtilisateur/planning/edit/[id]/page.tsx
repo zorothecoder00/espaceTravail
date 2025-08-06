@@ -93,7 +93,7 @@ export default function EditPlanningPage() {
     })
 
     if (res.ok) {
-      router.push('/interfaceUtilisateur/planning/vue') ?   
+      router.push('/interfaceUtilisateur/planning/vue')   
     } else {
       const err = await res.json()
       alert(err.error || 'Erreur de mise à jour')
