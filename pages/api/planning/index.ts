@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'GET') {
       const plannings = await prisma.planning.findMany({
         where: { userId },
-        orderBy: { date: 'asc' },
+        orderBy: { date: 'desc' },
         include: {
           responsable: {
             select: { id: true, nom: true, prenom: true },
