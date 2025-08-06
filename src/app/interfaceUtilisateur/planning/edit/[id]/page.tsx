@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
 
 type Tache = {       
   id: number
@@ -34,8 +33,6 @@ export default function EditPlanningPage() {
   const [date, setDate] = useState('')
   const [taches, setTaches] = useState<Tache[]>([])
   const [submitting, setSubmitting] = useState(false)
-
-  const { data: session } = useSession()
 
   // Charger les données existantes du planning
   useEffect(() => {
