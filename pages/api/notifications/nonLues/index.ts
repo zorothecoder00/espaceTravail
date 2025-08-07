@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: {
         userId: parseInt(session?.user?.id),
         vu: false, // ⬅️ on filtre côté back
-      },
+      },  
     })
 
     return res.status(200).json({ data: nonLues })

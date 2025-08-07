@@ -99,7 +99,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const uploaded = await cloudinary.uploader.upload(image.filepath, {
         folder: 'utilisateurs',
-        resource_type: 'image',
+        resource_type: 'auto',
+        type: 'upload', // Spécifie le type de livraison (upload = public)
+        upload_preset: 'my_unsigned_public'
       })
 
       fs.unlinkSync(image.filepath) // Nettoyage fichier temporaire

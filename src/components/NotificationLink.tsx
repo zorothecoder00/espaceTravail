@@ -6,10 +6,10 @@ import Link from 'next/link'
 export default function NotificationLink() {
   const [nbNonLues, setNbNonLues] = useState<number>(0)
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
+  useEffect(() => {  
+    const fetchNotifications = async () => {  
       try {
-        const res = await fetch('/api/notifications/non-lues')
+        const res = await fetch('/api/notifications/nonLues')
         const data = await res.json()
         setNbNonLues(data.data)
       } catch (error) {

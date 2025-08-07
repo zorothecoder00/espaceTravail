@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const message = await prisma.message.findUnique({
         where: { id: messageId },
-        include: {
+        include: {  
           sender:   { select: { id: true, nom: true } },
           receiver: { select: { id: true, nom: true } },
           projet:   { select: { id: true, nom: true } },

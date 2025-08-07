@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import Linkify from 'linkify-react'
 import { Button } from '@/components/ui/button'
-import { toast } from 'react-toastify'    
+import { toast } from 'react-toastify'
+import { useSearchParams } from 'next/navigation'    
 
 type User = {     
   id: number
@@ -37,7 +38,7 @@ export default function PlanningJournalier() {
   const { id } = useParams() as { id: string }
   const [planningData, setPlanningData] = useState<Planning | null>(null)
   const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)  
 
   const [showModal, setShowModal] = useState(false)
   const [messageEnvoye, setMessageEnvoye] = useState(false)
@@ -45,6 +46,9 @@ export default function PlanningJournalier() {
 
   const [utilisateurs, setUtilisateurs] = useState<User[]>([])
   const [selectedDestinataireId, setSelectedDestinataireId] = useState<number | null>(null)
+
+  const searchParams = useSearchParams()
+  const readOnly = searchParams?.get('readonly') === '1' || false
 
   useEffect(() => {
     const fetchPlanning = async () => {
@@ -75,6 +79,7 @@ export default function PlanningJournalier() {
   useEffect(() => {
     if (typeof window !== 'undefined' && id) {
       const url = new URL(`/interfaceUtilisateur/planning/vue/${id}`, window.location.origin)
+      url.searchParams.set('readonly', '1')  // <-- ajout ici
       setLienPlanning(url.toString())
     }
   }, [id])
@@ -137,18 +142,22 @@ export default function PlanningJournalier() {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
-        <Link href="/interfaceUtilisateur/planning/vue" className="text-blue-600 hover:underline">
-          ← Retour sur la liste des Plannings
-        </Link>
-        <Link href="/interfaceUtilisateur/planning/new" className="text-blue-600 hover:underline">
-          + Créer un nouveau Planning
-        </Link>
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:cursor-pointer"
-        >
-          📩 Envoyer ce planning par message
-        </button>
+        {!readOnly && (
+          <>
+            <Link href="/interfaceUtilisateur/planning/vue" className="text-blue-600 hover:underline">
+              ← Retour sur la liste des Plannings
+            </Link>
+            <Link href="/interfaceUtilisateur/planning/new" className="text-blue-600 hover:underline">
+              + Créer un nouveau Planning
+            </Link>
+            <button
+              onClick={() => setShowModal(true)}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:cursor-pointer"
+            >
+              📩 Envoyer ce planning par message
+            </button>
+          </>
+        )}
       </div>
 
       <h1 className="text-2xl font-bold mb-4">
@@ -244,7 +253,7 @@ export default function PlanningJournalier() {
               <button
                 onClick={envoyerMessage}
                 disabled={!selectedDestinataireId}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300"
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 hover:cursor-pointer disabled:bg-blue-300"
               >  
                 Envoyer
               </button>

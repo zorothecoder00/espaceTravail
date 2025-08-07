@@ -7,7 +7,8 @@ import {
   FolderKanban,        
   CheckSquare,       
   FileText,              
-  Calendar  
+  Calendar,
+  MessagesSquare  
 } from "lucide-react"       
 import Image from "next/image"  
 import SignOutButton from "@/components/SignOutButton"
@@ -16,7 +17,7 @@ import NotificationLink from "@/components/NotificationLink"
 
 
 export default async function UtilisateurDashboard() {
-  const session = await getAuthSession()             
+  const session = await getAuthSession()                  
 
   if (!session?.user) redirect("/login")    
   if (session?.user?.role !== "UTILISATEUR") redirect("/")  
@@ -60,6 +61,10 @@ export default async function UtilisateurDashboard() {
           <Link href="/interfaceUtilisateur/mesDocuments/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <FileText className="w-5 h-5" />
             Mes Documents
+          </Link>
+          <Link href="/interfaceUtilisateur/mesMessages/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+            <MessagesSquare className="w-5 h-5" />
+            Mes Messages
           </Link>
           <Link href="/interfaceUtilisateur/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <Calendar className="w-5 h-5" />

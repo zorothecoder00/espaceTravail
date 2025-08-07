@@ -59,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (file) {
         const f = file as File
         if (f.size > 5 * 1024 * 1024) {
-          fs.unlinkSync(f.filepath)
+          fs.unlinkSync(f.filepath)   
           return res.status(400).json({ message: 'Fichier trop volumineux (>5 Mo)' })
         }
         const uploaded = await cloudinary.uploader.upload(f.filepath, {
