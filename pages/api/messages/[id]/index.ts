@@ -6,6 +6,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const messageId = parseInt(req.query.id as string)
   if (isNaN(messageId)) return res.status(400).json({ message: 'ID invalide' })
 
+  const session = await getAuthSession(req, res)
+    if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
+
   /* ------------------------------------------------------------- GET */
   if (req.method === 'GET') {
     try {
@@ -19,6 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
       if (!message) return res.status(404).json({ message: 'Message introuvable' })
+
+      if (message.senderId !== parseInt(session.user.id) && message.receiverId !== parseInt(session.user.id)) {
+        return res.status(403).json({ error: 'Accès interdit' })
+      }
+      
       return res.status(200).json({ data: message })
     } catch (error) {
       console.error('Erreur GET /messages/[id] :', error)
@@ -28,8 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   /* ------------------------------------------------------------ DELETE */
   if (req.method === 'DELETE') {
-    const session = await getAuthSession(req, res)
-    if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
+    
     try {
       const message = await prisma.message.findUnique({ where: { id: messageId } })
       if (!message)   return res.status(404).json({ message: 'Message introuvable' })

@@ -20,10 +20,20 @@ function parseForm(req: NextApiRequest): Promise<{ fields: formidable.Fields; fi
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  const session = await getAuthSession(req, res)
+    if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
   /* ------------------------------------------------------------------ GET */
   if (req.method === 'GET') {
-    try {
+
+    try {    
       const messages = await prisma.message.findMany({
+        where: {
+          OR: [
+            { receiverId: parseInt(session.user.id) },
+            { senderId: parseInt(session.user.id) },
+          ],
+        },
         orderBy: { createdAt: 'desc' },
         include: {
           sender: { select: { nom: true } },
@@ -41,8 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   /* ----------------------------------------------------------------- POST */
   if (req.method === 'POST') {
-    const session = await getAuthSession(req, res)
-    if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
+    
     try {
       const { fields, files } = await parseForm(req)
       const contenu     = fields.contenu?.toString() ?? ''

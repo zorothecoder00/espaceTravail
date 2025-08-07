@@ -4,12 +4,13 @@ import { Role } from '@prisma/client';
 import { getDashboardData } from '@/lib/getAdminDashboardStats'      
 import {             
   LayoutDashboard,                                                        
-  Users,                
+  Users,                  
   Building2,         
   FolderKanban,  
   CheckSquare,        
   FileText,
-  Calendar  
+  Calendar,
+  MessagesSquare  
 } from "lucide-react";         
 import Image from 'next/image'  
 /*import ProjectActivityChart from '@/components/ProjectActivityChart'
@@ -76,6 +77,10 @@ export default async function Dashboard() {
           <Link href="/admin/documents/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">   
           <FileText className="w-5 h-5" />
           Documents
+          </Link>
+          <Link href="/admin/messages/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+            <MessagesSquare className="w-5 h-5" />
+            Mes Messages
           </Link>
           <Link href="/admin/calendrier" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <Calendar className="w-5 h-5" />
