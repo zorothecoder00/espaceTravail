@@ -18,7 +18,7 @@ export async function getUserDashboardStats(userId: string) {
       }
     }),
     prisma.partageDocument.count({
-      where: { partageurId: parsedUserId }
+      where: { userId: parsedUserId }
     })
   ])
 
