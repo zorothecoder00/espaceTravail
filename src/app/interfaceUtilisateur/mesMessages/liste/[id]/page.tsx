@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'  
 import { useParams } from 'next/navigation'   
 import Link from 'next/link'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -13,7 +13,7 @@ interface Message {
   contenu: string
   pieceJointeUrl?: string | null
   createdAt: string
-  vu: boolean
+
   sender: { nom: string }
   receiver: { nom: string } | null
   projet?: { nom: string } | null
@@ -69,14 +69,12 @@ export default function MessageDetails() {
         <CardContent className="space-y-4 pt-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Détails du message</h2>
-            <Badge variant={message.vu ? 'default' : 'outline'}>
-              {message.vu ? 'Vu' : 'Non lu'}
-            </Badge>
+            
           </div>
 
           <div className="text-sm text-gray-600">
-            <p><strong>De :</strong> {message.sender.nom}</p>
-            <p><strong>À :</strong> {message.receiver?.nom ?? '—'}</p>
+            <Badge variant="default">De : {message.sender.nom}</Badge>
+            <Badge variant="secondary">À : {message?.receiver?.nom}</Badge>
           </div>
 
           <div className="text-gray-800 whitespace-pre-wrap hover:text-blue-600">

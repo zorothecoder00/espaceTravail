@@ -103,7 +103,7 @@ export default function NouveauPlanning() {
       setSuccess('Planning créé avec succès')
       setError('')
       setSubmitting(false)
-      router.push('/admin/planning/vue') // à adapter si nécessaire
+      router.push('/interfaceUtilisateur/planning/vue') // à adapter si nécessaire
     } catch (err) {
       console.error("Erreur interne", err)
       setError((err as Error).message)

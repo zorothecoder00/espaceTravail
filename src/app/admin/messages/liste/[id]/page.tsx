@@ -1,9 +1,14 @@
 // src/app/admin/messages/liste/[id]/page.tsx
 
-import { notFound } from 'next/navigation'
+// src/app/admin/messages/liste/[id]/page.tsx
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import Linkify from 'linkify-react'
 
 type MessageDetail = {
   id: number
@@ -27,16 +32,43 @@ type MessageDetail = {
   } | null
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const messageId = params.id
+export default function Page() {
+  const params = useParams()
+  const messageId = params?.id as string
 
-  const res = await fetch(`/api/messages/${messageId}`, {
-    cache: 'no-store',
-  })
+  const [message, setMessage] = useState<MessageDetail | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
-  if (!res.ok) return notFound()
+  useEffect(() => {
+    const fetchMessage = async () => {
+      try {
+        const res = await fetch(`/api/messages/${messageId}`, {
+          cache: 'no-store',
+        })
 
-  const { data: message }: { data: MessageDetail } = await res.json()
+        if (!res.ok) {
+          setError(true)
+          return
+        }
+
+        const { data } = await res.json()
+        setMessage(data)
+      } catch (err) {
+        console.error("Erreur interne", err)
+        setError(true)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (messageId) {
+      fetchMessage()
+    }
+  }, [messageId])
+
+  if (loading) return <div className="p-6">Chargement...</div>
+  if (error || !message) return <div className="p-6 text-red-600">Message introuvable.</div>
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
@@ -63,7 +95,11 @@ export default async function Page({ params }: { params: { id: string } }) {
             )}
           </div>
 
-          <p className="text-gray-800 whitespace-pre-wrap">{message.contenu}</p>
+          <p className="text-gray-800 whitespace-pre-wrap hover:text-blue-600">
+            <Linkify options={{ target: '_blank' }}>
+              {message.contenu}
+            </Linkify>
+          </p>
         </CardContent>
       </Card>
     </div>

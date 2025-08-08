@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-interface PartageDocument {
+interface PartageDocument {  
   id: number
   datePartage: string
   document: {

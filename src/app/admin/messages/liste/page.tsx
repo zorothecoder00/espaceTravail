@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { toast } from 'react-toastify'
 
 type Utilisateur = {
-  id: number
-  nom: string
+  id: number   
+  nom: string    
 }
 
 type Message = {
@@ -91,6 +91,9 @@ export default function ListeMessagesPage() {
 
   return (
     <div className="p-6">
+      <Link href="/admin/dashboard" className="text-blue-600 underline mb-4 inline-block">
+        ← Retour au dashboard
+      </Link>
       <h1 className="text-2xl font-bold mb-4">Messages reçus / envoyés</h1>
 
       <button
@@ -112,8 +115,10 @@ export default function ListeMessagesPage() {
                 <p className="text-sm text-gray-600">
                   De : {msg.sender?.nom ?? 'Inconnu'} → {msg.receiver?.nom ?? 'Inconnu'} •{' '}
                   {new Date(msg.createdAt).toLocaleString('fr-FR')}
+                  <div className="text-gray-800 mb-2">{msg.contenu}</div>
                 </p>
               </div>
+
             </Link>
           ))
         )}
@@ -150,7 +155,7 @@ export default function ListeMessagesPage() {
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded"
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:cursor-pointer"
                   disabled={sending}
                 >
                   {sending ? (

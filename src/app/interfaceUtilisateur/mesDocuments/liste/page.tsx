@@ -29,7 +29,25 @@ export default function DocumentsRecusPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Mes documents reçus</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-xl font-bold">Mes documents reçus</h1>
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+        <Link
+          href="/interfaceUtilisateur/dashboard"
+          className="text-blue-600 hover:underline text-sm"
+        >
+          ← Retour au tableau de bord
+        </Link>
+        <Link
+          href="/interfaceUtilisateur/mesDocuments/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm text-center"
+        >
+        + Nouveau document
+        </Link>
+      </div>
+    </div>
+
       {documents.length === 0 ? (
         <p>Vous n&rsquo;avez reçu aucun document.</p>
       ) : (
@@ -58,11 +76,6 @@ export default function DocumentsRecusPage() {
         </ul>
       )}
 
-      <div className="mt-6">
-        <Link href="/interfaceUtilisateur/dashboard" className="text-blue-600 hover:underline">
-          ← Retour au tableau de bord
-        </Link>
-      </div>
     </div>
   )
 }

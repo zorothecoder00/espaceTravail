@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
-type Notification = {   
+type Notification = {     
   id: number
   message: string
   lien?: string | null
@@ -39,6 +39,29 @@ export default function NotificationsPage() {
 
     fetchNotifications()  
   }, [])
+
+  // ✅ Marquer automatiquement les notifications liées aux sous-tâches comme "vues"
+  useEffect(() => {
+    const markSousTacheNotificationsAsRead = async () => {
+      const notifs = notifications.filter(
+        (n) => n.lien === null // ou autre condition
+      )  
+
+      for (const notif of notifs) {
+        try {
+          await fetch(`/api/notifications/${notif.id}/vu`, {
+            method: 'PUT',
+          })
+        } catch (err) {
+          console.error(`Erreur lors de la mise à jour de la notif ${notif.id}`, err)
+        }
+      }
+    }
+
+    if (notifications.length > 0) {
+      markSousTacheNotificationsAsRead()
+    }
+  }, [notifications])
   
   if (loading) {
     return (

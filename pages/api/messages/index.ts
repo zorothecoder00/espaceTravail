@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   /* ----------------------------------------------------------------- POST */
   if (req.method === 'POST') {
     
-    try {
+    try {  
       const { fields, files } = await parseForm(req)
       const contenu     = fields.contenu?.toString() ?? ''
       const receiverId  = parseInt(fields.receiverId?.toString() || '')
