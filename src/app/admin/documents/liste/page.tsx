@@ -13,7 +13,9 @@ interface PartageDocument {
     description: string
     fichier?: string | null
   }
-  user?: { name: string }
+  partageur: {
+    nom: string
+  }  
   departement?: { nom: string }
   projet?: { nom: string }
 }
@@ -26,7 +28,7 @@ export default function AdminDocumentsPage() {
     fetch('/api/documents')
       .then(res => res.json())
       .then(data => {
-        setDocuments(data.partages || [])
+        setDocuments(data.recus || [])
       })
       .catch(err => console.error("Erreur lors du chargement", err))
   }, [])
@@ -36,7 +38,7 @@ export default function AdminDocumentsPage() {
       {/* En‑tête */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold text-center sm:text-left">
-          📁 Documents partagés
+          📁 Documents reçus
         </h1>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -107,9 +109,9 @@ export default function AdminDocumentsPage() {
                 )}
 
                 <p className="text-sm mt-4 text-gray-700">
-                  Partagé avec :{' '}
+                  Partagé par :{' '}
                   <span className="font-medium text-gray-800">
-                    {p.user?.name ||
+                    {p.partageur?.nom ||
                       p.departement?.nom ||
                       p.projet?.nom ||
                       'Inconnu'}

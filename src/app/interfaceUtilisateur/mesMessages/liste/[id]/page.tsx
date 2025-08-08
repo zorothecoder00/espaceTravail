@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'  
 import { useParams } from 'next/navigation'   
-import Link from 'next/link'
+import Link from 'next/link'  
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'

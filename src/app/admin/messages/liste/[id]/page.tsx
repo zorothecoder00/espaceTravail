@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import Linkify from 'linkify-react'
+import Linkify from 'linkify-react'   
 
 type MessageDetail = {
   id: number
