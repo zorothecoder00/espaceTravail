@@ -12,7 +12,7 @@ interface DocumentPartage {
   partageur: {
     nom: string
   }  
-  datePartage: string
+  datePartage: string        
 }
 
 export default function DocumentsRecusPage() {
