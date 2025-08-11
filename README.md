@@ -158,7 +158,7 @@ Cette application permet de :
 
   .GET /api/projets/:id/messages — Lister les messages d’un projet
 
-  .GET /api/taches/:id/messages — Lister les messages d’une tâche
+  .GET /api/taches/:id/messages — Lister les messages d’une tâche  
 
   .DELETE /api/messages/:id — Supprimer un message         
     

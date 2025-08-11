@@ -3,10 +3,10 @@ import { getAuthSession } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { getUserDashboardStats } from "@/lib/getUserDashboardStats"
 import {     
-  LayoutDashboard,                                                              
-  FolderKanban,        
-  CheckSquare,       
-  FileText,              
+  LayoutDashboard,                                                                     
+  FolderKanban,         
+  CheckSquare,           
+  FileText,                   
   Calendar,
   MessagesSquare  
 } from "lucide-react"       
@@ -77,12 +77,12 @@ export default async function UtilisateurDashboard() {
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <input
-            type="text"
+            type="text"  
             placeholder="Rechercher..."   
             className="p-2 border rounded w-1/2"
           />
           <div className="flex items-center gap-4">
-            <NotificationLink/>
+            <NotificationLink/>   
             <Image
               src={session?.user?.image || "/profile.png"}
               alt="Profil utilisateur"
@@ -98,8 +98,8 @@ export default async function UtilisateurDashboard() {
             </Link>
             <SignOutButton />
           </div>
-        </div>
-
+        </div>     
+  
         <h1 className="text-2xl font-bold">Bienvenue, {session.user.prenom} !</h1>
         <p className="mt-2 text-gray-600 mb-6">Voici un aperçu de vos activités récentes.</p>
 
