@@ -19,6 +19,7 @@ type Message = {
   sender: Utilisateur
   receiver: Utilisateur
   tempId?: string
+  sending?: true // flag pour animation "envoi en cours"
 }
 
 export default function ChatPage() {
@@ -99,15 +100,30 @@ export default function ChatPage() {
       const channelName = `conversation-${Math.min(userId, conversationWith)}-${Math.max(userId, conversationWith)}`
       conversationChannelRef.current = pusherRef.current.subscribe(channelName)
 
-      conversationChannelRef.current.bind('new-message', (data: { message: Message }) => {  
+      conversationChannelRef.current.bind('new-message', (data: { message: Message, tempId?: string }) => {  
         setMessages(prev => {
+          // Si c'est un message qu'on vient d'envoyer (avec tempId), remplacer le message temporaire
+          if (data.tempId) {
+            return prev.map(m => 
+              m.tempId === data.tempId ? data.message : m
+            ).filter(m => m.id !== -1 || !m.tempId) // Nettoyer les doublons temporaires
+          }
+          
+          // Sinon, vérifier si le message existe déjà pour éviter les doublons
           if (prev.find(m => m.id === data.message.id)) return prev
+          
           return [...prev, data.message].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
         })
+
+        // Toast uniquement pour les messages reçus (pas envoyés par soi-même)
+        if (data.message.sender.id !== userId) {
+          toast.info(`📩 Nouveau message de ${data.message.sender.nom}`, { autoClose: 3000 })
+        }
       })
 
       conversationChannelRef.current.bind('message-deleted', (data: { messageId: number }) => {
         setMessages(prev => prev.filter(m => m.id !== data.messageId))
+        toast.warn('🗑️ Un message a été supprimé', { autoClose: 2000 })
       })
 
       fetchMessages(conversationWith)
@@ -142,7 +158,7 @@ export default function ChatPage() {
     if (!messageInput.trim() || !conversationWith || !userId) return
     setSending(true)
 
-    const tempId = `temp_${Date.now()}`
+    const tempId = `temp_${Date.now()}_${userId}`
     const tempMsg: Message = {
       id: -1,
       tempId,
@@ -151,7 +167,7 @@ export default function ChatPage() {
       vu: false,
       sender: { id: userId, nom: session?.user?.nom || 'Vous' },
       receiver: utilisateurs.find(u => u.id === conversationWith)!,
-      
+      sending: true // flag pour animation "envoi en cours"
     }
     setMessages(prev => [...prev, tempMsg])
     setMessageInput('')
@@ -169,15 +185,38 @@ export default function ChatPage() {
 
       if (!res.ok) throw new Error('Erreur envoi')
 
+      // Toast succès après confirmation serveur
+      toast.success('Message envoyé ✅', { autoClose: 1500 })
+
       // Le message réel sera reçu via Pusher, le temp sera remplacé
     } catch (err) {
       console.error('Erreur lors de l’envoi', err)
+      // Marquer le message comme "échec"
+      // Supprimer le message temporaire en cas d'échec
       setMessages(prev => prev.filter(m => m.tempId !== tempId))
-      toast.error('Erreur lors de l’envoi')
+      toast.error('Erreur lors de l’envoi ❌', { autoClose: 2000 });
     } finally {
       setSending(false)
     }
   }
+
+  const cleanupTempMessages = useCallback(() => {
+    setMessages(prev => prev.filter(m => {
+      // Supprimer les messages temporaires de plus de 30 secondes
+      if (m.tempId && m.id === -1) {
+        const messageTime = new Date(m.createdAt).getTime()
+        const now = Date.now()
+        return (now - messageTime) < 5000 // Garder seulement les messages de moins de 5s
+      }
+      return true
+    }))
+  }, [])
+
+  // 4. Utiliser useEffect pour nettoyer périodiquement
+  useEffect(() => {
+    const interval = setInterval(cleanupTempMessages, 10000) // Nettoyer toutes les 10 secondes
+    return () => clearInterval(interval)
+  }, [cleanupTempMessages])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -245,9 +284,10 @@ export default function ChatPage() {
               return (
                 <div
                   key={msg.tempId || msg.id}
-                  className={`max-w-xs p-2 rounded-lg break-words whitespace-pre-wrap ${
-                    isSender ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'
-                  } relative`} // position relative pour placer bouton
+                  className={`max-w-xs p-2 rounded-lg break-words whitespace-pre-wrap 
+                  ${isSender ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'} 
+                  relative
+                  ${msg.sending ? 'opacity-50 italic' : ''}`}
                 >
                   <p>
                     <Linkify
@@ -259,6 +299,10 @@ export default function ChatPage() {
                     >
                       {msg.contenu}
                     </Linkify>
+                    {/* Animation si en cours d'envoi */}
+                    {msg.sending && (
+                      <span className="ml-2 inline-block animate-pulse">⏳</span>
+                    )}
                   </p>
                   <small className="block text-xs text-gray-700 mt-1 text-right">
                     {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

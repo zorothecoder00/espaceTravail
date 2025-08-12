@@ -228,17 +228,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       /* Pusher - Envoyer en temps réel -------------------------------------- */
 
+      /* 🔥 MODIFICATION PRINCIPALE : Inclure tempId dans les événements Pusher */
+      const conversationChannel = `conversation-${Math.min(userId, receiverId)}-${Math.max(userId, receiverId)}`
+
       await Promise.all([
-        triggerPusher(`user-${receiverId}`, 'new-message', { message: nouveauMessage, notification }),
-        tempId ? triggerPusher(`user-${session?.user?.id}`, 'message-sent', { tempId, message: nouveauMessage }) : Promise.resolve(),
-        triggerPusher(
-          `conversation-${Math.min(userId, receiverId)}-${Math.max(userId, receiverId)}`,
-          'new-message',
-          { message: nouveauMessage }
-        )
+        // Pour le destinataire
+        triggerPusher(`user-${receiverId}`, 'new-message', { 
+          message: nouveauMessage, 
+          notification 
+        }),
+        
+        // 🆕 Pour la conversation (AVEC tempId pour remplacer le message temporaire)
+        triggerPusher(conversationChannel, 'new-message', { 
+          message: nouveauMessage,
+          tempId: tempId // ✅ CRUCIAL : inclure tempId ici
+        }),
+        
+        // 🆕 Optionnel : Confirmation pour l'expéditeur
+        tempId ? triggerPusher(`user-${userId}`, 'message-sent', { 
+          tempId, 
+          message: nouveauMessage 
+        }) : Promise.resolve(),
       ])
 
-      return res.status(201).json({ data: nouveauMessage })
+      return res.status(201).json({ data: nouveauMessage, tempId: tempId }) // ✅ Retourner aussi le tempId dans la réponse })
 
     } catch (error) {
       console.error('Erreur POST message :', error)
