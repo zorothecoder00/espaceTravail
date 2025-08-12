@@ -5,8 +5,9 @@ import { toast } from 'react-toastify'
 import Pusher, { Channel } from 'pusher-js'
 import { useSession } from 'next-auth/react'
 import Linkify from 'linkify-react'
+import Link from 'next/link'
 
-type Utilisateur = {
+type Utilisateur = {  
   id: number   
   nom: string    
 }
@@ -27,6 +28,9 @@ export default function ChatPage() {
   const userId = session?.user?.id ? parseInt(session.user.id) : null
 
   const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
+
+  const [loading, setLoading] = useState(false)
+
   const [conversationWith, setConversationWith] = useState<number | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [messageInput, setMessageInput] = useState('')
@@ -43,17 +47,22 @@ export default function ChatPage() {
 
   // Chargement des utilisateurs
   const fetchUtilisateurs = useCallback(async () => {
+    setLoading(true) // ✅ Activer le loading avant la requête
     try {
       const res = await fetch('/api/utilisateurs')
       const data = await res.json()
       setUtilisateurs(data.data)
     } catch (error) {
       console.error('Erreur fetch utilisateurs:', error)
+      toast.error('Erreur lors du chargement des utilisateurs')
+    }finally{
+      setLoading(false)
     }
   }, [])
 
   // Chargement des messages de la conversation sélectionnée
   const fetchMessages = useCallback(async (convWith: number) => {
+
     try {
       const res = await fetch(`/api/messages?conversationWith=${convWith}&limit=100&offset=0`)
       const data = await res.json()
@@ -61,6 +70,7 @@ export default function ChatPage() {
       setMessages(data.data.sort((a: Message, b: Message) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()))
     } catch (error) {
       console.error('Erreur fetch messages:', error)
+      toast.error('Erreur lors du chargement des messages')
     }
   }, [])
 
@@ -247,27 +257,56 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen p-4 gap-6 max-w-7xl mx-auto">
+
+      {/* Lien retour dashboard */}
+      <div className="absolute bottom-4 left-4">
+        <Link href="/interfaceUtilisateur/dashboard" 
+          className="text-blue-600 hover:underline font-semibold">
+          ← Retour au dashboard
+        </Link>
+      </div>
+
       {/* Liste utilisateurs */}
       <aside className="w-64 border-r border-gray-300 overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">Utilisateurs</h2>
-        <ul>
-          {utilisateurs.filter(u => u.id !== userId).map(user => (
-            <li
-              key={user.id}
-              className={`cursor-pointer px-4 py-2 rounded hover:bg-blue-100 ${
-                conversationWith === user.id ? 'bg-blue-200 font-bold' : ''
-              }`}
-              onClick={() => setConversationWith(user.id)}
-            >
-              {user.nom}
-            </li>
-          ))}
-        </ul>
+        {loading ? (
+          // ✅ État de chargement
+          <div className="flex flex-col items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-2"></div>
+            <p className="text-sm text-gray-500">Chargement...</p>
+          </div>
+        ) : utilisateurs?.length === 0 ? (
+          // ✅ État vide (pas d'utilisateurs)
+          <div className="text-center py-8">
+            <p className="text-gray-500 text-sm">Aucun utilisateur trouvé</p>
+          </div>
+        ) : (
+          // ✅ Liste des utilisateurs
+          <ul>
+            {utilisateurs.filter(u => u.id !== userId).map(user => (
+              <li
+                key={user.id}
+                className={`cursor-pointer px-4 py-2 rounded hover:bg-blue-100 transition-colors duration-150 ${
+                  conversationWith === user.id ? 'bg-blue-200 font-bold' : ''
+                }`}
+                onClick={() => setConversationWith(user.id)}
+              >
+                <div className="flex items-center gap-2">
+                  {/* Avatar ou initiale */}
+                  <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    {user.nom.charAt(0).toUpperCase()}
+                  </div>
+                  <span>{user.nom}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </aside>
 
       {/* Zone chat */}
       <section className="flex flex-col flex-1 border rounded shadow ">
-        <header className="border-b p-4 font-semibold bg-gray-50">
+        <header className="border-b p-4 font-semibold bg-black text-white">
           {conversationWith
             ? `Conversation avec ${utilisateurs.find(u => u.id === conversationWith)?.nom ?? 'Inconnu'}`
             : 'Sélectionnez un utilisateur pour commencer'}
