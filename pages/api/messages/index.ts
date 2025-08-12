@@ -18,6 +18,37 @@ const pusher = new Pusher({
 
 export const config = { api: { bodyParser: false } }
 
+type PatchRequestBody = {
+  messageIds: number[]
+  action: string
+}
+
+async function parseJsonBody(req: NextApiRequest): Promise<PatchRequestBody> {
+  return new Promise((resolve, reject) => {
+    let body = ''
+    req.on('data', chunk => { body += chunk })
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body)
+
+        // Optionnel : valider la forme de parsed avant de resolve
+        if (
+          typeof parsed === 'object' && parsed !== null &&
+          Array.isArray(parsed.messageIds) &&
+          typeof parsed.action === 'string'
+        ) {
+          resolve(parsed as PatchRequestBody)
+        } else {
+          reject(new Error('Body JSON invalide'))
+        }
+      } catch (error) {
+        reject(error)
+      }
+    })
+  })
+}
+
+
 const uploadDir = path.join('/tmp', 'uploads')
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true })
 
@@ -90,8 +121,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         take: parseInt(limit.toString()),
         skip: parseInt(offset.toString()),
         include: {
-          sender: { select: { nom: true } },
-          receiver: { select: { nom: true } },
+          sender: { select: { id: true, nom: true } }, 
+          receiver: { select: { id: true, nom: true } },
           projet: { select: { nom: true } },
           tache:  { select: { titre: true } },
         },
@@ -103,7 +134,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .filter(msg => msg.receiverId === userId && !msg.vu)
         .map(msg => msg.id)
 
-        if(conversationWith.length > 0){
+        if(messagesToMarkAsRead.length > 0){
           await prisma.message.updateMany({
             where: { id: { in: messagesToMarkAsRead } },
             data: { vu: true }
@@ -119,7 +150,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       return res.status(200).json({ 
-        data: conversationWith ? messages .reverse() :messages,
+        data: conversationWith ? messages .reverse() : messages,
         total: messages.length
       })
     } catch (error) {
@@ -196,15 +227,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
 
       /* Pusher - Envoyer en temps réel -------------------------------------- */
-        await Promise.all([
-          triggerPusher(`user-${receiverId}`, 'new-message', { message: nouveauMessage, notification }),
-          tempId ? triggerPusher(`user-${session?.user?.id}`, 'message-sent', { tempId, message: nouveauMessage }) : Promise.resolve(),
-          triggerPusher(
-            `conversation-${Math.min(userId, receiverId)}-${Math.max(userId, receiverId)}`,
-            'new-message',
-            { message: nouveauMessage }
-          )
-        ])
+
+      await Promise.all([
+        triggerPusher(`user-${receiverId}`, 'new-message', { message: nouveauMessage, notification }),
+        tempId ? triggerPusher(`user-${session?.user?.id}`, 'message-sent', { tempId, message: nouveauMessage }) : Promise.resolve(),
+        triggerPusher(
+          `conversation-${Math.min(userId, receiverId)}-${Math.max(userId, receiverId)}`,
+          'new-message',
+          { message: nouveauMessage }
+        )
+      ])
 
       return res.status(201).json({ data: nouveauMessage })
 
@@ -228,7 +260,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       })
       if (!message) {
-        return res.status(404).json({ message: 'Message non trouvé ou non autorisé' })
+        return res.status(404).json({ message: 'Message non trouvé ou non autorisé' })  
       }
 
       await prisma.message.delete({
@@ -258,9 +290,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   /* ---------------------------------------------------------------- PATCH */
-  if (req.method === 'PATCH') {
+  if (req.method === 'PATCH') {      
     try{
-      const { messageIds, action } = req.body
+      const { messageIds, action } = await parseJsonBody(req)
 
       if(action === 'mark-as-read' && Array.isArray(messageIds)) {
         await prisma.message.updateMany({

@@ -62,7 +62,7 @@ export default async function UtilisateurDashboard() {
             <FileText className="w-5 h-5" />
             Mes Documents
           </Link>
-          <Link href="/interfaceUtilisateur/mesMessages/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+          <Link href="/interfaceUtilisateur/messages/liste" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
             <MessagesSquare className="w-5 h-5" />
             Mes Messages
           </Link>

@@ -202,7 +202,7 @@ export default function ChatPage() {
       console.error('Erreur lors de la suppression du message', error)
       toast.error('Erreur lors de la suppression du message')
     }
-  } 
+  }
 
 
   return (
@@ -253,7 +253,7 @@ export default function ChatPage() {
                       options={{
                         target: '_blank',  // ouvre les liens dans un nouvel onglet
                         rel: 'noopener noreferrer',
-                        className: 'text-blue-600 underline hover:text-blue-600', // ici ta classe Tailwind pour liens
+                        className: 'text-black underline hover:text-red-600', // ici ta classe Tailwind pour liens
                       }}
                     >
                       {msg.contenu}
