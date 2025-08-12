@@ -151,6 +151,7 @@ export default function ChatPage() {
       vu: false,
       sender: { id: userId, nom: session?.user?.nom || 'Vous' },
       receiver: utilisateurs.find(u => u.id === conversationWith)!,
+      
     }
     setMessages(prev => [...prev, tempMsg])
     setMessageInput('')
