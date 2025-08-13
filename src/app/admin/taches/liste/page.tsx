@@ -119,7 +119,7 @@ export default function ListeTaches() {
 
     {/* Tableau */}
     {loading ? (
-      <p>Chargement des tâches...</p>
+      <p className="">Chargement des tâches...</p>
     ) : taches.length === 0 ? (
       <p>Aucune tâche trouvée.</p>
     ) : (

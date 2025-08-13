@@ -118,7 +118,7 @@ export default function ListeProjetsPage() {
       {error && <p className="text-red-500 mb-2">{error}</p>}
 
       {loading ? (
-        <p>Chargement...</p>
+        <p className="">Chargement...</p>
       ) : projets.length === 0 ? (
         <p>Aucun projet trouvé.</p>
       ) : (

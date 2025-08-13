@@ -303,15 +303,15 @@ export default function ChatPage() {
         )}
       </aside>
 
-      {/* Zone chat */}
+      {/* Zone chat */}   
       <section className="flex flex-col flex-1 border rounded shadow ">
         <header className="border-b p-4 font-semibold bg-black text-white">
-          {conversationWith
+          {conversationWith   
             ? `Conversation avec ${utilisateurs.find(u => u.id === conversationWith)?.nom ?? 'Inconnu'}`
-            : 'Sélectionnez un utilisateur pour commencer'}
+            : 'Sélectionnez un utilisateur pour discuter'}
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-200">
+        <main className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-100">
           {!conversationWith ? (
             <p className="text-gray-500">Aucune conversation sélectionnée.</p>
           ) : messages.length === 0 ? (
@@ -386,5 +386,5 @@ export default function ChatPage() {
         )}
       </section>
     </div>
-  )
+  )     
 }

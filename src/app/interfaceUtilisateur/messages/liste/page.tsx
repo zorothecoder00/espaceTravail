@@ -40,7 +40,7 @@ export default function ChatPage() {
   const conversationChannelRef = useRef<Channel>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Scroll automatique en bas quand messages changent
+  //Scroll automatique en bas quand messages changent
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
@@ -312,7 +312,7 @@ export default function ChatPage() {
             : 'Sélectionnez un utilisateur pour commencer'}
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-200">
+        <main className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-100">
           {!conversationWith ? (
             <p className="text-gray-500">Aucune conversation sélectionnée.</p>
           ) : messages.length === 0 ? (
@@ -333,7 +333,7 @@ export default function ChatPage() {
                       options={{
                         target: '_blank',  // ouvre les liens dans un nouvel onglet
                         rel: 'noopener noreferrer',
-                        className: 'text-blue-600 underline hover:text-blue-600', // ici ta classe Tailwind pour liens
+                        className: 'text-black underline hover:text-blue-600', // ici ta classe Tailwind pour liens
                       }}
                     >
                       {msg.contenu}
