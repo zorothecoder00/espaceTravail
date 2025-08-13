@@ -45,6 +45,33 @@ export default function CalendrierPage() {
     })
   }
 
+  const updateTache = async (tacheId: number, updates: Partial<TachePlanning>) => {
+    try {
+      const res = await fetch(`/api/planning/tache/${tacheId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        // Mettre à jour localement le state
+        setPlannings((prev) =>
+          prev.map((plan) => ({
+            ...plan,
+            taches: plan.taches.map((t) =>
+              t.id === tacheId ? { ...t, ...data.data } : t
+            ),
+          }))
+        )
+      } else {
+        console.error('Erreur update tache:', data)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+
 return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
@@ -89,14 +116,39 @@ return (
                       {plan.responsable
                       ? `${plan.responsable.prenom} ${plan.responsable.nom}`
                       : '--'}
-                    </td>
+                    </td>  
+                    {/* ✅ État toggle */}
                     <td className="p-2 border">
-                      {tache.etat ? '✅ Terminé' : '⏳ En cours'}
+                      <button
+                        onClick={() => updateTache(tache.id, { etat: !tache.etat })}
+                        className="px-2 py-1 border rounded"
+                      >
+                        {tache.etat ? '✅ Terminé' : '⏳ En cours'}
+                      </button>
                     </td>
+                    {/* 🔥 Priorité toggle */}
                     <td className="p-2 border">
-                      {tache.priorite ? '🔥 Élevée' : '⚠️ Moyenne'}
+                      <select
+                        value={tache.priorite ? 'haute' : 'moyenne'}
+                        onChange={(e) =>
+                          updateTache(tache.id, { priorite: e.target.value === 'haute' })
+                        }
+                      >
+                        <option value="moyenne">⚠️ Moyenne</option>
+                        <option value="haute">🔥 Élevée</option>
+                      </select>
                     </td>
-                    <td className="p-2 border">{tache.commentaires || '--'}</td>
+                    {/* 📝 Commentaires editable */}
+                    <td className="p-2 border">
+                      <input
+                        type="text"
+                        value={tache.commentaires || ''}
+                        onChange={(e) =>
+                          updateTache(tache.id, { commentaires: e.target.value })
+                        }
+                        className="border p-1 w-full"
+                      />
+                    </td>
                   </tr>
                 ))
               ) : (
