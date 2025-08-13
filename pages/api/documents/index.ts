@@ -35,11 +35,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const session = await getAuthSession(req, res)
     if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
 
-    const userId = parseInt(session.user.id)
+    const userId = parseInt(session.user.id)   
     try {
       const partages: PartageAvecRelations[] = await prisma.partageDocument.findMany({
         where: { OR: [{ userId }, { partageurId: userId }] },
-        include: {
+        include: {  
           document: true,
           user: true,
           departement: true,    

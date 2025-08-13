@@ -23,7 +23,7 @@ interface PartageDocument {
   projet?: { nom: string }
 }
 
-export default function AdminDocumentsPage() {
+export default function UtilisateurDocumentsPage() {
   const router = useRouter()
   const [recus, setRecus] = useState<PartageDocument[]>([])
   const [partages, setPartages] = useState<PartageDocument[]>([])

@@ -121,24 +121,29 @@ export default async function Dashboard() {
           icon={CheckSquare}
           
           />
-          <Stat 
-          title="Utilisateurs en ligne" 
-          value={usersOnline.length} 
-          icon={Users} 
-          
-          />
-          <Stat 
-          title="Projets en attente" 
-          value={projetsAttente} 
-          icon={FolderKanban}
-          
-          />
-          <Stat 
-          title="Projets en cours" 
-          value={projetsEnCours} 
-          icon={FolderKanban}
-          
-          />
+          <Link href="/usersOnline">
+            <Stat 
+              title="Utilisateurs en ligne" 
+              value={usersOnline.length} 
+              icon={Users} 
+            />
+          </Link>
+
+          <Link href="/projetsAttente">
+            <Stat 
+              title="Projets en attente" 
+              value={projetsAttente} 
+              icon={FolderKanban} 
+            />
+          </Link>
+
+          <Link href="/projetsEncours">
+            <Stat 
+              title="Projets en cours" 
+              value={projetsEnCours} 
+              icon={FolderKanban} 
+            />
+          </Link>
         </div> 
 
         {/* Listes */}
