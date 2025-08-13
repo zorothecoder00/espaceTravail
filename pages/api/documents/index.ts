@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         include: {
           document: true,
           user: true,
-          departement: true,
+          departement: true,    
           projet: true,
           partageur: true,
         },
@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
 
       return res.status(200).json({
-        recus: partages.filter(p => p.userId === userId),
+        recus: partages.filter(p => p.userId === userId && p.partageurId !== userId),
         partages: partages.filter(p => p.partageurId === userId),
       })
     } catch (e) {

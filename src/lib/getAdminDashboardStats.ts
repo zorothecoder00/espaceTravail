@@ -27,13 +27,13 @@ export async function getDashboardData() {
               },
             },
           },
-        },
+        },       
       }
     }),
-    prisma.user.findMany({
+    prisma.user.findMany({   
       where: {
         lastActiveAt: {
-          gte: new Date(Date.now() - 5 * 60 * 1000),
+          gte: new Date(Date.now() - 30 * 60 * 1000),
         },
       },
       select: {
@@ -41,6 +41,7 @@ export async function getDashboardData() {
         nom: true,
         image: true,
       },
+      take: 3,
     }),
   ]);
 

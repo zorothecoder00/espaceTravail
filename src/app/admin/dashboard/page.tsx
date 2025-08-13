@@ -31,7 +31,7 @@ export default async function Dashboard() {
   const {
     totalTaches,
     projetsAttente,
-    projetsEnCours,
+    projetsEnCours,  
     tachesRecentes,     
     usersOnline
   } = await getDashboardData();
@@ -255,7 +255,7 @@ function Card({
                   height={24}
                   className="rounded-full object-cover"
                 />
-                <span>{`${item.nom}`}</span>
+                <span>{`${item.prenom} ${item.nom}`}</span>
               </li>
             );
           }

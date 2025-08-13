@@ -8,7 +8,7 @@ export const getAuthSession = async (
   req?: NextApiRequest,
   res?: NextApiResponse
 ) => {
-  const session = req && res
+  const session = req && res  
     ? await getServerSession(req, res, authOptions)  // pages/api/
     : await getServerSession(authOptions)            // app router
 

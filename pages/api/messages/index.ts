@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prisma'
 import { getAuthSession } from '@/lib/auth'
-import formidable, { File } from 'formidable'
+import formidable, { File } from 'formidable'   
 import fs from 'fs'     
 import path from 'path'
 import cloudinary from '@/lib/cloudinary'   

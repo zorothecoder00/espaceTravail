@@ -328,7 +328,7 @@ export default function ChatPage() {
                   ${msg.sending ? 'opacity-50 italic' : ''}`}
                 >
                   <p>
-                    <Linkify
+                    <Linkify  
                       options={{
                         target: '_blank',  // ouvre les liens dans un nouvel onglet
                         rel: 'noopener noreferrer',
