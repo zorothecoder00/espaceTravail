@@ -43,7 +43,7 @@ export default function ChatPage() {
   // Scroll automatique en bas quand messages changent
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages])    
 
   // Chargement des utilisateurs
   const fetchUtilisateurs = useCallback(async () => {
@@ -323,7 +323,7 @@ export default function ChatPage() {
                 <div
                   key={msg.tempId || msg.id}
                   className={`max-w-xs p-2 rounded-lg break-words whitespace-pre-wrap 
-                  ${isSender ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'} 
+                  ${isSender ? 'bg-blue-600 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'} 
                   relative
                   ${msg.sending ? 'opacity-50 italic' : ''}`}
                 >
