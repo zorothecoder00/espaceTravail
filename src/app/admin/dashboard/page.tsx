@@ -115,12 +115,14 @@ export default async function Dashboard() {
 
         {/* Statistiques */}  
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Stat 
-          title="Total Tâches" 
-          value={totalTaches} 
-          icon={CheckSquare}
-          
-          />
+          <Link href="/totalTaches">
+            <Stat 
+              title="Total Tâches" 
+              value={totalTaches} 
+              icon={CheckSquare}        
+            />
+          </Link>
+
           <Link href="/usersOnline">
             <Stat 
               title="Utilisateurs en ligne" 

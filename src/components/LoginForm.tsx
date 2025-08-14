@@ -59,7 +59,7 @@ export default function LoginForm() {
     }
 
     setIsLoading(false)
-  }
+  } 
 
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
