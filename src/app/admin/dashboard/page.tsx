@@ -5,7 +5,7 @@ import { getDashboardData } from '@/lib/getAdminDashboardStats'
 import {                 
   LayoutDashboard,                                                        
   Users,                  
-  Building2,         
+  Building2,          
   FolderKanban,  
   CheckSquare,        
   FileText,
