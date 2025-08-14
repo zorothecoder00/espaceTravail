@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth"; // helper
 import { Role } from '@prisma/client';
 import { getDashboardData } from '@/lib/getAdminDashboardStats'      
 import {                 
-  LayoutDashboard,                                                        
+  LayoutDashboard,                                                          
   Users,                  
   Building2,          
   FolderKanban,  
@@ -192,7 +192,7 @@ function Stat({
     <div className={`${bgColor} border border-white/50 p-6 rounded shadow transition duration-300 ease-in-out hover:scale-105 flex items-center gap-4`}>
       <Icon className={`w-8 h-8 ${bgColor === 'bg-white' ? 'text-black' : 'text-white'}`} />
       <div className={`${bgColor === 'bg-white' ? 'text-black' : 'text-white'}`}>
-        <h3 className="text-xl font-bold">{title}</h3>
+        <h3 className="text-3xl font-bold">{title}</h3>
         <p className="text-2xl">{value}</p>
       </div>
     </div>

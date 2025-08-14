@@ -92,7 +92,7 @@ return (
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[800px]">
+            <table className="w-full text-sm ">
               <thead className="bg-gray-50 text-left">
                 <tr>
                   <th className="p-2 border">🕐 Heure</th>
@@ -147,7 +147,7 @@ return (
                           onChange={(e) =>
                             updateTache(tache.id, { commentaires: e.target.value })
                           }
-                          className="border p-2 w-full min-h-[100px] resize-y rounded"
+                          className="border p-2 w-full"
                           placeholder="Ajouter un commentaire..."
                         />
                       </td>
