@@ -43,8 +43,8 @@ export default function CalendrierPage() {
       month: 'long',
       year: 'numeric',
     })
-  }
-
+  }    
+  
   const updateTache = async (tacheId: number, updates: Partial<TachePlanning>) => {
     try {
       const res = await fetch(`/api/planning/tache/${tacheId}`, {
