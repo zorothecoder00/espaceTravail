@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 
 type TachePlanning = {
@@ -28,8 +28,11 @@ type Planning = {
 export default function CalendrierPage() {
   const [plannings, setPlannings] = useState<Planning[]>([])
   const [commentairesLocaux, setCommentairesLocaux] = useState<Record<number, string>>({})
+  
+  // Ref pour stocker les timers par tâche
+  const timersRef = useRef<Record<number, NodeJS.Timeout>>({})
 
-  // 🔹 Récupération des plannings
+  // 🔹 Récupération des plannings et initialisation des commentaires
   useEffect(() => {
     fetch('/api/planning')
       .then((res) => res.json())
@@ -40,7 +43,7 @@ export default function CalendrierPage() {
         const init: Record<number, string> = {}
         data.data.forEach((plan: Planning) => {
           plan.taches.forEach((t: TachePlanning) => {
-            init[t.id] = t.commentaires || ""
+            init[t.id] = t.commentaires ?? ""
           })
         })
         setCommentairesLocaux(init)
@@ -55,9 +58,8 @@ export default function CalendrierPage() {
       month: 'long',
       year: 'numeric',
     })
-  }    
-  
-  // 🔹 Fonction pour PATCH une tâche
+  }
+
   const updateTache = async (tacheId: number, updates: Partial<TachePlanning>) => {
     try {
       const res = await fetch(`/api/planning/tache/${tacheId}`, {
@@ -83,27 +85,29 @@ export default function CalendrierPage() {
     }
   }
 
-  // 🔹 Debounce automatique : quand un commentaire local change → sauvegarde après 500ms
-  useEffect(() => {
-    const timers: NodeJS.Timeout[] = []
+  // 🔹 Fonction pour gérer le changement de commentaire avec debounce
+  const handleCommentChange = (tacheId: number, value: string) => {
+    // Met à jour le state local immédiatement
+    setCommentairesLocaux((prev) => ({
+      ...prev,
+      [tacheId]: value,
+    }))
 
-    Object.entries(commentairesLocaux).forEach(([tacheIdStr, value]) => {
-      const tacheId = Number(tacheIdStr)
-
-      timers.push(
-        setTimeout(() => {
-          const tache = plannings.flatMap((p) => p.taches).find((t) => t.id === tacheId)
-          if (tache && tache.commentaires !== value) {
-            updateTache(tacheId, { commentaires: value })
-          }
-        }, 500)
-      )
-    })
-
-    return () => {
-      timers.forEach((t) => clearTimeout(t))
+    // Si un timer existait pour cette tâche → on l'annule
+    if (timersRef.current[tacheId]) {
+      clearTimeout(timersRef.current[tacheId])
     }
-  }, [commentairesLocaux, plannings]) // 🔥 déclenche quand on modifie un commentaire
+
+    // Nouveau timer pour sauvegarde après 500ms d'inactivité
+    timersRef.current[tacheId] = setTimeout(() => {
+      const tache = plannings.flatMap((p) => p.taches).find((t) => t.id === tacheId)
+      if (tache && tache.commentaires !== value) {
+        updateTache(tacheId, { commentaires: value })
+      }
+      // Supprime le timer pour cette tâche
+      delete timersRef.current[tacheId]
+    }, 500)
+  }
 
   return (
     <div className="p-4">
@@ -154,26 +158,17 @@ export default function CalendrierPage() {
                     <tr key={tache.id} className="align-top">
                       <td className="p-3 border text-xs">{tache.heure}</td>
                       <td className="p-3 border">
-                        <div className="truncate" title={tache.titre}>
-                          {tache.titre}
-                        </div>
+                        <div className="truncate" title={tache.titre}>{tache.titre}</div>
                       </td>
                       <td className="p-3 border">
-                        <div className="truncate" title={tache.objectif || '--'}>
-                          {tache.objectif || '--'}
-                        </div>
+                        <div className="truncate" title={tache.objectif ?? '--'}>{tache.objectif ?? '--'}</div>
                       </td>
                       <td className="p-3 border">
-                        <div className="truncate" title={tache.resultatAttendu || '--'}>
-                          {tache.resultatAttendu || '--'}
-                        </div>
+                        <div className="truncate" title={tache.resultatAttendu ?? '--'}>{tache.resultatAttendu ?? '--'}</div>
                       </td>
                       <td className="p-3 border text-xs">
-                        {plan.responsable
-                          ? `${plan.responsable.prenom} ${plan.responsable.nom}`
-                          : '--'}
+                        {plan.responsable ? `${plan.responsable.prenom} ${plan.responsable.nom}` : '--'}
                       </td>  
-                      {/* ✅ État toggle */}
                       <td className="p-3 border">
                         <button
                           onClick={() => updateTache(tache.id, { etat: !tache.etat })}
@@ -182,29 +177,20 @@ export default function CalendrierPage() {
                           {tache.etat ? '✅ OK' : '⏳ En cours'}
                         </button>
                       </td>
-                      {/* 🔥 Priorité toggle */}
                       <td className="p-3 border">
                         <select
                           value={tache.priorite ? 'haute' : 'moyenne'}
-                          onChange={(e) =>
-                            updateTache(tache.id, { priorite: e.target.value === 'haute' })
-                          }
+                          onChange={(e) => updateTache(tache.id, { priorite: e.target.value === 'haute' })}
                           className="px-2 py-1 text-xs w-full border rounded"
                         >
                           <option value="moyenne">⚠️ Moyenne</option>
                           <option value="haute">🔥 Élevée</option>
                         </select>
                       </td>
-                      {/* 📝 Commentaires editable */}
                       <td className="p-3 border">
                         <textarea
                           value={commentairesLocaux[tache.id] ?? ''}
-                          onChange={(e) =>
-                            setCommentairesLocaux((prev) => ({
-                              ...prev,
-                              [tache.id]: e.target.value,
-                            }))
-                          }
+                          onChange={(e) => handleCommentChange(tache.id, e.target.value)}
                           className="border p-2 w-full text-xs resize-none"
                           placeholder="Commentaire..."
                           rows={2}
