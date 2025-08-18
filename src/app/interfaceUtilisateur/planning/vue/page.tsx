@@ -23,7 +23,7 @@ type Planning = {
     nom: string
     prenom: string
   }
-}
+}  
 
 export default function CalendrierPage() {
   
@@ -109,11 +109,11 @@ return (
                 {plan.taches?.length > 0 ? (
                   plan.taches.map((tache) => (
                     <tr key={tache.id} className="align-top">
-                      <td className="p-3 border">{tache.heure}</td>
+                      <td className="p-2 border">{tache.heure}</td>
                       <td className="p-3 border">{tache.titre}</td>
                       <td className="p-3 border">{tache.objectif || '--'}</td>
                       <td className="p-3 border">{tache.resultatAttendu || '--'}</td>
-                      <td className="p-3 border">
+                      <td className="p-2 border">
                         {plan.responsable
                         ? `${plan.responsable.prenom} ${plan.responsable.nom}`
                         : '--'}
@@ -128,7 +128,7 @@ return (
                         </button>
                       </td>
                       {/* 🔥 Priorité toggle */}
-                      <td className="p-3 border">
+                      <td className="p-2 border">
                         <select
                           value={tache.priorite ? 'haute' : 'moyenne'}
                           onChange={(e) =>
