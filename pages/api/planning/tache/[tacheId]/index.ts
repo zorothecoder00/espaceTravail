@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prisma'; // ton instance Prisma
 import { getAuthSession } from '@/lib/auth'; // si tu veux sécuriser
 
-type TachePlanning = {
+type TachePlanning = {  
   id: number
   titre: string
   heure: string

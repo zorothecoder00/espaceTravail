@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
      
 type TachePlanning = {
@@ -28,6 +28,7 @@ type Planning = {
 export default function CalendrierPage() {
   
   const [plannings, setPlannings] = useState<Planning[]>([])
+  const typingTimeouts = useRef<Record<number, NodeJS.Timeout | null>>({})
 
   useEffect(() => {
     fetch('/api/planning')
@@ -166,9 +167,20 @@ return (
                       <td className="p-3 border">
                         <textarea
                           value={tache.commentaires || ''}
-                          onChange={(e) =>
-                            updateTache(tache.id, { commentaires: e.target.value })
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value
+
+                            // Si l’utilisateur continue de taper → on annule le précédent timer
+                            // Annuler l’ancien timer de CETTE tâche
+                            if (typingTimeouts.current[tache.id]) {
+                              clearTimeout(typingTimeouts.current[tache.id]!)
+                            }
+
+                            // Nouveau timer, envoi après 5 secondes
+                            typingTimeouts.current[tache.id] = setTimeout(() => {
+                              updateTache(tache.id, { commentaires: value })
+                            }, 500)
+                          }}
                           className="border p-2 w-full text-xs resize-none"
                           placeholder="Commentaire..."
                           rows={2}
@@ -193,7 +205,7 @@ return (
               className="text-blue-600 hover:underline font-semibold"
             >
               Voir le détail
-            </Link>
+            </Link> 
             <Link
               href={`/admin/planning/edit/${plan.id}`}
               className="text-green-600 hover:underline font-semibold"
