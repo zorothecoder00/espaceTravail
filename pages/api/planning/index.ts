@@ -33,7 +33,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           responsable: {
             select: { id: true, nom: true, prenom: true },
           },
-          taches: true,
+          taches: {
+            orderBy: {
+              heure: 'asc' // Tri par heure croissante
+            }
+          },
         },
       })
       return res.status(200).json({ data: plannings })
