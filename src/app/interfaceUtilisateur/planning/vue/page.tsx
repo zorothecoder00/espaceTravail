@@ -92,7 +92,17 @@ return (
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm ">
+            <table className="w-full text-sm table-fixed">
+              <colgroup>
+                <col className="w-20" />{/* Heure - compact */}
+                <col className="w-32" />{/* Tâche prévue - réduite */}
+                <col className="w-28" />{/* Objectif - réduite */}
+                <col className="w-32" />{/* Résultat attendu - réduite */}
+                <col className="w-24" />{/* Responsable - compact */}
+                <col className="w-24" />{/* État - compact */}
+                <col className="w-28" />{/* Priorité - plus large */}
+                <col className="w-40" />{/* Commentaires - large */}
+              </colgroup>
               <thead className="bg-gray-50 text-left">
                 <tr>
                   <th className="p-2 border">🕐 Heure</th>
@@ -109,11 +119,23 @@ return (
                 {plan.taches?.length > 0 ? (
                   plan.taches.map((tache) => (
                     <tr key={tache.id} className="align-top">
-                      <td className="p-2 border">{tache.heure}</td>
-                      <td className="p-3 border">{tache.titre}</td>
-                      <td className="p-3 border">{tache.objectif || '--'}</td>
-                      <td className="p-3 border">{tache.resultatAttendu || '--'}</td>
-                      <td className="p-2 border">
+                      <td className="p-3 border text-xs">{tache.heure}</td>
+                      <td className="p-3 border">
+                        <div className="truncate" title={tache.titre}>
+                          {tache.titre}
+                        </div>
+                      </td>
+                      <td className="p-3 border">
+                        <div className="truncate" title={tache.objectif || '--'}>
+                          {tache.objectif || '--'}
+                        </div>
+                      </td>
+                      <td className="p-3 border">
+                        <div className="truncate" title={tache.resultatAttendu || '--'}>
+                          {tache.resultatAttendu || '--'}
+                        </div>
+                      </td>
+                      <td className="p-3 border text-xs">
                         {plan.responsable
                         ? `${plan.responsable.prenom} ${plan.responsable.nom}`
                         : '--'}
@@ -122,19 +144,19 @@ return (
                       <td className="p-3 border">
                         <button
                           onClick={() => updateTache(tache.id, { etat: !tache.etat })}
-                          className="px-3 py-2 border rounded text-sm"
+                          className="px-2 py-1 border rounded text-xs w-full"
                         >
-                          {tache.etat ? '✅ Terminé' : '⏳ En cours'}
+                          {tache.etat ? '✅ OK' : '⏳ En cours'}
                         </button>
                       </td>
                       {/* 🔥 Priorité toggle */}
-                      <td className="p-2 border">
+                      <td className="p-3 border">
                         <select
                           value={tache.priorite ? 'haute' : 'moyenne'}
                           onChange={(e) =>
                             updateTache(tache.id, { priorite: e.target.value === 'haute' })
                           }
-                          className="px-2 py-1 text-sm w-full"
+                          className="px-2 py-1 text-xs w-full border rounded"
                         >
                           <option value="moyenne">⚠️ Moyenne</option>
                           <option value="haute">🔥 Élevée</option>
@@ -147,8 +169,9 @@ return (
                           onChange={(e) =>
                             updateTache(tache.id, { commentaires: e.target.value })
                           }
-                          className="border p-2 w-full"
-                          placeholder="Ajouter un commentaire..."
+                          className="border p-2 w-full text-xs resize-none"
+                          placeholder="Commentaire..."
+                          rows={2}
                         />
                       </td>
                     </tr>
