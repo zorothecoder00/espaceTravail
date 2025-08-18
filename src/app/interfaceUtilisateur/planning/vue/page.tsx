@@ -131,14 +131,14 @@ export default function CalendrierPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm table-fixed">
               <colgroup>
+                <col className="w-10" />
+                <col className="w-32" />
+                <col className="w-28" />
+                <col className="w-32" />
+
                 <col className="w-20" />
-                <col className="w-32" />
-                <col className="w-28" />
-                <col className="w-32" />
-                <col className="w-24" />
-                <col className="w-24" />
-                <col className="w-28" />
-                <col className="w-40" />
+                <col className="w-20" />
+                <col className="w-50" />
               </colgroup>
               <thead className="bg-gray-50 text-left">
                 <tr>
@@ -146,7 +146,7 @@ export default function CalendrierPage() {
                   <th className="p-2 border">🗂️ Tâche prévue</th>
                   <th className="p-2 border">🎯 Objectif</th>
                   <th className="p-2 border">📌 Résultat attendu</th>
-                  <th className="p-2 border">👤 Responsable</th>
+
                   <th className="p-2 border">📊 État</th>    
                   <th className="p-2 border">⚠️ Priorité</th>
                   <th className="p-2 border">📝 Commentaires</th>
@@ -166,9 +166,7 @@ export default function CalendrierPage() {
                       <td className="p-3 border">
                         <div className="truncate" title={tache.resultatAttendu ?? '--'}>{tache.resultatAttendu ?? '--'}</div>
                       </td>
-                      <td className="p-3 border text-xs">
-                        {plan.responsable ? `${plan.responsable.prenom} ${plan.responsable.nom}` : '--'}
-                      </td>  
+                    
                       <td className="p-3 border">
                         <button
                           onClick={() => updateTache(tache.id, { etat: !tache.etat })}
