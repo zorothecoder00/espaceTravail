@@ -93,7 +93,7 @@ return (
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm table-fixed">
+            <table className="w-full text-sm table-fixed">  
               <colgroup>
                 <col className="w-20" />{/* Heure - compact */}
                 <col className="w-32" />{/* Tâche prévue - réduite */}

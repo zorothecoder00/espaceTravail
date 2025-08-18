@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
      
 type TachePlanning = {
@@ -23,11 +23,12 @@ type Planning = {
     nom: string
     prenom: string
   }
-}  
+}
 
 export default function CalendrierPage() {
   
   const [plannings, setPlannings] = useState<Planning[]>([])
+  const typingTimeouts = useRef<Record<number, NodeJS.Timeout | null>>({})
 
   useEffect(() => {
     fetch('/api/planning')
@@ -43,7 +44,7 @@ export default function CalendrierPage() {
       month: 'long',
       year: 'numeric',
     })
-  }
+  }    
   
   const updateTache = async (tacheId: number, updates: Partial<TachePlanning>) => {
     try {
@@ -75,10 +76,10 @@ export default function CalendrierPage() {
 return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
-        <Link href="/interfaceUtilisateur/dashboard" className="text-blue-600 hover:underline">
+        <Link href="/admin/dashboard" className="text-blue-600 hover:underline">
           ← Retour au Dashboard
         </Link>
-        <Link href="/interfaceUtilisateur/planning/new" className="text-blue-600 hover:underline">
+        <Link href="/admin/planning/new" className="text-blue-600 hover:underline">
           + Créer un nouveau Planning
         </Link>
       </div>
@@ -166,9 +167,20 @@ return (
                       <td className="p-3 border">
                         <textarea
                           value={tache.commentaires || ''}
-                          onChange={(e) =>
-                            updateTache(tache.id, { commentaires: e.target.value })
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value
+
+                            // Si l’utilisateur continue de taper → on annule le précédent timer
+                            // Annuler l’ancien timer de CETTE tâche
+                            if (typingTimeouts.current[tache.id]) {
+                              clearTimeout(typingTimeouts.current[tache.id]!)
+                            }
+
+                            // Nouveau timer, envoi après 5 secondes
+                            typingTimeouts.current[tache.id] = setTimeout(() => {
+                              updateTache(tache.id, { commentaires: value })
+                            }, 500)
+                          }}
                           className="border p-2 w-full text-xs resize-none"
                           placeholder="Commentaire..."
                           rows={2}
@@ -189,13 +201,13 @@ return (
           {/* Liens pour voir/modifier le planning */}
           <div className="flex gap-4 p-4 border-t bg-gray-50">
             <Link
-              href={`/interfaceUtilisateur/planning/vue/${plan.id}`}
+              href={`/admin/planning/vue/${plan.id}`}
               className="text-blue-600 hover:underline font-semibold"
             >
               Voir le détail
-            </Link>
+            </Link> 
             <Link
-              href={`/interfaceUtilisateur/planning/edit/${plan.id}`}
+              href={`/admin/planning/edit/${plan.id}`}
               className="text-green-600 hover:underline font-semibold"
             >
               Modifier
