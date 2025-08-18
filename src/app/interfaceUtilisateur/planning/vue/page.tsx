@@ -133,12 +133,12 @@ export default function CalendrierPage() {
               <colgroup>
                 <col className="w-10" />
                 <col className="w-35" />
-                <col className="w-30" />
+                <col className="w-35" />
                 <col className="w-35" />
 
-                <col className="w-15" />
                 <col className="w-20" />
-                <col className="w-50" />
+                <col className="w-20" />
+                <col className="w-45" />
               </colgroup>
               <thead className="bg-gray-50 text-left">
                 <tr>
