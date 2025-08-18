@@ -26,7 +26,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const planning = await prisma.planning.findUnique({
         where: { id: planningId },
         include: {
-          taches: true, // ✅ Ajout des tâches ici
+          taches: {
+            orderBy: {
+              heure: 'asc' // Tri par heure croissante
+            }
+          }, // ✅ Ajout des tâches ici
           responsable: {
             select: { id: true, nom: true, prenom: true },
           },
