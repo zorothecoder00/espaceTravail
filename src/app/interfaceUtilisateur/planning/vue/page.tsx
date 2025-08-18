@@ -133,8 +133,8 @@ export default function CalendrierPage() {
               <colgroup>
                 <col className="w-10" />
                 <col className="w-35" />
-                <col className="w-35" />
-                <col className="w-35" />
+                <col className="w-32" />
+                <col className="w-32" />
 
                 <col className="w-20" />
                 <col className="w-20" />
