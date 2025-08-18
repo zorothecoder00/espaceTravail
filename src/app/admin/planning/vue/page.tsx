@@ -144,7 +144,7 @@ export default function CalendrierPage() {
 
                 <col className="w-20" />
                 <col className="w-20" />
-                <col className="w-45" />
+                <col className="w-50" />
               </colgroup>
               <thead className="bg-gray-50 text-left">
                 <tr>
