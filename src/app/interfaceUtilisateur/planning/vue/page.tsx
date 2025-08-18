@@ -132,12 +132,12 @@ export default function CalendrierPage() {
             <table className="w-full text-sm table-fixed">
               <colgroup>
                 <col className="w-10" />
-                <col className="w-32" />
-                <col className="w-28" />
-                <col className="w-32" />
+                <col className="w-35" />
+                <col className="w-31" />
+                <col className="w-35" />
 
-                <col className="w-20" />
-                <col className="w-20" />
+                <col className="w-15" />
+                <col className="w-15" />
                 <col className="w-50" />
               </colgroup>
               <thead className="bg-gray-50 text-left">
