@@ -158,13 +158,13 @@ export default function CalendrierPage() {
                     <tr key={tache.id} className="align-top">
                       <td className="p-3 border text-xs">{tache.heure}</td>
                       <td className="p-3 border">
-                        <div className="truncate" title={tache.titre}>{tache.titre}</div>
+                        <div className="line-clamp-2" title={tache.titre}>{tache.titre}</div>
                       </td>
                       <td className="p-3 border">
-                        <div className="truncate" title={tache.objectif ?? '--'}>{tache.objectif ?? '--'}</div>
+                        <div className="line-clamp-2" title={tache.objectif ?? '--'}>{tache.objectif ?? '--'}</div>
                       </td>
                       <td className="p-3 border">
-                        <div className="truncate" title={tache.resultatAttendu ?? '--'}>{tache.resultatAttendu ?? '--'}</div>
+                        <div className="line-clamp-2" title={tache.resultatAttendu ?? '--'}>{tache.resultatAttendu ?? '--'}</div>
                       </td>
                     
                       <td className="p-3 border">
