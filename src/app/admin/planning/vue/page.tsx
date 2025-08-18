@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-     
+
 type TachePlanning = {
   id: number
   titre: string
@@ -26,14 +26,25 @@ type Planning = {
 }
 
 export default function CalendrierPage() {
-  
   const [plannings, setPlannings] = useState<Planning[]>([])
-  const typingTimeouts = useRef<Record<number, NodeJS.Timeout | null>>({})
+  const [commentairesLocaux, setCommentairesLocaux] = useState<Record<number, string>>({})
 
+  // 🔹 Récupération des plannings
   useEffect(() => {
     fetch('/api/planning')
       .then((res) => res.json())
-      .then((data) => setPlannings(data.data))
+      .then((data) => {
+        setPlannings(data.data)
+
+        // Initialise les commentaires locaux
+        const init: Record<number, string> = {}
+        data.data.forEach((plan: Planning) => {
+          plan.taches.forEach((t: TachePlanning) => {
+            init[t.id] = t.commentaires || ""
+          })
+        })
+        setCommentairesLocaux(init)
+      })
   }, [])
 
   const formatDate = (isoDate: string) => {
@@ -46,6 +57,7 @@ export default function CalendrierPage() {
     })
   }    
   
+  // 🔹 Fonction pour PATCH une tâche
   const updateTache = async (tacheId: number, updates: Partial<TachePlanning>) => {
     try {
       const res = await fetch(`/api/planning/tache/${tacheId}`, {
@@ -55,7 +67,6 @@ export default function CalendrierPage() {
       })
       const data = await res.json()
       if (res.ok) {
-        // Mettre à jour localement le state
         setPlannings((prev) =>
           prev.map((plan) => ({
             ...plan,
@@ -72,8 +83,29 @@ export default function CalendrierPage() {
     }
   }
 
+  // 🔹 Debounce automatique : quand un commentaire local change → sauvegarde après 500ms
+  useEffect(() => {
+    const timers: NodeJS.Timeout[] = []
 
-return (
+    Object.entries(commentairesLocaux).forEach(([tacheIdStr, value]) => {
+      const tacheId = Number(tacheIdStr)
+
+      timers.push(
+        setTimeout(() => {
+          const tache = plannings.flatMap((p) => p.taches).find((t) => t.id === tacheId)
+          if (tache && tache.commentaires !== value) {
+            updateTache(tacheId, { commentaires: value })
+          }
+        }, 500)
+      )
+    })
+
+    return () => {
+      timers.forEach((t) => clearTimeout(t))
+    }
+  }, [commentairesLocaux, plannings]) // 🔥 déclenche quand on modifie un commentaire
+
+  return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
         <Link href="/admin/dashboard" className="text-blue-600 hover:underline">
@@ -93,16 +125,16 @@ return (
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm table-fixed">  
+            <table className="w-full text-sm table-fixed">
               <colgroup>
-                <col className="w-20" />{/* Heure - compact */}
-                <col className="w-32" />{/* Tâche prévue - réduite */}
-                <col className="w-28" />{/* Objectif - réduite */}
-                <col className="w-32" />{/* Résultat attendu - réduite */}
-                <col className="w-24" />{/* Responsable - compact */}
-                <col className="w-24" />{/* État - compact */}
-                <col className="w-28" />{/* Priorité - plus large */}
-                <col className="w-40" />{/* Commentaires - large */}
+                <col className="w-20" />
+                <col className="w-32" />
+                <col className="w-28" />
+                <col className="w-32" />
+                <col className="w-24" />
+                <col className="w-24" />
+                <col className="w-28" />
+                <col className="w-40" />
               </colgroup>
               <thead className="bg-gray-50 text-left">
                 <tr>
@@ -138,8 +170,8 @@ return (
                       </td>
                       <td className="p-3 border text-xs">
                         {plan.responsable
-                        ? `${plan.responsable.prenom} ${plan.responsable.nom}`
-                        : '--'}
+                          ? `${plan.responsable.prenom} ${plan.responsable.nom}`
+                          : '--'}
                       </td>  
                       {/* ✅ État toggle */}
                       <td className="p-3 border">
@@ -166,21 +198,13 @@ return (
                       {/* 📝 Commentaires editable */}
                       <td className="p-3 border">
                         <textarea
-                          value={tache.commentaires || ''}
-                          onChange={(e) => {
-                            const value = e.target.value
-
-                            // Si l’utilisateur continue de taper → on annule le précédent timer
-                            // Annuler l’ancien timer de CETTE tâche
-                            if (typingTimeouts.current[tache.id]) {
-                              clearTimeout(typingTimeouts.current[tache.id]!)
-                            }
-
-                            // Nouveau timer, envoi après 5 secondes
-                            typingTimeouts.current[tache.id] = setTimeout(() => {
-                              updateTache(tache.id, { commentaires: value })
-                            }, 500)
-                          }}
+                          value={commentairesLocaux[tache.id] ?? ''}
+                          onChange={(e) =>
+                            setCommentairesLocaux((prev) => ({
+                              ...prev,
+                              [tache.id]: e.target.value,
+                            }))
+                          }
                           className="border p-2 w-full text-xs resize-none"
                           placeholder="Commentaire..."
                           rows={2}
@@ -198,7 +222,7 @@ return (
               </tbody>
             </table>
           </div>
-          {/* Liens pour voir/modifier le planning */}
+
           <div className="flex gap-4 p-4 border-t bg-gray-50">
             <Link
               href={`/admin/planning/vue/${plan.id}`}
