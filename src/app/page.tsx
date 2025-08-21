@@ -9,7 +9,7 @@ export default async function Home() {
   if (!session) {  
     // Pas connecté → redirection vers register
     redirect('/login') 
-  }
+  }  
 
   // Redirection en fonction du rôle   
   const role = session.user.role

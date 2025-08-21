@@ -3,9 +3,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import Linkify from 'linkify-react'
-import { Button } from '@/components/ui/button'
-import { toast } from 'react-toastify'
 import { useSearchParams } from 'next/navigation'    
 
 type User = {     
@@ -274,26 +271,10 @@ export default function PlanningJournalier() {
       {messageEnvoye && (
       <div className="mt-6 bg-green-100 border border-green-400 text-green-700 p-4 rounded">
         <p>✅ Message envoyé avec succès !</p>
-        <p className="mt-2 text-sm">
-          <Linkify options={{ target: '_blank', rel: 'noopener noreferrer' }}>
-            {`Voici le lien du planning : ${lienPlanning}`}
-          </Linkify>
-        </p>
-
-        <Button
-          onClick={() => {
-            if (lienPlanning) {
-              navigator.clipboard.writeText(lienPlanning)
-              toast.success('Lien copié !')
-            }
-          }}
-        >
-          Copier le lien
-        </Button>
 
       </div>
     )}
-
+ 
     </div>
   )
 }

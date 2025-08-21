@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 
-interface Projet {  
+interface Projet {    
   id: number
   nom: string
   deadline: string
@@ -83,7 +83,7 @@ export default function ListeProjetsPage() {
     setPage(1)    
   }
   
-  return (
+  return ( 
     <div className="max-w-5xl mx-auto p-6">
       <div className="flex items-center justify-between mb-4">
         <Link

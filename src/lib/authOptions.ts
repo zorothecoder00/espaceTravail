@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user || !credentials?.password) return null
 
-        const passwordValid = await bcrypt.compare(credentials.password, user.password)
+        const passwordValid = await bcrypt.compare(credentials.password, user.password)  
 
         if (!passwordValid) return null  
 
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id
         token.nom = user.nom
         token.prenom = user.prenom
-        token.image = user.image   
+        token.image = user.image ?? null  
       }
       return token
     },
@@ -56,9 +56,9 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.nom = token.nom as string;
         session.user.prenom = token.prenom as string;        
-        session.user.image = token.image as string
+        session.user.image = (token.image as string) ?? null
       }
-      return session;    
+      return session;     
     },
 
   },

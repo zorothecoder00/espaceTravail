@@ -12,7 +12,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "postinstall": "prisma generate",
-    "deploy:prod": "dotenv -e .env.production -- npx prisma migrate deploy"
+    "deploy:prod": "dotenv -e .env.production -- npx prisma migrate deploy",
+    "check-deps": "npm outdated && npm audit --audit-level=moderate || true && npm ls deprecated || true"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.17",
