@@ -129,7 +129,7 @@ export default function CalendrierPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm table-fixed">
+            <table className="w-full text-sm table-auto">
               <colgroup>
                 <col className="w-10" />
                 <col className="w-35" />
@@ -157,14 +157,14 @@ export default function CalendrierPage() {
                   plan.taches.map((tache) => (
                     <tr key={tache.id} className="align-top">
                       <td className="p-3 border text-xs">{tache.heure}</td>
-                      <td className="p-3 border">
-                        <div className="line-clamp-2" title={tache.titre}>{tache.titre}</div>
+                      <td className="p-3 border whitespace-pre-wrap break-words">
+                        {tache.titre}
                       </td>
-                      <td className="p-3 border">
-                        <div className="line-clamp-2" title={tache.objectif ?? '--'}>{tache.objectif ?? '--'}</div>
+                      <td className="p-3 border whitespace-pre-wrap break-words">
+                        {tache.objectif ?? '--'}
                       </td>
-                      <td className="p-3 border">
-                        <div className="line-clamp-2" title={tache.resultatAttendu ?? '--'}>{tache.resultatAttendu ?? '--'}</div>
+                      <td className="p-3 border whitespace-pre-wrap break-words">
+                        {tache.resultatAttendu ?? '--'}
                       </td>
                     
                       <td className="p-3 border">
