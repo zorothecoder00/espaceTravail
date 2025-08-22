@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import Link from 'next/link'   
 
 interface PartageDocument {  
   id: number
@@ -44,7 +44,7 @@ const renderDocumentList = (docs: PartageDocument[], role: 'recus' | 'partages')
         <li
           key={p.id}
           className="border rounded-lg bg-white shadow-sm hover:shadow-md transition cursor-pointer"
-          onClick={() => router.push(`/interfaceUtilisateur/documents/liste/${p.document.id}`)}
+          onClick={() => router.push(`/interfaceUtilisateur/mesDocuments/liste/${p.document.id}`)}
         >
           <div className="p-4 hover:bg-gray-50 rounded-lg transition">
             <div className="flex items-center justify-between">
@@ -103,7 +103,7 @@ const renderDocumentList = (docs: PartageDocument[], role: 'recus' | 'partages')
             ← Retour au tableau de bord
           </Link>
           <Link
-            href="/interfaceUtilisateur/documents/new"
+            href="/interfaceUtilisateur/mesDocuments/new"
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm text-center"
           >
             + Nouveau document

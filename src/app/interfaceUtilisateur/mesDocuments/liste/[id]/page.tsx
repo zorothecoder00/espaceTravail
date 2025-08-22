@@ -83,7 +83,7 @@ export default function DocumentDetailPage() {
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Détail du document</h1>
 
-      <Link href="/interfaceUtilisateur/documents/liste" className="text-blue-600 hover:underline block mb-4">
+      <Link href="/interfaceUtilisateur/mesDocuments/liste" className="text-blue-600 hover:underline block mb-4">
         ← Retour à la liste des documents
       </Link>
 
