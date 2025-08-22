@@ -6,7 +6,7 @@ import { NextAuthOptions } from "next-auth"
 import { Role } from "@prisma/client";  // <-- import manquant    
 
 export const authOptions: NextAuthOptions = {
-  providers: [
+  providers: [  
     CredentialsProvider({
       name: "Credentials",
       credentials: {
