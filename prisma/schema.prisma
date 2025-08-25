@@ -34,8 +34,8 @@ enum Priorite {
   BASSE
   MOYENNE
   ELEVEE
-}
-
+}           
+  
 
 model User {
   id                         Int                @id @default(autoincrement())

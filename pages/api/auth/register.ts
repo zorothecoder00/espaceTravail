@@ -78,7 +78,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'Tous les champs sont requis' })
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email } })
+    // Vérif email valide
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Email invalide" })
+    }  
+
+    // Vérif longueur du mot de passe
+    if (password.length < 8) {
+      return res.status(400).json({ message: "Le mot de passe doit contenir au moins 8 caractères" })
+    }
+
+    const existingUser = await prisma.user.findUnique({ where: { email: email.trim().toLowerCase() } })
     if (existingUser) {
       if (image?.filepath && fs.existsSync(image.filepath)) fs.unlinkSync(image.filepath)
       return res.status(400).json({ message: 'Utilisateur déjà inscrit' })
@@ -112,7 +123,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const newUser = await prisma.user.create({
       data: {
-        email,
+        email: email.trim().toLowerCase(),
         password: hashedPassword,
         nom,
         prenom,

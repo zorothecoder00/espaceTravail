@@ -165,7 +165,7 @@ export default function CalendrierPage() {
                       </td>
                       <td className="p-3 border whitespace-pre-wrap break-words">
                         {tache.resultatAttendu ?? '--'}
-                      </td>
+                      </td>    
                     
                       <td className="p-3 border">
                         <button

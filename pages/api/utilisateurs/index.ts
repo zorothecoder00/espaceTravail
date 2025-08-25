@@ -138,8 +138,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'Une seule image autorisée' })
       }
 
+      // Vérif email valide
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Email invalide" })
+      }
+
+      // Vérif longueur du mot de passe
+      if (password.length < 8) {
+        return res.status(400).json({ message: "Le mot de passe doit contenir au moins 8 caractères" })
+      }
+
       const userExist = await prisma.user.findUnique({
-        where: { email: email.toString().trim() },
+        where: { email: email.toString().trim().toLowerCase() },
       })
 
       if (userExist) {
@@ -173,7 +184,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           nom,
           prenom,
-          email,
+          email: email.trim().toLowerCase(),
           password: hashedPassword,
           role,
           departementId: departementId ? Number(departementId) : null,
