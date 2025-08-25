@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Building2, Mail, Lock } from 'lucide-react'
 
 export default function LoginForm() {
   const router = useRouter()  
@@ -61,10 +61,13 @@ export default function LoginForm() {
     setIsLoading(false)
   } 
 
-  return (
+  return (  
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
     <div className="max-w-md w-full space-y-8 bg-gray-100 p-8 rounded-lg shadow-md">
       <div className="text-center">
+        <div className="bg-blue-600 p-3 rounded-xl inline-flex justify-center">
+          <Building2 className="h-8 w-8 text-white" />
+        </div>
         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">CONNEXION</h2>
       </div>
 
@@ -75,40 +78,40 @@ export default function LoginForm() {
       )}
 
       <form onSubmit={handleLogin} className="mt-8 space-y-6">
-        <div className="rounded-md shadow-sm space-y-4">
-          <div>
-            <label htmlFor="email" className="sr-only">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="E-mail"
-            />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-          </div>
+        <div className="space-y-4">
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="appearance-none rounded-md relative block w-full pl-10 pr-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="E-mail"
+              />
+              {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </div>
 
-          <div className="relative">
-            <label htmlFor="password" className="sr-only">Mot de passe</label>
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Mot de passe"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 text-gray-600"
-              tabIndex={-1}
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                required
+                className="appearance-none rounded-md relative block w-full pl-10 pr-10 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
-        </div>
 
         <div>
           <button

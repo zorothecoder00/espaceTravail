@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { z } from 'zod'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Building2, Mail, Lock, User } from 'lucide-react'
 
 const registerSchema = z.object({
   prenom: z.string().min(2, 'Prénom requis'),
@@ -124,67 +124,73 @@ export default function Register() {
   }
 
   return (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
-    <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
-      <div className="text-center">
-        <h2 className="mt-6 text-3xl font-extrabold text-gray-900">INSCRIVEZ-VOUS</h2>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+        <div className="text-center flex flex-col items-center space-y-3">
+          <div className="bg-blue-600 p-3 rounded-xl inline-flex justify-center">
+            <Building2 className="h-8 w-8 text-white" />
+          </div>
+          <h2 className="text-3xl font-extrabold text-gray-900">INSCRIVEZ-VOUS</h2>
+        </div>
 
-      <form onSubmit={handleRegister} className="mt-8 space-y-6" encType="multipart/form-data">
-        <div className="rounded-md shadow-sm space-y-4">
-          <div>
-            <label htmlFor="prenom" className="sr-only">Prénom</label>
+        <form onSubmit={handleRegister} className="mt-8 space-y-4" encType="multipart/form-data">
+          {/* Prénom */}
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               id="prenom"
               name="prenom"
               type="text"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="pl-10 pr-3 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Prénom"
             />
             {errors.prenom && <p className="text-red-500 text-sm mt-1">{errors.prenom[0]}</p>}
           </div>
 
-          <div>
-            <label htmlFor="nom" className="sr-only">Nom</label>
+          {/* Nom */}
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               id="nom"
               name="nom"
               type="text"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="pl-10 pr-3 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Nom"
             />
             {errors.nom && <p className="text-red-500 text-sm mt-1">{errors.nom[0]}</p>}
           </div>
 
-          <div>
-            <label htmlFor="email" className="sr-only">Email</label>
+          {/* Email */}
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               id="email"
               name="email"
               type="email"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="pl-10 pr-3 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="E-mail"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email[0]}</p>}
           </div>
 
+          {/* Password */}
           <div className="relative">
-            <label htmlFor="password" className="sr-only">Password</label>
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               id="password"
               name="password"
               type={showPassword ? "text" : "password"}
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              className="pl-10 pr-10 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="••••••••"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
               tabIndex={-1}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -192,94 +198,98 @@ export default function Register() {
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password[0]}</p>}
           </div>
 
+          {/* Confirm Password */}
           <div className="relative">
-            <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               id="confirmPassword"
               name="confirmPassword"
               type={showConfirm ? "text" : "password"}
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Confirm Password"
+              className="pl-10 pr-10 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="••••••••"
             />
             <button
               type="button"
               onClick={() => setShowConfirm(!showConfirm)}
-              className="absolute right-3 top-2 text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
               tabIndex={-1}
             >
               {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword[0]}</p>}
           </div>
-        </div>
 
-        <div>
-          <label htmlFor="departement" className="block text-sm font-medium text-gray-700">
-            Département (optionnel)
-          </label>
-          {loadingDeps ? (
-            <p className="text-gray-500 text-sm">Chargement des départements...</p>
-          ) : departements.length > 0 ? (
-            <select
-              name="departement"
-              id="departement"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+          {/* Departement */}
+          <div>
+            <label htmlFor="departement" className="block text-sm font-medium text-gray-700">
+              Département (optionnel)
+            </label>
+            {loadingDeps ? (
+              <p className="text-gray-500 text-sm">Chargement des départements...</p>
+            ) : departements.length > 0 ? (
+              <select
+                name="departement"
+                id="departement"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="">-- Choisir un département --</option>
+                {departements.map(dep => (
+                  <option key={dep.id} value={dep.id}>{dep.nom}</option>
+                ))}
+              </select>
+            ) : (
+              <p className="text-sm text-gray-500">Aucun département disponible pour le moment.</p>
+            )}
+          </div>
+
+          {/* Image */}
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium">Image (optionnelle)</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          {/* Not Robot */}
+          <div className="flex items-center">
+            <input
+              id="not-robot"
+              name="not-robot"
+              type="checkbox"
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+            <label htmlFor="not-robot" className="ml-2 block text-sm text-gray-900">
+              Je ne suis pas un robot
+            </label>
+          </div>
+
+          {/* Submit */}
+          <div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-              <option value="">-- Choisir un département --</option>
-              {departements.map(dep => (
-                <option key={dep.id} value={dep.id}>{dep.nom}</option>
-              ))}
-            </select>
-          ) : (
-            <p className="text-sm text-gray-500">Aucun département disponible pour le moment.</p>
-          )}
-        </div>
+              {isSubmitting ? 'Traitement...' : 'SOUMETTRE'}
+            </button>
+            {serverError && <p className="text-red-600 text-sm mt-2 text-center">{serverError}</p>}
+          </div>
+        </form>
 
-        <div>
-          <label htmlFor="image" className="block text-sm font-medium">Image (optionnelle)</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-            className="w-full p-2 border rounded"
-          />
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600">
+            Avez-vous déjà un compte ?{' '}
+            <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Connectez-vous
+            </a>
+          </p>
         </div>
-
-        <div className="flex items-center">
-          <input
-            id="not-robot"
-            name="not-robot"
-            type="checkbox"
-            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-          />
-          <label htmlFor="not-robot" className="ml-2 block text-sm text-gray-900">
-            Je ne suis pas un robot
-          </label>
-        </div>
-
-        <div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
-          >
-            {isSubmitting ? 'Traitement...' : 'SOUMETTRE'}
-          </button>
-          {serverError && <p className="text-red-600 text-sm mt-2 text-center">{serverError}</p>}
-        </div>
-      </form>
-
-      <div className="text-center mt-4">
-        <p className="text-sm text-gray-600">
-          Avez vous déjà un compte ?{' '}
-          <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Connectez vous
-          </a>
-        </p>
       </div>
     </div>
-  </div>
-)
+  )
 }
   
