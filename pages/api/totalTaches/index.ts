@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest , res: NextApiResponse
 	    page?: string
 	    limit?: string
 	    sortField?: string
-	    sortOrder?: 'asc' | 'desc'
+	    sortOrder?: 'asc' | 'desc'      
 	  }
 
 	const pageNum = parseInt(page, 10) || 1

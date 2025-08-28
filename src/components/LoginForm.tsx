@@ -1,6 +1,6 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react'  
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Eye, EyeOff, Building2, Mail, Lock } from 'lucide-react'
@@ -26,7 +26,7 @@ export default function LoginForm() {
     if (logout === 'success') {
       setInfoMessage('✅ Déconnexion réussie.')
     }
-  }, [searchParams])
+  }, [searchParams])   
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -39,7 +39,7 @@ export default function LoginForm() {
       redirect: false,
       email: form.email.value.trim(),
       password: form.password.value.trim(),
-    })
+    })   
 
     if (res?.ok) {
       const sessionRes = await fetch("/api/auth/session")

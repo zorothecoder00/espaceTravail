@@ -99,13 +99,13 @@ export default function Register() {
 
     if (imageFile) {
       formData.append('image', imageFile)
-    }
+    }     
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         body: formData,
-      })
+      })   
 
       const data = await res.json()
 
@@ -120,7 +120,7 @@ export default function Register() {
       setServerError("Une erreur inattendue s’est produite.")
     } finally {
       setIsSubmitting(false)
-    }
+    }  
   }
 
   return (

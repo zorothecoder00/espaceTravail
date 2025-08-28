@@ -111,6 +111,11 @@ export default function PlanningJournalier() {
       if (res.ok) {
         setMessageEnvoye(true)
         setShowModal(false)
+
+        // ✅ Faire disparaître le message après 5 secondes
+        setTimeout(()=> {
+          setMessageEnvoye(false)
+        },5000) 
       }else{
         const data = await res.json()
         console.error("Erreur serveur", data.message)

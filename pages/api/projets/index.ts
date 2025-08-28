@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ]
     if (Object.values(Statut).includes(search as Statut)) {
       orFilters.push({ statut: { equals: search as Statut } })
-    }
+    }  
 
     try {
       const [projets, total] = await Promise.all([

@@ -117,7 +117,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       fs.unlinkSync(image.filepath) // Nettoyage fichier temporaire
       imagePath = uploaded.secure_url
-    }
+    }  
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
