@@ -36,9 +36,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { tache: { projet: { nom: { contains: searchStr, mode: 'insensitive' } } } },
     ]
 
-    if (Object.values(Statut).includes(searchStr as Statut)) {
-      orFilters.push({ tache: { statut: { equals: searchStr as Statut } } })
-    }
+    // 🎯 Exemple spécifique sur enum Statut
+    const matchingStatus = Object.values(Statut).filter((s) =>
+      s.toLowerCase().includes(searchStr)
+      ) as Statut[];
+
+      if (matchingStatus.length > 0) {
+        orFilters.push({
+          tache: {
+            statut: { in: matchingStatus }
+          },
+        });
+      }
 
   try {
     const [tachesAssignees, total] = await Promise.all([

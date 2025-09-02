@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const allowedFields = ['nom', 'statut']  // sécurisation
   const field = allowedFields.includes(sortField as string)
       ? sortField
-      : 'createdAt'  
+      : 'createdAt'    
   const safeField = field as string
   const order = sortOrder === 'asc' ? 'asc' : 'desc'
 
@@ -28,8 +28,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { projet: { nom: { contains: searchStr, mode: 'insensitive' } } },
     ]
 
-    if (Object.values(Statut).includes(searchStr as Statut)) {
-      orFilters.push({ projet: { statut: { equals: searchStr as Statut } } })
+    // 🎯 Exemple spécifique sur enum Statut
+    const matchingStatus = Object.values(Statut).filter((s) =>
+      s.toLowerCase().includes(searchStr)
+    ) as Statut[];
+
+    if (matchingStatus.length > 0) {
+      orFilters.push({
+        projet: {
+          statut: { in: matchingStatus }
+        },
+      });
     }
 
   try {

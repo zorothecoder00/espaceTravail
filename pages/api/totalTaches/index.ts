@@ -29,14 +29,14 @@ export default async function handler(req: NextApiRequest , res: NextApiResponse
 	}
 
 	const whereClause: Prisma.TacheWhereInput= search
-		?{
-			OR :[
+		?{    
+			OR :[    
 				{ titre: { contains: search , mode: 'insensitive'} },
 				{ projet: { nom: { contains: search, mode: 'insensitive'} } },
 				{ statut: { in: Object.values(Statut).filter(s => s.toLowerCase().includes(search.toLowerCase() )
 					)as Statut[]
 				  }
-				},
+				},  
 			],
 		}
 		: {}

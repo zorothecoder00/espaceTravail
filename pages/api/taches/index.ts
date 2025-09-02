@@ -30,9 +30,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { projet: { nom: { contains: searchStr, mode: 'insensitive' } } },
     ]
 
-    if (Object.values(Statut).includes(searchStr as Statut)) {
-      orFilters.push({ statut: { equals: searchStr as Statut } })
-    }
+      // 🎯 Exemple spécifique sur enum Statut
+        const matchingStatus = Object.values(Statut).filter((s) =>
+          s.toLowerCase().includes(searchStr)
+        ) as Statut[];
+
+        if (matchingStatus.length > 0) {
+          orFilters.push({
+            statut: { in: matchingStatus },
+          });
+        }
 
     try {
       const [taches, total] = await Promise.all([

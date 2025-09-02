@@ -95,9 +95,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         { departement: { nom: { contains: searchStr } } },
       ]
 
-      if (Object.values(Role).includes(searchStr as Role)) {
-        orFilters.push({ role: { equals: searchStr as Role } })
-      }
+      // 🎯 Exemple spécifique sur enum Role
+        const matchingRole = Object.values(Role).filter((r) =>
+          r.toLowerCase().includes(searchStr)   
+        ) as Role[];
+
+        if (matchingRole.length > 0) {
+          orFilters.push({
+            role: { in: matchingRole },
+          });
+        }
 
       const [utilisateurs, total] = await Promise.all([
         prisma.user.findMany({
