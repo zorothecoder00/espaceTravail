@@ -80,6 +80,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { planningId },
       })
 
+      const existing = await prisma.planning.findUnique({
+      where: { slug: slugify(titre) },
+    })
+
+    if (existing && existing.id !== planningId) {
+      return res.status(400).json({ error: 'Ce titre existe déjà, choisissez-en un autre.' })
+    }
+
+
       // Mettre à jour le planning et recréer les tâches
       const updatedPlanning = await prisma.planning.update({
         where: { id: planningId },

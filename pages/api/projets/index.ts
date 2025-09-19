@@ -28,9 +28,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { nom: { contains: search as string } },
       { chefProjet: { nom: { contains: search as string } } },
     ]
-    if (Object.values(Statut).includes(search as Statut)) {
-      orFilters.push({ statut: { equals: search as Statut } })
-    }  
+
+    // normaliser la recherche
+    const searchStr = (search as string).toLowerCase();
+        // 🎯 Exemple spécifique sur enum Statut
+        const matchingStatus = Object.values(Statut).filter((s) =>
+          s.toLowerCase().includes(searchStr)
+        ) as Statut[];
+
+        if (matchingStatus.length > 0) {
+          orFilters.push({
+            statut: { in: matchingStatus },
+          });
+        }  
 
     try {
       const [projets, total] = await Promise.all([

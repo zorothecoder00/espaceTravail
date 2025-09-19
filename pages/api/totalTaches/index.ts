@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest , res: NextApiResponse
 				{ projet: { nom: { contains: search, mode: 'insensitive'} } },
 				{ statut: { in: Object.values(Statut).filter(s => s.toLowerCase().includes(search.toLowerCase() )
 					)as Statut[]
-				  }
+				  }  
 				},  
 			],
 		}
