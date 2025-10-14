@@ -128,6 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
+      
       // Marquer comme lus si c'est une conversation spécifique
       if(conversationWith){
         const messagesToMarkAsRead = messages

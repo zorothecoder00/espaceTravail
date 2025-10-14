@@ -8,6 +8,18 @@ import Linkify from 'linkify-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { 
+  PaperAirplaneIcon, 
+  MagnifyingGlassIcon, 
+  EllipsisVerticalIcon,
+  PaperClipIcon,
+  FaceSmileIcon,
+  PhoneIcon,
+  VideoCameraIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+  PlusIcon
+} from '@heroicons/react/24/outline';
 
 type Utilisateur = {     
   id: number   
@@ -308,6 +320,7 @@ export default function ChatPage() {
                     {user.nom.charAt(0).toUpperCase()}
                   </div>
                   <span>{user.nom}</span>
+                  
                 </div>
               </li>
             ))}
@@ -334,7 +347,7 @@ export default function ChatPage() {
               return (
                 <div
                   key={msg.tempId || msg.id}
-                  className={`max-w-xs p-2 rounded-lg break-words whitespace-pre-wrap 
+                  className={`text-sm max-w-xs p-2 rounded-lg break-words whitespace-pre-wrap 
                   ${isSender ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'} 
                   relative
                   ${msg.sending ? 'opacity-50 italic' : ''}`}
@@ -392,24 +405,34 @@ export default function ChatPage() {
 
         {/* Formulaire d'envoi */}
         {conversationWith && (
-          <footer className="border-t p-4 bg-gray-50 flex gap-2">
-            <textarea
-              rows={2}
-              className="flex-1 resize-none border rounded px-3 py-2 focus:outline-blue-500"
-              placeholder="Tapez votre message..."
-              value={messageInput}
-              onChange={e => setMessageInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={sending}
-            />
+          <footer className="border-t p-4 bg-gray-50 flex items-center gap-3">
+            <div className="relative flex-1">
+              <textarea
+                rows={1}
+                className="w-full resize-none border rounded-xl px-3 py-2 pr-10 focus:outline-blue-500 focus:ring-1 focus:ring-blue-400"
+                placeholder="Tapez votre message..."
+                value={messageInput}
+                onChange={e => setMessageInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={sending}
+              />
+
+              {/* 😄 Icône intégrée au milieu verticalement */}
+              <FaceSmileIcon
+                className="absolute top-1/2 -translate-y-1/2 right-3 h-5 w-5 text-gray-400 hover:text-yellow-500 cursor-pointer transition-colors"
+                title="Ajouter un emoji"
+              />
+            </div>
+
             <button
               onClick={sendMessage}
               disabled={sending || !messageInput.trim()}
-              className="bg-blue-600 text-white px-4 rounded hover:bg-blue-700 disabled:opacity-50"
+              className="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
-              Envoyer
+              <PaperAirplaneIcon className="h-5 w-5" />
             </button>
           </footer>
+
         )}
       </section>
     </div>
