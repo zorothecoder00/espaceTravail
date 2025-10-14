@@ -302,42 +302,68 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  /* ---------------------------------------------------------------- PATCH */
-  if (req.method === 'PATCH') {      
-    try{
-      const { messageIds, action } = await parseJsonBody(req)
+  /* ----------------------------------------------- ----------------- PATCH */
+  if (req.method === 'PATCH') {
+    try {
+      const { messageIds, action } = await parseJsonBody(req);
 
-      if(action === 'mark-as-read' && Array.isArray(messageIds)) {
-        await prisma.message.updateMany({
+      if (action === 'mark-as-read' && Array.isArray(messageIds)) {
+
+        // 1️⃣ Mettre à jour les messages dans la base
+        const updatedMessages = await prisma.message.updateMany({
           where: {
             id: { in: messageIds },
             receiverId: userId
           },
-          data: { vu: true }
-        })
+          data: { vu: true, vuAt: new Date() }
+        });
 
-         // Notifier via Pusher
-        const messages = await prisma.message.findMany({
+        // 2️⃣ Récupérer les messages mis à jour avec les bons senderId / receiverId / vuAt
+        const messagesForPusher = await prisma.message.findMany({
           where: { id: { in: messageIds } },
-          select: { senderId: true }
-        })
+          select: { id: true, senderId: true, receiverId: true, vuAt: true }
+        });
 
-        const uniqueSenderIds = [...new Set(messages.map(m => m.senderId))]
+        const validMessages = messagesForPusher.filter(
+          (m): m is { id: number; senderId: number; receiverId: number; vuAt: Date | null } =>
+            m.senderId !== null && m.receiverId !== null
+        );
 
-         await Promise.all(uniqueSenderIds.map(senderId =>
-          triggerPusher(`user-${senderId}`, 'messages-read', {
-            messageIds,
-            readBy: session?.user?.id
+
+        // 3️⃣ Construire la liste unique des conversations à notifier
+        const uniqueConversations = Array.from(
+          new Set(validMessages.map(m =>
+            `conversation-${Math.min(m.senderId, m.receiverId)}-${Math.max(m.senderId, m.receiverId)}`
+          ))
+        );
+
+        // 4️⃣ Envoyer les notifications Pusher par conversation
+        await Promise.all(
+          uniqueConversations.map(channelName => {
+            const messagesInChannel = validMessages.filter(m =>
+              channelName === `conversation-${Math.min(m.senderId, m.receiverId)}-${Math.max(m.senderId, m.receiverId)}`
+            );
+
+            return triggerPusher(channelName, 'messages-read', {
+              messageIds: messagesInChannel.map(m => m.id),
+              readBy: userId,
+              readAt: new Date().toISOString(),
+              updatedMessages: messagesInChannel
+            });
           })
-        ))
+        );
 
-        return res.status(200).json({ message: 'Messages marqués comme lus' })
+
+        return res.status(200).json({
+          message: 'Messages marqués comme lus',
+          data: messagesForPusher
+        });
       }
 
-      return res.status(400).json({ message: 'Action non supportée' })
-    }catch(error){
-      console.error('Erreur PATCH message :', error)
-      return res.status(500).json({ message: 'Erreur interne' })
+      return res.status(400).json({ message: 'Action non supportée' });
+    } catch (error) {
+      console.error('Erreur PATCH message :', error);
+      return res.status(500).json({ message: 'Erreur interne' });
     }
   }
 

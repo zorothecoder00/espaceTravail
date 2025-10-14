@@ -6,8 +6,10 @@ import Pusher, { Channel } from 'pusher-js'
 import { useSession } from 'next-auth/react'
 import Linkify from 'linkify-react'
 import Link from 'next/link'
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
-type Utilisateur = {  
+type Utilisateur = {     
   id: number   
   nom: string    
 }
@@ -17,6 +19,7 @@ type Message = {
   contenu: string
   createdAt: string
   vu: boolean
+  vuAt?: string | null
   sender: Utilisateur
   receiver: Utilisateur
   tempId?: string
@@ -37,7 +40,7 @@ export default function ChatPage() {
   const [sending, setSending] = useState(false)
 
   const pusherRef = useRef<Pusher | null>(null)
-  const conversationChannelRef = useRef<Channel>(null)
+  const conversationChannelRef = useRef<Channel | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   //Scroll automatique en bas quand messages changent
@@ -90,7 +93,7 @@ export default function ChatPage() {
     return () => {
       if (conversationChannelRef.current) {
         conversationChannelRef.current.unbind_all()
-        pusherRef.current?.unsubscribe(conversationChannelRef.current.name)
+        pusherRef.current?.unsubscribe(conversationChannelRef.current?.name)
       }
       pusherRef.current?.disconnect()
     }
@@ -135,6 +138,14 @@ export default function ChatPage() {
         setMessages(prev => prev.filter(m => m.id !== data.messageId))
         toast.warn('🗑️ Un message a été supprimé', { autoClose: 2000 })
       })
+
+      conversationChannelRef.current.bind('messages-read', (data: { updatedMessages: { id: number, vuAt: string }[] }) => {
+        setMessages(prev => prev.map(m => {
+          const updated = data.updatedMessages.find(u => u.id === m.id)
+          return updated ? { ...m, vu: true, vuAt: updated.vuAt } : m
+        }))
+      })
+
 
       fetchMessages(conversationWith)
     } else {
@@ -212,7 +223,7 @@ export default function ChatPage() {
 
   const cleanupTempMessages = useCallback(() => {
     setMessages(prev => prev.filter(m => {
-      // Supprimer les messages temporaires de plus de 30 secondes
+      // Supprimer les messages temporaires de plus de 5 secondes
       if (m.tempId && m.id === -1) {
         const messageTime = new Date(m.createdAt).getTime()
         const now = Date.now()
@@ -319,7 +330,7 @@ export default function ChatPage() {
             <p className="text-gray-500">Aucun message dans cette conversation.</p>
           ) : (
             messages.map(msg => {       
-              const isSender = msg.sender.id === userId
+              const isSender = userId !== null && msg.sender.id === userId
               return (
                 <div
                   key={msg.tempId || msg.id}
@@ -327,13 +338,15 @@ export default function ChatPage() {
                   ${isSender ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'} 
                   relative
                   ${msg.sending ? 'opacity-50 italic' : ''}`}
-                >
+                >  
                   <p>
                     <Linkify
                       options={{
                         target: '_blank',  // ouvre les liens dans un nouvel onglet
                         rel: 'noopener noreferrer',
-                        className: 'text-black underline hover:text-blue-600', // ici ta classe Tailwind pour liens
+                        className: isSender 
+                          ? 'text-white underline hover:text-blue-200'
+                          : 'text-black underline hover:text-blue-600', // ici ta classe Tailwind pour liens
                       }}
                     >
                       {msg.contenu}
@@ -344,9 +357,22 @@ export default function ChatPage() {
                     )}
                   </p>
                   <small className="block text-xs text-gray-700 mt-1 text-right">
-                    {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    {!msg.vu && !isSender && <span className="ml-1 inline-block w-2 h-2 bg-blue-600 rounded-full"></span>}
+                    {/* 🕒 Affiche la date + heure d’envoi du message */}
+                    {format(new Date(msg.createdAt), "dd/MM/yyyy 'à' HH:mm", { locale: fr })}
+
+                    {/* 🔵 Indicateur de message non lu (pour le receiver) */}
+                    {!msg.vu && !isSender && (
+                      <span className="ml-1 inline-block w-2 h-2 bg-blue-600 rounded-full"></span>
+                    )}
+
+                    {/* ✅ Indicateur + date/heure de lecture (pour l’expéditeur) */}
+                    {isSender && msg.vuAt && (
+                      <span className="ml-2 text-green-600">
+                        ✔ Vu le {format(new Date(msg.vuAt), "dd/MM/yyyy 'à' HH:mm", { locale: fr })}
+                      </span>
+                    )}
                   </small>
+
 
                   {isSender && (
                     <button

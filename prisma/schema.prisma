@@ -294,10 +294,11 @@ model Message {
   createdAt  DateTime         @default(now())
 
   sender     User             @relation("MessagesEnvoyes", fields: [senderId], references: [id], onDelete: Cascade)
-
-
   senderId   Int   
+
   vu         Boolean          @default(false)
+  vuAt       DateTime?//Date exacte où l'utilisateur a vu le message
+
   receiver   User?            @relation("MessagesRecus", fields: [receiverId], references: [id], onDelete: Cascade)
 
 
