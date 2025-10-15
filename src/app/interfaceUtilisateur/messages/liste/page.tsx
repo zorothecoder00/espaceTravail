@@ -10,20 +10,13 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { 
   PaperAirplaneIcon, 
-  MagnifyingGlassIcon, 
-  EllipsisVerticalIcon,
-  PaperClipIcon,
-  FaceSmileIcon,
-  PhoneIcon,
-  VideoCameraIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-  PlusIcon
+  FaceSmileIcon
 } from '@heroicons/react/24/outline';
 
 type Utilisateur = {     
   id: number   
-  nom: string    
+  nom: string
+  unreadCount?: number // ✅ nombre de messages non lus    
 }
 
 type Message = {
@@ -64,9 +57,10 @@ export default function ChatPage() {
   const fetchUtilisateurs = useCallback(async () => {
     setLoading(true) // ✅ Activer le loading avant la requête
     try {
-      const res = await fetch('/api/utilisateurs')
+      const res = await fetch('/api/utilisateurs?includeUnread=true')  
       const data = await res.json()
-      setUtilisateurs(data.data)
+      // ✅ Sécuriser : si data.data n’existe pas, on met []
+      setUtilisateurs(Array.isArray(data?.data) ? data.data : [])
     } catch (error) {
       console.error('Erreur fetch utilisateurs:', error)
       toast.error('Erreur lors du chargement des utilisateurs')
@@ -320,7 +314,12 @@ export default function ChatPage() {
                     {user.nom.charAt(0).toUpperCase()}
                   </div>
                   <span>{user.nom}</span>
-                  
+                  {/* 🔴 Badge messages non lus */}
+                  {(user.unreadCount ?? 0) > 0 && (
+                    <span className="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+                      {user.unreadCount}
+                    </span>
+                  )}
                 </div>
               </li>
             ))}

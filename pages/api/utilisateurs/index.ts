@@ -6,6 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import { Role, Prisma } from '@prisma/client'
 import cloudinary from '@/lib/cloudinary'
+import { getAuthSession } from '@/lib/auth'
 
 export const config = {  
   api: {
@@ -74,6 +75,13 @@ const parseForm = (req: NextApiRequest): Promise<ParsedForm> => {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
+
+    const session = await getAuthSession(req, res)
+    if (!session?.user?.id) return res.status(401).json({ message: 'Non autorisé' })
+
+    const userId = parseInt(session.user.id)
+    if (isNaN(userId)) return res.status(400).json({ message: 'ID utilisateur invalide' })
+
     try {
       const { page = '1', limit = '10', search = '', sortField = 'createdAt', sortOrder = 'desc' } = req.query
       const pageNum = parseInt(page as string)
@@ -88,6 +96,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const searchStr = (search as string).trim()
 
+      // ✅ Construction conditionnelle du filtre WHERE
+      let whereCondition: Prisma.UserWhereInput = {}
+
+      if (searchStr) {
+      // Si une recherche est active, on applique les filtres OR
       const orFilters: Prisma.UserWhereInput[] = [
         { nom: { contains: searchStr } },
         { prenom: { contains: searchStr } },
@@ -95,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         { departement: { nom: { contains: searchStr } } },
       ]
 
-      // 🎯 Exemple spécifique sur enum Role
+        // 🎯 Exemple spécifique sur enum Role
         const matchingRole = Object.values(Role).filter((r) =>
           r.toLowerCase().includes(searchStr)   
         ) as Role[];
@@ -106,24 +119,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           });
         }
 
+        whereCondition = { OR: orFilters }
+      }
+
       const [utilisateurs, total] = await Promise.all([
         prisma.user.findMany({
-          where: { OR: orFilters },
-          include: { departement: true },
+          where: whereCondition,
+          include: { 
+            departement: true,
+
+          },
           orderBy: { [field]: order },
           skip,
           take: limitNum,
         }),
         prisma.user.count({
-          where: { OR: orFilters },
+          where: whereCondition,
         }),
       ])
 
-      return res.status(200).json({
-        data: utilisateurs,
-        total,
-        totalPages: Math.ceil(total / limitNum),
-      })
+      const includeUnread = req.query.includeUnread === 'true'
+
+      if (includeUnread) {
+        const utilisateursAvecUnread = await Promise.all(
+          utilisateurs.map(async (u) => {
+            const unreadCount = await prisma.message.count({
+              where: {
+                vu: false,
+                receiverId: userId,
+                senderId: u.id,
+              },
+            })
+            return { ...u, unreadCount }
+          })
+        )
+        return res.status(200).json({
+          data: utilisateursAvecUnread,
+          total,
+          totalPages: Math.ceil(total / limitNum),
+        })
+      } else {
+        return res.status(200).json({
+          data: utilisateurs.map(u => ({ ...u, unreadCount: 0 })),
+          total,
+          totalPages: Math.ceil(total / limitNum),
+        })
+      }
+
     } catch (error) {
       console.error('Erreur lors de la récupération utilisateurs:', error)
       return res.status(500).json({ message: 'Erreur serveur' })
