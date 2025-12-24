@@ -43,7 +43,7 @@ Cette application permet de :
 ⚙️ Installation
 
 1. Cloner le projet
-  git clone https://github.com/zorothecoder00/espace-travail.git
+  git clone https://github.com/zorothecoder00/espaceTravail.git
   cd espace-travail
 
 2. Installer les dépendances
@@ -312,7 +312,7 @@ Ce script fait trois choses cruciales avant un déploiement ou un commit sérieu
 
   S’assurer que ton ORM est toujours à jour après un git clone ou un déploiement   
 
-  🛠️ Indispensable pour que Prisma fonctionne correctement en local ou sur une plateforme comme Vercel.  
+  🛠️ Indispensable pour que Prisma fonctionne correctement en local ou sur une plateforme comme Vercel.    
 
 🚀 Déploiement des migrations en production (Neon)
 "deploy:prod": "dotenv -e .env.production -- npx prisma migrate deploy"

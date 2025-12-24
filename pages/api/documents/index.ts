@@ -8,14 +8,14 @@ import cloudinary from '@/lib/cloudinary'
 import type { Departement, User, Projet, Document, PartageDocument } from '@prisma/client'
 
 export const config = { api: { bodyParser: false } }
-
+    
 type PartageAvecRelations = PartageDocument & {
   document: Document
   user: User | null
   departement: Departement | null
   projet: Projet | null
-  partageur: User
-}
+  partageur: User  
+}     
 
 const uploadDir = path.join('/tmp', 'uploads')
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true })
@@ -94,11 +94,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!uploaded.secure_url) throw new Error('Upload Cloudinary échoué');
 
         fs.unlinkSync(file.filepath)
-        fichierUrl = uploaded.secure_url
+        fichierUrl = uploaded.secure_url  
       }
 
       /* Création document + partages ----------------------------------- */
-      const document = await prisma.document.create({
+      const document = await prisma.document.create({   
         data: { titre, description, fichier: fichierUrl },
       })
 

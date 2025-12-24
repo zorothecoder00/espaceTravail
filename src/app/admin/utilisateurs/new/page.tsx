@@ -175,7 +175,7 @@ export default function AjouterUtilisateur() {
                   {dep.nom}
                 </option>
               ))}
-              </>
+              </> 
             )}
           </select>
         </div>

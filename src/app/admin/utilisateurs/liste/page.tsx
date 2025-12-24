@@ -7,7 +7,7 @@ import Image from 'next/image'
 type Utilisateur = {  
   id: number
   nom: string
-  prenom: string
+  prenom: string   
   email: string
   role: string
   departement?: { nom: string }
@@ -29,7 +29,7 @@ export default function ListeUtilisateurs() {
     setLoading(true)
     try {
       const params = new URLSearchParams({
-        search,
+        search,  
         page: page.toString(),
         limit: '10',
         sortField,     

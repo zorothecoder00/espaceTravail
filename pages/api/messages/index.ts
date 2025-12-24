@@ -127,8 +127,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           tache:  { select: { titre: true } },
         },
       })
+  
 
-      
       // Marquer comme lus si c'est une conversation spécifique
       if(conversationWith){
         const messagesToMarkAsRead = messages
