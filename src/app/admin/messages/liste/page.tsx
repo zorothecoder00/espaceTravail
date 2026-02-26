@@ -16,6 +16,7 @@ import {
   MagnifyingGlassIcon,
   CalendarDaysIcon,
   ArrowLeftIcon,
+  ArrowDownIcon,
 } from '@heroicons/react/24/outline'
 import { CheckIcon } from '@heroicons/react/24/solid'
 
@@ -162,17 +163,39 @@ function ReadStatus({
   isSender: boolean; vu: boolean; vuAt?: string | null; sending?: boolean
 }) {
   if (!isSender) return null
-  if (sending)   return <span className="text-[10px] text-gray-300 animate-pulse">⏳</span>
-  if (vuAt) {
+
+  // Envoi en cours
+  if (sending) return <span className="text-[10px] text-gray-300 animate-pulse">⏳</span>
+
+  // Lu — avec horodatage exact
+  if (vu && vuAt) {
     return (
-      <span className="text-[10px] text-indigo-400 flex items-center gap-0.5">
+      <span className="text-[10px] text-indigo-400 flex items-center gap-0.5 font-medium">
         <CheckIcon className="w-2.5 h-2.5 inline" />
-        <CheckIcon className="w-2.5 h-2.5 inline -ml-1" />
-        <span className="ml-0.5">Vu {format(new Date(vuAt), 'HH:mm')}</span>
+        <CheckIcon className="w-2.5 h-2.5 inline -ml-1.5" />
+        <span className="ml-1">Vu à {format(new Date(vuAt), 'HH:mm')}</span>
       </span>
     )
   }
-  return <CheckIcon className="w-3 h-3 text-gray-400" />
+
+  // Lu — sans horodatage (marqué via GET, vuAt pas encore défini)
+  if (vu) {
+    return (
+      <span className="text-[10px] text-indigo-400 flex items-center gap-0.5">
+        <CheckIcon className="w-2.5 h-2.5 inline" />
+        <CheckIcon className="w-2.5 h-2.5 inline -ml-1.5" />
+        <span className="ml-1">Lu</span>
+      </span>
+    )
+  }
+
+  // Envoyé, pas encore lu — simple coche grise
+  return (
+    <span className="text-[10px] text-gray-400 flex items-center gap-0.5">
+      <CheckIcon className="w-2.5 h-2.5 inline" />
+      <span className="ml-0.5">Envoyé</span>
+    </span>
+  )
 }
 
 function EmptyState({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
@@ -203,16 +226,76 @@ export default function ChatPage() {
   const [filePreview, setFilePreview]       = useState<{ file: File; preview: string | null } | null>(null)
   const [mobileView, setMobileView]         = useState<'list' | 'chat'>('list')
 
-  const pusherRef      = useRef<Pusher | null>(null)
-  const convChannelRef = useRef<Channel | null>(null)
-  const userChannelRef = useRef<Channel | null>(null)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const textareaRef    = useRef<HTMLTextAreaElement>(null)
-  const fileInputRef   = useRef<HTMLInputElement>(null)
+  const pusherRef          = useRef<Pusher | null>(null)
+  const convChannelRef     = useRef<Channel | null>(null)
+  const userChannelRef     = useRef<Channel | null>(null)
+  const messagesEndRef     = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const textareaRef        = useRef<HTMLTextAreaElement>(null)
+  const fileInputRef       = useRef<HTMLInputElement>(null)
 
+  // Scroll tracking (refs pour éviter les dépendances dans useEffect)
+  const isAtBottomRef    = useRef(true)
+  const prevLengthRef    = useRef(0)
+  const isInitialLoadRef = useRef(true)
+  const justSentRef      = useRef(false)
+
+  const [newMsgCount, setNewMsgCount] = useState(0)
+
+  // Scroll vers le bas
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = 'smooth') => {
+    messagesEndRef.current?.scrollIntoView({ behavior })
+    setNewMsgCount(0)
+  }, [])
+
+  // Détection position scroll
+  const handleScroll = useCallback(() => {
+    const el = scrollContainerRef.current
+    if (!el) return
+    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 150
+    isAtBottomRef.current = atBottom
+    if (atBottom) setNewMsgCount(0)
+  }, [])
+
+  // Scroll intelligent
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    const len  = messages.length
+    const prev = prevLengthRef.current
+
+    if (isInitialLoadRef.current && len > 0) {
+      scrollToBottom('auto')
+      isInitialLoadRef.current = false
+      prevLengthRef.current = len
+      return
+    }
+
+    if (len <= prev) {
+      prevLengthRef.current = len
+      return
+    }
+
+    const isMine = justSentRef.current ||
+      messages.slice(prev).some(m => userId !== null && m.sender.id === userId)
+
+    if (isMine) {
+      scrollToBottom('smooth')
+      justSentRef.current = false
+    } else if (isAtBottomRef.current) {
+      scrollToBottom('smooth')
+    } else {
+      setNewMsgCount(c => c + (len - prev))
+    }
+
+    prevLengthRef.current = len
+  }, [messages, userId, scrollToBottom])
+
+  // Réinitialiser au changement de conversation
+  useEffect(() => {
+    isInitialLoadRef.current = true
+    prevLengthRef.current    = 0
+    isAtBottomRef.current    = true
+    setNewMsgCount(0)
+  }, [conversationWith])
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -369,6 +452,7 @@ export default function ChatPage() {
       sending: true,
     }
 
+    justSentRef.current = true
     setMessages(prev => [...prev, tempMsg])
     setMessageInput('')
     setFilePreview(null)
@@ -514,7 +598,7 @@ export default function ChatPage() {
 
       {/* ── ZONE CHAT ─────────────────────────────────────────────────────────── */}
       <section className={`
-        flex flex-col flex-1 min-w-0
+        relative flex flex-col flex-1 min-w-0
         ${mobileView === 'list' && !conversationWith ? 'hidden md:flex' : 'flex'}
       `}>
         <header className="bg-white border-b border-gray-100 px-5 py-3 flex items-center gap-3 shadow-sm min-h-[64px] flex-shrink-0">
@@ -538,7 +622,11 @@ export default function ChatPage() {
           )}
         </header>
 
-        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-0.5 bg-slate-50">
+        <main
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-0.5 bg-slate-50"
+        >
           {!conversationWith ? (
             <EmptyState
               icon={<PaperAirplaneIcon className="w-8 h-8 text-slate-300" />}
@@ -642,6 +730,19 @@ export default function ChatPage() {
           )}
           <div ref={messagesEndRef} />
         </main>
+
+        {/* Badge flottant "nouveaux messages" */}
+        {newMsgCount > 0 && (
+          <div className="absolute bottom-20 inset-x-0 flex justify-center z-10 pointer-events-none">
+            <button
+              onClick={() => scrollToBottom('smooth')}
+              className="pointer-events-auto bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-4 py-2 rounded-full shadow-lg flex items-center gap-2 transition-colors"
+            >
+              <ArrowDownIcon className="w-3.5 h-3.5" />
+              {newMsgCount} nouveau{newMsgCount > 1 ? 'x' : ''} message{newMsgCount > 1 ? 's' : ''}
+            </button>
+          </div>
+        )}
 
         {conversationWith && (
           <footer className="bg-white border-t border-gray-100 px-4 py-3 shadow-sm flex-shrink-0">

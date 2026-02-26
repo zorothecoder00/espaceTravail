@@ -326,7 +326,7 @@ model Note {
   // Relation avec l'utilisateur (auteur de la note)
   auteurId  Int
   auteur    User     @relation(fields: [auteurId], references: [id], onDelete: Cascade)   
-}                        
+}                          
 
 model Planning {
   id              Int           @id @default(autoincrement())   
