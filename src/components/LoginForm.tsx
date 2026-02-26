@@ -76,7 +76,7 @@ export default function LoginForm() {
       {infoMessage && (
         <div className="text-green-600 text-sm text-center mb-4">
           {infoMessage}
-        </div>
+        </div>   
       )}
 
       <form onSubmit={handleLogin} className="mt-8 space-y-6">

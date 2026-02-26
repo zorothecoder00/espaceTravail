@@ -6,432 +6,727 @@ import Pusher, { Channel } from 'pusher-js'
 import { useSession } from 'next-auth/react'
 import Linkify from 'linkify-react'
 import Link from 'next/link'
-import { format } from 'date-fns'
+import { format, isToday, isYesterday } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { 
-  PaperAirplaneIcon, 
-  FaceSmileIcon
-} from '@heroicons/react/24/outline';
+import {
+  PaperAirplaneIcon,
+  FaceSmileIcon,
+  PaperClipIcon,
+  XMarkIcon,
+  MagnifyingGlassIcon,
+  CalendarDaysIcon,
+  ArrowLeftIcon,
+} from '@heroicons/react/24/outline'
+import { CheckIcon } from '@heroicons/react/24/solid'
 
-type Utilisateur = {     
-  id: number   
-  nom: string  
-  unreadCount?: number // ✅ nombre de messages non lus  
+// ── Constantes ────────────────────────────────────────────────────────────────
+const EMOJIS = [
+  '😊','😂','❤️','👍','🎉','🔥','✅','📌','🙏','👋',
+  '💪','🤝','📎','📅','💡','⚠️','✔️','📩','🚀','😎',
+  '😅','🤔','👀','💼','📊','🎯','⏳','🔑','📋','💬',
+]
+
+const AVATAR_COLORS = [
+  'bg-violet-600','bg-blue-600','bg-emerald-600','bg-orange-500',
+  'bg-pink-600','bg-teal-600','bg-red-600','bg-indigo-600',
+  'bg-yellow-500','bg-cyan-600',
+]
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function getAvatarColor(nom: string): string {
+  const hash = nom.split('').reduce((a, c) => a + c.charCodeAt(0), 0)
+  return AVATAR_COLORS[hash % AVATAR_COLORS.length]
 }
+
+function isSameDay(a: Date, b: Date): boolean {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
+}
+
+function formatMsgTime(iso: string): string {
+  const d = new Date(iso)
+  if (isToday(d))     return format(d, 'HH:mm')
+  if (isYesterday(d)) return `Hier ${format(d, 'HH:mm')}`
+  return format(d, "dd/MM 'à' HH:mm", { locale: fr })
+}
+
+function formatSeparatorDate(iso: string): string {
+  const d = new Date(iso)
+  if (isToday(d))     return "Aujourd'hui"
+  if (isYesterday(d)) return 'Hier'
+  return format(d, 'EEEE dd MMMM yyyy', { locale: fr })
+}
+
+function isImageUrl(url: string): boolean {
+  return /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(url)
+}
+
+function isPlanningMessage(contenu: string, planning?: PlanningMini | null): boolean {
+  return !!planning || /\/planning\/vue\/\d+/.test(contenu)
+}
+
+function getPlanningHref(contenu: string, planning?: PlanningMini | null): string | null {
+  if (planning) return `/admin/planning/vue/${planning.id}?readonly=1`
+  const match = contenu.match(/\/planning\/vue\/(\d+)/)
+  if (match) return `/admin/planning/vue/${match[1]}?readonly=1`
+  const urlMatch = contenu.match(/(https?:\/\/[^\s]+\/planning\/vue\/[^\s]*)/)
+  return urlMatch?.[1] ?? null
+}
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+type Utilisateur = {
+  id: number
+  nom: string
+  prenom?: string
+  unreadCount?: number
+}
+
+type PlanningMini = { id: number; titre: string; slug?: string }
 
 type Message = {
   id: number
   contenu: string
+  pieceJointeUrl?: string | null
   createdAt: string
   vu: boolean
   vuAt?: string | null
   sender: Utilisateur
   receiver: Utilisateur
+  planning?: PlanningMini | null
   tempId?: string
-  sending?: true // flag pour animation "envoi en cours"
+  sending?: boolean
+  failed?: boolean
 }
 
+type SeparatorItem = { type: 'separator'; date: string }
+type FeedItem = Message | SeparatorItem
+
+// ── Sous-composants ───────────────────────────────────────────────────────────
+function Avatar({ nom, size = 'md' }: { nom: string; size?: 'sm' | 'md' | 'lg' }) {
+  const color = getAvatarColor(nom)
+  const sz =
+    size === 'sm' ? 'w-7 h-7 text-xs' :
+    size === 'lg' ? 'w-12 h-12 text-base' :
+                    'w-9 h-9 text-sm'
+  return (
+    <div className={`${color} ${sz} rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 select-none`}>
+      {nom.charAt(0).toUpperCase()}
+    </div>
+  )
+}
+
+function DateSeparator({ date }: { date: string }) {
+  return (
+    <div className="flex items-center gap-3 my-3">
+      <div className="flex-1 h-px bg-gray-200" />
+      <span className="text-[11px] text-gray-400 font-medium px-3 bg-slate-50 rounded-full py-0.5 border border-gray-200">
+        {formatSeparatorDate(date)}
+      </span>
+      <div className="flex-1 h-px bg-gray-200" />
+    </div>
+  )
+}
+
+function PlanningCard({ contenu, planning }: { contenu: string; planning?: PlanningMini | null }) {
+  const href = getPlanningHref(contenu, planning)
+  return (
+    <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-3 max-w-[260px]">
+      <div className="flex items-center gap-2 mb-1.5">
+        <CalendarDaysIcon className="w-5 h-5 text-indigo-500 flex-shrink-0" />
+        <span className="text-xs font-semibold text-indigo-700">Planning partagé</span>
+      </div>
+      {planning?.titre && (
+        <p className="text-xs text-gray-700 mb-1.5 font-medium">{planning.titre}</p>
+      )}
+      <p className="text-xs text-gray-500 mb-2.5 line-clamp-2 break-all">{contenu}</p>
+      {href && (
+        <Link
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-center text-xs bg-indigo-600 text-white rounded-lg py-1.5 hover:bg-indigo-700 transition-colors font-medium"
+        >
+          Voir le planning →
+        </Link>
+      )}
+    </div>
+  )
+}
+
+function ReadStatus({
+  isSender, vu, vuAt, sending,
+}: {
+  isSender: boolean; vu: boolean; vuAt?: string | null; sending?: boolean
+}) {
+  if (!isSender) return null
+  if (sending)   return <span className="text-[10px] text-gray-300 animate-pulse">⏳</span>
+  if (vuAt) {
+    return (
+      <span className="text-[10px] text-indigo-400 flex items-center gap-0.5">
+        <CheckIcon className="w-2.5 h-2.5 inline" />
+        <CheckIcon className="w-2.5 h-2.5 inline -ml-1" />
+        <span className="ml-0.5">Vu {format(new Date(vuAt), 'HH:mm')}</span>
+      </span>
+    )
+  }
+  return <CheckIcon className="w-3 h-3 text-gray-400" />
+}
+
+function EmptyState({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-center px-6">
+      <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+        {icon}
+      </div>
+      <p className="text-slate-600 font-semibold">{title}</p>
+      <p className="text-slate-400 text-sm mt-1 max-w-xs leading-relaxed">{subtitle}</p>
+    </div>
+  )
+}
+
+// ── Composant principal ───────────────────────────────────────────────────────
 export default function ChatPage() {
   const { data: session } = useSession()
   const userId = session?.user?.id ? parseInt(session.user.id) : null
 
-  const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([])
-
-  const [loading, setLoading] = useState(false)
-
+  const [utilisateurs, setUtilisateurs]     = useState<Utilisateur[]>([])
+  const [search, setSearch]                 = useState('')
+  const [loading, setLoading]               = useState(false)
   const [conversationWith, setConversationWith] = useState<number | null>(null)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [messageInput, setMessageInput] = useState('')
-  const [sending, setSending] = useState(false)
+  const [messages, setMessages]             = useState<Message[]>([])
+  const [messageInput, setMessageInput]     = useState('')
+  const [sending, setSending]               = useState(false)
+  const [showEmojis, setShowEmojis]         = useState(false)
+  const [filePreview, setFilePreview]       = useState<{ file: File; preview: string | null } | null>(null)
+  const [mobileView, setMobileView]         = useState<'list' | 'chat'>('list')
 
-  const pusherRef = useRef<Pusher | null>(null)
-  const conversationChannelRef = useRef<Channel | null>(null)
+  const pusherRef      = useRef<Pusher | null>(null)
+  const convChannelRef = useRef<Channel | null>(null)
+  const userChannelRef = useRef<Channel | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const textareaRef    = useRef<HTMLTextAreaElement>(null)
+  const fileInputRef   = useRef<HTMLInputElement>(null)
 
-  //Scroll automatique en bas quand messages changent
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Chargement des utilisateurs
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
+    }
+  }, [messageInput])
+
   const fetchUtilisateurs = useCallback(async () => {
-    setLoading(true) // ✅ Activer le loading avant la requête
+    setLoading(true)
     try {
-      const res = await fetch('/api/utilisateurs?includeUnread=true')
+      const res  = await fetch('/api/utilisateurs?includeUnread=true')
       const data = await res.json()
-      // ✅ Sécuriser : si data.data n’existe pas, on met []
       setUtilisateurs(Array.isArray(data?.data) ? data.data : [])
-    } catch (error) {
-      console.error('Erreur fetch utilisateurs:', error)
+    } catch {
       toast.error('Erreur lors du chargement des utilisateurs')
-    }finally{
+    } finally {
       setLoading(false)
     }
   }, [])
 
-  // Chargement des messages de la conversation sélectionnée
   const fetchMessages = useCallback(async (convWith: number) => {
-
     try {
-      const res = await fetch(`/api/messages?conversationWith=${convWith}&limit=100&offset=0`)
+      const res  = await fetch(`/api/messages?conversationWith=${convWith}&limit=100`)
       const data = await res.json()
-      // Trier par date ascendante pour chat
-      setMessages(data.data.sort((a: Message, b: Message) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()))
-    } catch (error) {
-      console.error('Erreur fetch messages:', error)
+      setMessages(
+        (data.data ?? []).sort(
+          (a: Message, b: Message) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
+      )
+    } catch {
       toast.error('Erreur lors du chargement des messages')
     }
   }, [])
 
-  // Initialisation Pusher et abonnement conversation
   useEffect(() => {
     if (!userId) return
-
-    if (!process.env.NEXT_PUBLIC_PUSHER_KEY || !process.env.NEXT_PUBLIC_PUSHER_CLUSTER) {
-      console.error("❌ Clés Pusher manquantes dans .env.local");
-      return
-    }
+    if (!process.env.NEXT_PUBLIC_PUSHER_KEY || !process.env.NEXT_PUBLIC_PUSHER_CLUSTER) return
 
     pusherRef.current = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     })
 
+    userChannelRef.current = pusherRef.current.subscribe(`user-${userId}`)
+    userChannelRef.current.bind('new-message', () => { fetchUtilisateurs() })
+
     return () => {
-      if (conversationChannelRef.current) {
-        conversationChannelRef.current.unbind_all()
-        pusherRef.current?.unsubscribe(conversationChannelRef.current?.name)
-      }
+      userChannelRef.current?.unbind_all()
+      pusherRef.current?.unsubscribe(`user-${userId}`)
+      convChannelRef.current?.unbind_all()
+      if (convChannelRef.current) pusherRef.current?.unsubscribe(convChannelRef.current.name)
       pusherRef.current?.disconnect()
     }
-  }, [userId])
+  }, [userId, fetchUtilisateurs])
 
-  // Changement de conversation: abonnement Pusher et fetch messages
   useEffect(() => {
     if (!userId || !pusherRef.current) return
 
-    if (conversationChannelRef.current) {
-      conversationChannelRef.current.unbind_all()
-      pusherRef.current.unsubscribe(conversationChannelRef.current.name)
-      conversationChannelRef.current = null
+    convChannelRef.current?.unbind_all()
+    if (convChannelRef.current) {
+      pusherRef.current.unsubscribe(convChannelRef.current.name)
+      convChannelRef.current = null
     }
 
-    if (conversationWith) {
-      const channelName = `conversation-${Math.min(userId, conversationWith)}-${Math.max(userId, conversationWith)}`
-      conversationChannelRef.current = pusherRef.current.subscribe(channelName)
+    if (!conversationWith) { setMessages([]); return }
 
-      conversationChannelRef.current.bind('new-message', (data: { message: Message, tempId?: string }) => {  
-        setMessages(prev => {
-          // Si c'est un message qu'on vient d'envoyer (avec tempId), remplacer le message temporaire
-          if (data.tempId) {
-            return prev.map(m => 
-              m.tempId === data.tempId ? data.message : m
-            ).filter(m => m.id !== -1 || !m.tempId) // Nettoyer les doublons temporaires
-          }
-          
-          // Sinon, vérifier si le message existe déjà pour éviter les doublons
-          if (prev.find(m => m.id === data.message.id)) return prev
-          
-          return [...prev, data.message].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-        })
+    const ch = `conversation-${Math.min(userId, conversationWith)}-${Math.max(userId, conversationWith)}`
+    convChannelRef.current = pusherRef.current.subscribe(ch)
 
-        // Toast uniquement pour les messages reçus (pas envoyés par soi-même)
-        if (data.message.sender.id !== userId) {
-          toast.info(`📩 Nouveau message de ${data.message.sender.nom}`, { autoClose: 3000 })
+    convChannelRef.current.bind('new-message', (data: { message: Message; tempId?: string }) => {
+      setMessages(prev => {
+        if (data.tempId) {
+          return prev
+            .map(m => m.tempId === data.tempId ? { ...data.message } : m)
+            .filter(m => m.id !== -1 || !m.tempId)
         }
+        if (prev.find(m => m.id === data.message.id)) return prev
+        return [...prev, data.message].sort(
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
       })
+      if (data.message.sender.id !== userId) {
+        fetchUtilisateurs()
+        toast.info(`💬 ${data.message.sender.nom} : ${data.message.contenu.slice(0, 50)}`, { autoClose: 3000 })
+      }
+    })
 
-      conversationChannelRef.current.bind('message-deleted', (data: { messageId: number }) => {
-        setMessages(prev => prev.filter(m => m.id !== data.messageId))
-        toast.warn('🗑️ Un message a été supprimé', { autoClose: 2000 })
-      })
+    convChannelRef.current.bind('message-deleted', ({ messageId }: { messageId: number }) => {
+      setMessages(prev => prev.filter(m => m.id !== messageId))
+    })
 
-      conversationChannelRef.current.bind('messages-read', (data: { updatedMessages: { id: number, vuAt: string }[] }) => {
-        setMessages(prev => prev.map(m => {
-          const updated = data.updatedMessages.find(u => u.id === m.id)
-          return updated ? { ...m, vu: true, vuAt: updated.vuAt } : m
-        }))
-      })
+    convChannelRef.current.bind('messages-read', (data: { updatedMessages: { id: number; vuAt: string }[] }) => {
+      setMessages(prev => prev.map(m => {
+        const up = data.updatedMessages.find(u => u.id === m.id)
+        return up ? { ...m, vu: true, vuAt: up.vuAt } : m
+      }))
+    })
 
+    fetchMessages(conversationWith)
+  }, [conversationWith, userId, fetchMessages, fetchUtilisateurs])
 
-      fetchMessages(conversationWith)
-    } else {
-      setMessages([])
-    }
+  useEffect(() => { fetchUtilisateurs() }, [fetchUtilisateurs])
 
-  }, [conversationWith, userId, fetchMessages])
-
-  // Chargement initial utilisateurs
-  useEffect(() => {
-    fetchUtilisateurs()
-  }, [fetchUtilisateurs])
-
-  // Marquer messages comme lus automatiquement
   useEffect(() => {
     if (!userId || !conversationWith) return
-
-    const unreadIds = messages.filter(m => !m.vu && m.receiver.id === userId).map(m => m.id)
-
-    if (unreadIds.length > 0) {
-      fetch('/api/messages', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messageIds: unreadIds, action: 'mark-as-read' })
-      }).catch(console.error)
-    }
+    const unreadIds = messages.filter(m => !m.vu && m.receiver?.id === userId).map(m => m.id)
+    if (!unreadIds.length) return
+    fetch('/api/messages', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messageIds: unreadIds, action: 'mark-as-read' }),
+    }).then(() => {
+      setUtilisateurs(prev =>
+        prev.map(u => u.id === conversationWith ? { ...u, unreadCount: 0 } : u)
+      )
+    }).catch(console.error)
   }, [messages, userId, conversationWith])
 
-  // Envoi message
-  const sendMessage = async () => {
-    if (!messageInput.trim() || !conversationWith || !userId) return
-    setSending(true)
+  useEffect(() => {
+    const id = setInterval(() => {
+      setMessages(prev =>
+        prev.filter(m => !(m.tempId && m.id === -1 && Date.now() - new Date(m.createdAt).getTime() > 8000))
+      )
+    }, 10000)
+    return () => clearInterval(id)
+  }, [])
 
-    const tempId = `temp_${Date.now()}_${userId}`
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) { toast.error('Fichier trop volumineux (max 5 Mo)'); return }
+    const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+    setFilePreview({ file, preview })
+    e.target.value = ''
+  }
+
+  const sendMessage = async () => {
+    if ((!messageInput.trim() && !filePreview) || !conversationWith || !userId) return
+    setSending(true)
+    setShowEmojis(false)
+
+    const tempId   = `temp_${Date.now()}_${userId}`
+    const content  = messageInput
+    const fileCopy = filePreview
+
     const tempMsg: Message = {
-      id: -1,
-      tempId,
-      contenu: messageInput,
+      id: -1, tempId,
+      contenu: content,
+      pieceJointeUrl: fileCopy?.preview ?? null,
       createdAt: new Date().toISOString(),
       vu: false,
       sender: { id: userId, nom: session?.user?.nom || 'Vous' },
       receiver: utilisateurs.find(u => u.id === conversationWith)!,
-      sending: true // flag pour animation "envoi en cours"
+      sending: true,
     }
+
     setMessages(prev => [...prev, tempMsg])
     setMessageInput('')
+    setFilePreview(null)
 
     try {
-      const formData = new FormData()
-      formData.append('contenu', tempMsg.contenu)
-      formData.append('receiverId', conversationWith.toString())
-      formData.append('tempId', tempId)
+      const fd = new FormData()
+      fd.append('contenu', content)
+      fd.append('receiverId', conversationWith.toString())
+      fd.append('tempId', tempId)
+      if (fileCopy?.file) fd.append('pieceJointe', fileCopy.file)
 
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        body: formData,
-      })
-
+      const res = await fetch('/api/messages', { method: 'POST', body: fd })
       if (!res.ok) throw new Error('Erreur envoi')
-
-      // Toast succès après confirmation serveur
-      toast.success('Message envoyé ✅', { autoClose: 1500 })
-
-      // Le message réel sera reçu via Pusher, le temp sera remplacé
-    } catch (err) {
-      console.error('Erreur lors de l’envoi', err)
-      // Marquer le message comme "échec"
-      // Supprimer le message temporaire en cas d'échec
-      setMessages(prev => prev.filter(m => m.tempId !== tempId))
-      toast.error('Erreur lors de l’envoi ❌', { autoClose: 2000 });
+    } catch {
+      setMessages(prev =>
+        prev.map(m => m.tempId === tempId ? { ...m, sending: false, failed: true } : m)
+      )
+      toast.error('Échec de l\'envoi ❌')
     } finally {
       setSending(false)
     }
   }
 
-  const cleanupTempMessages = useCallback(() => {
-    setMessages(prev => prev.filter(m => {
-      // Supprimer les messages temporaires de plus de 5 secondes
-      if (m.tempId && m.id === -1) {
-        const messageTime = new Date(m.createdAt).getTime()
-        const now = Date.now()
-        return (now - messageTime) < 5000 // Garder seulement les messages de moins de 5s
-      }
-      return true
-    }))
-  }, [])
-
-  // 4. Utiliser useEffect pour nettoyer périodiquement
-  useEffect(() => {
-    const interval = setInterval(cleanupTempMessages, 10000) // Nettoyer toutes les 10 secondes
-    return () => clearInterval(interval)
-  }, [cleanupTempMessages])
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
+  const handleDeleteMessage = async (messageId: number) => {
+    if (!confirm('Supprimer ce message ?')) return
+    try {
+      const res = await fetch(`/api/messages?messageId=${messageId}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error()
+      setMessages(prev => prev.filter(m => m.id !== messageId))
+    } catch {
+      toast.error('Erreur lors de la suppression')
     }
   }
 
-  const handleDeleteMessage = async (messageId: number) => {
-    if (!confirm("Voulez-vous vraiment supprimer ce message ?")) return
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() }
+  }
 
-    try {
-      const res = await fetch(`/api/messages?messageId=${messageId}`, {
-        method: 'DELETE',
-      })
+  const insertEmoji = (emoji: string) => {
+    setMessageInput(p => p + emoji)
+    textareaRef.current?.focus()
+    setShowEmojis(false)
+  }
 
-      if (!res.ok) throw new Error('Erreur suppression')
+  const openConversation = (id: number) => {
+    setConversationWith(id)
+    setMobileView('chat')
+  }
 
-      // Met à jour la liste localement
-      setMessages(prev => prev.filter(m => m.id !== messageId))
-
-    } catch (error) {
-      console.error('Erreur lors de la suppression du message', error)
-      toast.error('Erreur lors de la suppression du message')
+  const feed: FeedItem[] = messages.reduce<FeedItem[]>((acc, msg, i) => {
+    const prev = messages[i - 1]
+    if (!prev || !isSameDay(new Date(prev.createdAt), new Date(msg.createdAt))) {
+      acc.push({ type: 'separator', date: msg.createdAt })
     }
-  } 
+    acc.push(msg)
+    return acc
+  }, [])
 
+  const activeUser    = utilisateurs.find(u => u.id === conversationWith)
+  const filteredUsers = utilisateurs.filter(u =>
+    u.id !== userId &&
+    `${u.nom} ${u.prenom ?? ''}`.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
-    <div className="flex h-screen p-4 gap-6 max-w-7xl mx-auto">
+    <div className="flex h-screen bg-slate-100 overflow-hidden font-sans">
 
-      {/* Lien retour dashboard */}
-      <div className="absolute bottom-4 left-4">
-        <Link href="/admin/dashboard" 
-          className="text-blue-600 hover:underline font-semibold">
-          ← Retour au dashboard
-        </Link>
-      </div>
+      {/* ── SIDEBAR ──────────────────────────────────────────────────────────── */}
+      <aside className={`
+        flex flex-col w-80 bg-slate-900 text-white flex-shrink-0
+        ${mobileView === 'chat' ? 'hidden md:flex' : 'flex'}
+      `}>
+        <div className="p-4 border-b border-slate-700/60 flex-shrink-0">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-base font-bold tracking-tight">Messagerie</h1>
+            <Link
+              href="/admin/dashboard"
+              className="text-slate-400 hover:text-white text-xs flex items-center gap-1 transition-colors"
+            >
+              <ArrowLeftIcon className="w-3.5 h-3.5" />
+              Dashboard
+            </Link>
+          </div>
+          <div className="relative">
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Rechercher un utilisateur…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            />
+          </div>
+        </div>
 
-      {/* Liste utilisateurs */}
-      <aside className="w-64 border-r border-gray-300 overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">Utilisateurs</h2>
-        {loading ? (
-          // ✅ État de chargement
-          <div className="flex flex-col items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-2"></div>
-            <p className="text-sm text-gray-500">Chargement...</p>
-          </div>
-        ) : utilisateurs?.length === 0 ? (
-          // ✅ État vide (pas d'utilisateurs)
-          <div className="text-center py-8">
-            <p className="text-gray-500 text-sm">Aucun utilisateur trouvé</p>
-          </div>
-        ) : (
-          // ✅ Liste des utilisateurs
-          <ul>
-            {utilisateurs.filter(u => u.id !== userId).map(user => (
-              <li
-                key={user.id}
-                className={`cursor-pointer px-4 py-2 rounded hover:bg-blue-100 transition-colors duration-150 ${
-                  conversationWith === user.id ? 'bg-blue-200 font-bold' : ''
-                }`}
-                onClick={() => setConversationWith(user.id)}
-              >
-                <div className="flex items-center gap-2">
-                  {/* Avatar ou initiale */}
-                  <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    {user.nom.charAt(0).toUpperCase()}
+        <div className="flex-1 overflow-y-auto py-2">
+          {loading ? (
+            <div className="p-4 space-y-3">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="flex items-center gap-3 animate-pulse">
+                  <div className="w-9 h-9 rounded-full bg-slate-700 flex-shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3 bg-slate-700 rounded w-2/3" />
+                    <div className="h-2 bg-slate-800 rounded w-1/2" />
                   </div>
-                  <span>{user.nom}</span>
-                  {/* 🔴 Badge messages non lus */}
+                </div>
+              ))}
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="p-6 text-center text-slate-500 text-sm">
+              {search ? 'Aucun résultat' : 'Aucun utilisateur disponible'}
+            </div>
+          ) : (
+            <ul className="px-2 space-y-0.5">
+              {filteredUsers.map(user => (
+                <li
+                  key={user.id}
+                  onClick={() => openConversation(user.id)}
+                  className={`
+                    flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150
+                    ${conversationWith === user.id
+                      ? 'bg-indigo-600 shadow-md shadow-indigo-900/30'
+                      : 'hover:bg-slate-800'}
+                  `}
+                >
+                  <Avatar nom={user.nom} size="md" />
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-medium truncate leading-tight ${conversationWith === user.id ? 'text-white' : 'text-slate-200'}`}>
+                      {user.prenom ? `${user.prenom} ${user.nom}` : user.nom}
+                    </p>
+                  </div>
                   {(user.unreadCount ?? 0) > 0 && (
-                    <span className="bg-violet-600 text-white text-xs px-2 py-0.5 rounded-full">
+                    <span className="bg-red-500 text-white text-[11px] font-bold min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center flex-shrink-0">
                       {user.unreadCount}
                     </span>
                   )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </aside>
 
-      {/* Zone chat */}
-      <section className="flex flex-col flex-1 border rounded shadow ">
-        <header className="border-b p-4 font-semibold bg-black text-white">
-          {conversationWith
-            ? `Conversation avec ${utilisateurs.find(u => u.id === conversationWith)?.nom ?? 'Inconnu'}`
-            : 'Sélectionnez un utilisateur pour commencer'}
+      {/* ── ZONE CHAT ─────────────────────────────────────────────────────────── */}
+      <section className={`
+        flex flex-col flex-1 min-w-0
+        ${mobileView === 'list' && !conversationWith ? 'hidden md:flex' : 'flex'}
+      `}>
+        <header className="bg-white border-b border-gray-100 px-5 py-3 flex items-center gap-3 shadow-sm min-h-[64px] flex-shrink-0">
+          <button
+            onClick={() => setMobileView('list')}
+            className="md:hidden p-1.5 -ml-1 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+          </button>
+          {activeUser ? (
+            <>
+              <Avatar nom={activeUser.nom} size="md" />
+              <div className="flex-1 min-w-0">
+                <h2 className="font-semibold text-gray-900 leading-tight truncate">
+                  {activeUser.prenom ? `${activeUser.prenom} ${activeUser.nom}` : activeUser.nom}
+                </h2>
+              </div>
+            </>
+          ) : (
+            <span className="text-gray-400 text-sm">Sélectionnez une conversation</span>
+          )}
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 space-y-3 bg-green-100">
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-0.5 bg-slate-50">
           {!conversationWith ? (
-            <p className="text-gray-500">Aucune conversation sélectionnée.</p>
+            <EmptyState
+              icon={<PaperAirplaneIcon className="w-8 h-8 text-slate-300" />}
+              title="Aucune conversation sélectionnée"
+              subtitle="Choisissez un utilisateur à gauche pour démarrer une conversation"
+            />
           ) : messages.length === 0 ? (
-            <p className="text-gray-500">Aucun message dans cette conversation.</p>
+            <EmptyState
+              icon={
+                <svg className="w-8 h-8 text-indigo-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              }
+              title="Aucun message"
+              subtitle="Envoyez le premier message pour démarrer la conversation !"
+            />
           ) : (
-            messages.map(msg => {       
-              const isSender = userId !== null && msg.sender.id === userId
-              return (
-                <div
-                  key={msg.tempId || msg.id}
-                  className={`text-sm max-w-xs p-2 rounded-lg break-words whitespace-pre-wrap 
-                  ${isSender ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-200 text-gray-900 mr-auto'} 
-                  relative
-                  ${msg.sending ? 'opacity-50 italic' : ''}`}
-                >  
-                  <p>
-                    <Linkify
-                      options={{
-                        target: '_blank',  // ouvre les liens dans un nouvel onglet
-                        rel: 'noopener noreferrer',
-                        className: isSender 
-                          ? 'text-white underline hover:text-blue-200'
-                          : 'text-black underline hover:text-blue-600', // ici ta classe Tailwind pour liens
-                      }}
-                    >
-                      {msg.contenu}
-                    </Linkify>
-                    {/* Animation si en cours d'envoi */}
-                    {msg.sending && (
-                      <span className="ml-2 inline-block animate-pulse">⏳</span>
-                    )}
-                  </p>
-                  <small className="block text-xs text-gray-700 mt-1 text-right">
-                    {/* 🕒 Affiche la date + heure d’envoi du message */}
-                    {format(new Date(msg.createdAt), "dd/MM/yyyy 'à' HH:mm", { locale: fr })}
+            <>
+              {feed.map((item, i) => {
+                if ('type' in item && item.type === 'separator') {
+                  return <DateSeparator key={`sep-${i}`} date={item.date} />
+                }
+                const msg        = item as Message
+                const isSender   = userId !== null && msg.sender.id === userId
+                const isPlanning = isPlanningMessage(msg.contenu, msg.planning)
 
-                    {/* 🔵 Indicateur de message non lu (pour le receiver) */}
-                    {!msg.vu && !isSender && (
-                      <span className="ml-1 inline-block w-2 h-2 bg-blue-600 rounded-full"></span>
-                    )}
+                return (
+                  <div
+                    key={msg.tempId || msg.id}
+                    className={`flex items-end gap-2 group mt-1 ${isSender ? 'flex-row-reverse' : ''}`}
+                  >
+                    {!isSender && <Avatar nom={msg.sender.nom} size="sm" />}
 
-                    {/* ✅ Indicateur + date/heure de lecture (pour l’expéditeur) */}
-                    {isSender && msg.vuAt && (
-                      <span className="ml-2 text-green-600">
-                        ✔ Vu le {format(new Date(msg.vuAt), "dd/MM/yyyy 'à' HH:mm", { locale: fr })}
-                      </span>
-                    )}
-                  </small>
+                    <div className={`flex flex-col ${isSender ? 'items-end' : 'items-start'} max-w-[72%] md:max-w-[62%]`}>
+                      <div
+                        className={`
+                          relative px-4 py-2.5 rounded-2xl text-sm leading-relaxed break-words whitespace-pre-wrap shadow-sm
+                          ${isSender
+                            ? 'bg-indigo-600 text-white rounded-br-sm'
+                            : 'bg-white text-gray-800 border border-gray-100 rounded-bl-sm'}
+                          ${msg.sending ? 'opacity-60' : ''}
+                          ${msg.failed  ? '!bg-red-50 !text-red-700 !border-red-200' : ''}
+                        `}
+                      >
+                        {msg.pieceJointeUrl && isImageUrl(msg.pieceJointeUrl) && (
+                          <a href={msg.pieceJointeUrl} target="_blank" rel="noopener noreferrer" className="block mb-2">
+                            <img src={msg.pieceJointeUrl} alt="pièce jointe" className="max-w-full rounded-xl max-h-52 object-cover" />
+                          </a>
+                        )}
+                        {msg.pieceJointeUrl && !isImageUrl(msg.pieceJointeUrl) && (
+                          <a
+                            href={msg.pieceJointeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex items-center gap-1.5 mb-2 text-xs underline ${isSender ? 'text-indigo-200 hover:text-white' : 'text-indigo-600 hover:text-indigo-800'}`}
+                          >
+                            <PaperClipIcon className="w-4 h-4 flex-shrink-0" />
+                            Pièce jointe
+                          </a>
+                        )}
 
+                        {isPlanning ? (
+                          <PlanningCard contenu={msg.contenu} planning={msg.planning} />
+                        ) : (
+                          <>
+                            <Linkify
+                              options={{
+                                target: '_blank',
+                                rel: 'noopener noreferrer',
+                                className: isSender
+                                  ? 'underline text-indigo-200 hover:text-white'
+                                  : 'underline text-indigo-600 hover:text-indigo-800',
+                              }}
+                            >
+                              {msg.contenu}
+                            </Linkify>
+                            {msg.failed && <span className="ml-2 text-xs">⚠️ Non envoyé</span>}
+                          </>
+                        )}
 
-                  {isSender && (
-                    <button
-                      onClick={() => handleDeleteMessage(msg.id)}
-                      className="absolute top-1 right-1 text-xs text-red-600 hover:text-red-800"
-                      aria-label="Supprimer message"
-                    >
-                      ×
-                    </button>
-                  )}
-                </div>
-              )
-            })
+                        {isSender && !msg.sending && msg.id !== -1 && (
+                          <button
+                            onClick={() => handleDeleteMessage(msg.id)}
+                            className="absolute -top-2 -right-2 hidden group-hover:flex w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full items-center justify-center shadow-md transition-colors"
+                            title="Supprimer ce message"
+                          >
+                            <XMarkIcon className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+
+                      <div className={`flex items-center gap-1 mt-0.5 px-1 ${isSender ? 'flex-row-reverse' : ''}`}>
+                        <span className="text-[10px] text-gray-400">{formatMsgTime(msg.createdAt)}</span>
+                        <ReadStatus isSender={isSender} vu={msg.vu} vuAt={msg.vuAt} sending={msg.sending} />
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </>
           )}
           <div ref={messagesEndRef} />
         </main>
 
-        {/* Formulaire d'envoi */}
         {conversationWith && (
-          <footer className="border-t p-4 bg-gray-50 flex items-center gap-3">
-            <div className="relative flex-1">
+          <footer className="bg-white border-t border-gray-100 px-4 py-3 shadow-sm flex-shrink-0">
+            {filePreview && (
+              <div className="mb-2 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl p-2">
+                {filePreview.preview ? (
+                  <img src={filePreview.preview} alt="preview" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+                ) : (
+                  <div className="w-10 h-10 bg-slate-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <PaperClipIcon className="w-5 h-5 text-slate-500" />
+                  </div>
+                )}
+                <span className="flex-1 text-gray-600 text-xs truncate">{filePreview.file.name}</span>
+                <button onClick={() => setFilePreview(null)} className="text-gray-400 hover:text-red-500 transition-colors">
+                  <XMarkIcon className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            {showEmojis && (
+              <div className="mb-2 bg-white border border-gray-200 rounded-2xl p-3 shadow-xl">
+                <div className="grid grid-cols-10 gap-1">
+                  {EMOJIS.map(emoji => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => insertEmoji(emoji)}
+                      className="text-xl hover:scale-125 active:scale-95 transition-transform p-0.5 rounded"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowEmojis(v => !v)}
+                className={`p-2 rounded-xl transition-colors flex-shrink-0 ${showEmojis ? 'bg-yellow-100 text-yellow-600' : 'text-gray-400 hover:text-yellow-500 hover:bg-gray-100'}`}
+                title="Emojis"
+              >
+                <FaceSmileIcon className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="p-2 rounded-xl text-gray-400 hover:text-indigo-500 hover:bg-indigo-50 transition-colors flex-shrink-0"
+                title="Joindre un fichier"
+              >
+                <PaperClipIcon className="w-5 h-5" />
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+
               <textarea
+                ref={textareaRef}
                 rows={1}
-                className="w-full resize-none border rounded-xl px-3 py-2 pr-10 focus:outline-blue-500 focus:ring-1 focus:ring-blue-400"
-                placeholder="Tapez votre message..."
+                className="flex-1 resize-none bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-400 focus:bg-white transition-all placeholder-gray-400"
+                placeholder="Tapez votre message… (Entrée pour envoyer, ⇧Entrée pour une nouvelle ligne)"
                 value={messageInput}
                 onChange={e => setMessageInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 disabled={sending}
+                style={{ minHeight: '42px', maxHeight: '120px' }}
               />
 
-              {/* 😄 Icône intégrée au milieu verticalement */}
-              <FaceSmileIcon
-                className="absolute top-1/2 -translate-y-1/2 right-3 h-5 w-5 text-gray-400 hover:text-yellow-500 cursor-pointer transition-colors"
-                title="Ajouter un emoji"
-              />
+              <button
+                type="button"
+                onClick={sendMessage}
+                disabled={sending || (!messageInput.trim() && !filePreview)}
+                className="p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex-shrink-0 shadow-sm"
+                title="Envoyer"
+              >
+                <PaperAirplaneIcon className="w-5 h-5" />
+              </button>
             </div>
-
-            <button
-              onClick={sendMessage}
-              disabled={sending || !messageInput.trim()}
-              className="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              <PaperAirplaneIcon className="h-5 w-5" />
-            </button>
           </footer>
-
         )}
       </section>
     </div>

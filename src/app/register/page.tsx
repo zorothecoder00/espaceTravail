@@ -98,7 +98,7 @@ export default function Register() {
     formData.append('departementId', departement?.value || '')
 
     if (imageFile) {
-      formData.append('image', imageFile)
+      formData.append('image', imageFile)  
     }     
 
     try {

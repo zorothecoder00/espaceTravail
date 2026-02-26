@@ -121,10 +121,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         take: parseInt(limit.toString()),
         skip: parseInt(offset.toString()),
         include: {
-          sender: { select: { id: true, nom: true } }, 
+          sender: { select: { id: true, nom: true } },
           receiver: { select: { id: true, nom: true } },
           projet: { select: { nom: true } },
           tache:  { select: { titre: true } },
+          planning: { select: { id: true, titre: true, slug: true } },
         },
       })
   
@@ -167,8 +168,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { fields, files } = await parseForm(req)
       const contenu     = fields.contenu?.toString() ?? ''
       const receiverId  = parseInt(fields.receiverId?.toString() || '')
-      const projetId    = fields.projetId ? parseInt(fields.projetId.toString()) : null
-      const tacheId     = fields.tacheId  ? parseInt(fields.tacheId.toString())  : null
+      const projetId    = fields.projetId   ? parseInt(fields.projetId.toString())   : null
+      const tacheId     = fields.tacheId    ? parseInt(fields.tacheId.toString())    : null
+      const planningId  = fields.planningId ? parseInt(fields.planningId.toString()) : null
       const file        = Array.isArray(files.pieceJointe) ? files.pieceJointe[0] : files.pieceJointe
       const tempId      = fields.tempId?.toString() || null
 
@@ -207,12 +209,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           receiverId,
           projetId,
           tacheId,
+          planningId,
         },
         include: {
-          sender: { select: { id: true, nom: true } },
+          sender:   { select: { id: true, nom: true } },
           receiver: { select: { id: true, nom: true } },
-          projet: { select: { nom: true } },
-          tache: { select: { titre: true } },
+          projet:   { select: { nom: true } },
+          tache:    { select: { titre: true } },
+          planning: { select: { id: true, titre: true, slug: true } },
         }
       })
 
@@ -274,26 +278,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       })
       if (!message) {
-        return res.status(404).json({ message: 'Message non trouvé ou non autorisé' })  
+        return res.status(404).json({ message: 'Message non trouvé ou non autorisé' })
       }
 
       await prisma.message.delete({
         where: { id: parseInt(messageId.toString()) }
       })
 
-      if (message.senderId === null || message.receiverId === null) {
-        return res.status(400).json({ message: 'IDs invalides' })
-      }
-
-      // Notifier la suppression via Pusher
+      // Notifier via Pusher uniquement si les deux IDs existent (message direct)
+      if (message.receiverId !== null && message.senderId !== null) {
         await Promise.all([
-        triggerPusher(`user-${message.receiverId}`, 'message-deleted', { messageId: message.id }),
-        triggerPusher(
-          `conversation-${Math.min(message.senderId, message.receiverId)}-${Math.max(message.senderId, message.receiverId)}`,
-          'message-deleted',
-          { messageId: message.id }
-        )
-      ])
+          triggerPusher(`user-${message.receiverId}`, 'message-deleted', { messageId: message.id }),
+          triggerPusher(
+            `conversation-${Math.min(message.senderId, message.receiverId)}-${Math.max(message.senderId, message.receiverId)}`,
+            'message-deleted',
+            { messageId: message.id }
+          )
+        ])
+      }
 
       return res.status(200).json({ message: 'Message supprimé' })
 

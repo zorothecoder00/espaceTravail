@@ -36,7 +36,7 @@ Cette application permet de :
 - **Prisma (ORM)**  
 - **PostgreSQL**  
 - **pgAdmin 4**  
-- **TailwindCSS**
+- **TailwindCSS**  
 
 ---
 

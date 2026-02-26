@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { useSearchParams } from 'next/navigation'    
+import { useParams, useSearchParams } from 'next/navigation'
+import { toast } from 'react-toastify'
+import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline'
 
-type User = {     
+type User = {
   id: number
   nom: string
   prenom: string
@@ -33,253 +34,255 @@ type Planning = {
 
 export default function PlanningJournalier() {
   const { id } = useParams() as { id: string }
-  const [planningData, setPlanningData] = useState<Planning | null>(null)
-  const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)  
-
-  const [showModal, setShowModal] = useState(false)
-  const [messageEnvoye, setMessageEnvoye] = useState(false)
-  const [lienPlanning, setLienPlanning] = useState('')
-
-  const [utilisateurs, setUtilisateurs] = useState<User[]>([])
-  const [selectedDestinataireId, setSelectedDestinataireId] = useState<number | null>(null)
-
   const searchParams = useSearchParams()
-  const readOnly = searchParams?.get('readonly') === '1' || false
+  const readOnly = searchParams?.get('readonly') === '1'
+
+  const [planningData, setPlanningData]           = useState<Planning | null>(null)
+  const [errorMsg, setErrorMsg]                   = useState('')
+  const [loading, setLoading]                     = useState(false)
+  const [showModal, setShowModal]                 = useState(false)
+  const [sending, setSending]                     = useState(false)
+  const [lienPlanning, setLienPlanning]           = useState('')
+  const [utilisateurs, setUtilisateurs]           = useState<User[]>([])
+  const [selectedDestinataireId, setSelectedDestinataireId] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchPlanning = async () => {
       setLoading(true)
       try {
         const res = await fetch(`/api/planning/${id}`)
-
-        if (!res.ok) {
-          setMessage('Erreur lors de la récupération')
-          return
-        }
-
+        if (!res.ok) { setErrorMsg('Erreur lors de la récupération du planning'); return }
         const data = await res.json()
         setPlanningData(data.data)
-      } catch (error) {
-        console.error('Erreur serveur', error)
-        setMessage('Erreur serveur')
+      } catch {
+        setErrorMsg('Erreur serveur')
       } finally {
         setLoading(false)
       }
     }
-
-    if (id) {
-      fetchPlanning()
-    }
+    if (id) fetchPlanning()
   }, [id])
 
   useEffect(() => {
     if (typeof window !== 'undefined' && id) {
       const url = new URL(`/interfaceUtilisateur/planning/vue/${id}`, window.location.origin)
-      url.searchParams.set('readonly', '1')  // <-- ajout ici
+      url.searchParams.set('readonly', '1')
       setLienPlanning(url.toString())
     }
   }, [id])
 
-  // Fetch utilisateurs
   useEffect(() => {
     const fetchUtilisateurs = async () => {
       try {
-        const res = await fetch('/api/utilisateurs')
+        const res  = await fetch('/api/utilisateurs')
         const data = await res.json()
         setUtilisateurs(data.data || [])
-      } catch (error) {
-        console.error('Erreur lors du fetch des utilisateurs', error)
+      } catch {
+        console.error('Erreur fetch utilisateurs')
       }
     }
-
     fetchUtilisateurs()
   }, [])
 
   const envoyerMessage = async () => {
     if (!selectedDestinataireId) return
-
-    const formData = new FormData()
-    formData.append('contenu', `Voici le lien du planning : ${lienPlanning}`)
-    formData.append('receiverId', selectedDestinataireId.toString())
+    setSending(true)
     try {
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        body: formData,
-      })
+      const fd = new FormData()
+      fd.append('contenu', `Voici le lien du planning : ${lienPlanning}`)
+      fd.append('receiverId', selectedDestinataireId.toString())
+      fd.append('planningId', id)
 
+      const res = await fetch('/api/messages', { method: 'POST', body: fd })
       if (res.ok) {
-        setMessageEnvoye(true)
+        toast.success('Planning envoyé avec succès ✅', { autoClose: 4000 })
         setShowModal(false)
-
-        // ✅ Faire disparaître le message après 5 secondes
-        setTimeout(()=> {
-          setMessageEnvoye(false)
-        },5000)
-      }else{
+        setSelectedDestinataireId(null)
+      } else {
         const data = await res.json()
-        console.error("Erreur serveur", data.message)
+        toast.error(data.message || 'Erreur lors de l\'envoi')
       }
-    } catch (error) {
-      console.error('Erreur envoi message', error)
+    } catch {
+      toast.error('Erreur lors de l\'envoi du message')
+    } finally {
+      setSending(false)
     }
   }
 
-  const formatDate = (isoDate: string) => {
-    const date = new Date(isoDate)
-    return date.toLocaleDateString('fr-FR', {
-      weekday: 'long',
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
+  const formatDate = (isoDate: string) =>
+    new Date(isoDate).toLocaleDateString('fr-FR', {
+      weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
     })
-  }     
 
-  const destinataire = utilisateurs.find(u => u.id === selectedDestinataireId)
+  if (loading) {
+    return (
+      <div className="p-6 space-y-4 animate-pulse">
+        <div className="h-6 bg-gray-200 rounded w-1/3" />
+        <div className="h-4 bg-gray-100 rounded w-1/4" />
+        <div className="h-48 bg-gray-100 rounded" />
+      </div>
+    )
+  }
 
-  if (loading) return <p>Chargement...</p>
-  if (message) return <p>{message}</p>
-  if (!planningData) return <p>Aucun planning trouvé.</p>
+  if (errorMsg) return <p className="p-6 text-red-500 font-medium">{errorMsg}</p>
+  if (!planningData) return <p className="p-6 text-gray-500">Aucun planning trouvé.</p>
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
-        {!readOnly && (
-          <>
-            <Link href="/interfaceUtilisateur/planning/vue" className="text-blue-600 hover:underline">
-              ← Retour sur la liste des Plannings
-            </Link>
-            <Link href="/interfaceUtilisateur/planning/new" className="text-blue-600 hover:underline">
-              + Créer un nouveau Planning
-            </Link>
-            <button
-              onClick={() => setShowModal(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:cursor-pointer"
-            >
-              📩 Envoyer ce planning par message
-            </button>
-          </>
-        )}
-      </div>
+    <div className="p-4 max-w-6xl mx-auto">
+      {/* Barre d'actions */}
+      {!readOnly && (
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-3">
+          <Link href="/interfaceUtilisateur/planning/vue" className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors">
+            ← Retour sur la liste des Plannings
+          </Link>
+          <Link href="/interfaceUtilisateur/planning/new" className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors">
+            + Créer un nouveau Planning
+          </Link>
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium shadow-sm"
+          >
+            <PaperAirplaneIcon className="w-4 h-4" />
+            Envoyer par message
+          </button>
+        </div>
+      )}
 
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-2">
         Planning Journalier — {formatDate(planningData.date)}
       </h1>
 
-      <div className="mb-6">
-        <p><span className="font-semibold">Titre :</span> {planningData.titre}</p>
+      <div className="mb-6 text-sm text-gray-600 space-y-1">
+        <p><span className="font-semibold text-gray-800">Titre :</span> {planningData.titre}</p>
         <p>
-          <span className="font-semibold">Responsable :</span>{' '}
+          <span className="font-semibold text-gray-800">Responsable :</span>{' '}
           {planningData.responsable
             ? `${planningData.responsable.prenom} ${planningData.responsable.nom}`
-            : '--'}
+            : '—'}
         </p>
       </div>
 
-      <table className="w-full text-sm border border-gray-300">
-        <thead className="bg-gray-50 text-left">
-          <tr>
-            <th className="p-2 border">🕐 Heure</th>
-            <th className="p-2 border">🗂️ Tâche prévue</th>
-            <th className="p-2 border">🎯 Objectif</th>
-            <th className="p-2 border">📌 Résultat attendu</th>
-            <th className="p-2 border">👤 Responsable</th>
-            <th className="p-2 border">📊 État</th>
-            <th className="p-2 border">⚠️ Priorité</th>
-            <th className="p-2 border">📝 Commentaires</th>
-          </tr>
-        </thead>
-        <tbody>
-          {planningData.taches?.length > 0 ? (
-            planningData.taches.map((tache) => (
-              <tr key={tache.id}>
-                <td className="p-2 border">{tache.heure}</td>
-                <td className="p-2 border">{tache.titre}</td>
-                <td className="p-2 border">{tache.objectif || '--'}</td>
-                <td className="p-2 border">{tache.resultatAttendu || '--'}</td>
-                <td className="p-2 border">
-                  {tache.responsable
-                    ? `${tache.responsable.prenom} ${tache.responsable.nom}`
-                    : '--'}
-                </td>
-                <td className="p-2 border">{tache.etat ? '✅ Terminé' : '⏳ En cours'}</td>
-                <td className="p-2 border">{tache.priorite ? '🔥 Élevée' : '⚠️ Moyenne'}</td>
-                <td className="p-2 border">{tache.commentaires || '--'}</td>
-              </tr>
-            ))
-          ) : (
+      <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 text-left text-gray-700 font-semibold">
             <tr>
-              <td className="p-2 border italic text-gray-500" colSpan={8}>
-                Aucune tâche prévue pour ce jour.
-              </td>
+              <th className="p-3 border-b">Heure</th>
+              <th className="p-3 border-b">Tâche prévue</th>
+              <th className="p-3 border-b">Objectif</th>
+              <th className="p-3 border-b">Résultat attendu</th>
+              <th className="p-3 border-b">Responsable</th>
+              <th className="p-3 border-b">État</th>
+              <th className="p-3 border-b">Priorité</th>
+              <th className="p-3 border-b">Commentaires</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {planningData.taches?.length > 0 ? (
+              planningData.taches.map(tache => (
+                <tr key={tache.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="p-3 font-medium text-gray-700">{tache.heure}</td>
+                  <td className="p-3">{tache.titre}</td>
+                  <td className="p-3 text-gray-500">{tache.objectif || '—'}</td>
+                  <td className="p-3 text-gray-500">{tache.resultatAttendu || '—'}</td>
+                  <td className="p-3 text-gray-500">
+                    {tache.responsable ? `${tache.responsable.prenom} ${tache.responsable.nom}` : '—'}
+                  </td>
+                  <td className="p-3">
+                    {tache.etat
+                      ? <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full text-xs font-medium">✅ Terminé</span>
+                      : <span className="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full text-xs font-medium">⏳ En cours</span>
+                    }
+                  </td>
+                  <td className="p-3">
+                    {tache.priorite
+                      ? <span className="inline-flex items-center gap-1 text-red-700 bg-red-50 px-2 py-0.5 rounded-full text-xs font-medium">🔥 Élevée</span>
+                      : <span className="inline-flex items-center gap-1 text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full text-xs font-medium">⚠️ Moyenne</span>
+                    }
+                  </td>
+                  <td className="p-3 text-gray-500">{tache.commentaires || '—'}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={8} className="p-6 text-center italic text-gray-400">
+                  Aucune tâche prévue pour ce planning.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {/* ✅ Modale */}
+      {/* Modale d'envoi */}
       {showModal && (
-        <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-violet-300 rounded-lg p-6 w-[90%] max-w-md">
-            <h2 className="text-xl font-semibold mb-4 text-white">Envoyer ce planning par message</h2>
-            <label className="block mb-2 text-sm font-medium text-white">
-              Choisir un destinataire :
-            </label>
-            <select
-              value={selectedDestinataireId ?? ''}
-              onChange={(e) => setSelectedDestinataireId(Number(e.target.value))}
-              className="w-full p-2 mb-4 border rounded"
-            >
-              <option value="" disabled>-- Sélectionner un utilisateur --</option>
-              {utilisateurs.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.prenom} {user.nom}
-                </option>
-              ))}
-            </select>
-
-            <p className="mb-4 text-white">
-              Le message contiendra ce lien :
-              <br />
-              <span className="text-blue-600 underline">
-                {lienPlanning}
-              </span>
-            </p>
-            <div className="flex justify-end gap-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-5 border-b">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <PaperAirplaneIcon className="w-5 h-5 text-indigo-600" />
+                Envoyer ce planning
+              </h2>
               <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                onClick={() => { setShowModal(false); setSelectedDestinataireId(null) }}
+                className="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Destinataire
+                </label>
+                <select
+                  value={selectedDestinataireId ?? ''}
+                  onChange={e => setSelectedDestinataireId(Number(e.target.value))}
+                  className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-500 transition-colors bg-white"
+                >
+                  <option value="" disabled>— Sélectionner un utilisateur —</option>
+                  {utilisateurs.map(user => (
+                    <option key={user.id} value={user.id}>
+                      {user.prenom} {user.nom}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-3 text-xs text-gray-500 border border-slate-200">
+                <p className="font-medium text-gray-700 mb-1">Lien qui sera partagé :</p>
+                <p className="break-all text-indigo-600">{lienPlanning}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 px-5 pb-5">
+              <button
+                onClick={() => { setShowModal(false); setSelectedDestinataireId(null) }}
+                className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors font-medium"
               >
                 Annuler
               </button>
               <button
                 onClick={envoyerMessage}
-                disabled={!selectedDestinataireId}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 hover:cursor-pointer disabled:bg-blue-300"
-              >  
-                Envoyer
+                disabled={!selectedDestinataireId || sending}
+                className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {sending ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Envoi…
+                  </>
+                ) : (
+                  <>
+                    <PaperAirplaneIcon className="w-4 h-4" />
+                    Envoyer
+                  </>
+                )}
               </button>
             </div>
           </div>
         </div>
       )}
-
-
-      {/* Affichage du nom */}
-      {destinataire && (
-        <p className="text-sm text-muted-foreground">
-          Message destiné à <strong>{destinataire.nom}</strong>
-        </p>
-      )}
-
-       {/* ✅ Message de succès */}
-      {messageEnvoye && (
-      <div className="mt-6 bg-green-100 border border-green-400 text-green-700 p-4 rounded">
-        <p>✅ Message envoyé avec succès !</p>
-
-      </div>
-    )}
- 
     </div>
   )
 }

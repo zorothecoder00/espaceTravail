@@ -125,7 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         email: email.trim().toLowerCase(),
         password: hashedPassword,
-        nom,
+        nom,  
         prenom,
         role: superAdminExists ? Role.UTILISATEUR : Role.SUPER_ADMIN,
         departementId: departementId ? Number(departementId) : null,

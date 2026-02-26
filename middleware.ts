@@ -1,8 +1,8 @@
 // middleware.ts
 import { getToken } from "next-auth/jwt"
 import { NextRequest, NextResponse } from "next/server"
-
-const secret = process.env.NEXTAUTH_SECRET
+   
+const secret = process.env.NEXTAUTH_SECRET     
 
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret })
@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith("/admin") || pathname.startsWith("/interfaceUtilisateur")) {
       return NextResponse.redirect(new URL("/login", request.url))
     }  
-  }
+  }   
 
   const role = token?.role
 
@@ -29,7 +29,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/admin")) {
     if (!role || (role !== "ADMIN" && role !== "SUPER_ADMIN")) {
       return NextResponse.redirect(new URL("/unauthorized", request.url))
-    }
+    }  
 
     // (Optionnel) Bloquer /admin/utilisateurs/new pour les ADMIN
     if (pathname === "/admin/utilisateurs/new" && role !== "SUPER_ADMIN") {
@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
     if (role !== "UTILISATEUR") {
       return NextResponse.redirect(new URL("/unauthorized", request.url))
     }
-  }
+  }   
 
   return NextResponse.next()
 }
