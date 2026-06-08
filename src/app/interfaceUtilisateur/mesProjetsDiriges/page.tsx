@@ -30,7 +30,7 @@ export default function MesProjetsDirigesPage() {
       setLoading(true)
       try {
         const res = await fetch(
-          `/api/mesProjetsDiriges?search=${search}&sort=${sortField}&order=${sortOrder}&page=${page}`
+          `/api/mesProjetsDiriges?search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&page=${page}`
         )
 
         if (res.status === 401) {
