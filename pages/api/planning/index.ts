@@ -26,21 +26,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const userId = parseInt(session?.user?.id)
 
     if (req.method === 'GET') {
-      const plannings = await prisma.planning.findMany({
-        where: { userId },
-        orderBy: { date: 'desc' },
-        include: {
-          responsable: {
-            select: { id: true, nom: true, prenom: true },
+      const page = Math.max(1, parseInt((req.query.page as string) ?? '1'))
+      const limit = 20
+      const skip = (page - 1) * limit
+
+      const [plannings, total] = await Promise.all([
+        prisma.planning.findMany({
+          where: { userId },
+          orderBy: { date: 'desc' },
+          skip,
+          take: limit,
+          include: {
+            responsable: {
+              select: { id: true, nom: true, prenom: true },
+            },
+            taches: {
+              orderBy: { heure: 'asc' },
+            },
           },
-          taches: {
-            orderBy: {
-              heure: 'asc' // Tri par heure croissante
-            }
-          },
-        },
+        }),
+        prisma.planning.count({ where: { userId } }),
+      ])
+
+      return res.status(200).json({
+        data: plannings,
+        meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
       })
-      return res.status(200).json({ data: plannings })
     }
 
     if (req.method === 'POST') {

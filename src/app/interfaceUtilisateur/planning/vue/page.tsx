@@ -28,27 +28,32 @@ type Planning = {
 export default function CalendrierPage() {
   const [plannings, setPlannings] = useState<Planning[]>([])
   const [commentairesLocaux, setCommentairesLocaux] = useState<Record<number, string>>({})
-  
-  // Ref pour stocker les timers par tâche
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [loading, setLoading] = useState(false)
+
   const timersRef = useRef<Record<number, NodeJS.Timeout>>({})
 
-  // 🔹 Récupération des plannings et initialisation des commentaires
   useEffect(() => {
-    fetch('/api/planning')
+    setLoading(true)
+    fetch(`/api/planning?page=${page}`)
       .then((res) => res.json())
       .then((data) => {
-        setPlannings(data.data)
+        const liste: Planning[] = Array.isArray(data.data) ? data.data : []
+        setPlannings(liste)
+        setTotalPages(data.meta?.totalPages ?? 1)
 
-        // Initialise les commentaires locaux
         const init: Record<number, string> = {}
-        data.data.forEach((plan: Planning) => {
+        liste.forEach((plan: Planning) => {
           plan.taches.forEach((t: TachePlanning) => {
             init[t.id] = t.commentaires ?? ""
           })
         })
         setCommentairesLocaux(init)
       })
-  }, [])
+      .catch((err) => console.error('Erreur fetch planning:', err))
+      .finally(() => setLoading(false))
+  }, [page])
 
   const formatDate = (isoDate: string) => {
     const date = new Date(isoDate)
@@ -121,6 +126,8 @@ export default function CalendrierPage() {
       </div>
 
       <h1 className="text-2xl font-bold mb-4">Planning Journalier</h1>
+
+      {loading && <p className="text-gray-500 text-sm mb-4">Chargement...</p>}
 
       {plannings.map((plan) => (
         <div key={plan.id} className="mb-10 border border-gray-400 rounded overflow-hidden shadow-sm">
@@ -223,6 +230,26 @@ export default function CalendrierPage() {
           </div>
         </div>
       ))}
+
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 border rounded disabled:opacity-40 hover:bg-gray-100"
+          >
+            ← Précédent
+          </button>
+          <span className="text-sm text-gray-600">Page {page} / {totalPages}</span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-4 py-2 border rounded disabled:opacity-40 hover:bg-gray-100"
+          >
+            Suivant →
+          </button>
+        </div>
+      )}
     </div>
   )
 }
